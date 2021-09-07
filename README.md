@@ -13,7 +13,6 @@ PCB111000_CP2102      This uses a CP2102 module for comms with a PC, an ATtiny16
 When PCB111000_CP2102 is being set up the Atmega 328 hosts the UPDI programmer which is used program the ATtiny1606 with the miniOS.
 The UPDI programmer is then replaced with a bootloader (not the UNO bootloader).
 The bootloader is then used to upload user projects.
-
 The miniOS is developed using Atmel studio.
 User projects can be developed using Atmel studio or Arduino.
 In either case the resulting hex file is uploded using Bray++.
