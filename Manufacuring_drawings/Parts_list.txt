@@ -1,0 +1,31 @@
+
+
+Display modules
+
+MOD1
+
+IC1	ATtiny1606 (SOIC)
+IC2	Atmega 328 (DIP)
+
+Q1	BSS138
+
+LED 1
+
+Crystal
+
+SW1 Surface Mount
+
+SW3,4,5	Through hole
+
+R1, R20-26	220R
+R19, R27-8	220R
+
+R15, 16		560R
+
+R2, R3, R8	10K
+
+C1, C3, C5 4.7uF
+
+C2, C4, C6 100nF
+
+C15-17	10nF
