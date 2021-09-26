@@ -12,14 +12,34 @@ PCB111000_UNO A cut down version in which the a UNO provides the PC comms and an
 PCB111000_CP2102 This uses a CP2102 module for comms with a PC, an ATtiny1606 to drive the display and user projects run on an Atmega328 which is programmed using a bootloader. 
 
 
-For PCB111000_CP2102 
+PCB111000_CP2102 is assembled using the following steps:
 
-Projects are compiled using Studio 7 or the Arduino development environment.
-A combined UPDI programmer plus boootloader is written for the user device.
-This is loaded using the UNO_AVR_Programmer (see AVR freaks projects 9 Sept 2020)
-Post assembly the ATtiny1606 is programmed using the UPDI programmer.
-For normal operation the bootloader runs an loads user projects.
+	Prior to assembly a UNO loaded with "UNO_AVR_Programmer" is used to
+	program an Atmega328:
+	
+		With a routine that will be used to calibrate the internal 8MHz clock
+		and will then be deleted.
+		With a bootloader that will be used for all future programming operations
+	
+	Post assembly the UPDI programmer is uploaded to the Atmega328 which 
+	enables the ATtiny1606 to be programmed with the miniOS.
 
+	Calibration of the ATtiny1606 checked and adjusted if necessary
+	
+	The pcb is now ready to accept user projects.
+
+	At any stage the UPDI programmer can be rienstated to upgrade the miniOS.
+
+
+
+User projects can be compiled using Studio 7 or the Arduino development environment.
 All communication between the PC and pcb goes via the terminal program Bray++.
+
+
+UNO_AVR_Programmer :	see AVR freaks projects 9 Sept 2020 Slighytly modified 
+UNO_UPDI_Programmer: 	Originally writen for the UNO but also runs with an 8MHz clock
+			and can be used here 
+
+
 
 
