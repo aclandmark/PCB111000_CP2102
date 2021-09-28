@@ -15,7 +15,6 @@ char receiveChar(void);
 
 /**********************************************************************************************/
 void USART_init (unsigned char UBRROH_N, unsigned char UBRR0L_N ){
-Timer_T0_sub(T0_delay_5ms);
 UCSR0B = 0;
 UBRR0H = UBRROH_N; 
 UBRR0L = UBRR0L_N;  
