@@ -2,11 +2,6 @@
 
 void sendChar(char);
 void sendString(const char*);
-void UART_Tx_1_wire(void);
-
-volatile char One_wire_mode;
-
-
 
 
 /*************************************************************************************************************/
