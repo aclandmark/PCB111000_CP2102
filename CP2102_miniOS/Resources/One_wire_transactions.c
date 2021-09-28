@@ -1,6 +1,6 @@
 
 
-
+#include "../Resources/Display_header.h"
 
 
 void comms_transaction (void){if (!(transaction_type))											//No transaction in progress
@@ -10,6 +10,25 @@ if (!(byte_counter))												//Response from UNO initiates new transaction
 {byte_counter = 1;													
 transaction_type = Rx_symbol;										//First symbol received defines transaction type
 
+switch(transaction_type){
+	
+	case 'c':	clear_digits; clear_display; 
+				clear_display_buffer; 
+				transaction_complete = 1;
+				byte_counter = 0;				
+				break;
+				
+	case 'F':	CCP = 0xD8; WDT.CTRLA = 3; while(1); break;			//32mS watch dog period
+	case 'G':	if(brightness_control == 1750)
+				brightness_control = 250;
+				else brightness_control = 1750;
+				transaction_complete = 1;
+				byte_counter = 0;
+				break;
+				}
+	
+
+/*
 if(transaction_type == 'F')
 {CCP = 0xD8; WDT.CTRLA = 3;	while(1);}								//32mS watch dog period
 
@@ -17,7 +36,7 @@ if(transaction_type == 'G'){
 if(brightness_control == 1750)brightness_control = 250;
 else brightness_control = 1750;
 transaction_complete = 1;
-byte_counter = 0;}
+byte_counter = 0;}*/
 
 return;}}
 	
@@ -33,10 +52,11 @@ transaction_complete = 1;byte_counter = 0; }
 break;
 
 case 'b': switch(byte_counter){
-	case 1: letter = Receive_data_byte(); byte_counter += 1; break;													//I2C_Tx_any_segment()
+	case 1: letter = Receive_data_byte(); byte_counter += 1; break;		//I2C_Tx_any_segment()
 	case 2: digit_num = Receive_data_byte(); byte_counter = 0;
 			transaction_complete = 1; break;} break;	
 
+case 'c': break;													//Clear display and display buffer
 
 case 'A':															//Receiving long number string
 case 'B':															//Receiving FPN string
