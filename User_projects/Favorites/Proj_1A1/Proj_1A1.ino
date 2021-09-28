@@ -1,5 +1,5 @@
 
-#include "FPN_project.h"                              //Contains resources used by template and shared with programmer
+#include "Proj_1A1_header.h"                              //Contains resources used by template and shared with programmer
 
 int main (void){ 
  
