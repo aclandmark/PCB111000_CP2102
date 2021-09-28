@@ -5,11 +5,6 @@ char isCharavailable (int);
 char waitforkeypress(void);
 char wait_for_return_key(void);
 char decimal_digit (char);
-void UART_Rx_1_wire(void);
-void UART_Tx_1_wire(void);
-
-
-
 
 
 
