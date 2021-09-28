@@ -3,11 +3,14 @@
 volatile char One_wire_Rx_char, One_wire_Tx_char;
 volatile int One_wire_Rx_int;
 volatile char Tx_complete, Rx_complete;
+void UART_Rx_1_wire(void);
+void UART_Tx_1_wire(void);
 
 
 long Long_Num_to_UNO;
 long Long_Num_from_UNO = 0;         
 unsigned char num_byte[4];
+volatile char One_wire_mode;
 
 
 char display_buffer[12], buffptr = 0;
@@ -27,7 +30,6 @@ USART_init(0,16);\
 setup_one_wire_comms;\
 Reset_ATtiny1606;
 
-//68
 
 
 /************************************************************************************************************************************/
