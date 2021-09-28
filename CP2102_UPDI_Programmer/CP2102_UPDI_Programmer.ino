@@ -20,7 +20,7 @@ void One_wire_comms(unsigned int, unsigned int);
 
 Note: Intensity can be changed after a reset and while the UNO is waiting for the user to type in anoter number 
 */
-
+char display_bkp[7];
 
 int main (void){ 
   
@@ -29,11 +29,11 @@ long int_num;
 float FPN_1, FPN_2;
 char FP_string[12];
 char op;                                                //+, -, *, /, pow
-
+char letter=0, digit_num=0, seg_counter = 0,direction = 0;
 
 
 unsigned int PORT_1=1, PORT_2;
-int letter, digit_num;
+//int letter, digit_num;
 
 setup_328_HW;                                           //see "Resources\ATMEGA_Programmer
 
@@ -108,30 +108,48 @@ User_prompt_template;
 
 if (User_response =='i'){
 sendString("Segment display");
-/*while(1){
 
-PORT_1 = 1;
-PORT_2 = 0x8000;
-for(int m = 0; m <=15; m++){
-One_wire_comms(PORT_1, PORT_2);
-_delay_ms(30);
-PORT_1 = PORT_1 << 1;
-PORT_2 = PORT_2 >> 1;}}*/
-
-
-letter = 'a';
-while(letter <= 'g'){
-
-
-for (int m = 0; m <=7; m++){digit_num = m;
+/*
+One_wire_Tx_char = 'c';  UART_Tx_1_wire();
+digit_num = 0;
+while(digit_num <= 7){
+for (int m = 'a'; m <= 'g'; m++){letter = m;
 One_wire_Tx_char = 'b';  UART_Tx_1_wire();
 One_wire_Tx_char = letter;  UART_Tx_1_wire(); 
 One_wire_Tx_char = digit_num;  UART_Tx_1_wire(); 
-_delay_ms(30);}
+_delay_ms(30);
+waitforkeypress();}
+digit_num += 1;}*/
 
-letter += 1;}
 
-}
+One_wire_Tx_char = 'c';  UART_Tx_1_wire();
+while(1){                                                      //Generate pattern
+while(seg_counter < 56){                                       //There are 56 segments in total
+letter = (PRN_16bit_GEN (0)%7) + 'a';
+digit_num = (PRN_16bit_GEN (0)%8);
+                                                              //Continue statements skip back to the top of the while-loop
+                                                              //This is to ensure segments are not turned-off before
+                                                              //they have all been turned on.
+      
+if ((!(direction)) && (display_bkp[letter - 'a'] & (1 << digit_num))) continue;
+if ((direction) && (!(display_bkp[letter - 'a'] & (1 << digit_num)))) continue;
+
+One_wire_Tx_char = 'b';  UART_Tx_1_wire();
+One_wire_Tx_char = letter;  UART_Tx_1_wire(); 
+One_wire_Tx_char = digit_num;  UART_Tx_1_wire();
+
+backup_the_display(letter, digit_num);                        //keep backup up to date
+//Timer_T0_10mS_delay_x_m(5);  wdr();                            //delay and reset watch dog
+_delay_ms(30);
+seg_counter += 1;}
+
+direction ^= 1;                                                //Toggle the direction_counter value
+seg_counter = 0;
+//Timer_T0_10mS_delay_x_m(100);
+_delay_ms(500);
+}}                                 //Just pause before toggling LEDs off one at a time
+
+
 }
 
 
@@ -155,4 +173,22 @@ One_wire_Tx_char = PORT_2 >> 8;  UART_Tx_1_wire(); }
 
 
 
+/*************************************************************************************************************/
+void backup_the_display(char segment, char digit_num){
+display_bkp[segment - 'a'] = display_bkp[segment - 'a'] ^ (1 << digit_num);}
+
+
+/*************************************************************************************************************/
+unsigned int PRN_16bit_GEN(unsigned int start){
+unsigned int bit, lfsr;
+
+if(!(start)) lfsr = (eeprom_read_byte((uint8_t*)(0x1FB)) << 8) + eeprom_read_byte((uint8_t*)(0x1FA));
+else lfsr = start;
+bit = (( lfsr >> 0) ^ (lfsr >> 2) ^ (lfsr >> 3) ^ (lfsr >> 5)) & 1;
+lfsr = (lfsr >> 1) | (bit << 15);
+if(!(start)){
+eeprom_write_byte((uint8_t*)(0x1FB),(lfsr>>8));
+eeprom_write_byte((uint8_t*)(0x1FA),lfsr);}
+
+return lfsr;}
  
