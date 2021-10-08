@@ -19,7 +19,7 @@ Atmel_powerup_and_target_detect;                                  //Leave target
 
 sendString(" detected.\r\n\r\nTo program flash press -P- for bootloader or \
 -p-  for calibration routine,\r\n\
-Press -e- for EEPROM, -r- to run target or -x- to escape.");
+Press -e- for EEPROM, -r- to run target, -V- for verification or -x- to escape.");
 
 while(1){
 op_code = waitforkeypress();
@@ -38,6 +38,8 @@ for (int m = 0; m <= EE_top; m++)
 {Read_write_mem('I', m, 0xFF);}                                 //Write 0xFF to all EEPROM loactions bar the top 3
 sendString(" Done\r\n");}
 SW_reset;break;
+
+case 'V': prog_counter = 0x4000; Verify_Flash_Hex();SW_reset; break;
 
 case 'x': SW_reset; break;
 default: break;} 
