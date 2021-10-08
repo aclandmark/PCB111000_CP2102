@@ -61,7 +61,7 @@ initialise_NVM_programming;
 sendString("Programming fuses\r\n");
 write_fuse (WDTCFG, 0x0);                             //Default value: WDT under program control
 write_fuse (BODCFG,0x0);                              //Default value: BOD dissabled
-write_fuse (OSCCFG, 0x01);                            //select the 16MHz internal clock with factory cal
+write_fuse (OSCCFG, 0x7E); //0x7E//0x01                           //select the 16MHz internal clock with factory cal
 write_fuse (SYSCFG0, 0xF7);                           //UPDI enabled, EEPROM preserved at chip erase
 write_fuse (SYSCFG1, 0xFD);                           //16mS SUT
 write_fuse (APPEND, 0);                               //No area of flash is partitioned off 
