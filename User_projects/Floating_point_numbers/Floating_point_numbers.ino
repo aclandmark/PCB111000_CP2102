@@ -10,6 +10,8 @@ long int_num;
 float FPN_1, FPN_2;
 char FP_string[12];
 char op;                                                //+, -, *, /, pow
+char test;
+
 
 setup_328_HW;                                           //see "Resources\ATMEGA_Programmer
 
@@ -32,7 +34,18 @@ send_int_num(Long_Num_to_UNO);
 sendString("New number?\r\n");}}*/
 
 
-{while(1){
+{
+  
+  test = (eeprom_read_byte((uint8_t*)0x3F0));
+
+  for(int m = 0; m <= 7; m++){
+    if (test & (1 << (7 - m)))sendChar('1'); else sendChar('0');
+    }
+
+
+
+  
+  while(1){
 int_num = 10;
 while(int_num < 99999999){
 send_int_num(int_num);
