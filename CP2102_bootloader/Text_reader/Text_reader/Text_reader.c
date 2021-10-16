@@ -40,7 +40,7 @@ int main (void){
 	char next_string_no = 1;																	//Address in flash of first character in a string,
 	unsigned char Page_num_string[2];
 	unsigned char Page_num;
-	char keypress;//previous=0, next;
+	char keypress;
 	
 	
 	char_counter = 0;																		//counts the number of characters in the text file (excludes \r & \n)
@@ -56,7 +56,7 @@ int main (void){
 	if(isCharavailable(75)){Page_num_string[1] = Page_num_string[0]; Page_num_string[0] = receiveChar() - '0';}
 	Page_num = Page_num_string[1] * 10 + Page_num_string[0];
 	
-	if (Page_num >= 12){wdt_enable(WDTO_15MS);																	//SW_reset after printing each string
+	if (Page_num >= 12){wdt_enable(WDTO_15MS);													//SW_reset after printing each string
 	while(1);}
 	
 	page_address = address_page_num(Page_num, start_address);
