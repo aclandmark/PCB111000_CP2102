@@ -48,9 +48,10 @@ MCUCR &= (~(1 << PUD));\
 DDRB = 0;\
 DDRC = 0;\
 DDRD = 0;\
-PORTB = 0xF7;\
+PORTB = 0xFF;\
 PORTC = 0xFF;\
-PORTD = 0xFF;
+PORTD = 0xFF;\
+Prog_Port &= (~(1 << Prog_pin));
 
-//PORTB3 stays as Hi Z input
+//Prog pin stays as Hi Z input
 
