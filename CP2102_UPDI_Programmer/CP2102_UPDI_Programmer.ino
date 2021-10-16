@@ -61,7 +61,7 @@ initialise_NVM_programming;
 sendString("Programming fuses\r\n");
 write_fuse (WDTCFG, 0x0);                             //Default value: WDT under program control
 write_fuse (BODCFG,0x0);                              //Default value: BOD dissabled
-write_fuse (OSCCFG, 0x7E); //0x7E//0x01                           //select the 16MHz internal clock with factory cal
+write_fuse (OSCCFG, 0x01); //0x7E//0x01                           //select the 16MHz internal clock with factory cal
 write_fuse (SYSCFG0, 0xF7);                           //UPDI enabled, EEPROM preserved at chip erase
 write_fuse (SYSCFG1, 0xFD);                           //16mS SUT
 write_fuse (APPEND, 0);                               //No area of flash is partitioned off 
@@ -94,7 +94,7 @@ if(waitforkeypress() == 'y'){
 /************************Programmmer code ends here*******************************************************************/
 
 
-PCICR |= (1 << PCIE1); PCMSK1 |= (1 << PCINT11);          //Set up PCI for SM switch
+PCICR |= (1 << PCIE1); PCMSK1 |= (1 << PCINT11);          //Set up PCI on PC3 for SM switch
 PORTC &= (~(1 << PORTC4));                                //One way comms for template requires port to be set to Tri state 
 One_wire_Tx_char = 'F'; UART_Tx_1_wire();                 //Command to reset 1606
 
