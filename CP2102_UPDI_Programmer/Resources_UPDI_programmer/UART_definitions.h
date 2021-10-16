@@ -15,11 +15,23 @@
 #define Half_Rx_clock   		33
 
 
-#define input_h                (PINB & (1 << PINB3))
+/*#define input_h                (PINB & (1 << PINB3))
 #define input_l        			(!(PINB & (1 << PINB3)))
-
 #define output_h         		DDRB &= (~(1 << DDB3));
-#define output_l          		DDRB |= (1 << DDB3);
+#define output_l          		DDRB |= (1 << DDB3);*/
+
+
+/*
+#define Prog_pin 3
+#define Prog_IO_Port	PINB
+#define Prog_DD_Reg		DDRB
+
+#define input_h                (Prog_IO_Port & (1 << Prog_pin))
+#define input_l        			(!(Prog_IO_Port & (1 << Prog_pin)))
+#define output_h         		Prog_DD_Reg &= (~(1 << Prog_pin));
+#define output_l          		Prog_DD_Reg |= (1 << Prog_pin);
+*/
+
 
 
 #define synch_pulse	\
