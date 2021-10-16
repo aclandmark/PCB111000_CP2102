@@ -15,7 +15,6 @@ void Program_record(void);
 void copy_cmd_to_page_buffer(void);
 void get_next_hex_cmd(void);
 void write_page_SUB(int);
-//char Lock_byte(void);
 
 
 /************************Basic_IO_and_timer_subroutines*******************/
@@ -84,7 +83,7 @@ signed char record_length;									//Num commands on one line of hex file (i.e. 
 signed char record_length_old;								//If record length changes, length of the previous one is important
 signed char orphan;											//Indicates that the contents of a record span two flash pages
 signed char section_break;									//Set to 1 if at least one page of flash memory will be unused.
-signed char page_break;										//Page only partialy filled before programming next one starts
+signed char page_break;										//Page only partially filled before programming next one starts
 volatile signed char line_offset;							//LSB of address of first command in record (usually zero)
 unsigned int prog_led_control;								//Used to control Leds as hex file is downloaded
 
@@ -127,9 +126,9 @@ WDTCSR = 0;
 
 /**********************************************************************************/
 #define  activity_leds \
-DDRB |= (1 << DDB0);\
+DDRB |= (1 << DDB0) | (1 << DDB1);\
+LED_1_off;\
 LED_2_off;
-
 
 
 /**********************************************************************************/
@@ -144,6 +143,9 @@ w_pointer = w_pointer & 0x1F;
 
 
 /**********************************************************************************/
+#define LED_1_off	 PORTB &= (~(1 << PB1));
+#define LED_1_on	 PORTB |= (1 << PB1);
+
 #define LED_2_off	 PORTB &= (~(1 << PB0));
 #define LED_2_on	 PORTB |= (1 << PB0);
 
