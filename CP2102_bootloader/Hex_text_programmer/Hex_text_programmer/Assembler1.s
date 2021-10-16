@@ -10,7 +10,7 @@
 #include <avr/io.h>			
 
 .extern Flash_readout			;
-.extern loc_in_mem_H			;LOcations in SRAM such as the location of the next command to be 
+.extern loc_in_mem_H			;Locations in SRAM such as the location of the next command to be 
 .extern loc_in_mem_L			;written to the page buffer or the location of the new lock byte
 .extern Prog_mem_address_H		;Address in flash to read from, the address of the page to write or erase,  
 .extern Prog_mem_address_L		;the next address on the page buffer, or the address of a configuration/lock byte
