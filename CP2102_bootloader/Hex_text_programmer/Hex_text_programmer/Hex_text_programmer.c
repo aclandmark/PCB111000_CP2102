@@ -62,16 +62,12 @@ MCUCR = (1<<IVSEL);
 				wdt_enable(WDTO_60MS); while(1);}
 			if (keypress == 't'){mode = 't';
 				text_programmer();}
-				if(keypress == 'T')asm("jmp 0x6180");
-				}
+				if(keypress == 'T')asm("jmp 0x6180");}
 
 			PageSZ = 0x40; PAmask = 0x3FC0;										//Define flash memory parameters
 			mode = 'h';
 			hex_programmer();													//Run programmer subroutine
-			asm("jmp 0x6540");
-			
-			
-			}
+			asm("jmp 0x6540");}
 return 1;}
 
 
@@ -110,14 +106,12 @@ return 1;}
 			Rx_askii_char_old = '0';
 
 			sendString("\r\nText_F?");
-			//sendString("T_F?");
-
-
+			
 			Timer_T0_sub_with_interrupt(5,0);									//Start Timer0 with interrupt
 			UCSR0B |= (1<<RXCIE0); 											//Activate UART interrupt
 			sei();																//Set global interrupt
 
-			address_in_flash = 0x5BFE;//0x5C7E;											//First character will be storred at 0x5BFF not 0x5BFE
+			address_in_flash = 0x5BFE;//0x5C7E;											//First character will be stored at 0x5BFF not 0x5BFE
 
 			while (1){
 				while (r_pointer == w_pointer);										//wait for w_pointer to be incremented
@@ -147,7 +141,7 @@ return 1;}
 				address_in_flash -=2;}												//Restore address_in_flash
 			if(!(endoftext)) break;}											//Break when two '\0' chars have been appended to text stored in the array
 
-			if((0x5BFE - address_in_flash)%128){/////////						//Write remaining chars in partially full page buffer
+			if((0x5BFE - address_in_flash)%128){									//Write remaining chars in partially full page buffer
 				address_in_flash += (0x5BFE - address_in_flash)%128 - 126;			//Get address of first character in the page
 
 				Prog_mem_address_H = address_in_flash >> 8;
@@ -157,8 +151,10 @@ return 1;}
 				page_write();
 			}UCSR0B &= (~(1<<RXCIE0));cli();
 			clear_read_block();													//Subroutine provided in assembly file  (Not required for mode 't'??)
-			eeprom_write_byte((uint8_t*)0x3F4,0x40);							//Reset string pointer
-		}
+			eeprom_write_byte((uint8_t*)0x3F4,0x40);}							//Reset string pointer
+		
+		
+		
 		/*********************************************************************************************************/
 		void hex_programmer(void){
 
@@ -171,7 +167,7 @@ return 1;}
 			w_pointer = 0; r_pointer = 0; short_record=0;  cmd_counter = 0;
 
 			sendString("\r\nHex_F?");
-			//sendString("H_F?");
+			
 
 			UCSR0B |= (1<<RXCIE0); sei();										//Receive interrupts now active
 
@@ -301,23 +297,3 @@ return 1;}
 
 
 
-
-				/***********************************************************************************************/
-				/*void Hex_to_PC(int hex){
-					short_num_to_PC(hex>>8);											//Send hex integer to PC
-				short_num_to_PC(hex);}*/
-
-
-
-
-				/***********************************************************************************************/
-				/*void short_num_to_PC(char x)										//convert a number to three chars
-				{if((x>>4)>0x9)
-					sendChar((x>>4) + '0' + 7);
-					else sendChar((x>>4) + '0');
-
-					if((x&0xF)>0x9)
-					sendChar((x & 0xF) + '0' + 7);
-				else sendChar((x & 0xF) + '0');}
-
-				void newline (void){sendString("\r\n");}*/
