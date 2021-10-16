@@ -105,27 +105,36 @@ case 'G': break;													//Toggles brightness
 }}
 
 
-
-char Receive_data_byte (void){
+/********************CP2102 versionCP2102 version***********************************************************************************************/
+/*char Receive_data_byte (void){
 	char Rx_char = 0;
-	wait_for_clock_tick;	PORTC.DIR &= ~PIN3_bm;											//Restore WPU	inc_comms_clock;	wait_for_clock_tick;		Rx_char = 0;	for(int m = 0; m <= 7; m++){									//Receive character	inc_comms_clock;	wait_for_clock_tick;	Rx_char = Rx_char << 1;											//Shift left one bit	if (PORTC_IN & PIN3_bm)	Rx_char |= 1;}							//Add new bit	return Rx_char;}
+	wait_for_clock_tick;	PORTA.DIR &= ~PIN2_bm;											//Restore WPU	inc_comms_clock;	wait_for_clock_tick;		Rx_char = 0;	for(int m = 0; m <= 7; m++){									//Receive character	inc_comms_clock;	wait_for_clock_tick;	Rx_char = Rx_char << 1;											//Shift left one bit	if (PORTA_IN & PIN2_bm)	Rx_char |= 1;}							//Add new bit	return Rx_char;}*/
 
 
 
 		
-	/****************************************************************************************************************************/	
-	void Transmit_data_byte (char symbol){				for(int m = 0; m <= 7; m++){								//Transmit first character
+	/********CP2102 version********************************************************************************************************************/	
+	/*void Transmit_data_byte (char symbol){				for(int m = 0; m <= 7; m++){								//Transmit first character
 		wait_for_clock_tick;
-		if (symbol & (1 << (7-m)))PORTC.DIR &= ~PIN3_bm;			//WPU
-		else PORTC.DIR |= PIN3_bm;									//Output low
+		if (symbol & (1 << (7-m)))PORTA.DIR &= ~PIN2_bm;			//WPU
+		else PORTA.DIR |= PIN2_bm;									//Output low
 		inc_comms_clock;}		wait_for_clock_tick;
-	PORTC.DIR &= ~PIN3_bm;}
+	PORTA.DIR &= ~PIN2_bm;}*/
 	
 	
 		
 		
+		/*************************************FP DISPLAY VERSIONS*************************************************/
 		
 		
+		char Receive_data_byte (void){
+			char Rx_char = 0;
+			wait_for_clock_tick;			PORTC.DIR &= ~PIN3_bm;											//Restore WPU			inc_comms_clock;			wait_for_clock_tick;						Rx_char = 0;			for(int m = 0; m <= 7; m++){									//Receive character				inc_comms_clock;				wait_for_clock_tick;				Rx_char = Rx_char << 1;											//Shift left one bit			if (PORTC_IN & PIN3_bm)	Rx_char |= 1;}							//Add new bit		return Rx_char;}
 		
 		
-		
+		void Transmit_data_byte (char symbol){						for(int m = 0; m <= 7; m++){								//Transmit first character
+				wait_for_clock_tick;
+				if (symbol & (1 << (7-m)))PORTC.DIR &= ~PIN3_bm;			//WPU
+				else PORTC.DIR |= PIN3_bm;									//Output low
+			inc_comms_clock;}						wait_for_clock_tick;
+		PORTC.DIR &= ~PIN3_bm;}
