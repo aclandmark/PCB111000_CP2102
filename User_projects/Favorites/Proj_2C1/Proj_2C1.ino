@@ -17,6 +17,9 @@ sei();                                                        //needed for inten
 User_prompt_proj_2C1;
 
 One_wire_Tx_char = 'c';  UART_Tx_1_wire();
+
+
+
 while(1){                                                      //Generate pattern
 while(seg_counter < 56){                                       //There are 56 segments in total
 letter = (PRN_16bit_GEN (0)%7) + 'a';
