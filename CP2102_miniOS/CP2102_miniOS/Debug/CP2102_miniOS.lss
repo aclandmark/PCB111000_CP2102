@@ -15,19 +15,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 000000a0  00000000  00000000  000027f4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00002442  00000000  00000000  00002894  2**0
+  6 .debug_info   00002444  00000000  00000000  00002894  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00001758  00000000  00000000  00004cd6  2**0
+  7 .debug_abbrev 00001767  00000000  00000000  00004cd8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000011f3  00000000  00000000  0000642e  2**0
+  8 .debug_line   000011f3  00000000  00000000  0000643f  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000268  00000000  00000000  00007624  2**2
+  9 .debug_frame  00000268  00000000  00000000  00007634  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    0000106d  00000000  00000000  0000788c  2**0
+ 10 .debug_str    0000106d  00000000  00000000  0000789c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    000012be  00000000  00000000  000088f9  2**0
+ 11 .debug_loc    000012be  00000000  00000000  00008909  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000200  00000000  00000000  00009bb7  2**0
+ 12 .debug_ranges 00000200  00000000  00000000  00009bc7  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -1550,6 +1550,8 @@ void Add_exponent (void)
      cc0:	92 07       	cpc	r25, r18
      cc2:	91 f7       	brne	.-28     	; 0xca8 <main+0x42>
 	display_buffer[m] = mag(7 - (2*m)) + '0';
+	//display_buffer[m] = '3';
+	
 	Set_display_ports;
      cc4:	e0 e0       	ldi	r30, 0x00	; 0
      cc6:	f4 e0       	ldi	r31, 0x04	; 4
@@ -1579,7 +1581,11 @@ void Add_exponent (void)
      cee:	83 89       	ldd	r24, Z+19	; 0x13
      cf0:	88 60       	ori	r24, 0x08	; 8
      cf2:	83 8b       	std	Z+19, r24	; 0x13
-   	  
+   	 PORTA.PIN2CTRL |= PORT_PULLUPEN_bm;*/							//Pull-up enabled 
+   
+   
+   
+   
    Start_TCA0();												//Display (2mS) tick rate
      cf4:	0e 94 1c 06 	call	0xc38	; 0xc38 <Start_TCA0>
    sei();
@@ -1640,7 +1646,7 @@ void Add_exponent (void)
      d40:	25 f8       	bld	r2, 5
      d42:	33 24       	eor	r3, r3
      d44:	32 f8       	bld	r3, 2
-   	  
+   
    Start_TCA0();												//Display (2mS) tick rate
    sei();
 	
@@ -2728,9 +2734,10 @@ void Add_exponent (void)
     1508:	08 95       	ret
 
 0000150a <Seg_definitions>:
-	
+	if (display_buffer[4] & m) PORTB.OUT &= (~(seg_c));
+	if (display_buffer[5] & m) PORTA.OUT &= (~(seg_e));
+	if (display_buffer[6] & m) PORTC.OUT &= (~(seg_f));}*/
 
-/*****************************************************************************************/
 void Seg_definitions(){ char m=0;
 	switch(display_ptr){
     150a:	e0 91 29 3c 	lds	r30, 0x3C29	; 0x803c29 <display_ptr>
@@ -2760,11 +2767,11 @@ void Seg_definitions(){ char m=0;
 		case 6: m = 0x40; break;
     1534:	80 e4       	ldi	r24, 0x40	; 64
     1536:	03 c0       	rjmp	.+6      	; 0x153e <Seg_definitions+0x34>
-		case 7: m = 0x80; break;}
+	case 7: m = 0x80; break;}
     1538:	80 e8       	ldi	r24, 0x80	; 128
     153a:	01 c0       	rjmp	.+2      	; 0x153e <Seg_definitions+0x34>
+	if (display_buffer[6] & m) PORTC.OUT &= (~(seg_f));}*/
 
-/*****************************************************************************************/
 void Seg_definitions(){ char m=0;
 	switch(display_ptr){
 		case 0: m = 0x01; break;
@@ -2774,7 +2781,7 @@ void Seg_definitions(){ char m=0;
 		case 4: m = 0x10; break;
 		case 5: m = 0x20; break;
 		case 6: m = 0x40; break;
-		case 7: m = 0x80; break;}
+	case 7: m = 0x80; break;}
 	if (display_buffer[0] & m) PORTB.OUT &= (~(seg_a));
     153e:	90 91 1a 3c 	lds	r25, 0x3C1A	; 0x803c1a <display_buffer>
     1542:	98 23       	and	r25, r24
@@ -2785,17 +2792,17 @@ void Seg_definitions(){ char m=0;
     154c:	9f 7d       	andi	r25, 0xDF	; 223
     154e:	94 83       	std	Z+4, r25	; 0x04
     1550:	01 c0       	rjmp	.+2      	; 0x1554 <Seg_definitions+0x4a>
-	case ('9' | 0x80): nine_point; break;
-	case ('-' | 0x80): minus_point; break;}}
-	
+	if (display_buffer[3] & m) PORTA.OUT &= (~(seg_b));
+	if (display_buffer[4] & m) PORTB.OUT &= (~(seg_c));
+	if (display_buffer[5] & m) PORTA.OUT &= (~(seg_e));
+	if (display_buffer[6] & m) PORTC.OUT &= (~(seg_f));}*/
 
-/*****************************************************************************************/
 void Seg_definitions(){ char m=0;
     1552:	80 e0       	ldi	r24, 0x00	; 0
 		case 4: m = 0x10; break;
 		case 5: m = 0x20; break;
 		case 6: m = 0x40; break;
-		case 7: m = 0x80; break;}
+	case 7: m = 0x80; break;}
 	if (display_buffer[0] & m) PORTB.OUT &= (~(seg_a));
 	if (display_buffer[1] & m) PORTC.OUT &= (~(seg_g));
     1554:	90 91 1b 3c 	lds	r25, 0x3C1B	; 0x803c1b <display_buffer+0x1>
@@ -2842,7 +2849,7 @@ void Seg_definitions(){ char m=0;
     15a8:	94 81       	ldd	r25, Z+4	; 0x04
     15aa:	9b 7f       	andi	r25, 0xFB	; 251
     15ac:	94 83       	std	Z+4, r25	; 0x04
-	if (display_buffer[6] & m) PORTC.OUT &= (~(seg_f));}
+if (display_buffer[6] & m) PORTC.OUT &= (~(seg_f));}
     15ae:	90 91 20 3c 	lds	r25, 0x3C20	; 0x803c20 <display_buffer+0x6>
     15b2:	89 23       	and	r24, r25
     15b4:	29 f0       	breq	.+10     	; 0x15c0 <Seg_definitions+0xb6>
@@ -3369,8 +3376,14 @@ void Seg_definitions(){ char m=0;
     196e:	80 81       	ld	r24, Z
     1970:	88 60       	ori	r24, 0x08	; 8
     1972:	80 83       	st	Z, r24
-	comms_transaction();}										//Poll the UNO
+	//PORTA.DIR |= PIN2_bm;
+
+	comms_transaction();
     1974:	0e 94 20 02 	call	0x440	; 0x440 <comms_transaction>
+	
+	
+	
+	}										//Poll the UNO
 	TCA0_SINGLE_CMP0 = cmp0_bkp;								//Reinstate the 1.1ms clock tick
     1978:	80 91 2c 3c 	lds	r24, 0x3C2C	; 0x803c2c <cmp0_bkp>
     197c:	90 91 2d 3c 	lds	r25, 0x3C2D	; 0x803c2d <cmp0_bkp+0x1>
