@@ -96,13 +96,20 @@ APPEND the end of the application section = (Num_blocks - text_size * 2)/0x100
 #define clock_delay_T               Timer_T0_sub(T0_delay_18us) 
 #define clock_delay_R               Timer_T0_sub(T0_delay_18us) 
 
-
+/*
 #define input_h                     (PINB & (1 << PINB3))
 #define input_l                     (!(PINB & (1 << PINB3)))
+*/
 
+/*#define Prog_pin 3
+#define Prog_IO_Port	PINB
+#define Prog_DD_Reg		DDRB
 
-
-
+#define input_h                (Prog_IO_Port & (1 << Prog_pin))
+#define input_l        			(!(Prog_IO_Port & (1 << Prog_pin)))
+#define output_h         		Prog_DD_Reg &= (~(1 << Prog_pin));
+#define output_l          		Prog_DD_Reg |= (1 << Prog_pin);
+*/
 
 
 /**********************************************************************************************************************/
@@ -266,7 +273,7 @@ Timer_T0_sub(T0_delay_200us);
 
 
 /************************************************************************************************************************************/
-#define contact_target \
+/*#define contact_target \
 if(PINB & (1 << PINB3))\
 DDRB |= (1 << DDB3);\
 else {sendString ("Device not detected\r\n");\
@@ -274,7 +281,20 @@ while(1);}\
 delay_of_0_25uS;\
 DDRB &= (~(1 << DDB3));\
 while(!(PINB & (1 << PINB3)));\
+Timer_T0_sub(T0_delay_400us);*/
+
+#define contact_target \
+if(Prog_IO_Port & (1 << Prog_pin))\
+Prog_DD_Reg |= (1 << Prog_DD_bit);\
+else {sendString ("Device not detected\r\n");\
+while(1);}\
+delay_of_0_25uS;\
+Prog_DD_Reg &= (~(1 << Prog_DD_bit));\
+while(!(Prog_IO_Port & (1 << Prog_pin)));\
 Timer_T0_sub(T0_delay_400us);
+
+
+
 
 
 /************************************************************************************************************************************/
@@ -294,7 +314,7 @@ Timer_T0_sub(T0_delay_200us);\
 sendString("\r\n\r\n");\
 UART_Tx(0x55);\
 UART_Tx (download_SIB);\
-while ((PINB & (1 << PINB3)) && (!(UPDI_timeout)));\
+while ((Prog_IO_Port & (1 << Prog_pin)) && (!(UPDI_timeout)));\
 if(!(UPDI_timeout)){\
 SIB_byte[0] = UART_Rx();\
 for(int m = 1; m <= 15; m++){\
