@@ -36,12 +36,20 @@ int main(void){
 	mode = 'A';
 	for(int m = 0; m <= 7; m++)									//Display 75311357 on reset:  Confirms that display is working correctly
 	display_buffer[m] = mag(7 - (2*m)) + '0';
+	//display_buffer[m] = '3';
+	
 	Set_display_ports;
 	   
    PORTC.DIR &= ~PIN3_bm;										//Configure comm port as input
    PORTC.OUT &= ~(PIN3_bm);										//I/O pin low when configured as output
    PORTC.PIN3CTRL |= PORT_PULLUPEN_bm;							//Pull-up enabled
-   	  
+   	/*PORTA.DIR &= ~PIN2_bm;										//Configure comm port as input
+   	 PORTA.OUT &= ~(PIN2_bm);										//I/O pin low when configured as output
+   	 PORTA.PIN2CTRL |= PORT_PULLUPEN_bm;*/							//Pull-up enabled 
+   
+   
+   
+   
    Start_TCA0();												//Display (2mS) tick rate
    sei();
 	
@@ -125,7 +133,7 @@ int main(void){
 	TCA0_SINGLE_CNT = 0;										//Initialise counter
 	TCA0_SINGLE_CMP0 = display_tick;							//2mS period for 2MHz clock
 	TCA0_SINGLE_CTRLA = TCA_SINGLE_CLKSEL_DIV1_gc | 1;			//Start clock with 2MHz clock
-	TCA0_SINGLE_INTCTRL |= TCA_SINGLE_CMP0EN_bm;}				//Interrupt flag on compare match/*****************************************************************************************************************************/	ISR (TCA0_CMP0_vect){										//ISR which responds to clock ticks	TCA0_SINGLE_INTFLAGS |= TCA_SINGLE_CMP0EN_bm;				//Clear the interrupt flag	if(display_ptr <= 7)										//Drive the 8 display digits	{Display_driver();	if(display_ptr < 7){inc_display_clock;}						//Setup 2mS clock tick for first 7 digits	else TCA0_SINGLE_CMP0 += 1800;								//setup 0.9mS clock tick for last digit	display_ptr += 1;	return;}				display_ptr += 1;				cmp0_bkp = TCA0_SINGLE_CMP0 + 2200;							//Save 1.1mS clock tick for first digit	if (!(busy_flag))	{inc_comms_clock;											//only poll UNO if no transactions are ongoing	PORTC.DIR |= PIN3_bm;										//initiate start pulse	comms_transaction();}										//Poll the UNO	TCA0_SINGLE_CMP0 = cmp0_bkp;								//Reinstate the 1.1ms clock tick	display_ptr = 0;}											//Set display_pointer to the first digit									/*****************************************************************************************************************************/	void Display_driver(void){//busy_flag = 1;				switch(display_ptr){			case 0: digit_0; break;			case 1: digit_1; break;			case 2: digit_2; break;			case 3: digit_3; break;			case 4: digit_4; break;			case 5: digit_5; break;			case 6: digit_6; break;			case 7: digit_7; break;}						switch(mode){		case 'A': case'B': case 'C': case 'D': case 'E':		Char_definition(); break;				case 'a':
+	TCA0_SINGLE_INTCTRL |= TCA_SINGLE_CMP0EN_bm;}				//Interrupt flag on compare match/*****************************************************************************************************************************/	ISR (TCA0_CMP0_vect){										//ISR which responds to clock ticks	TCA0_SINGLE_INTFLAGS |= TCA_SINGLE_CMP0EN_bm;				//Clear the interrupt flag	if(display_ptr <= 7)										//Drive the 8 display digits	{Display_driver();	if(display_ptr < 7){inc_display_clock;}						//Setup 2mS clock tick for first 7 digits	else TCA0_SINGLE_CMP0 += 1800;								//setup 0.9mS clock tick for last digit	display_ptr += 1;	return;}				display_ptr += 1;				cmp0_bkp = TCA0_SINGLE_CMP0 + 2200;							//Save 1.1mS clock tick for first digit	if (!(busy_flag))	{inc_comms_clock;											//only poll UNO if no transactions are ongoing	PORTC.DIR |= PIN3_bm;										//initiate start pulse	//PORTA.DIR |= PIN2_bm;	comms_transaction();				}										//Poll the UNO	TCA0_SINGLE_CMP0 = cmp0_bkp;								//Reinstate the 1.1ms clock tick	display_ptr = 0;}											//Set display_pointer to the first digit									/*****************************************************************************************************************************/	void Display_driver(void){//busy_flag = 1;				switch(display_ptr){			case 0: digit_0; break;			case 1: digit_1; break;			case 2: digit_2; break;			case 3: digit_3; break;			case 4: digit_4; break;			case 5: digit_5; break;			case 6: digit_6; break;			case 7: digit_7; break;}						switch(mode){		case 'A': case'B': case 'C': case 'D': case 'E':		Char_definition(); break;				case 'a':
 		
 		switch (display_ptr){
 			
@@ -192,7 +200,7 @@ int main(void){
 	
 
 /*****************************************************************************************/
-void Seg_definitions(){ char m=0;
+/*void Seg_definitions(){ char m=0;
 	switch(display_ptr){
 		case 0: m = 0x01; break;
 		case 1: m = 0x02; break;
@@ -205,10 +213,41 @@ void Seg_definitions(){ char m=0;
 	if (display_buffer[0] & m) PORTB.OUT &= (~(seg_a));
 	if (display_buffer[1] & m) PORTC.OUT &= (~(seg_g));
 	if (display_buffer[2] & m) PORTB.OUT &= (~(seg_d));
+	if (display_buffer[3] & m) PORTA.OUT &= (~(seg_b));
+	if (display_buffer[4] & m) PORTB.OUT &= (~(seg_c));
+	if (display_buffer[5] & m) PORTA.OUT &= (~(seg_e));
+	if (display_buffer[6] & m) PORTC.OUT &= (~(seg_f));}*/
+
+void Seg_definitions(){ char m=0;
+	switch(display_ptr){
+		case 0: m = 0x01; break;
+		case 1: m = 0x02; break;
+		case 2: m = 0x04; break;
+		case 3: m = 0x08; break;
+		case 4: m = 0x10; break;
+		case 5: m = 0x20; break;
+		case 6: m = 0x40; break;
+	case 7: m = 0x80; break;}
+	if (display_buffer[0] & m) PORTB.OUT &= (~(seg_a));
+	if (display_buffer[1] & m) PORTC.OUT &= (~(seg_g));
+	if (display_buffer[2] & m) PORTB.OUT &= (~(seg_d));
 	if (display_buffer[3] & m) PORTB.OUT &= (~(seg_b));
 	if (display_buffer[4] & m) PORTB.OUT &= (~(seg_c));
 	if (display_buffer[5] & m) PORTC.OUT &= (~(seg_e));
-	if (display_buffer[6] & m) PORTC.OUT &= (~(seg_f));}
+if (display_buffer[6] & m) PORTC.OUT &= (~(seg_f));}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*void Seg_definitions(){ char m=0;
 	switch(display_ptr){
