@@ -55,7 +55,7 @@ volatile char Flash_readout;								//Used by assembly routines to return data
 
 /************************Subroutines provided by .S file*******************/
 extern void read_flash (void);
-extern void clear_read_block(void);							//Required afer programming before flash can be read
+extern void clear_read_block(void);							//Required after programming before flash can be read
 extern void Page_erase (void);
 extern void write_to_page_buffer(void);
 extern void page_write(void);
@@ -73,31 +73,6 @@ extern void set_lock_byte (void);
 #define twenty_msec_delay	Timer_T0_sub(T0_delay_20ms);
 
 
-#define wdr()  __asm__ __volatile__("wdr")
-
-/**********************************************************************************/
-#define setup_HW \
-config_WDT;\
-Unused_I_O;\
-activity_leds;\
-ADMUX |= (1 << REFS0);\
-USART_init(0,16);
-
-
-/**********************************************************************************/
-#define config_WDT \
-wdr();\
-MCUSR &= ~(1<<WDRF);\
-WDTCSR |= (1 <<WDCE) | (1<< WDE);\
-WDTCSR = 0;
-
-
-/**********************************************************************************/
-#define  activity_leds \
-DDRB |= (1 << DDB0) | (1 << DDB1);\
-LED_2_off;\
-LED_2_off;
-
 
 
 /**********************************************************************************/
@@ -107,15 +82,6 @@ LED_2_off;
 #define LED_1_off	 PORTB &= (~(1 << PB1));
 #define LED_1_on	 PORTB |= (1 << PB1);
 
-
-#define Unused_I_O \
-MCUCR &= (~(1 << PUD));\
-DDRB = 0;\
-DDRC = 0;\
-DDRD = 0;\
-PORTB = 0xFF;\
-PORTC = 0xFF;\
-PORTD = 0xFF;
 
 
 
