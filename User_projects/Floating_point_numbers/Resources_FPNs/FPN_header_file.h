@@ -28,6 +28,7 @@ initialise_IO;\
 \
 USART_init(0,16);\
 setup_one_wire_comms;\
+activity_leds;\
 Reset_ATtiny1606;
 
 
@@ -61,8 +62,10 @@ PORTD = 0xFF;
 
 /************************************************************************************************************************************/
 #define setup_one_wire_comms \
-PCICR |= (1 << PCIE1); PCMSK1 |= (1 << PCINT11);\
-PORTC &= (~(1 << PORTC4));
+PCICR |= (1 << PCIE0); PCMSK0 |= (1 << PCINT4);\
+PCICR |= (1 << PCIE1); PCMSK1 |= (1 << PCINT13);\
+PORTB &= (~(1 << PORTB4));
+
 
 #define Reset_ATtiny1606 \
 One_wire_Tx_char = 'F'; UART_Tx_1_wire();
@@ -101,9 +104,10 @@ OCR0A =  Half_Rx_clock_1;\
 while (!(TIFR0 & (1 << OCF0A)));\
 TIFR0 = 0xFF;  
 
-
-#define PINC4_down  ((PINC & 0x10)^0x10)
-#define PINC3_down  ((PINC & 0x08)^0x08)
+#define setRunBL_bit				eeprom_write_byte((uint8_t*)0x3FC, (eeprom_read_byte((uint8_t*)(0x3FC)) & (~2)));
+#define PINB4_down  ((PINB & 0x10)^0x10)
+#define PINC5_down  ((PINC & 0x20)^0x20)
+#define PINC5_up	(PINC & 0x20)
 
 
 #define User_prompt_template \
@@ -114,7 +118,14 @@ if((User_response == 'f') || (User_response == 'i'))break;} sendString("\r\n");
 
 
 
+#define  activity_leds \
+DDRB |= (1 << DDB0) | (1 << DDB1);\
+LED_1_off;\
+LED_2_off;
 
+#define LED_1_off	 PORTB &= (~(1 << PB1));
+#define LED_1_on	 PORTB |= (1 << PB1);
 
-
+#define LED_2_off	 PORTB &= (~(1 << PB0));
+#define LED_2_on	 PORTB |= (1 << PB0);
 
