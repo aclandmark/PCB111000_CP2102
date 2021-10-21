@@ -70,9 +70,11 @@ if(User_response == 'r') break;} sendString("\r\n");
 
 
 /************************************************************************************************************************************/
+
 #define setup_one_wire_comms \
-PCICR |= (1 << PCIE1); PCMSK1 |= (1 << PCINT11);\
-PORTC &= (~(1 << PORTC4));
+PCICR |= (1 << PCIE0); PCMSK0 |= (1 << PCINT4);\
+PORTB &= (~(1 << PORTB4));
+
 
 #define Reset_ATtiny1606 \
 One_wire_Tx_char = 'F'; UART_Tx_1_wire();
@@ -100,7 +102,8 @@ while (!(TIFR0 & (1 << OCF0A)));\
 TIFR0 = 0xFF;  
 
 
-#define PINC4_down  ((PINC & 0x10)^0x10)
+#define PINB4_down  ((PINB & 0x10)^0x10)
+//#define PINC4_down  ((PINC & 0x10)^0x10)
 #define PINC3_down  ((PINC & 0x08)^0x08)
 
 
