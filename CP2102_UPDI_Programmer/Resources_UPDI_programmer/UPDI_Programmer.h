@@ -89,8 +89,8 @@ APPEND the end of the application section = (Num_blocks - text_size * 2)/0x100
 
 #define delay_of_0_25uS             asm("nop"); asm("nop"); asm("nop"); asm("nop");
 #define delay_of_0_75uS             delay_of_0_25uS; delay_of_0_25uS; delay_of_0_25uS;
-#define out_h                       PORTC |= (1 << PORTC0)
-#define out_l                       PORTC &= (~(1 << PORTC0))
+//#define out_h                       PORTC |= (1 << PORTC0)
+//#define out_l                       PORTC &= (~(1 << PORTC0))
 
 
 #define clock_delay_T               Timer_T0_sub(T0_delay_18us) 
