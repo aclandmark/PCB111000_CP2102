@@ -7,10 +7,6 @@ unsigned int PORT_1, PORT_2;
 
 setup_328_HW;                                           //see "Resources\ATMEGA_Programmer
 
-sei();                                                  //needed for intensity control
-User_prompt_proj_1A1;
-//cli();
-
 while(1){
 PORT_1 = 1;
 PORT_2 = 0x8000;
