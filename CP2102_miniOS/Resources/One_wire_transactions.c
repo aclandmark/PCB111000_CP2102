@@ -18,10 +18,19 @@ switch(transaction_type){
 				byte_counter = 0;				
 				break;
 				
-	case 'F':	CCP = 0xD8; WDT.CTRLA = 3; while(1); break;			//32mS watch dog period
-	case 'G':	if(brightness_control == 1750)
+	case 'F':	//eeprom_write_byte((uint8_t*)0xFD, 0);							USE SW RESET
+				//clear_display_buffer;										//Generate test display
+				//clear_digits;
+				//clear_display;
+				CCP = 0xD8; WDT.CTRLA = 3; while(1); break;			//32mS watch dog period
+	case 'G':	if(brightness_control == 1450)
 				brightness_control = 250;
-				else brightness_control = 1750;
+				else brightness_control = 1450;
+				
+				eeprom_write_byte((uint8_t*)0xFF, brightness_control >> 8);
+				eeprom_write_byte((uint8_t*)0xFE, brightness_control);
+				
+				
 				transaction_complete = 1;
 				byte_counter = 0;
 				break;
@@ -106,20 +115,20 @@ case 'G': break;													//Toggles brightness
 
 
 /********************CP2102 versionCP2102 version***********************************************************************************************/
-/*char Receive_data_byte (void){
+char Receive_data_byte (void){
 	char Rx_char = 0;
-	wait_for_clock_tick;	PORTA.DIR &= ~PIN2_bm;											//Restore WPU	inc_comms_clock;	wait_for_clock_tick;		Rx_char = 0;	for(int m = 0; m <= 7; m++){									//Receive character	inc_comms_clock;	wait_for_clock_tick;	Rx_char = Rx_char << 1;											//Shift left one bit	if (PORTA_IN & PIN2_bm)	Rx_char |= 1;}							//Add new bit	return Rx_char;}*/
+	wait_for_clock_tick;	PORTA.DIR &= ~PIN2_bm;											//Restore WPU	inc_comms_clock;	wait_for_clock_tick;		Rx_char = 0;	for(int m = 0; m <= 7; m++){									//Receive character	inc_comms_clock;	wait_for_clock_tick;	Rx_char = Rx_char << 1;											//Shift left one bit	if (PORTA_IN & PIN2_bm)	Rx_char |= 1;}							//Add new bit	return Rx_char;}
 
 
 
 		
 	/********CP2102 version********************************************************************************************************************/	
-	/*void Transmit_data_byte (char symbol){				for(int m = 0; m <= 7; m++){								//Transmit first character
+	void Transmit_data_byte (char symbol){				for(int m = 0; m <= 7; m++){								//Transmit first character
 		wait_for_clock_tick;
 		if (symbol & (1 << (7-m)))PORTA.DIR &= ~PIN2_bm;			//WPU
 		else PORTA.DIR |= PIN2_bm;									//Output low
 		inc_comms_clock;}		wait_for_clock_tick;
-	PORTA.DIR &= ~PIN2_bm;}*/
+	PORTA.DIR &= ~PIN2_bm;}
 	
 	
 		
@@ -127,7 +136,7 @@ case 'G': break;													//Toggles brightness
 		/*************************************FP DISPLAY VERSIONS*************************************************/
 		
 		
-		char Receive_data_byte (void){
+		/*char Receive_data_byte (void){
 			char Rx_char = 0;
 			wait_for_clock_tick;			PORTC.DIR &= ~PIN3_bm;											//Restore WPU			inc_comms_clock;			wait_for_clock_tick;						Rx_char = 0;			for(int m = 0; m <= 7; m++){									//Receive character				inc_comms_clock;				wait_for_clock_tick;				Rx_char = Rx_char << 1;											//Shift left one bit			if (PORTC_IN & PIN3_bm)	Rx_char |= 1;}							//Add new bit		return Rx_char;}
 		
@@ -137,4 +146,4 @@ case 'G': break;													//Toggles brightness
 				if (symbol & (1 << (7-m)))PORTC.DIR &= ~PIN3_bm;			//WPU
 				else PORTC.DIR |= PIN3_bm;									//Output low
 			inc_comms_clock;}						wait_for_clock_tick;
-		PORTC.DIR &= ~PIN3_bm;}
+		PORTC.DIR &= ~PIN3_bm;}*/
