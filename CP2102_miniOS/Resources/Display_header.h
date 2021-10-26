@@ -3,7 +3,7 @@
 
 
 	//FOR CP2102 PCB111000
-/*#define	seg_a 	PIN1_bm
+#define	seg_a 	PIN1_bm
 #define	seg_b 	PIN4_bm
 #define	seg_c 	PIN5_bm
 #define	seg_d 	PIN2_bm
@@ -13,14 +13,14 @@
 #define	DP		PIN3_bm
 
 
-#define	digit_7		PORTA.OUT |= PIN1_bm;
-#define	digit_6		PORTC.OUT |= PIN2_bm;
-#define	digit_5		PORTC.OUT |= PIN0_bm;
-#define	digit_4		PORTB.OUT |= PIN0_bm;
-#define	digit_3		PORTA.OUT |= PIN5_bm;
-#define	digit_2		PORTB.OUT |= PIN4_bm;
-#define	digit_1		PORTA.OUT |= PIN7_bm;
-#define	digit_0		PORTA.OUT |= PIN6_bm;
+#define	digit_0		PORTA.OUT |= PIN1_bm;
+#define	digit_1		PORTC.OUT |= PIN2_bm;
+#define	digit_2		PORTC.OUT |= PIN0_bm;
+#define	digit_3		PORTB.OUT |= PIN0_bm;
+#define	digit_4		PORTA.OUT |= PIN5_bm;
+#define	digit_5		PORTB.OUT |= PIN4_bm;
+#define	digit_6		PORTA.OUT |= PIN7_bm;
+#define	digit_7		PORTA.OUT |= PIN6_bm;
 
 
 //All ports are outputs
@@ -33,8 +33,8 @@ PORTC.DIR |= (PIN0_bm | PIN1_bm | PIN2_bm | PIN3_bm);
 //#define clear_digits Set all digits low
 #define clear_digits \
 PORTA.OUT &= (~(PIN1_bm | PIN5_bm | PIN6_bm | PIN7_bm));\
-PORTB.OUT &= (~(PIN0_bm) | PIN4_bm);\
-PORTC.OUT &= (~(PIN0_bm) | PIN2_bm);
+PORTB.OUT &= (~(PIN0_bm | PIN4_bm));\
+PORTC.OUT &= (~(PIN0_bm | PIN2_bm));
 
 
 //#define clear_display Set all segments high
@@ -48,22 +48,22 @@ PORTC.OUT |= (seg_f | seg_g);
 #define clear_temp_buffer		for(int m = 0; m<=14; m++)temp_buffer[m] = 0;
 
 
-#define one_U 	PORTA.OUT &= ~(seg_b);
-#define ONE_U 	PORTC.OUT &= ~(seg_f);
-#define one_L 	PORTB.OUT &= ~(seg_c);
-#define ONE_L 	PORTA.OUT &= ~(seg_e);
-#define ONE		PORTA.OUT &= (~(seg_e));																						PORTC.OUT &= (~(seg_f));
+#define one_U 	PORTA.OUT &= (~(seg_b));
+#define ONE_U 	PORTC.OUT &= (~(seg_f));
+#define one_L 	PORTB.OUT &= (~(seg_c));
+#define ONE_L 	PORTA.OUT &= (~(seg_e));
+#define ONE		PORTA.OUT &= (~(seg_e));																				PORTC.OUT &= (~(seg_f));
 
-#define one 		PORTA.OUT &= ~(seg_b );						PORTB.OUT &= ~(seg_c);
+#define one 		PORTA.OUT &=(~(seg_b));						PORTB.OUT &= ~(seg_c);
 #define two 		PORTA.OUT &= (~(seg_b | seg_e));			PORTB.OUT &= (~(seg_a | seg_d));						PORTC.OUT &= (~(seg_g));
-#define three 		PORTA.OUT &= ~(seg_b );						PORTB.OUT &= (~(seg_a | seg_c | seg_d));				PORTC.OUT &= (~(seg_g));
+#define three 		PORTA.OUT &=(~(seg_b));						PORTB.OUT &= (~(seg_a | seg_c | seg_d));				PORTC.OUT &= (~(seg_g));
 #define four 		PORTA.OUT &= (~(seg_b));					PORTB.OUT &= (~(seg_c));								PORTC.OUT &= (~(seg_f | seg_g));
 #define five 													PORTB.OUT &= (~(seg_a | seg_c | seg_d ));				PORTC.OUT &= (~(seg_f  | seg_g));
-#define six 		PORTA.OUT &= ~(seg_e);						PORTB.OUT &= (~(seg_c | seg_d ));						PORTC.OUT &= (~(seg_f | seg_g));
+#define six 		PORTA.OUT &=(~(seg_e));						PORTB.OUT &= (~(seg_c | seg_d ));						PORTC.OUT &= (~(seg_f | seg_g));
 #define seven 		PORTA.OUT &= (~(seg_b));					PORTB.OUT &= (~(seg_a | seg_c));
-#define eight 		PORTA.OUT &= ~(seg_b | seg_e);				PORTB.OUT &= (~(seg_a | seg_c| seg_d));					PORTC.OUT &= (~(seg_f | seg_g));
-#define nine		PORTA.OUT &= ~(seg_b);						PORTB.OUT &= (~(seg_a | seg_c));						PORTC.OUT &= (~( seg_f | seg_g));
-#define zero		PORTA.OUT &= ~(seg_b);						PORTB.OUT &= (~(seg_a | seg_c | seg_d ));				PORTC.OUT &= (~( seg_f  | seg_e));
+#define eight 		PORTA.OUT &= (~(seg_b | seg_e));				PORTB.OUT &= (~(seg_a | seg_c| seg_d));					PORTC.OUT &= (~(seg_f | seg_g));
+#define nine		PORTA.OUT &= (~(seg_b));						PORTB.OUT &= (~(seg_a | seg_c));						PORTC.OUT &= (~( seg_f | seg_g));
+#define zero		PORTA.OUT &= (~(seg_b  | seg_e));				PORTB.OUT &= (~(seg_a | seg_c | seg_d ));				PORTC.OUT &= (~( seg_f));
 #define minus																											PORTC.OUT &= (~(seg_g));
 #define exponent	PORTA.OUT &= ~(seg_e);						PORTB.OUT &= (~(seg_a | seg_d));						PORTC.OUT &= (~(seg_f | seg_g ));
 
@@ -81,7 +81,7 @@ PORTC.OUT |= (seg_f | seg_g);
 #define nine_point		nine;  PORTB.OUT &= ~DP;
 #define minus_point		minus; PORTB.OUT &= ~DP;
 
-*/
+
 
 
 
@@ -90,7 +90,7 @@ PORTC.OUT |= (seg_f | seg_g);
 
 
 //FP display
-
+/**************************************************
 #define	seg_a 	PIN5_bm
 #define	seg_b 	PIN4_bm
 #define	seg_c 	PIN1_bm
@@ -169,5 +169,5 @@ PORTC.OUT |= (seg_e | seg_f | seg_g);
 #define nine_point		nine;  PORTB.OUT &= ~DP;
 #define minus_point		minus; PORTB.OUT &= ~DP;
 
-
+************************************************************************/
 
