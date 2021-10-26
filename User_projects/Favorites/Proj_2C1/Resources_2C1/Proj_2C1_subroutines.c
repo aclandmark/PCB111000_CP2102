@@ -2,6 +2,14 @@
 
 
 
+void I2C_Tx_any_segment(char letter, char digit_num){
+pause_pin_change_interrupt;
+One_wire_Tx_char = 'b';  UART_Tx_1_wire();
+One_wire_Tx_char = letter;  UART_Tx_1_wire(); 
+One_wire_Tx_char = digit_num;  UART_Tx_1_wire();
+reinstate_pin_change_interrupt;}
+
+
 
 /*************************************************************************************************************/
 void backup_the_display(char segment, char digit_num){
