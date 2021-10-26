@@ -7,11 +7,11 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 #include <stdlib.h>
-
+#include <avr/eeprom.h>
 
 #define display_tick	2000							//2mS assuming a clock of 1MHz
-#define comms_tick		200								//2mS per transaction of 10 bits
-#define half_comms_tick	100		
+#define comms_tick		200								//  was 200		2mS per transaction of 10 bits
+#define half_comms_tick	100								// was 100	
 
 
 #define wait_for_clock_tick \while (!(TCA0_SINGLE_INTFLAGS & TCA_SINGLE_CMP0EN_bm));\TCA0_SINGLE_INTFLAGS |= TCA_SINGLE_CMP0EN_bm;
