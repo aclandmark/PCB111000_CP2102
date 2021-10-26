@@ -9,6 +9,12 @@ Brightness control settings must be reduced from 500 and 3500 to 250 and 1750
 
 Note:The one wire FW UART now runs at 5KHz (i.e. not 10KHz) and the time per transaction is now 2mS
 The display multiplexer period  is still 2mS (to avoid flicker) but a transaction takes 2 periods rather than one  
+
+EEPROM use:	
+	0xFF	Brightness control high byte
+	0xFE	Brightness control low byte
+	0xFD	Reset control
+
 */
 
 
@@ -30,28 +36,30 @@ int main(void){
 	CPU_CCP = 0xD8;
 	CLKCTRL_OSC20MCALIBA = cal_factor;
 	
-	brightness_control = 1450;//1450;//250;100			1500ok	1550 NOk					//Selects low brightness at reset
+	if(RSTCTRL.RSTFR & RSTCTRL_PORF_bm)
+	{RSTCTRL.RSTFR |= RSTCTRL_PORF_bm;
+		brightness_control = 250;
+		eeprom_write_byte((uint8_t*)0xFF, brightness_control >> 8);
+		eeprom_write_byte((uint8_t*)0xFE, brightness_control);}				//1450;//250;100			1500ok	1550 NOk					//Selects low brightness at reset
+	else {brightness_control = (eeprom_read_byte((uint8_t*)0xFF) << 8)
+		+ eeprom_read_byte((uint8_t*)0xFE);}
 	
-	clear_display_buffer;										//Generate test display
-	mode = 'A';
-	for(int m = 0; m <= 7; m++)									//Display 75311357 on reset:  Confirms that display is working correctly
-	display_buffer[m] = mag(7 - (2*m)) + '0';
-	//display_buffer[m] = '3';
 	
-	Set_display_ports;
-	   
-   PORTC.DIR &= ~PIN3_bm;										//Configure comm port as input
-   PORTC.OUT &= ~(PIN3_bm);										//I/O pin low when configured as output
-   PORTC.PIN3CTRL |= PORT_PULLUPEN_bm;							//Pull-up enabled
-   	/*PORTA.DIR &= ~PIN2_bm;										//Configure comm port as input
+	//if((eeprom_read_byte((uint8_t*)0xFD)) == 0xFF);
+	//else {eeprom_write_byte((uint8_t*)0xFD, 0xFF); _delay_ms(500);}
+	
+	
+	
+	
+   	PORTA.DIR &= ~PIN2_bm;										//Configure comm port as input
    	 PORTA.OUT &= ~(PIN2_bm);										//I/O pin low when configured as output
-   	 PORTA.PIN2CTRL |= PORT_PULLUPEN_bm;*/							//Pull-up enabled 
+   	 PORTA.PIN2CTRL |= PORT_PULLUPEN_bm;							//Pull-up enabled 
    
    
    
-   
-   Start_TCA0();												//Display (2mS) tick rate
    sei();
+   Start_TCA0();												//Display (2mS) tick rate
+   //sei();
 	
 	while(1){
 		while(!(transaction_complete));							//Wait here for requests from the UNO
@@ -129,11 +137,17 @@ int main(void){
 
 /*****************************************************************************************************************************/
 	void Start_TCA0(void){										//Clock that controls display and FW comms port
+	
+	//_delay_ms(50);
+	clear_display_buffer;										//Generate test display
+	clear_digits;
+	clear_display;
+	Set_display_ports;
 	display_ptr = 0;
 	TCA0_SINGLE_CNT = 0;										//Initialise counter
 	TCA0_SINGLE_CMP0 = display_tick;							//2mS period for 2MHz clock
 	TCA0_SINGLE_CTRLA = TCA_SINGLE_CLKSEL_DIV1_gc | 1;			//Start clock with 2MHz clock
-	TCA0_SINGLE_INTCTRL |= TCA_SINGLE_CMP0EN_bm;}				//Interrupt flag on compare match/*****************************************************************************************************************************/	ISR (TCA0_CMP0_vect){										//ISR which responds to clock ticks	TCA0_SINGLE_INTFLAGS |= TCA_SINGLE_CMP0EN_bm;				//Clear the interrupt flag	if(display_ptr <= 7)										//Drive the 8 display digits	{Display_driver();	if(display_ptr < 7){inc_display_clock;}						//Setup 2mS clock tick for first 7 digits	else TCA0_SINGLE_CMP0 += 1800;								//setup 0.9mS clock tick for last digit	display_ptr += 1;	return;}				display_ptr += 1;				cmp0_bkp = TCA0_SINGLE_CMP0 + 2200;							//Save 1.1mS clock tick for first digit	if (!(busy_flag))	{inc_comms_clock;											//only poll UNO if no transactions are ongoing	PORTC.DIR |= PIN3_bm;										//initiate start pulse	//PORTA.DIR |= PIN2_bm;	comms_transaction();				}										//Poll the UNO	TCA0_SINGLE_CMP0 = cmp0_bkp;								//Reinstate the 1.1ms clock tick	display_ptr = 0;}											//Set display_pointer to the first digit									/*****************************************************************************************************************************/	void Display_driver(void){//busy_flag = 1;				switch(display_ptr){			case 0: digit_0; break;			case 1: digit_1; break;			case 2: digit_2; break;			case 3: digit_3; break;			case 4: digit_4; break;			case 5: digit_5; break;			case 6: digit_6; break;			case 7: digit_7; break;}						switch(mode){		case 'A': case'B': case 'C': case 'D': case 'E':		Char_definition(); break;				case 'a':
+	TCA0_SINGLE_INTCTRL |= TCA_SINGLE_CMP0EN_bm;}				//Interrupt flag on compare match/*****************************************************************************************************************************/		//TIMES must be halved from 1800 to 900 and from 2200 to 1100///////////////////		ISR (TCA0_CMP0_vect){										//ISR which responds to clock ticks	TCA0_SINGLE_INTFLAGS |= TCA_SINGLE_CMP0EN_bm;				//Clear the interrupt flag	if(display_ptr <= 7)										//Drive the 8 display digits	{Display_driver();	if(display_ptr < 7){inc_display_clock;}						//Setup 2mS clock tick for first 7 digits	else TCA0_SINGLE_CMP0 += 1800;								//setup 0.9mS clock tick for last digit	display_ptr += 1;	return;}	display_ptr += 1;	cmp0_bkp = TCA0_SINGLE_CMP0 + 2200;							//Save 1.1mS clock tick for first digit	if (!(busy_flag))	{inc_comms_clock;											//only poll UNO if no transactions are ongoing	PORTA.DIR |= PIN2_bm;										//initiate start pulse	comms_transaction();}										//Poll the UNO	TCA0_SINGLE_CMP0 = cmp0_bkp;								//Reinstate the 1.1ms clock tick	display_ptr = 0;}										//Set display_pointer to the first digit											/*****************************************************************************************************************************/	void Display_driver(void){				switch(display_ptr){			case 0: digit_0; break;			case 1: digit_1; break;			case 2: digit_2; break;			case 3: digit_3; break;			case 4: digit_4; break;			case 5: digit_5; break;			case 6: digit_6; break;			case 7: digit_7; break;}						switch(mode){		case 'A': case'B': case 'C': case 'D': case 'E':		Char_definition(); break;				case 'a':
 		
 		switch (display_ptr){
 			
@@ -169,9 +183,9 @@ int main(void){
 			case 7: if(display_buffer[2] & 0x40) one_U;  if(display_buffer[2] & 0x80) ONE_U;
 					if(display_buffer[3] & 0x40) one_L;  if(display_buffer[3] & 0x80) ONE_L;
 					break;
-					}break;				case 'b': Seg_definitions(); break;									//I2C_Tx_any_segment(		}		Start_TCB0(brightness_control);//busy_flag = 0;
-		}									//TCB0 controls the brightness
-								/*****************************************************************************************************************************/	void Char_definition()
+					}break;				case 'b': Seg_definitions(); break;		}		Start_TCB0(brightness_control);										//TCB0 controls the brightness
+		}									
+								/******************************************************************************************************************/	void Char_definition()
 	{switch (display_buffer[display_ptr]){
 	case '0': zero; break;
 	case '1': one; break;
@@ -199,8 +213,8 @@ int main(void){
 	case ('-' | 0x80): minus_point; break;}}
 	
 
-/*****************************************************************************************/
-/*void Seg_definitions(){ char m=0;
+/*******************PCB111000_CP2102**********************************************************************/
+void Seg_definitions(){ char m=0;
 	switch(display_ptr){
 		case 0: m = 0x01; break;
 		case 1: m = 0x02; break;
@@ -216,9 +230,11 @@ int main(void){
 	if (display_buffer[3] & m) PORTA.OUT &= (~(seg_b));
 	if (display_buffer[4] & m) PORTB.OUT &= (~(seg_c));
 	if (display_buffer[5] & m) PORTA.OUT &= (~(seg_e));
-	if (display_buffer[6] & m) PORTC.OUT &= (~(seg_f));}*/
-
-void Seg_definitions(){ char m=0;
+	if (display_buffer[6] & m) PORTC.OUT &= (~(seg_f));}
+	
+	
+/*************FP_display PCB*****************************************************/
+/*void Seg_definitions(){ char m=0;
 	switch(display_ptr){
 		case 0: m = 0x01; break;
 		case 1: m = 0x02; break;
@@ -234,7 +250,7 @@ void Seg_definitions(){ char m=0;
 	if (display_buffer[3] & m) PORTB.OUT &= (~(seg_b));
 	if (display_buffer[4] & m) PORTB.OUT &= (~(seg_c));
 	if (display_buffer[5] & m) PORTC.OUT &= (~(seg_e));
-if (display_buffer[6] & m) PORTC.OUT &= (~(seg_f));}
+if (display_buffer[6] & m) PORTC.OUT &= (~(seg_f));}*/
 
 
 
