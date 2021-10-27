@@ -11,3 +11,4 @@
 #include "Resources_FPNs\ASKII_subroutines.c"
 //#include "Resources_FPNs\Resources_shared.h"
 #include "Resources_FPNs\Basic_IO_and_Timer.c"
+#include "Resources_FPNs\FPN_subroutines.c"
