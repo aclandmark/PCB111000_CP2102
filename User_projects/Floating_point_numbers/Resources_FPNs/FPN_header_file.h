@@ -1,22 +1,21 @@
 
 
+void UART_Tx_1_wire(void);
+void UART_Rx_1_wire(void);
+void One_wire_Tx_2_integers(unsigned int, unsigned int);
+
+char User_response;
+
 volatile char One_wire_Rx_char, One_wire_Tx_char;
 volatile int One_wire_Rx_int;
 volatile char Tx_complete, Rx_complete;
-void UART_Rx_1_wire(void);
-void UART_Tx_1_wire(void);
 
-
-long Long_Num_to_UNO;
-long Long_Num_from_UNO = 0;         
-unsigned char num_byte[4];
 volatile char One_wire_mode;
 
-
+long Long_Num_from_UNO = 0;
 char display_buffer[12], buffptr = 0;
 volatile char cr_keypress;
-
-char User_response;
+unsigned char num_byte[4];
 
 
 /************************************************************************************************************************************/
@@ -25,12 +24,11 @@ char User_response;
 setup_watchdog;\
 ADMUX |= (1 << REFS0);\
 initialise_IO;\
-\
+set_up_pin_change_interrupt;\
 USART_init(0,16);\
 setup_one_wire_comms;\
-activity_leds;\
-Reset_ATtiny1606;
-
+set_up_activity_leds;\
+sei();
 
 
 /************************************************************************************************************************************/
@@ -56,16 +54,29 @@ PORTB = 0xFF;\
 PORTC = 0xFF;\
 PORTD = 0xFF;
 
-//PORTB3 stays as Hi Z input
+
+/************************************************************************************************************************************/
+#define User_prompt_proj_1A1 \
+while(1){\
+do{sendString("r    ");}	 while((isCharavailable(40) == 0));\
+User_response = receiveChar();\
+if(User_response == 'r') break;} sendString("\r\n");
+
 
 
 
 /************************************************************************************************************************************/
 #define setup_one_wire_comms \
 PCICR |= (1 << PCIE0); PCMSK0 |= (1 << PCINT4);\
-PCICR |= (1 << PCIE1); PCMSK1 |= (1 << PCINT13);\
 PORTB &= (~(1 << PORTB4));
 
+//#define pause_comms		PCICR &= (~(1 << PCIE0)); PCMSK0 &= (~(1 << PCINT4));
+//#define resume_comms	PCICR |= (1 << PCIE0); PCMSK0 |= (1 << PCINT4);
+
+#define clear_display 						One_wire_Tx_char = 'c';  UART_Tx_1_wire();
+#define set_up_pin_change_interrupt  		PCICR |= (1 << PCIE1); PCMSK1 |= (1 << PCINT13); 
+#define pause_pin_change_interrupt  		PCICR &= (~(1 << PCIE1)); 
+#define reinstate_pin_change_interrupt  	PCICR |= (1 << PCIE1); 
 
 #define Reset_ATtiny1606 \
 One_wire_Tx_char = 'F'; UART_Tx_1_wire();
@@ -75,19 +86,7 @@ One_wire_Tx_char = 'F'; UART_Tx_1_wire();
 
 
 /************************************************************************************************************************************/
-#define Send_int_num_string \
-One_wire_Tx_char = 'A'; UART_Tx_1_wire();\
-for(int m = 0; m <= 7; m++){One_wire_Tx_char = display_buffer[m]; UART_Tx_1_wire();}\
-One_wire_Tx_char = cr_keypress;  UART_Tx_1_wire();
-
-
-#define Send_float_num_string \
-One_wire_Tx_char = 'B'; UART_Tx_1_wire();\
-for(int m = 0; m <= 7; m++){One_wire_Tx_char = display_buffer[m]; UART_Tx_1_wire();}\
-One_wire_Tx_char = cr_keypress;  UART_Tx_1_wire();
-
-
-#define Tx_clock_1     		200			//10K Baud rate	
+#define Tx_clock_1     		200			//5K Baud rate	
 #define Rx_clock_1     		200		
 #define Start_clock_1    	TCNT0 = 0;  TCCR0B = (1 << CS01);
 #define Half_Rx_clock_1 	100
@@ -104,21 +103,14 @@ OCR0A =  Half_Rx_clock_1;\
 while (!(TIFR0 & (1 << OCF0A)));\
 TIFR0 = 0xFF;  
 
+
 #define setRunBL_bit				eeprom_write_byte((uint8_t*)0x3FC, (eeprom_read_byte((uint8_t*)(0x3FC)) & (~2)));
-#define PINB4_down  ((PINB & 0x10)^0x10)
-#define PINC5_down  ((PINC & 0x20)^0x20)
+#define PINB4_down	((PINB & 0x10)^0x10)
+#define PINC5_down	((PINC & 0x20)^0x20)
 #define PINC5_up	(PINC & 0x20)
 
 
-#define User_prompt_template \
-while(1){\
-do{sendString("f/i?    ");}	 while((isCharavailable(250) == 0));\
-User_response = receiveChar();\
-if((User_response == 'f') || (User_response == 'i'))break;} sendString("\r\n");
-
-
-
-#define  activity_leds \
+#define  set_up_activity_leds \
 DDRB |= (1 << DDB0) | (1 << DDB1);\
 LED_1_off;\
 LED_2_off;
@@ -128,4 +120,24 @@ LED_2_off;
 
 #define LED_2_off	 PORTB &= (~(1 << PB0));
 #define LED_2_on	 PORTB |= (1 << PB0);
+
+
+#define Send_int_num_string \
+One_wire_Tx_char = 'A'; UART_Tx_1_wire();\
+for(int m = 0; m <= 7; m++){One_wire_Tx_char = display_buffer[m]; UART_Tx_1_wire();}\
+One_wire_Tx_char = cr_keypress;  UART_Tx_1_wire();
+
+
+#define Send_float_num_string \
+One_wire_Tx_char = 'B'; UART_Tx_1_wire();\
+for(int m = 0; m <= 7; m++){One_wire_Tx_char = display_buffer[m]; UART_Tx_1_wire();}\
+One_wire_Tx_char = cr_keypress;  UART_Tx_1_wire();
+
+
+
+#define User_prompt_template \
+while(1){\
+do{sendString("f/i?    ");}	 while((isCharavailable(250) == 0));\
+User_response = receiveChar();\
+if((User_response == 'f') || (User_response == 'i'))break;} sendString("\r\n");
 
