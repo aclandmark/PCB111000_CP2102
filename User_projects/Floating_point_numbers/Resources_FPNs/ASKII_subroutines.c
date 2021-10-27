@@ -8,6 +8,21 @@ char decimal_digit (char);
 
 
 
+
+void send_int_num(long);
+
+
+
+/*************************************************************************************************************/
+void send_float_num(float);
+
+
+
+
+
+
+
+
 long Int_from_KBD(void){                                     	//Acquires an integer string from the keyboard and returns the binary equivalent
 char keypress;
 long I_number;
