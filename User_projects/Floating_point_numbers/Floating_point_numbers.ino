@@ -49,12 +49,11 @@ sendString("New number?\r\n");}}*/
 int_num = 10;
 while(int_num < 99999999){
 send_int_num(int_num);
-  _delay_ms(10); 
-  //waitforkeypress(); 
-  int_num = int_num*10/9;}}}
+_delay_ms(10);  
+ int_num = int_num*10/9;}}}
 
 
-if (User_response =='f'){
+if (User_response =='f'){ clear_display;
  sendString("Enter FPN from KBD (terminate in cr)\r\n"); 
  FPN_1 =  Float_from_KBD();
  for(int m = 0; m<=100; m++)                                                  
