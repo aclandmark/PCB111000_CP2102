@@ -2,7 +2,7 @@
 
 
 
-#define F_CPU 1000000UL		//////////////////////							//2000000
+#define F_CPU 1000000UL		
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
@@ -38,8 +38,6 @@ volatile char transaction_type = 0;						//Data/string transfer to/from UNO
 volatile char transaction_complete = 0;					//Set to 1 when a data transfer is complete
 volatile int byte_counter = 0;							//Counts bytes sent to or received from UNO
 char mode;												//Permanent copy of transaction type
-
-
 volatile int cmp0_bkp;									//Used to merge comms transaction and display multiplexer
 
 char display_buffer[15];
@@ -58,9 +56,6 @@ signed char expt;
 
 volatile char busy_flag = 0;							//Data processing in progress: Do not poll Atmega328
 int brightness_control;
- 
- 
-//char segment;
 int digit_num;
 int  letter;
  
@@ -180,6 +175,15 @@ temp_buffer[m] = temp_buffer[m - 1];}\
 temp_buffer[0] = '-';}
 
 
+
+#define save_brightness_control \
+eeprom_write_byte((uint8_t*)0xFF, brightness_control >> 8);\
+eeprom_write_byte((uint8_t*)0xFE, brightness_control);
+
+
+#define restore_brightness_control \
+brightness_control = (eeprom_read_byte((uint8_t*)0xFF) << 8)\
++ eeprom_read_byte((uint8_t*)0xFE);
 
 
 
