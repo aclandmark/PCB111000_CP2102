@@ -69,8 +69,6 @@ MCUCR = (1<<IVSEL);
 	
 	switch(keypress){
 	case 'p':													//Program user application starting at address 09x0000
-		PageSZ = 0x40;											
-		PAmask = 0x3FC0;										//Define flash memory parameters
 		mode = 'h';												//Hex programming mode
 		hex_programmer();										//Run programmer subroutine
 		asm("jmp 0x66C0");										//Run hex verification routine
