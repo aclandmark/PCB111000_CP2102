@@ -18,35 +18,17 @@ switch(transaction_type){
 				byte_counter = 0;				
 				break;
 				
-	case 'F':	//eeprom_write_byte((uint8_t*)0xFD, 0);							USE SW RESET
-				//clear_display_buffer;										//Generate test display
-				//clear_digits;
-				//clear_display;
-				CCP = 0xD8; WDT.CTRLA = 3; while(1); break;			//32mS watch dog period
+	case 'F':	CCP = 0xD8; WDT.CTRLA = 3; while(1); break;			//32mS watch dog period
+	
 	case 'G':	if(brightness_control == 1450)
-				brightness_control = 250;
+				brightness_control = 150;
 				else brightness_control = 1450;
-				
-				eeprom_write_byte((uint8_t*)0xFF, brightness_control >> 8);
-				eeprom_write_byte((uint8_t*)0xFE, brightness_control);
-				
-				
+				save_brightness_control;
 				transaction_complete = 1;
 				byte_counter = 0;
 				break;
 				}
 	
-
-/*
-if(transaction_type == 'F')
-{CCP = 0xD8; WDT.CTRLA = 3;	while(1);}								//32mS watch dog period
-
-if(transaction_type == 'G'){
-if(brightness_control == 1750)brightness_control = 250;
-else brightness_control = 1750;
-transaction_complete = 1;
-byte_counter = 0;}*/
-
 return;}}
 	
 	
@@ -131,19 +113,3 @@ char Receive_data_byte (void){
 	PORTA.DIR &= ~PIN2_bm;}
 	
 	
-		
-		
-		/*************************************FP DISPLAY VERSIONS*************************************************/
-		
-		
-		/*char Receive_data_byte (void){
-			char Rx_char = 0;
-			wait_for_clock_tick;			PORTC.DIR &= ~PIN3_bm;											//Restore WPU			inc_comms_clock;			wait_for_clock_tick;						Rx_char = 0;			for(int m = 0; m <= 7; m++){									//Receive character				inc_comms_clock;				wait_for_clock_tick;				Rx_char = Rx_char << 1;											//Shift left one bit			if (PORTC_IN & PIN3_bm)	Rx_char |= 1;}							//Add new bit		return Rx_char;}
-		
-		
-		void Transmit_data_byte (char symbol){						for(int m = 0; m <= 7; m++){								//Transmit first character
-				wait_for_clock_tick;
-				if (symbol & (1 << (7-m)))PORTC.DIR &= ~PIN3_bm;			//WPU
-				else PORTC.DIR |= PIN3_bm;									//Output low
-			inc_comms_clock;}						wait_for_clock_tick;
-		PORTC.DIR &= ~PIN3_bm;}*/
