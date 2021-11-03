@@ -32,7 +32,7 @@
 
 char mode;																	//'h' for hex file, 't' for text file
 int main (void){ 															//Loaded at address 0x7000, the start of the boot loader section
-char keypress;// delete_control;
+char keypress;
 
 	if(MCUSR & (1<<WDRF))setWD_RF_bit;										//Record presence of a watch dog time out
 	setup_HW;																//Resets watch dog timer
