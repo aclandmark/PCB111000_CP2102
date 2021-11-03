@@ -61,25 +61,25 @@ PORTC.OUT |= (seg_f | seg_g);
 #define five 													PORTB.OUT &= (~(seg_a | seg_c | seg_d ));				PORTC.OUT &= (~(seg_f  | seg_g));
 #define six 		PORTA.OUT &=(~(seg_e));						PORTB.OUT &= (~(seg_c | seg_d ));						PORTC.OUT &= (~(seg_f | seg_g));
 #define seven 		PORTA.OUT &= (~(seg_b));					PORTB.OUT &= (~(seg_a | seg_c));
-#define eight 		PORTA.OUT &= (~(seg_b | seg_e));				PORTB.OUT &= (~(seg_a | seg_c| seg_d));					PORTC.OUT &= (~(seg_f | seg_g));
-#define nine		PORTA.OUT &= (~(seg_b));						PORTB.OUT &= (~(seg_a | seg_c));						PORTC.OUT &= (~( seg_f | seg_g));
-#define zero		PORTA.OUT &= (~(seg_b  | seg_e));				PORTB.OUT &= (~(seg_a | seg_c | seg_d ));				PORTC.OUT &= (~( seg_f));
+#define eight 		PORTA.OUT &= (~(seg_b | seg_e));			PORTB.OUT &= (~(seg_a | seg_c| seg_d));					PORTC.OUT &= (~(seg_f | seg_g));
+#define nine		PORTA.OUT &= (~(seg_b));					PORTB.OUT &= (~(seg_a | seg_c));						PORTC.OUT &= (~( seg_f | seg_g));
+#define zero		PORTA.OUT &= (~(seg_b  | seg_e));			PORTB.OUT &= (~(seg_a | seg_c | seg_d ));				PORTC.OUT &= (~( seg_f));
 #define minus																											PORTC.OUT &= (~(seg_g));
 #define exponent	PORTA.OUT &= ~(seg_e);						PORTB.OUT &= (~(seg_a | seg_d));						PORTC.OUT &= (~(seg_f | seg_g ));
 
 
 
-#define zero_point		zero; PORTB.OUT &= ~DP;
-#define one_point		one; PORTB.OUT &= ~DP;
-#define two_point		two;  PORTB.OUT &= ~DP;
-#define three_point		three;  PORTB.OUT &= ~DP;
-#define four_point		four;  PORTB.OUT &= ~DP;
-#define five_point		five;  PORTB.OUT &= ~DP;
-#define six_point		six;  PORTB.OUT &= ~DP;
-#define seven_point		seven;  PORTB.OUT &= ~DP;
-#define eight_point		eight;  PORTB.OUT &= ~DP;
-#define nine_point		nine;  PORTB.OUT &= ~DP;
-#define minus_point		minus; PORTB.OUT &= ~DP;
+#define zero_point		zero;	PORTB.OUT &= ~DP;
+#define one_point		one;	PORTB.OUT &= ~DP;
+#define two_point		two; 	PORTB.OUT &= ~DP;
+#define three_point		three; 	PORTB.OUT &= ~DP;
+#define four_point		four; 	PORTB.OUT &= ~DP;
+#define five_point		five; 	PORTB.OUT &= ~DP;
+#define six_point		six; 	PORTB.OUT &= ~DP;
+#define seven_point		seven; 	PORTB.OUT &= ~DP;
+#define eight_point		eight; 	PORTB.OUT &= ~DP;
+#define nine_point		nine; 	PORTB.OUT &= ~DP;
+#define minus_point		minus;	PORTB.OUT &= ~DP;
 
 
 
