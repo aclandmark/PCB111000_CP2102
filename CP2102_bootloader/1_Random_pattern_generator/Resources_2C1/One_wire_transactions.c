@@ -66,7 +66,8 @@ void comms_transaction(void){                               //Detect low on PINC
 			if (PINB & (1 << PINB4))
 			{One_wire_Rx_char |= 1;}}
 			TCCR0B = 0;
-		Rx_complete = 1;}}
+		Rx_complete = 1;}
+		}
 	
 	
 	
