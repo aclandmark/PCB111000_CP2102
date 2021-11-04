@@ -7,8 +7,7 @@ void I2C_Tx_any_segment(char, char);
 
 volatile char One_wire_Rx_char, One_wire_Tx_char;
 volatile int One_wire_Rx_int;
-volatile char Tx_complete, Rx_complete;
-volatile char One_wire_mode;
+volatile char Tx_complete;
 char display_bkp[7];
 
 
