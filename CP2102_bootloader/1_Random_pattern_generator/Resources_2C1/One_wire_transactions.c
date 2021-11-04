@@ -8,8 +8,6 @@ void rst_cntr(void);
 void UART_Tx_1_wire(void){
 
 Tx_complete = 0;
-One_wire_mode = 1;											//Tx mode
-
 while(PINB4_down);											//Detect edge not level
 while (!(PINB4_down));
 comms_transaction();
@@ -20,22 +18,8 @@ if((PINC5_down) && (One_wire_Tx_char != 'G'))rst_cntr();}	//Respond to vertical 
 
 
 /*************************************************************************************************************/
-void UART_Rx_1_wire(void){									//Untested in interrupt free mode
-One_wire_Rx_char = 0;
-Rx_complete = 0;
-One_wire_mode = 2;											//Rx mode
-
-while(PINB4_down);
-while (!(PINB4_down));
-comms_transaction();
-while (!(Rx_complete));}
-
-
-
-/*************************************************************************************************************/
 void comms_transaction(void){                               //Detect low on PINC4
 
-	if(One_wire_mode == 1){									//Transmit character
 		Start_clock_1;
 		wait_for_half_comms_tick;							//Used to set the baud rate
 
@@ -55,19 +39,7 @@ void comms_transaction(void){                               //Detect low on PINC
 		Tx_complete = 1;
 	TCCR0B = 0;}
 
-	if(One_wire_mode == 2){									//Receive character
-		Start_clock_1;
-		wait_for_half_comms_tick;
-
-		for (int m = 0; m <= 7;m++){
-			wait_for_comms_tick;
-			
-			One_wire_Rx_char = One_wire_Rx_char << 1;		//Assemble bits as they are received
-			if (PINB & (1 << PINB4))
-			{One_wire_Rx_char |= 1;}}
-			TCCR0B = 0;
-		Rx_complete = 1;}
-		}
+	
 	
 	
 	
@@ -77,7 +49,7 @@ void rst_cntr(void){ 										//Interrogates vertical switch presses
 
 	_delay_ms(25);											//Switch bounce delay
 	if(PINC5_up)return;
-	_delay_ms(225);
+	_delay_ms(475);
 	if(PINC5_up)
 	{setRunBL_bit;}
 	else{
