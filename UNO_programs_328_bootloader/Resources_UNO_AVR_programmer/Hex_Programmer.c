@@ -123,7 +123,7 @@ if((Flash_flag) && (!(orphan)))
 if(orphan) {write_page_SUB(page_address + PageSZ);}
 
 
-if (op_code == 'P'){Prog_user_config_bytes;}
+if (op_code == 'P'){Prog_bootloader_config_bytes;}
 if (op_code == 'p'){Prog_default_328_config_bytes;}
 }
   
