@@ -1,10 +1,34 @@
 
+/*
+Version of the UNO_AVR programmer adapted for the PCB111000_CP2102 project
+Programmming pins are:
+  data out    PORTB3 (MOSI)   connect to target device MOSI
+  data in     PORTB4 (MISO)   connect to target device MISO
+  clock       PORTB5 (SCK)    connect to target device SCK
+  reset       PORTC3          connect to target device pin 1 reset
+
+Calibration pin:   This also uses PORTB5
+
+Target devive EEPROM use
+0xFF  User calibration value
+0xFE  User calibration value
+0xFD  Default calibration value
+0xFC  Signature byte 2
+0xFB  Signature byte 3
+0xFA
+
+
+ */
+
+
+
+
 #include "UNO_AVR_programmer.h"
 #define Version "UNO_programmer_V1.5\r\n" 
 
 int main (void){ 
 
-setup_328_HW;                                                     //see "Resources\ATMEGA_Programmer.h"
+setup_328_HW;                                                      //Reduces clock to 8MHz"
 
 Reset_L;                                                          //Put target in reset state to dissable UART
 
@@ -17,17 +41,20 @@ sendString("\r\n");
 Atmel_powerup_and_target_detect;                                  //Leave target in programming mode                              
 
 
-sendString(" detected.\r\n\r\nTo program flash press -P- for bootloader or \
+sendString(" detected.\r\n\r\nTo program flash:  press -P- for bootloader or \
 -p-  for calibration routine,\r\n\
-Press -e- for EEPROM, -r- to run target, -V- for verification or -x- to escape.");
+Press -t- to run calibration routine,\r\n\
+Press -V- to read flash or -x- to escape.\r\n\r\n");
+
 
 while(1){
 op_code = waitforkeypress();
 switch (op_code){
 
 case 'r': Exit_programming_mode; break;                      //Wait for UNO reset
-case 'R': Verify_Flash_Text();  SW_reset; break;
+//case 'R': Verify_Flash_Text();  SW_reset; break;
 case 'e': Prog_EEPROM(); SW_reset; break;
+case 't': set_cal_clock();break;
 
 case 'd':                                                       //Delete contents of the EEPROM
 sendString("\r\nReset EEPROM! D or AOK to escape");             //but leave cal data.
@@ -50,11 +77,6 @@ sendString("\r\nSend hex file (or x to escape).\r\n");
 Program_Flash_Hex();
 Verify_Flash_Hex();
 
-sendString("\r\nText_file? y or n\r\n");
-if (waitforkeypress() == 'y')
-{op_code = 't';                                                 //Required by UART ISR
-Program_Flash_Text();}
-
 
 sendString (Version);
 newline();
@@ -64,8 +86,13 @@ Read_write_mem('I', EE_size - 4, \
 Read_write_mem('I', EE_size - 5, \
 (Atmel_config(signature_bit_3_h, signature_bit_3_l)));       
 
+sendString("Press -t- if running 328 cal routine or AOK for other routines\r\n\
+\r\nCalibration takes several seconds.");
 
-Exit_programming_mode;                                                  //Wait for UNO reset
+if(waitforkeypress()== 't')set_cal_clock();
+else
+{Exit_programming_mode; }                                         //Wait for UNO reset
+
 return 1;}
 
 
@@ -75,9 +102,10 @@ return 1;}
 /***************************************************************************************************************************************************/
 ISR(USART_RX_vect){
 switch (op_code){
-case 't': upload_text();break;
+//case 't': upload_text();break;
 case 'p':
 case 'P': upload_hex(); break;}}
+
 
 
 /***************************************************************************************************************************************************/
@@ -88,4 +116,25 @@ if(text_started == 3)                                           //Ignore timeout
   inc_w_pointer; store[w_pointer] = 0; }}
 
 
-  
+
+
+/****************************************************************************************************************************************************/
+void set_cal_clock(void){
+
+sendString("\r\n\r\nSquare wave generates PCI on PB5 every 8.192mS\r\n");
+UCSR0B &= (~((1 << RXEN0) | (1<< TXEN0)));
+initialise_IO;
+Set_LED_ports;
+LEDs_off;
+DDRB |= 1 << DDB5;
+PORTB &= (~(1 << PORTB5));                                       //Output low
+TCNT0 = 0;
+//TCCR0B = (1 << CS02) | (1 << CS00);                             //7.8125 KHz clock counts to 256 in 32.768mS                    
+TCCR0B = (1 << CS02);                                             //31.25KHz clock counts to 256 in 8.192KHz
+
+Reset_H;
+
+while(1){
+while(!(TIFR0 & (1<<TOV0)));
+TIFR0 |= (1<<TOV0);
+PORTB ^= (1 << PORTB5);}}
