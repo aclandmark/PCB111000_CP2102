@@ -82,7 +82,14 @@ unsigned int Last_Hex_Page;											//LAST PAGE NEEDED BY HEX
 unsigned int Last_Text_Page; 										//LAST PAGE TAKEN BY TEXT
 unsigned int Unused_pages;
 
+int sig_byte_2, sig_byte_3;
+signed int PageSZ;												//Size of a page of flash in 16 bit words
+signed int PAmask;												//Used to obtain the flash page address from the hex address
+unsigned int FlashSZ;											//Amount of flash memory in 16 bit words supplied on target device
+int EE_size;													//EEPROM size
+unsigned char Fuse_Ex, Fuse_H, Fuse_L, Lock;
 
+char Twd_EEPROM;
 
 
 /************************************************************************************************************************************/
@@ -226,7 +233,28 @@ Atmel_powerup;\
 while(1){if((Atmel_config(Prog_enable_h, 0)==0x53) && (Atmel_config(signature_bit_1_h, 0) == 0x1E))break;\
 	else {sendString("Target_not_detected\r\n"); wdt_enable(WDTO_60MS);while(1);}}\
 	\
-	set_up_target_parameters();\
+	Twd_EEPROM = 5;\
+\
+sig_byte_2 = Atmel_config(signature_bit_2_h, signature_bit_2_l);\
+sig_byte_3 = Atmel_config(signature_bit_3_h, signature_bit_3_l);\
+\
+switch(sig_byte_2){\
+\
+	case 0x95:\
+	switch (sig_byte_3)\
+	{case 0x14: sendString("Atmega 328");break;\
+	case 0x0F: sendString("Atmega 328P");break;\
+	default: sendString("Unrecognised_device");\
+	newline();SW_reset;break;}\
+	\
+	PageSZ = 0x40;\
+	PAmask = 0x3FC0;\
+	FlashSZ = 0x4000;\
+	EE_size = 0x400;\
+	break;\
+	\
+	default: sendString("\r\nUnknown, please enter device data.");\
+	sendString("\r\n"); wdt_enable(WDTO_60MS);while(1);break;}\
 	EE_top = EE_size-0x6;
 	
 
@@ -271,15 +299,7 @@ if((User_response == 'R') || (User_response == 'r'))break;} sendString("\r\n");
 
 
 /**************************************************************************************************************************************/
-#define Prog_user_config_bytes \
-\
-switch(sig_byte_2){\
-case 0x95: if(sig_byte_3 == 0x2); else Atmel_config(write_extended_fuse_bits_h,Fuse_Ex );break;\
-default: Atmel_config(write_extended_fuse_bits_h,Fuse_Ex );break;}\
-\
-Atmel_config(write_fuse_bits_H_h,Fuse_H );\
-Atmel_config(write_fuse_bits_h,Fuse_L );\
-Atmel_config(write_lock_bits_h,Lock );
+
 
 
 #define Prog_default_328_config_bytes \
@@ -289,7 +309,12 @@ Atmel_config(write_fuse_bits_H_h, 0xD7 );\
 Atmel_config(write_fuse_bits_h, 0xE2 );\
 Atmel_config(write_lock_bits_h, 0xFF );
 
-
+#define Prog_bootloader_config_bytes \
+\
+Atmel_config(write_extended_fuse_bits_h, 0xFD );\
+Atmel_config(write_fuse_bits_H_h, 0xD0 );\
+Atmel_config(write_fuse_bits_h, 0xC2 );\
+Atmel_config(write_lock_bits_h, 0xEF );
 
 
 /*************************************************************************************************************************************/
@@ -299,10 +324,9 @@ high, low and lock\t");\
 if (op_code == 'p')sendString("Config bytes (unprogrammed): Fuses extended(if used), \
 high, low and lock\t");\
 \
-switch(sig_byte_2){\
-case 0x95: if(sig_byte_3 == 0x2); else sendHex(16, Atmel_config(read_extended_fuse_bits_h, 0)); break;\
-default: sendHex(16, Atmel_config(read_extended_fuse_bits_h, 0));break;}\
 \
+\
+sendHex(16, Atmel_config(read_extended_fuse_bits_h, 0));\
 sendHex(16, Atmel_config(read_fuse_bits_H_h,0));\
 sendHex(16, Atmel_config(read_fuse_bits_h, 0));\
 sendHex(16, Atmel_config(read_lock_bits_h, 0));
