@@ -43,8 +43,9 @@ Atmel_powerup_and_target_detect;                                  //Leave target
 
 sendString(" detected.\r\n\r\nTo program flash:  press -P- for bootloader or \
 -p-  for calibration routine,\r\n\
-Press -t- to run calibration routine,\r\n\
-Press -V- to read flash or -x- to escape.\r\n\r\n");
+Press -t- to run 328 calibration routine,\r\n\
+Press -r- to run 1606 calibration routine,\r\n");
+sendString("Press -V- to read flash or -x- to escape.\r\n\r\n");
 
 
 while(1){
@@ -52,7 +53,6 @@ op_code = waitforkeypress();
 switch (op_code){
 
 case 'r': Exit_programming_mode; break;                      //Wait for UNO reset
-//case 'R': Verify_Flash_Text();  SW_reset; break;
 case 'e': Prog_EEPROM(); SW_reset; break;
 case 't': set_cal_clock();break;
 
