@@ -32,7 +32,7 @@ int main(void){
 	CPU_CCP = 0xD8;												//Config change protection key
 	CLKCTRL_MCLKCTRLB = CLKCTRL_PDIV_16X_gc | 1;				//Generates 1MHz Peripheral clock
 	
-	cal_factor = CLKCTRL_OSC20MCALIBA - 1;						//Adjust calibration factor if necessary
+	cal_factor = CLKCTRL_OSC20MCALIBA - 10;						//Adjust calibration factor if necessary
 	CPU_CCP = 0xD8;
 	CLKCTRL_OSC20MCALIBA = cal_factor;
 	
