@@ -44,7 +44,7 @@ Atmel_powerup_and_target_detect;                                  //Leave target
 sendString(" detected.\r\n\r\nTo program flash:  press -P- for bootloader or \
 -p-  for calibration routine,\r\n\
 Press -t- to run 328 calibration routine,\r\n\
-Press -r- to run 1606 calibration routine,\r\n");
+Press -r- for other routines,\r\n");
 sendString("Press -V- to read flash or -x- to escape.\r\n\r\n");
 
 
@@ -87,7 +87,7 @@ Read_write_mem('I', EE_size - 5, \
 (Atmel_config(signature_bit_3_h, signature_bit_3_l)));       
 
 sendString("Press -t- if running 328 cal routine or AOK for other routines\r\n\
-\r\nCalibration takes several seconds.");
+Calibration takes several seconds.");
 
 if(waitforkeypress()== 't')set_cal_clock();
 else
