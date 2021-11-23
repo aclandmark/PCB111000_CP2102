@@ -12,10 +12,29 @@ volatile char Tx_complete, Rx_complete;
 
 volatile char One_wire_mode;
 
+int Comms_clock;
 
 
+/**********************************************************************************/
+#define  OSC_CAL \
+if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
+&&  (eeprom_read_byte((uint8_t*)0x3FF) < 0xF0) && (eeprom_read_byte((uint8_t*)0x3FF)\
+== eeprom_read_byte((uint8_t*)0x3FE))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
 
 
+/**********************************************************************************/
+/*#define  comms_cal \
+if ((eeprom_read_byte((uint8_t*)0x3FA) > -50)\
+&&  (eeprom_read_byte((uint8_t*)0x3FA) < 50) && (eeprom_read_byte((uint8_t*)0x3FA)\
+== eeprom_read_byte((uint8_t*)0x3FB)))\
+{Comms_clock = 200 + eeprom_read_byte((uint8_t*)0x3FA);}*/
+
+#define  comms_cal   Comms_clock = 235;
+
+//Comms_clock = 200 + eeprom_read_byte((uint8_t*)0x3FA);
+//200 + eeprom_read_byte((uint8_t*)0x3FA);
+
+//235;
 
 /************************************************************************************************************************************/
 #define setup_328_HW \
@@ -23,13 +42,16 @@ volatile char One_wire_mode;
 setup_watchdog;\
 ADMUX |= (1 << REFS0);\
 initialise_IO;\
+OSC_CAL;\
+\
+comms_cal;\
 set_up_pin_change_interrupt;\
 USART_init(0,16);\
 setup_one_wire_comms;\
 set_up_activity_leds;\
 sei();
 
-
+//comms_cal;Comms_clock = 235;
 /************************************************************************************************************************************/
 #define wdr()  __asm__ __volatile__("wdr")
 
@@ -69,8 +91,6 @@ if(User_response == 'r') break;} sendString("\r\n");
 PCICR |= (1 << PCIE0); PCMSK0 |= (1 << PCINT4);\
 PORTB &= (~(1 << PORTB4));
 
-//#define pause_comms		PCICR &= (~(1 << PCIE0)); PCMSK0 &= (~(1 << PCINT4));
-//#define resume_comms	PCICR |= (1 << PCIE0); PCMSK0 |= (1 << PCINT4);
 
 #define clear_display 						One_wire_Tx_char = 'c';  UART_Tx_1_wire();
 #define set_up_pin_change_interrupt  		PCICR |= (1 << PCIE1); PCMSK1 |= (1 << PCINT13); 
@@ -85,20 +105,20 @@ One_wire_Tx_char = 'F'; UART_Tx_1_wire();
 
 
 /************************************************************************************************************************************/
-#define Tx_clock_1     		200			//5K Baud rate	
-#define Rx_clock_1     		200		
-#define Start_clock_1    	TCNT0 = 0;  TCCR0B = (1 << CS01);
-#define Half_Rx_clock_1 	100
+//#define Tx_clock_1     		235			//5K Baud rate	
+//#define Rx_clock_1     		235		
+#define Start_clock		    	TCNT0 = 0;  TCCR0B = (1 << CS01);
+//#define Half_Rx_clock_1 	117
 
 
 #define wait_for_comms_tick \
-OCR0A +=  Rx_clock_1;\
+OCR0A +=  Comms_clock;\
 while (!(TIFR0 & (1 << OCF0A)));\
 TIFR0 = 0xFF;
 
 
 #define wait_for_half_comms_tick \
-OCR0A =  Half_Rx_clock_1;\
+OCR0A =  Comms_clock/2;\
 while (!(TIFR0 & (1 << OCF0A)));\
 TIFR0 = 0xFF;  
 
