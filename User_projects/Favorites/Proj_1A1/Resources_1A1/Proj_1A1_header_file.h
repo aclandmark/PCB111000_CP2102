@@ -23,18 +23,13 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 
 
 /**********************************************************************************/
-/*#define  comms_cal \
-if ((eeprom_read_byte((uint8_t*)0x3FA) > -50)\
-&&  (eeprom_read_byte((uint8_t*)0x3FA) < 50) && (eeprom_read_byte((uint8_t*)0x3FA)\
-== eeprom_read_byte((uint8_t*)0x3FB)))\
-{Comms_clock = 200 + eeprom_read_byte((uint8_t*)0x3FA);}*/
+#define  comms_cal \
+if ((eeprom_read_byte((uint8_t*)0x3F6) > -50)\
+&&  (eeprom_read_byte((uint8_t*)0x3F6) < 50) && (eeprom_read_byte((uint8_t*)0x3F6)\
+== eeprom_read_byte((uint8_t*)0x3F7)))\
+{Comms_clock = 200 + eeprom_read_byte((uint8_t*)0x3F7);}
 
-#define  comms_cal   Comms_clock = 235;
 
-//Comms_clock = 200 + eeprom_read_byte((uint8_t*)0x3FA);
-//200 + eeprom_read_byte((uint8_t*)0x3FA);
-
-//235;
 
 /************************************************************************************************************************************/
 #define setup_328_HW \
@@ -51,7 +46,7 @@ setup_one_wire_comms;\
 set_up_activity_leds;\
 sei();
 
-//comms_cal;Comms_clock = 235;
+
 /************************************************************************************************************************************/
 #define wdr()  __asm__ __volatile__("wdr")
 
@@ -105,11 +100,7 @@ One_wire_Tx_char = 'F'; UART_Tx_1_wire();
 
 
 /************************************************************************************************************************************/
-//#define Tx_clock_1     		235			//5K Baud rate	
-//#define Rx_clock_1     		235		
 #define Start_clock		    	TCNT0 = 0;  TCCR0B = (1 << CS01);
-//#define Half_Rx_clock_1 	117
-
 
 #define wait_for_comms_tick \
 OCR0A +=  Comms_clock;\
