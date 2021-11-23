@@ -20,7 +20,7 @@ if((PINC5_down) && (One_wire_Tx_char != 'G'))rst_cntr();}	//Respond to vertical 
 /*************************************************************************************************************/
 void comms_transaction(void){                               //Detect low on PINC4
 
-		Start_clock_1;
+		Start_clock;
 		wait_for_half_comms_tick;							//Used to set the baud rate
 
 		PORTB |= (1 << PORTB4);								//WPU
