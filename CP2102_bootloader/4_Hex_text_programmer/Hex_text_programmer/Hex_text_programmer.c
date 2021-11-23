@@ -4,8 +4,9 @@
 #define Version "Hex_txt_bootloader_V1 "
 
 /*EEPROM locations
-
-
+0x3FF	User cal
+0x3FE	User cal
+0x3FD	Default cal
 0x3FC	Controls reset and program flow						
 	Bit 0	WD_RF	If set:	Reset was due to a WDTout			Use setWD_RF and clearWD_RF	
 	Bit 1	RunBL	if set:	Running bootloader					Use set_RunBL and clear_RunBL
@@ -16,6 +17,11 @@
 0x3FA	prog_counter low byte
 0x3F9	cmd_counter high byte				Commands processed by the UART ISR
 0x3F8	cmd_counter low byte
+0x3F7	One_wire_call
+0x3F6	One wire cal
+
+0x3F4	Used to control text print out  PROBABLY no longer needed
+
 */
 
 
