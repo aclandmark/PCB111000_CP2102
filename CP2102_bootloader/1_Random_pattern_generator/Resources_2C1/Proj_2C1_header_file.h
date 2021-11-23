@@ -10,6 +10,27 @@ volatile int One_wire_Rx_int;
 volatile char Tx_complete;
 char display_bkp[7];
 
+int Comms_clock;
+
+
+/**********************************************************************************/
+#define  OSC_CAL \
+if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
+&&  (eeprom_read_byte((uint8_t*)0x3FF) < 0xF0) && (eeprom_read_byte((uint8_t*)0x3FF)\
+== eeprom_read_byte((uint8_t*)0x3FE))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
+
+
+/**********************************************************************************/
+#define  comms_cal \
+if ((eeprom_read_byte((uint8_t*)0x3F6) > -50)\
+&&  (eeprom_read_byte((uint8_t*)0x3F6) < 50) && (eeprom_read_byte((uint8_t*)0x3F6)\
+== eeprom_read_byte((uint8_t*)0x3F7)))\
+{Comms_clock = 200 + eeprom_read_byte((uint8_t*)0x3F7);}
+
+
+
+
+
 
 
 /************************************************************************************************************************************/
@@ -18,6 +39,8 @@ char display_bkp[7];
 setup_watchdog;\
 ADMUX |= (1 << REFS0);\
 initialise_IO;\
+OSC_CAL;\
+comms_cal;\
 setup_one_wire_comms;\
 set_up_activity_leds;
 
@@ -58,10 +81,10 @@ One_wire_Tx_char = 'F'; UART_Tx_1_wire();
 
 
 /************************************************************************************************************************************/
-#define Tx_clock_1     		200									//5K Baud rate	
-#define Rx_clock_1     		200		
-#define Start_clock_1    	TCNT0 = 0;  TCCR0B = (1 << CS01);
-#define Half_Rx_clock_1 	100
+//#define Tx_clock_1     		200									//5K Baud rate	
+//#define Rx_clock_1     		200		
+#define Start_clock		    	OCR0A = 0; TCNT0 = 0;  TCCR0B = (1 << CS01);
+//#define Half_Rx_clock_1 	100
 
 
 #define setRunBL_bit		eeprom_write_byte((uint8_t*)0x3FC, (eeprom_read_byte((uint8_t*)(0x3FC)) & (~2)));
@@ -72,13 +95,13 @@ One_wire_Tx_char = 'F'; UART_Tx_1_wire();
 
 
 #define wait_for_comms_tick \
-OCR0A +=  Rx_clock_1;\
+OCR0A +=  Comms_clock;\
 while (!(TIFR0 & (1 << OCF0A)));\
 TIFR0 = 0xFF;
 
 
 #define wait_for_half_comms_tick \
-OCR0A =  Half_Rx_clock_1;\
+OCR0A =  Comms_clock/2;\
 while (!(TIFR0 & (1 << OCF0A)));\
 TIFR0 = 0xFF;  
 
