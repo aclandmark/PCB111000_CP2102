@@ -1,13 +1,6 @@
 
 
-/*
-#include <avr/io.h>
-#include <stdlib.h>
-#include <avr/interrupt.h>
-#include <avr/eeprom.h>
-*/
 
-#include <EEPROM.h>
 #include <avr/wdt.h>
 
 
@@ -40,10 +33,10 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 
 /**********************************************************************************/
 #define  comms_cal \
-if ((eeprom_read_byte((uint8_t*)0x3FA) > -50)\
-&&  (eeprom_read_byte((uint8_t*)0x3FA) < 50) && (eeprom_read_byte((uint8_t*)0x3FA)\
-== eeprom_read_byte((uint8_t*)0x3FB)))\
-{Comms_clock = 200 + eeprom_read_byte((uint8_t*)0x3FA);}
+if ((eeprom_read_byte((uint8_t*)0x3F6) > -50)\
+&&  (eeprom_read_byte((uint8_t*)0x3F6) < 50) && (eeprom_read_byte((uint8_t*)0x3F6)\
+== eeprom_read_byte((uint8_t*)0x3F7)))\
+{Comms_clock = 200 + eeprom_read_byte((uint8_t*)0x3F6);}
 
 
 /************************************************************************************************************************************/
