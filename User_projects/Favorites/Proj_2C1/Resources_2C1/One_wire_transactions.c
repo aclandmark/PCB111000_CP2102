@@ -35,7 +35,7 @@ if(PINB4_down){										//If start bit:
 PCMSK0 &= (~(1 << PCINT4));                         //clear IPC
 
 if(One_wire_mode == 1){								//Transmit character
-Start_clock_1;
+Start_clock;
 wait_for_half_comms_tick;							//Used to set the baud rate
 
 PORTB |= (1 << PORTB4);                               //WPU
@@ -56,7 +56,7 @@ Tx_complete = 1;
 TCCR0B = 0;}
 
 if(One_wire_mode == 2){								//Receive character
-Start_clock_1;
+Start_clock;
 wait_for_half_comms_tick;
 
 for (int m = 0; m <= 7;m++){
