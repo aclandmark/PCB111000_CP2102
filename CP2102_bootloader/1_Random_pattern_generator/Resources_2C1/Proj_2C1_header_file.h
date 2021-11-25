@@ -20,16 +20,15 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 == eeprom_read_byte((uint8_t*)0x3FE))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
 
 
+
+
+
 /**********************************************************************************/
 #define  comms_cal \
-if ((eeprom_read_byte((uint8_t*)0x3F6) > -50)\
-&&  (eeprom_read_byte((uint8_t*)0x3F6) < 50) && (eeprom_read_byte((uint8_t*)0x3F6)\
-== eeprom_read_byte((uint8_t*)0x3F7)))\
-{Comms_clock = 200 + eeprom_read_byte((uint8_t*)0x3F7);}
-
-
-
-
+if (((signed char)eeprom_read_byte((uint8_t*)0x3F6) > -50)\
+&&  ((signed char)eeprom_read_byte((uint8_t*)0x3F6) < 50) && ((signed char)eeprom_read_byte((uint8_t*)0x3F6)\
+== (signed char)eeprom_read_byte((uint8_t*)0x3F7)))\
+{Comms_clock = 200 + (signed char) eeprom_read_byte((uint8_t*)0x3F6);}
 
 
 
