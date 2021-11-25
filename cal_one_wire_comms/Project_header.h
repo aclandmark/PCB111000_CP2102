@@ -2,12 +2,14 @@
 
 
 #include <avr/wdt.h>
-
+#include "cal_one_wire_Resources/ASKII_subroutines.c"
 
 void Print_table_headings(void);
 void Print_results(int, int, long, long);
 char waitforkeypress(void);
 char isCharavailable (int);
+int Int_from_KBD(void);
+
 
 char User_response;
 char keypress;
@@ -23,7 +25,6 @@ int User_correction_factor;                         //Value chosen by user
 
 
 
-
 /**********************************************************************************/
 #define  OSC_CAL \
 if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
@@ -33,10 +34,10 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 
 /**********************************************************************************/
 #define  comms_cal \
-if ((eeprom_read_byte((uint8_t*)0x3F6) > -50)\
-&&  (eeprom_read_byte((uint8_t*)0x3F6) < 50) && (eeprom_read_byte((uint8_t*)0x3F6)\
-== eeprom_read_byte((uint8_t*)0x3F7)))\
-{Comms_clock = 200 + eeprom_read_byte((uint8_t*)0x3F6);}
+if (((signed char)eeprom_read_byte((uint8_t*)0x3F6) > -50)\
+&&  ((signed char)eeprom_read_byte((uint8_t*)0x3F6) < 50) && ((signed char)eeprom_read_byte((uint8_t*)0x3F6)\
+== (signed char)eeprom_read_byte((uint8_t*)0x3F7)))\
+{Comms_clock = 200 + (signed char) eeprom_read_byte((uint8_t*)0x3F6);}
 
 
 /************************************************************************************************************************************/
@@ -48,6 +49,8 @@ initialise_IO;\
 OSC_CAL;\
 \
 Comms_clock = 200;\
+set_up_pin_change_interrupt;\
+set_up_activity_leds;\
 Serial.begin(76800);\
 while (!Serial);\
 sei();
@@ -104,6 +107,30 @@ TCCR1B &= (~(1 << CS11));
  * Stops counter and records the value of TCNT1
  */
 
+
+/************************************************************************************************************************************/
+#define set_up_pin_change_interrupt      PCICR |= (1 << PCIE1); PCMSK1 |= (1 << PCINT13); 
+#define pause_pin_change_interrupt      PCICR &= (~(1 << PCIE1)); 
+#define reinstate_pin_change_interrupt    PCICR |= (1 << PCIE1); 
+
+
+
+#define setRunBL_bit        eeprom_write_byte((uint8_t*)0x3FC, (eeprom_read_byte((uint8_t*)(0x3FC)) & (~2)));
+#define PINB4_down  ((PINB & 0x10)^0x10)
+#define PINC5_down  ((PINC & 0x20)^0x20)
+#define PINC5_up  (PINC & 0x20)
+
+
+#define  set_up_activity_leds \
+DDRB |= (1 << DDB0) | (1 << DDB1);\
+LED_1_off;\
+LED_2_off;
+
+#define LED_1_off   PORTB &= (~(1 << PB1));
+#define LED_1_on   PORTB |= (1 << PB1);
+
+#define LED_2_off  PORTB &= (~(1 << PB0));
+#define LED_2_on   PORTB |= (1 << PB0);
 
 
 
