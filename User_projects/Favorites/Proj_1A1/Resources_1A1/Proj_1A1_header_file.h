@@ -24,10 +24,10 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 
 /**********************************************************************************/
 #define  comms_cal \
-if ((eeprom_read_byte((uint8_t*)0x3F6) > -50)\
-&&  (eeprom_read_byte((uint8_t*)0x3F6) < 50) && (eeprom_read_byte((uint8_t*)0x3F6)\
-== eeprom_read_byte((uint8_t*)0x3F7)))\
-{Comms_clock = 200 + eeprom_read_byte((uint8_t*)0x3F7);}
+if (((signed char)eeprom_read_byte((uint8_t*)0x3F6) > -50)\
+&&  ((signed char)eeprom_read_byte((uint8_t*)0x3F6) < 50) && ((signed char)eeprom_read_byte((uint8_t*)0x3F6)\
+== (signed char)eeprom_read_byte((uint8_t*)0x3F7)))\
+{Comms_clock = 200 + (signed char) eeprom_read_byte((uint8_t*)0x3F6);}
 
 
 
@@ -100,7 +100,7 @@ One_wire_Tx_char = 'F'; UART_Tx_1_wire();
 
 
 /************************************************************************************************************************************/
-#define Start_clock		    	TCNT0 = 0;  TCCR0B = (1 << CS01);
+#define Start_clock		    	TCNT0 = 0;  OCR0A = 0; TCCR0B = (1 << CS01);
 
 #define wait_for_comms_tick \
 OCR0A +=  Comms_clock;\
