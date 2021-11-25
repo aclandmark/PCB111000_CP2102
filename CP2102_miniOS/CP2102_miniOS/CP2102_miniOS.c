@@ -24,7 +24,7 @@ int mag(int);
 
 int main(void){
 		
-	char cal_factor;											//Used to adjust internal oscillator frequency
+	//char cal_factor;											//Used to adjust internal oscillator frequency
 	char null_bit_counter;										//Counts number of blank display digits
 	int array_ptr;												//Points to display digits
 	
@@ -32,9 +32,9 @@ int main(void){
 	CPU_CCP = 0xD8;												//Config change protection key
 	CLKCTRL_MCLKCTRLB = CLKCTRL_PDIV_16X_gc | 1;				//Generates 1MHz Peripheral clock
 	
-	cal_factor = CLKCTRL_OSC20MCALIBA - 10;						//Adjust calibration factor if necessary
+	/*cal_factor = CLKCTRL_OSC20MCALIBA - 3;						//Adjust calibration factor if necessary
 	CPU_CCP = 0xD8;
-	CLKCTRL_OSC20MCALIBA = cal_factor;
+	CLKCTRL_OSC20MCALIBA = cal_factor;*/
 	
 	if(RSTCTRL.RSTFR & RSTCTRL_PORF_bm)							//If POR reset brightness to low
 	{RSTCTRL.RSTFR |= RSTCTRL_PORF_bm;
