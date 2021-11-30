@@ -15,7 +15,7 @@ unsigned int flash_start = 0x8000;							//bytes
 unsigned int FlashSZ;										//Amount of flash memory in 16 bit words supplied on target device
 unsigned int text_size;										//Size of data partition in words
 
-
+unsigned int prog_led_control = 0;
 
 #define set_flash_sz \
 switch (device_type){\
