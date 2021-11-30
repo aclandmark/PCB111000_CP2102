@@ -14,7 +14,7 @@ T1 counts to 8192 between pin changes
 unsigned char OSCCAL_default;                                  //Factory calibration value (usually enables comms with PC)
 unsigned char OSCCAL_2_percent;                                //Calibration accuracy of betwee 1% and 2%
 unsigned char OSCCAL_test;                                     //Takes on values of between 15 and 240
-
+unsigned char OSCCAL_previous;
 
 
 int main(void)
@@ -57,20 +57,32 @@ while (((keypress = waitforkeypress()) != '\r') &&
 User_cal = (User_cal * 10) + keypress - '0';}                      //Convert string to number
 waitforkeypress();                                                 //Required where PC transmits \r and \n
 
+
+if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
+&&  (eeprom_read_byte((uint8_t*)0x3FF) < 0xF0) && (eeprom_read_byte((uint8_t*)0x3FF)\
+== eeprom_read_byte((uint8_t*)0x3FE))) {
+OSCCAL_previous = eeprom_read_byte((uint8_t*)0x3FF);}
+else OSCCAL_previous = 0;
+
 eeprom_write_byte((uint8_t*)0x3FF, User_cal);                      //Save user cal in EEPROM 
 eeprom_write_byte((uint8_t*)0x3FE, User_cal);
 eeprom_write_byte((uint8_t*)0x3FD, OSCCAL_default);                 //Save default OSCCAL in EEPROM
 
-Serial.write("\r\nSaved to EEPROM\r\n");
+Serial.write("\r\nSaved to EEPROM");
 
 OSC_CAL;                                                            //Retrieves OSCCAL value from EEPROM
 
 error_percent = measure_cal_error(OSCCAL, OSCCAL, &error);          //Check error values and 
 print_cal_result(OSCCAL, error, error_percent);                     //print the out
 
-Serial.write("\r\n\r\nDefault value of OSCCAL is\t");
+Serial.write("\r\n\r\nDefault value of OSCCAL is\t   ");
 Serial.print(OSCCAL_default);
-_delay_ms(5);                                                       //Required to complete ptrinting
+_delay_ms(5);                                                       //Required to complete printing
+
+if(OSCCAL_previous){
+Serial.write("\r\nPrevious value of OSCCAL was  ");
+Serial.print(OSCCAL_previous);
+_delay_ms(5);}
 
 return 1;}
 
