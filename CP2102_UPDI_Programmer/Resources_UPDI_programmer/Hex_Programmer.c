@@ -93,7 +93,7 @@ case 1: start_new_code_block();										//Short line with no break in file (oft
     
 Program_record();}	
 
-
+LEDs_off;
 
 cli();UCSR0B &= (~(1<<RXCIE0));										//download complete, disable UART Rx interrupt
 
