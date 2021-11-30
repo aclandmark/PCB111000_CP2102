@@ -40,6 +40,7 @@ ADMUX |= (1 << REFS0);\
 initialise_IO;\
 OSC_CAL;\
 comms_cal;\
+set_up_pin_change_interrupt;\
 setup_one_wire_comms;\
 set_up_activity_leds;
 
@@ -73,6 +74,9 @@ PORTD = 0xFF;
 #define setup_one_wire_comms 	PORTB &= (~(1 << PORTB4));
 
 #define clear_display 			One_wire_Tx_char = 'c';  UART_Tx_1_wire();
+#define set_up_pin_change_interrupt  		PCICR |= (1 << PCIE1); PCMSK1 |= (1 << PCINT13); 
+//#define pause_pin_change_interrupt  		PCICR &= (~(1 << PCIE1));
+//#define reinstate_pin_change_interrupt  	PCICR |= (1 << PCIE1);
 
 #define Reset_ATtiny1606 \
 One_wire_Tx_char = 'F'; UART_Tx_1_wire();
