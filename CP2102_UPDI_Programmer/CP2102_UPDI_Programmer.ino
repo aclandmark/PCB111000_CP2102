@@ -24,7 +24,6 @@ char letter=0, digit_num=0, seg_counter = 0,direction = 0;
 
 setup_328_HW;    
 
-
 /************************Programmer code starts here and can be removed************************************/
 FlashSZ = 0x2000;                                      //Amount of flash availale in ATtiny 1606
 User_prompt;
@@ -71,13 +70,16 @@ Dissable_UPDI_sesion;}
 
 //************Code for a test user applicationis presented in the next section *************************
 
-sendString("\r\n\r\nRunning trial application? \r\n\r\n");
+sendString("\r\n\r\nRunning trial application (POR may be required)? \r\n\r\n");
 /************************Programmmer code ends here*******************************************************************/
 
 sei();
+comms_cal;
 set_up_pin_change_interrupt;                                    //Set up PCI on PC5 for SM switch
-set_up_one_way_comms;                                           //One way comms for template requires port to be set to Tri state 
-set_up_activity_leds;
+set_up_one_wire_comms;                                           //One way comms for template requires port to be set to Tri state 
+//set_up_activity_leds;
+Set_LED_ports;
+LEDs_off;
 Reset_ATtiny1606;                                                     //Command to reset 1606
 _delay_ms(500);
 
@@ -89,22 +91,21 @@ while(seg_counter < 56){                                       //There are 56 se
 letter = (PRN_16bit_GEN (0)%7) + 'a';
 digit_num = (PRN_16bit_GEN (0)%8);
                
-if ((!(direction)) \
-&& (display_bkp[letter - 'a'] & (1 << digit_num)))\
+if ((!(direction)) 
+&& (display_bkp[letter - 'a'] & (1 << digit_num)))
 continue;                                                     //Continue statements skip back to the top of the while-loop
-if ((direction) \
-&& (!(display_bkp[letter - 'a'] & (1 << digit_num))))\
+if ((direction)
+&& (!(display_bkp[letter - 'a'] & (1 << digit_num))))
 continue;                                                     //to prevent segments being turned-off before they have all been turned on.
 
 One_wire_comms_any_segment(letter, digit_num);
 
 backup_the_display(letter, digit_num);                        //keep backup up to date
-_delay_ms(30);
 seg_counter += 1;}
 
 direction ^= 1;                                                //Toggle the direction_counter value
 seg_counter = 0;
-_delay_ms(500);}}                                             //Just pause before toggling LEDs off one at a time
+_delay_ms(250);}}                                             //Just pause before toggling LEDs off one at a time
 
 
 SW_reset;
