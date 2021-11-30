@@ -2,12 +2,24 @@
 char User_response;
 
 
+
+/**********************************************************************************/
+#define  OSC_CAL \
+if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
+&&  (eeprom_read_byte((uint8_t*)0x3FF) < 0xF0) && (eeprom_read_byte((uint8_t*)0x3FF)\
+== eeprom_read_byte((uint8_t*)0x3FE))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
+
+
+
 /************************************************************************************************************************************/
 #define setup_328_HW \
 \
 setup_watchdog;\
 ADMUX |= (1 << REFS0);\
 initialise_IO;\
+OSC_CAL;\
+Set_LED_ports;\
+LEDs_off;\
 \
 USART_init(0,68);
 
@@ -40,4 +52,10 @@ PORTD = 0xFF;\
 Prog_Port &= (~(1 << Prog_pin));
 
 //Prog pin stays as Hi Z input
+
+/************************************************************************************************************************************/
+#define Set_LED_ports 	DDRB = (1 << DDB0) | (1 << DDB1);
+#define LEDs_on  PORTB |= (1 << PB0)|(1 << PB1);
+#define LEDs_off  PORTB &= (~((1 << PB0)|(1 << PB1)));
+
 
