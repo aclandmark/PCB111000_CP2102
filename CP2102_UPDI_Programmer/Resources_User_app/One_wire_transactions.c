@@ -10,7 +10,7 @@ WDTCSR |= (1 <<WDCE) | (1<< WDE);\
 WDTCSR = 0;
 
 #define SW_reset {wdt_enable(WDTO_30MS);while(1);}
-
+#define LEDs_on  PORTB |= (1 << PB0)|(1 << PB1);
 
 
 
@@ -47,9 +47,10 @@ Tx_complete = 0;
 One_wire_mode = 1;									//Tx mode
   
 PCMSK0 |= 1 << PCINT4;				       			//set up Interrupt on pin change (IPC)
-sei();												//to detect start pulse and initiate transmision
+//sei();												//to detect start pulse and initiate transmision
 while(!(Tx_complete));								//Wait here untill transmisson is complete 
-cli();}
+//cli();
+}
 
 
 
@@ -63,9 +64,10 @@ Rx_complete = 0;
 One_wire_mode = 2;									//Rx mode
    
 PCMSK0 |= 1 << PCINT4;		       					//set up IPC to detect start pulse
-sei();												//which intiates reception
+//sei();												//which intiates reception
 while (!(Rx_complete));
-cli();}
+//cli();
+}
 
 
 
@@ -77,7 +79,7 @@ if(PINB4_down){										//If start bit:
 PCMSK0 &= (~(1 << PCINT4));                         //clear IPC
 
 if(One_wire_mode == 1){								//Transmit character
-Start_clock_1;
+Start_clock;
 wait_for_half_comms_tick;							//Used to set the baud rate
 
 PORTB |= (1 << PORTB4);                               //WPU
@@ -98,7 +100,7 @@ Tx_complete = 1;
 TCCR0B = 0;}
 
 if(One_wire_mode == 2){								//Receive character
-Start_clock_1;
+Start_clock;
 wait_for_half_comms_tick;
 
 for (int m = 0; m <= 7;m++){
@@ -114,7 +116,7 @@ Rx_complete = 1;}}}
 
 
 /*************************************************************************************************************/
-ISR(PCINT1_vect){ 									//Interogates vertical switch presses
+/*ISR(PCINT1_vect){ 									//Interogates vertical switch presses
 if(PINC5_down){
 _delay_ms(250);										//Switch bounce delay
 if(PINC5_up){setRunBL_bit; SW_reset;}
@@ -128,7 +130,24 @@ _delay_ms(250);
 
 if(PINC5_down)											//Wait for switch to be released
 {One_wire_Tx_char = 'G'; UART_Tx_1_wire();
-SW_reset;}}}
+SW_reset;}}}*/
+
+
+ISR(PCINT1_vect){ 									//Interogates vertical switch presses
+if(PINC5_down){
+_delay_ms(25);
+if(PINC5_up)return;
+_delay_ms(225);										//Switch bounce delay
+if(PINC5_up)
+{setRunBL_bit; }
+else{
+//LED_1_on; LED_2_on;
+LEDs_on;
+_delay_ms(250);
+//if(PINC5_up);
+if(PINC5_down)											//Wait for switch to be released
+{sei();One_wire_Tx_char = 'G'; UART_Tx_1_wire(); }}
+SW_reset;}}
 
 
 
