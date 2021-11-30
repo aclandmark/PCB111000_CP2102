@@ -66,7 +66,7 @@ read_ops += 1;														//Value to be sent to PC for comparison with the hex
 prog_counter_mem -= 1;												//"prog_counter_mem" decrements to zero when the end of the file is reached
 
 
-for(int m=0; m<7; m++){Timer_T2_sub(T2_delay_5ms);					//Read the next seven locations in the flash memory   
+for(int m=0; m<7; m++){//Timer_T2_sub(T2_delay_5ms);					//Read the next seven locations in the flash memory   
 
 Hex_cmd = read_flash(phys_address); 
 phys_address += 2; 
@@ -75,8 +75,8 @@ prog_counter_mem -= 1;
 
 
 if(print_line && (!(line_no%print_line)))
-
-sendHex (16, Hex_cmd);
+{Timer_T2_sub(T2_delay_5ms);
+sendHex (16, Hex_cmd);}
 
 read_ops += 1;
 
