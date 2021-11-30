@@ -60,6 +60,8 @@ Hex_address  =  (store[Local_r_pointer]); 								//Get the address of the first
 inc_r_pointer;  														//Increment the read pointer
 Hex_address  = Hex_address/2;											//Convert address from byte to word value
 
+prog_led_control += 1;
+
 add_last_cmd = Hex_address + (record_length/2) - 1;						//addresss of last command in the record						
 
 record_type_old = record_type;
@@ -68,9 +70,10 @@ else record_type = 0;													//Record never occupies more than one page
 
 
 if (Hex_address == HW_address)orphan = 0;								//New record follows on immediately from the old
-else{if (Hex_address == 0);}}											//Start of hex file: address is zero
+else{if (Hex_address == 0);}											//Start of hex file: address is zero
 
-
+if(prog_led_control & 0b00001000) {LEDs_on;}	
+else {LEDs_off;}}
 
 /**********************************************************************************************************/
 void start_new_code_block(void){
