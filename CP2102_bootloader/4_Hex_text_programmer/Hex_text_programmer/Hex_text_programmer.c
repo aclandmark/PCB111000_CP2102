@@ -21,7 +21,8 @@
 0x3F6	One wire cal
 
 0x3F4	Used to control text print out  PROBABLY no longer needed
-
+0x3F3	Used by PRN generators
+0x3F2	Used by PRN generators
 */
 
 
@@ -51,7 +52,7 @@ if (MCUSR & (1 << PORF))													//POR detected
 	Prog_mem_address_H = 0;
 	Prog_mem_address_L = 0;
 	read_flash ();															//Check for the presence of a user application
-	if (Flash_readout == 0xFF)asm("jmp 0x5E40");							//Run the default application (does not use interrupts)
+	if (Flash_readout == 0xFF)asm("jmp 0x5E00");							//Run the default application (does not use interrupts)
 	else asm("jmp 0x0000");}												//Run the user application
 	setRunBL_bit;}															//User switch pressed at POR.	Run bootloader
 
@@ -59,7 +60,7 @@ if((WD_RF_bit_set)&& (RunBL_bit_clear)){									//Reset caused by user or defau
 Prog_mem_address_H = 0;
 Prog_mem_address_L = 0;
 read_flash ();
-if (Flash_readout == 0xFF)asm("jmp 0x5E40");								//Reset default application
+if (Flash_readout == 0xFF)asm("jmp 0x5E00");								//Reset default application
 else asm("jmp 0x0000");}													//Reset user application
 
 cal_device;																	//Otherwise initiate the bootloader by checking the calibration status
