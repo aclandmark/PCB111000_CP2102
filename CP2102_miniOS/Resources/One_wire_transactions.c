@@ -91,7 +91,7 @@ break;
 
 case 'F': break;													//Resets ATtiny1606
 case 'G': break;													//Toggles brightness
-
+default: CCP = 0xD8;WDT.CTRLA = 0x03; while(1); break;				//32 mS WDTimer (SW reset)
 
 }}
 
