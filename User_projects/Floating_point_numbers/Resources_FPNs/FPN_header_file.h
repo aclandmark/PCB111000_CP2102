@@ -20,6 +20,13 @@ unsigned char num_byte[4];
 
 int Comms_clock;
 
+char print_buffer[15];
+char sign;
+signed char expt;
+char expt_string[5];
+
+//#define clear_display_buffer	for(int m = 0; m<=14; m++)display_buffer[m] = 0;
+#define clear_print_buffer		for(int m = 0; m<=14; m++)print_buffer[m] = 0;
 
 /**********************************************************************************/
 #define  OSC_CAL \
@@ -40,7 +47,7 @@ if (((signed char)eeprom_read_byte((uint8_t*)0x3F6) > -50)\
 /************************************************************************************************************************************/
 #define setup_328_HW \
 \
-setup_watchdog;\
+\
 ADMUX |= (1 << REFS0);\
 initialise_IO;\
 OSC_CAL;\
@@ -50,9 +57,19 @@ set_up_pin_change_interrupt;\
 USART_init(0,16);\
 setup_one_wire_comms;\
 set_up_activity_leds;\
+\
+if(!(eeprom_read_byte((uint8_t*) 0x3F1)))\
+{eeprom_write_byte((uint8_t*)(0x3F1), 0xFF);\
+sendString("Zero");}\
 sei();
 
 
+/*
+if(!(eeprom_read_byte((uint8_t*) 0x3F1)))\
+{eeprom_write_byte((uint8_t*)(0x3F1), 0xFF);\
+sendString("Zero");}\
+*/
+//setup_watchdog;
 /************************************************************************************************************************************/
 #define wdr()  __asm__ __volatile__("wdr")
 
@@ -153,7 +170,7 @@ One_wire_Tx_char = cr_keypress;  UART_Tx_1_wire();
 
 #define User_prompt_template \
 while(1){\
-do{sendString("f/i?    ");}	 while((isCharavailable(250) == 0));\
+do{sendString("f?  ");}	 while((isCharavailable(100) == 0));\
 User_response = receiveChar();\
 if((User_response == 'f') || (User_response == 'i'))break;} sendString("\r\n");
 
