@@ -143,7 +143,7 @@ signed int prog_counter_mem;										//Initialise with size of .hex file used f
 unsigned char print_out_mode = 0;									//Print out flash contents as hex or askii characters
 char skip_lines[4];													//Enter number to limit the print out
 
-sendString("\r\nPress 0 to verify flash or AOK\r\n");
+sendString("Press 0 to verify flash or AOK\r\n");
 if(waitforkeypress() != '0')return;
 
 phys_address = 0;  read_ops=0; 
