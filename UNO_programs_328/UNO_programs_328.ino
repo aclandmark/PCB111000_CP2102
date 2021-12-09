@@ -42,7 +42,7 @@ Atmel_powerup_and_target_detect;                                  //Leave target
 
 
 sendString(" detected.\r\n\r\nTo program flash:  press -P- for bootloader or \
--p-  for calibration routine,\r\n\
+-p-  for other routines,\r\n\
 Press -t- to run 328 calibration routine,\r\n\
 Press -r- for other routines,\r\n");
 sendString("Press -V- to read flash or -x- to escape.\r\n\r\n");
@@ -72,7 +72,7 @@ case 'x': SW_reset; break;
 default: break;} 
 
 if ((op_code == 'p')||(op_code == 'P')) break;} 
-sendString("\r\nSend hex file (or x to escape).\r\n");
+sendString("Send hex file (or x to escape).\r\n");
 
 Program_Flash_Hex();
 Verify_Flash_Hex();
@@ -121,7 +121,7 @@ if(text_started == 3)                                           //Ignore timeout
 /****************************************************************************************************************************************************/
 void set_cal_clock(void){
 
-sendString("\r\n\r\nSquare wave generates PCI on PB5 every 8.192mS\r\n\
+sendString("Square wave generates PCI on PB5 every 8.192mS\r\n\
 Results are sent to a separate terminal screen.\r\n");
 UCSR0B &= (~((1 << RXEN0) | (1<< TXEN0)));
 initialise_IO;
