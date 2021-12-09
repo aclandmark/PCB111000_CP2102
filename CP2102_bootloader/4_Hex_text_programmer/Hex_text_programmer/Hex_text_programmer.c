@@ -23,6 +23,7 @@
 0x3F4	Used to control text print out  PROBABLY no longer needed
 0x3F3	Used by PRN generators
 0x3F2	Used by PRN generators
+0x3F1	Watch dog timeout
 */
 
 
