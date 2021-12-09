@@ -9,7 +9,7 @@ T1 counts to 8192 between pin changes
 */
 
 
-#include "UNO_calibrates_328.h"
+#include "Project_header.h"
 
 unsigned char OSCCAL_default;                                  //Factory calibration value (usually enables comms with PC)
 unsigned char OSCCAL_2_percent;                                //Calibration accuracy of betwee 1% and 2%
@@ -49,14 +49,9 @@ if ((error_percent <= 1) && (error_percent >= -1))              //Print out resu
  OSCCAL_test += 1;}                                              //Next value of OSCCAL
  
 User_cal = 0;
-Serial.write("\r\rUser cal? Terminate with -cr- \
-(twice if necessary)");
+Serial.write("\r\rUser cal? Terminate with -cr-");
 
-while (((keypress = waitforkeypress()) != '\r') && 
-(keypress != '\n')){
-User_cal = (User_cal * 10) + keypress - '0';}                      //Convert string to number
-waitforkeypress();                                                 //Required where PC transmits \r and \n
-
+User_cal = Int_from_KBD();
 
 if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 &&  (eeprom_read_byte((uint8_t*)0x3FF) < 0xF0) && (eeprom_read_byte((uint8_t*)0x3FF)\
@@ -106,6 +101,8 @@ OSCCAL = OSCCAL_OK;                                         //Gives error of < 2
 return 100 * long((signed(TCNT1 - 8192))) / 8192;}
 
 
+
+/************************************************************************************************/
 void print_cal_result(unsigned char OSCCAL_test, long error, char percent) {
 Serial.write("\r\n");                                         //Sends askii chars
 Serial.print(OSCCAL_test);                                    //Sends number as askii string
@@ -115,24 +112,4 @@ Serial.write("\t      ");
 Serial.print(int(percent));                                   //Sends char variable as askii char
 Serial.write("\t");
 Serial.print(TCNT1);
-_delay_ms(5);
-}
-
-
-
-
-
-
-
-/**********************************************************************************************/
-char waitforkeypress(void){
-while (!(Serial.available()));
-return Serial.read();}
-
-
-
-/**********************************************************************************************/
-char isCharavailable (int m){int n = 0;                       //For m = 1 waits a maximun of 7.8mS
-while (!(Serial.available())){n++;                            //before returning zero
-if (n>4000) {m--; n = 0;}if (m == 0)return 0;}                //Returns 1 immediately that a char is received
-return 1;}
+_delay_ms(5);}
