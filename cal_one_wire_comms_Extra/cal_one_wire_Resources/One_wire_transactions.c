@@ -98,7 +98,7 @@ if(PINC5_up)
 else{
 LED_1_on; LED_2_on;
 _delay_ms(250);
-if(PINC5_up);
+//if(PINC5_up);
 if(PINC5_down)											//Wait for switch to be released
 {sei();One_wire_Tx_char = 'G'; UART_Tx_1_wire(); }}
 SW_reset;}}
