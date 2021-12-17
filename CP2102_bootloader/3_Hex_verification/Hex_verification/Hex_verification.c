@@ -17,9 +17,6 @@ Rx/Tx work at 57.6k
 
 int main (void){
 
-
-//sendChar('B');
-
 	prog_counter = ((eeprom_read_byte((uint8_t*)0x3FB)) << 8) +\
 	eeprom_read_byte((uint8_t*)0x3FA);									//EEROM used to pass values from bootloader
 	cmd_counter = ((eeprom_read_byte((uint8_t*)0x3F9)) << 8) +\
