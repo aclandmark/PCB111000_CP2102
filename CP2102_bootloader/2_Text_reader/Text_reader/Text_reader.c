@@ -46,7 +46,7 @@ int main (void){
 	char_counter = 0;																		//counts the number of characters in the text file (excludes \r & \n)
 
 	sendString("\r\n");
-	start_address = 0x5BFF;		//0x5C7F;													//start address of text
+	start_address =	0x5E7F;																	//start address of text
 	
 	sendString("Page number 1 - 12?\r\n\r\n\r\n\r\n");
 	
@@ -93,8 +93,8 @@ if(Next_page == 1)return start_address;
 			read_flash ();
 			next_char = Flash_readout;
 			start_address -= 1;
-			if(next_char == '*'	){star_counter += 1;
-				if(star_counter == 10)break;}
+			if(next_char == '*'){star_counter += 1;
+				if(star_counter == 3)break;}											//Should be 3
 			else star_counter = 0;}
 		Page_num += 1;}
 		Page_address = Prog_mem_address_H;
@@ -141,7 +141,9 @@ char string_counter(int start_address){													//Scroll through text sectio
 				Prog_mem_address_H = page_address >> 8;
 				Prog_mem_address_L = page_address;
 				read_flash ();
-				if(Flash_readout)sendChar(Flash_readout); else break;
+				if(Flash_readout){sendChar(Flash_readout); 
+				if(Flash_readout == ':'){sendString("\t\t");line_length += 20;}
+					}else break;
 				line_length += 1;
 				if(((line_length >= 90) && (Flash_readout == ' ')) || (Flash_readout == '\t'))
 				{line_length = 0; sendString("\r\n\r\n");}
