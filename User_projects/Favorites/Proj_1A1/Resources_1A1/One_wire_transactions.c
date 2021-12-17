@@ -9,7 +9,7 @@ void sendString(const char*);
 
 /*************************************************************************************************************/
 void UART_Tx_1_wire(void){
-One_wire_Rx_char = 0;
+//One_wire_Rx_char = 0;
 Tx_complete = 0;
 One_wire_mode = 1;									//Tx mode
   
