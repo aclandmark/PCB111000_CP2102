@@ -21,18 +21,7 @@ void UART_Tx_1_wire(void);
 volatile char One_wire_mode;
 
 
-
-
 /*************************************************************************************************************/
-
-/*void One_wire_comms(unsigned int PORT_1, unsigned int PORT_2){
-One_wire_Tx_char = 'b';  UART_Tx_1_wire();
-One_wire_Tx_char = PORT_1;  UART_Tx_1_wire(); 
-One_wire_Tx_char = PORT_2;  UART_Tx_1_wire(); 
-
-One_wire_Tx_char = PORT_1 >> 8;  UART_Tx_1_wire(); 
-One_wire_Tx_char = PORT_2 >> 8;  UART_Tx_1_wire(); }*/
-
 void One_wire_comms_any_segment(char letter, char digit){
 One_wire_Tx_char = 'b';  UART_Tx_1_wire();
 One_wire_Tx_char = letter;  UART_Tx_1_wire(); 
@@ -42,17 +31,11 @@ One_wire_Tx_char = digit;  UART_Tx_1_wire(); }
 
 /*************************************************************************************************************/
 void UART_Tx_1_wire(void){
-//One_wire_Rx_char = 0;
 Tx_complete = 0;
 One_wire_mode = 1;									//Tx mode
   
 PCMSK0 |= 1 << PCINT4;				       			//set up Interrupt on pin change (IPC)
-//sei();												//to detect start pulse and initiate transmision
-while(!(Tx_complete));								//Wait here untill transmisson is complete 
-//cli();
-}
-
-
+while(!(Tx_complete));}								//Wait here untill transmisson is complete 
 
 
 
@@ -64,11 +47,7 @@ Rx_complete = 0;
 One_wire_mode = 2;									//Rx mode
    
 PCMSK0 |= 1 << PCINT4;		       					//set up IPC to detect start pulse
-//sei();												//which intiates reception
-while (!(Rx_complete));
-//cli();
-}
-
+while (!(Rx_complete));}
 
 
 
@@ -116,23 +95,6 @@ Rx_complete = 1;}}}
 
 
 /*************************************************************************************************************/
-/*ISR(PCINT1_vect){ 									//Interogates vertical switch presses
-if(PINC5_down){
-_delay_ms(250);										//Switch bounce delay
-if(PINC5_up){setRunBL_bit; SW_reset;}
-LED_1_on; LED_2_on;
-_delay_ms(250);
-
-if(PINC5_up)
-{Reset_ATtiny1606;
-SW_reset;}
-_delay_ms(250);
-
-if(PINC5_down)											//Wait for switch to be released
-{One_wire_Tx_char = 'G'; UART_Tx_1_wire();
-SW_reset;}}}*/
-
-
 ISR(PCINT1_vect){ 									//Interogates vertical switch presses
 if(PINC5_down){
 _delay_ms(25);
@@ -141,10 +103,8 @@ _delay_ms(225);										//Switch bounce delay
 if(PINC5_up)
 {setRunBL_bit; }
 else{
-//LED_1_on; LED_2_on;
 LEDs_on;
 _delay_ms(250);
-//if(PINC5_up);
 if(PINC5_down)											//Wait for switch to be released
 {sei();One_wire_Tx_char = 'G'; UART_Tx_1_wire(); }}
 SW_reset;}}
