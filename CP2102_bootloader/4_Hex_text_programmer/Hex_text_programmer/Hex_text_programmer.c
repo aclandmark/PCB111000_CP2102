@@ -53,7 +53,7 @@ if (MCUSR & (1 << PORF))													//POR detected
 	Prog_mem_address_H = 0;
 	Prog_mem_address_L = 0;
 	read_flash ();															//Check for the presence of a user application
-	if (Flash_readout == 0xFF)asm("jmp 0x5E00");							//Run the default application (does not use interrupts)
+	if (Flash_readout == 0xFF)asm("jmp 0x5E80");							//Run the default application (does not use interrupts)
 	else asm("jmp 0x0000");}												//Run the user application
 	setRunBL_bit;}															//User switch pressed at POR.	Run bootloader
 
@@ -61,7 +61,7 @@ if((WD_RF_bit_set)&& (RunBL_bit_clear)){									//Reset caused by user or defau
 Prog_mem_address_H = 0;
 Prog_mem_address_L = 0;
 read_flash ();
-if (Flash_readout == 0xFF)asm("jmp 0x5E00");								//Reset default application
+if (Flash_readout == 0xFF)asm("jmp 0x5E80");								//Reset default application
 else asm("jmp 0x0000");}													//Reset user application
 
 cal_device;																	//Otherwise initiate the bootloader by checking the calibration status
@@ -99,7 +99,7 @@ MCUCR = (1<<IVSEL);
 		keypress = 0;break;
 	
 	case 't':														//Read text document
-		asm("jmp 0x6340");
+		asm("jmp 0x62C0");
 		
 	default: keypress = 0; break;
 		}}
@@ -135,19 +135,19 @@ return 1;}
 
 		/***************************************************************************************************************************************************/
 		void text_programmer (void){
-
+		int Text_start_address = 0x5E7E;									//address_in_flash;	
 
 			w_pointer = 0; r_pointer = 0;										//Initialise variables
 			text_started =0; endoftext =3;txt_counter = 0;
 			Rx_askii_char_old = '0';
 
-			sendString("\r\nText_F?");
+			sendString("\r\nText_F?\r\n");
 			
 			Timer_T0_sub_with_interrupt(5,0);									//Start Timer0 with interrupt
 			UCSR0B |= (1<<RXCIE0); 											//Activate UART interrupt
 			sei();																//Set global interrupt
 
-			address_in_flash = 0x5BFE;//0x5C7E;											//First character will be stored at 0x5BFF not 0x5BFE
+			address_in_flash = Text_start_address;								//First character will be stored at 0x5BFF not 0x5BFE
 
 			while (1){
 				while (r_pointer == w_pointer);										//wait for w_pointer to be incremented
@@ -167,7 +167,8 @@ return 1;}
 				store[r_pointer] = 0;												//clear the contents of the location in array store
 				inc_r_pointer;														//restore the value of "r_pointer" to that of "w_pointer"
 
-				if (!((0x5BFE - address_in_flash)%128)){							//If page buffer is full
+
+				if (!((Text_start_address - address_in_flash)%128)){					//If page buffer is full
 					address_in_flash += 2;												//Get the address of the first entry in the page
 					Prog_mem_address_H = address_in_flash >> 8;							//Prepare the address for the assembly routines
 					Prog_mem_address_L = address_in_flash;
@@ -177,8 +178,8 @@ return 1;}
 				address_in_flash -=2;}												//Restore address_in_flash
 			if(!(endoftext)) break;}											//Break when two '\0' chars have been appended to text stored in the array
 
-			if((0x5BFE - address_in_flash)%128){									//Write remaining chars in partially full page buffer
-				address_in_flash += (0x5BFE - address_in_flash)%128 - 126;			//Get address of first character in the page
+			if((Text_start_address - address_in_flash)%128){									//Write remaining chars in partially full page buffer
+				address_in_flash += (Text_start_address - address_in_flash)%128 - 126;			//Get address of first character in the page
 
 				Prog_mem_address_H = address_in_flash >> 8;
 				Prog_mem_address_L = address_in_flash;
@@ -187,8 +188,8 @@ return 1;}
 				page_write();
 			}UCSR0B &= (~(1<<RXCIE0));cli();
 			clear_read_block();													//Subroutine provided in assembly file  (Not required for mode 't'??)
-			eeprom_write_byte((uint8_t*)0x3F4,0x40);}							//Reset string pointer
-		
+			eeprom_write_byte((uint8_t*)0x3F4,0x40);							//Reset string pointer
+		LED_2_off;}
 		
 		
 		/*********************************************************************************************************/
@@ -286,8 +287,14 @@ return 1;}
 				store[w_pointer] = store[w_pointer] << 8;}							//"w_pointer" gives address in array of the next free location
 				else{store[w_pointer] += Rx_askii_char;
 				inc_w_pointer;}
-				txt_counter = (txt_counter + 1);									//"txt_counter" gives the number of characers downloaded
-			Rx_askii_char_old = Rx_askii_char;}
+				txt_counter = (txt_counter + 1);									//"txt_counter" gives the number of characters downloaded
+			Rx_askii_char_old = Rx_askii_char;
+			
+			if(txt_counter & 0b10000000) {LED_2_on;}////////////////////////////////////////////////////////////////////////////////////////
+			else {LED_2_off;}
+			
+			
+			}
 
 
 
