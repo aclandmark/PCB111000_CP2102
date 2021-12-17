@@ -42,7 +42,7 @@ One_wire_Tx_char = digit;  UART_Tx_1_wire(); }
 
 /*************************************************************************************************************/
 void UART_Tx_1_wire(void){
-One_wire_Rx_char = 0;
+//One_wire_Rx_char = 0;
 Tx_complete = 0;
 One_wire_mode = 1;									//Tx mode
   
