@@ -130,17 +130,16 @@ if (line_offset) orphan = 1;}}}										//One or more commands in current recor
 
 /***********************************************************************************************/ 
 void copy_cmd_to_page_buffer(void){
-int ptr_to_cmd;
-ptr_to_cmd = &Hex_cmd;													//results is a warning message (ptr_to_cmd is not defined as a pointer)
-get_next_hex_cmd();
+	int ptr_to_cmd;
+	ptr_to_cmd = &Hex_cmd;													//results is a warning message (ptr_to_cmd is not defined as a pointer)
+	get_next_hex_cmd();
 
-Prog_mem_address_H = (write_address*2) >> 8;
-Prog_mem_address_L = (write_address*2);
+	Prog_mem_address_H = (write_address*2) >> 8;
+	Prog_mem_address_L = (write_address*2);
 
-loc_in_mem_H = ptr_to_cmd >> 8;
-loc_in_mem_L = ptr_to_cmd;
-write_to_page_buffer();}												//Subroutine provided in assembly file
-
+	loc_in_mem_H = ptr_to_cmd >> 8;
+	loc_in_mem_L = ptr_to_cmd;
+write_to_page_buffer();}													//Subroutine provided in assembly file
 
 
 
