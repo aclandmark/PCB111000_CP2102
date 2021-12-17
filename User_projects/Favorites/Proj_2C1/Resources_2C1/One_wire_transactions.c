@@ -7,7 +7,6 @@ void sendString(const char*);
 
 /*************************************************************************************************************/
 void UART_Tx_1_wire(void){
-//One_wire_Rx_char = 0;
 Tx_complete = 0;
 One_wire_mode = 1;									//Tx mode
   
@@ -84,7 +83,6 @@ if(PINC5_up)
 else{
 LED_1_on; LED_2_on;
 _delay_ms(250);
-//if(PINC5_up);
 if(PINC5_down)											//Wait for switch to be released
 {sei();One_wire_Tx_char = 'G'; UART_Tx_1_wire(); }}
 SW_reset;}}
