@@ -65,6 +65,7 @@ if((*long_ptr == 0x7F800000) || (*long_ptr == 0xFF800000))
 
 /****************************************************************************************/
 void sendFloat(float FPN){
+char expt_string[5];
 ftoaL(FPN);
 if(sign == '-') sendChar(sign);
 if (print_buffer[0] == '.')sendChar('0');
