@@ -9,6 +9,9 @@ void Add_exponent (void);
 
 
 
+#define clear_print_buffer    for(int m = 0; m<=14; m++)print_buffer[m] = 0;
+
+
 /*************************************************************************************************************/
 void send_float_num(float FP_num){
 char * Char_ptr;
