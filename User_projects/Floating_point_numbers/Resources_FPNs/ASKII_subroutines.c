@@ -7,7 +7,10 @@ char wait_for_return_key(void);
 char decimal_digit (char);
 
 
-
+volatile char cr_keypress;
+char display_buffer[12], buffptr = 0;
+unsigned char num_byte[4];
+long Long_Num_from_UNO = 0;
 
 void send_int_num(long);
 
@@ -17,6 +20,17 @@ void send_int_num(long);
 void send_float_num(float);
 
 
+
+#define Send_int_num_string \
+One_wire_Tx_char = 'A'; UART_Tx_1_wire();\
+for(int m = 0; m <= 7; m++){One_wire_Tx_char = display_buffer[m]; UART_Tx_1_wire();}\
+One_wire_Tx_char = cr_keypress;  UART_Tx_1_wire();
+
+
+#define Send_float_num_string \
+One_wire_Tx_char = 'B'; UART_Tx_1_wire();\
+for(int m = 0; m <= 7; m++){One_wire_Tx_char = display_buffer[m]; UART_Tx_1_wire();}\
+One_wire_Tx_char = cr_keypress;  UART_Tx_1_wire();
 
 
 
