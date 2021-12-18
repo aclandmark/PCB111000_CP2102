@@ -2,7 +2,7 @@
 
 void UART_Tx_1_wire(void);
 void UART_Rx_1_wire(void);
-void One_wire_Tx_2_integers(unsigned int, unsigned int);
+void I2C_Tx_any_segment(char, char);
 
 char User_response;
 
@@ -11,7 +11,7 @@ volatile int One_wire_Rx_int;
 volatile char Tx_complete, Rx_complete;
 
 volatile char One_wire_mode;
-
+char display_bkp[7];
 int Comms_clock;
 
 
@@ -71,9 +71,9 @@ PORTD = 0xFF;
 
 
 /************************************************************************************************************************************/
-#define User_prompt_proj_1A1 \
+#define User_prompt_proj_2C1 \
 while(1){\
-do{sendString("r    ");}	 while((isCharavailable(40) == 0));\
+do{sendString("r    ");}	 while((isCharavailable(120) == 0));\
 User_response = receiveChar();\
 if(User_response == 'r') break;} sendString("\r\n");
 
