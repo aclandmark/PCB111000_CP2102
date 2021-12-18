@@ -25,7 +25,7 @@ char sign;
 signed char expt;
 char expt_string[5];
 
-//#define clear_display_buffer	for(int m = 0; m<=14; m++)display_buffer[m] = 0;
+
 #define clear_print_buffer		for(int m = 0; m<=14; m++)print_buffer[m] = 0;
 
 /**********************************************************************************/
@@ -63,13 +63,6 @@ if(!(eeprom_read_byte((uint8_t*) 0x3F1)))\
 sendString("Zero");}\
 sei();
 
-
-/*
-if(!(eeprom_read_byte((uint8_t*) 0x3F1)))\
-{eeprom_write_byte((uint8_t*)(0x3F1), 0xFF);\
-sendString("Zero");}\
-*/
-//setup_watchdog;
 /************************************************************************************************************************************/
 #define wdr()  __asm__ __volatile__("wdr")
 
