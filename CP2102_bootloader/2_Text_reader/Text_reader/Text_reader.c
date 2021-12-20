@@ -46,7 +46,7 @@ int main (void){
 	char_counter = 0;																		//counts the number of characters in the text file (excludes \r & \n)
 
 	sendString("\r\n");
-	start_address =	0x5E7F;																	//start address of text
+	start_address =	0x607F;//0x5E7F;																	//start address of text
 	
 	sendString("Page number 1 - 12?\r\n\r\n\r\n\r\n");
 	
