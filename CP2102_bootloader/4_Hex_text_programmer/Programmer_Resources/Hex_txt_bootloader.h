@@ -149,6 +149,9 @@ w_pointer = w_pointer & 0x1F;
 #define LED_2_off	 PORTB &= (~(1 << PB0));
 #define LED_2_on	 PORTB |= (1 << PB0);
 
+#define LEDs_on	 PORTB |= (1 << PB1) | (1 << PB0);
+#define LEDs_off	 PORTB &= (~((1 << PB1) | (1 << PB0)));
+
 
 #define Initialise_I_O \
 MCUCR &= (~(1 << PUD));\
