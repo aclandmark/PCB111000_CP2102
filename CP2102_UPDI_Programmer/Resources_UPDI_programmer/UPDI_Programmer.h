@@ -89,27 +89,10 @@ APPEND the end of the application section = (Num_blocks - text_size * 2)/0x100
 
 #define delay_of_0_25uS             asm("nop"); asm("nop"); asm("nop"); asm("nop");
 #define delay_of_0_75uS             delay_of_0_25uS; delay_of_0_25uS; delay_of_0_25uS;
-//#define out_h                       PORTC |= (1 << PORTC0)
-//#define out_l                       PORTC &= (~(1 << PORTC0))
-
 
 #define clock_delay_T               Timer_T0_sub(T0_delay_18us) 
 #define clock_delay_R               Timer_T0_sub(T0_delay_18us) 
 
-/*
-#define input_h                     (PINB & (1 << PINB3))
-#define input_l                     (!(PINB & (1 << PINB3)))
-*/
-
-/*#define Prog_pin 3
-#define Prog_IO_Port	PINB
-#define Prog_DD_Reg		DDRB
-
-#define input_h                (Prog_IO_Port & (1 << Prog_pin))
-#define input_l        			(!(Prog_IO_Port & (1 << Prog_pin)))
-#define output_h         		Prog_DD_Reg &= (~(1 << Prog_pin));
-#define output_l          		Prog_DD_Reg |= (1 << Prog_pin);
-*/
 
 
 /**********************************************************************************************************************/
@@ -243,11 +226,6 @@ r_pointer++;\
 r_pointer = r_pointer & 0b00111111;
 
 
-
-
-
-
-
 /************************************************************************************************************************************/
 #define User_prompt \
 while(1){\
@@ -273,16 +251,6 @@ Timer_T0_sub(T0_delay_200us);
 
 
 /************************************************************************************************************************************/
-/*#define contact_target \
-if(PINB & (1 << PINB3))\
-DDRB |= (1 << DDB3);\
-else {sendString ("Device not detected\r\n");\
-while(1);}\
-delay_of_0_25uS;\
-DDRB &= (~(1 << DDB3));\
-while(!(PINB & (1 << PINB3)));\
-Timer_T0_sub(T0_delay_400us);*/
-
 #define contact_target \
 if(Prog_IO_Port & (1 << Prog_pin))\
 Prog_DD_Reg |= (1 << Prog_DD_bit);\
@@ -292,8 +260,6 @@ delay_of_0_25uS;\
 Prog_DD_Reg &= (~(1 << Prog_DD_bit));\
 while(!(Prog_IO_Port & (1 << Prog_pin)));\
 Timer_T0_sub(T0_delay_400us);
-
-
 
 
 
@@ -325,9 +291,7 @@ sendChar(SIB_byte[m]);}  }
 
 
 
-
 /************************************************************************************************************************************/
-
 #define initialise_NVM_programming \
 sendString("\r\nInitialising NVM programming");\
 sendString("\r\nErase chip? -y- or AOK");\
