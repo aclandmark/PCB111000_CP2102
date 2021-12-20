@@ -7,31 +7,9 @@
 #define Restart_clock					TCNT0 = 0; GTCCR |= (1 << PSRSYNC); Start_Tx_clock;
 #define Reset_clock						TCCR0B = 0;	TCNT0 = 0; GTCCR |= (1 << PSRSYNC);
 
-//Clock settings: 64 to 70  are OK  62 and 72 are NOT
-
-
 #define Tx_clock            	66
 #define Rx_clock            	66
 #define Half_Rx_clock   		33
-
-
-/*#define input_h                (PINB & (1 << PINB3))
-#define input_l        			(!(PINB & (1 << PINB3)))
-#define output_h         		DDRB &= (~(1 << DDB3));
-#define output_l          		DDRB |= (1 << DDB3);*/
-
-
-/*
-#define Prog_pin 3
-#define Prog_IO_Port	PINB
-#define Prog_DD_Reg		DDRB
-
-#define input_h                (Prog_IO_Port & (1 << Prog_pin))
-#define input_l        			(!(Prog_IO_Port & (1 << Prog_pin)))
-#define output_h         		Prog_DD_Reg &= (~(1 << Prog_pin));
-#define output_l          		Prog_DD_Reg |= (1 << Prog_pin);
-*/
-
 
 
 #define synch_pulse	\
@@ -40,12 +18,6 @@ Start_Rx_clock;\
 data_byte_Tx = 0x55; \
 transmit_byte;
 
-
-/*
-Definitions used to drive the UART interface for programming flash
-where speed is critical.
-Provide minimum software latency but use a lot of program memory.
-*/
 
 
 /*****************************************/
@@ -86,7 +58,7 @@ transmitBit;\
 
 /*****************************************/
 //Inverses the polarity bit to pause UPDI repeat
-//command proir to executing a break command 
+//command proir to execute a break command 
 
 #define transmit_byte_P \
 {\
