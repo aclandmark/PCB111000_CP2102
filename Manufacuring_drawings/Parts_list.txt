@@ -19,6 +19,7 @@ IC2	Atmega 328 (DIP)	Farnell 1972087
 Q1	BSS138	SOT23		RS 671-0324
 
 LED 1	Common cathode RS228-5764
+Surface mount dual led	RS 174-9789  £6.60 for 10
 
 Watch Crystal	RE 90-3044 or 90-3046		RS 547-6985 or 478-9268	or 171-0553	 Farnell 2449410
 
