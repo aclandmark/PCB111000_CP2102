@@ -55,7 +55,9 @@ Prog_Port &= (~(1 << Prog_pin));
 
 /************************************************************************************************************************************/
 #define Set_LED_ports 	DDRB = (1 << DDB0) | (1 << DDB1);
-#define LEDs_on  PORTB |= (1 << PB0)|(1 << PB1);
-#define LEDs_off  PORTB &= (~((1 << PB0)|(1 << PB1)));
+#define LED_1_on  	PORTB |= (1 << PB0);
+#define LED_2_on  	PORTB |= (1 << PB1);
+#define toggle_led_2	PORTB ^= (1 << PB1);
+#define LEDs_off  	PORTB &= (~((1 << PB0)|(1 << PB1)));
 
 
