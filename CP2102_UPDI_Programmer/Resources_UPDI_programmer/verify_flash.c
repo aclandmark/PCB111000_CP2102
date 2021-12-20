@@ -8,6 +8,7 @@ void Verify_Flash_Hex (void){
 
 int  line_counter = 0, print_line = 0;								//Controls printing of hex file                         
 int line_no;														//Refers to the .hex file
+//int print_cmd_no = 0;
 signed int phys_address;											//Address in flash memory
 signed int prog_counter_mem;										//Initialise with size of .hex file used for programming
 unsigned char print_out_mode = 0;									//Print out flash contents as hex or askii characters
@@ -53,15 +54,22 @@ if (FFFF_counter >= 64)break;
 if (FFFF_counter >= 64)break;
 if (phys_address == FlashSZ)break;									//Exit when there is no more flash to read
 
-if ((print_line == 0)  && (!(line_no%5)))
-sendChar('*');														//Print out of hex file not required
-																	//Print a -*- every tenth line of the file
+//if ((print_line == 0)  && (!(line_no%5)))
+//{sendChar('*');}													//Print out of hex file not required
+if (print_line == 0)																	//Print a -*- every tenth line of the file
+{if(!(line_no%5))sendChar('*');
+if(!(line_no%20))toggle_led_2;}
+
+
 if(print_line && (!(line_no%print_line)))							//Print out required: Print all lines or just a selection     
 {sendString("\r"); 
 sendHex (16, ((phys_address-2)-flash_start));   
 sendString(" "); line_counter++;  
 
-sendHex (16, Hex_cmd);}												//Print first command in askii or hex
+sendHex (16, Hex_cmd);												//Print first command in askii or hex
+//if((!(line_no%5))%2)
+toggle_led_2;}
+
 read_ops += 1;														//Value to be sent to PC for comparison with the hex filer size
 prog_counter_mem -= 1;												//"prog_counter_mem" decrements to zero when the end of the file is reached
 
@@ -85,7 +93,7 @@ if ((print_line)&&(!(line_no%print_line)) && (!(line_counter%8)))sendString("\r\
 line_no++;
 if (phys_address == FlashSZ)break;}
 
-
+LEDs_off;
 newline(); 
 
 sendString("\r\nHex_file_size:  ");
