@@ -88,7 +88,7 @@ else{if (Hex_address == 0);											//Start of hex file: address is zero
 			if ((Hex_address & PAmask) == page_address)				//Short jump: Jump within page
 				{section_break=0;page_break=0; orphan = 0;}}}
 
-if(prog_led_control & 0b00001000) {LED_2_on;}	
+if(prog_led_control & 0b00000100) {LED_2_on;}	
 else {LED_2_off;}}  
 
  
@@ -129,7 +129,7 @@ if (line_offset) orphan = 1;}}}										//One or more commands in current recor
 
 
 /***********************************************************************************************/ 
-void copy_cmd_to_page_buffer(void){
+/*void copy_cmd_to_page_buffer(void){
 	int ptr_to_cmd;
 	ptr_to_cmd = &Hex_cmd;													//results is a warning message (ptr_to_cmd is not defined as a pointer)
 	get_next_hex_cmd();
@@ -139,9 +139,19 @@ void copy_cmd_to_page_buffer(void){
 
 	loc_in_mem_H = ptr_to_cmd >> 8;
 	loc_in_mem_L = ptr_to_cmd;
-write_to_page_buffer();}													//Subroutine provided in assembly file
+write_to_page_buffer();}*/													//Subroutine provided in assembly file
 
+void copy_cmd_to_page_buffer(void){
+	int ptr_to_cmd;
+	ptr_to_cmd = (int)&Hex_cmd;	////////////												//results is a warning message (ptr_to_cmd is not defined as a pointer)
+	get_next_hex_cmd();
 
+	Prog_mem_address_H = (write_address*2) >> 8;
+	Prog_mem_address_L = (write_address*2);
+
+	loc_in_mem_H = ptr_to_cmd >> 8;
+	loc_in_mem_L = ptr_to_cmd;
+write_to_page_buffer();}
 
 /***********************************************************************************************/
 void get_next_hex_cmd(void){int Local_r_pointer;
