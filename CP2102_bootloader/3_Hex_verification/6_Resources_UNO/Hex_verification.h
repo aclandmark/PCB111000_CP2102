@@ -79,17 +79,17 @@ extern void set_lock_byte (void);
 #define LED_2_off	PORTB &= (~(1 << PB0));
 #define LED_2_on	PORTB |= (1 << PB0);
 
-#define LED_1_off	 PORTB &= (~(1 << PB1));
-#define LED_1_on	 PORTB |= (1 << PB1);
-
+#define LED_1_off		PORTB &= (~(1 << PB1));
+#define LED_1_on		PORTB |= (1 << PB1);
+#define toggle_led_1	PORTB ^= (1 << PB1);
 
 
 
 /************************************************************************************************************************************/
-#define send_as_askii \
+/*#define send_as_askii \
 if((((Hex_cmd>>8)<0x20)||((Hex_cmd>>8)>0x7E))&&(((Hex_cmd & 0x00FF)<0x20)||((Hex_cmd & 0x00FF)>0x7E)))Hex_to_PC(Hex_cmd);\
 else{if(((Hex_cmd>>8)>=0x20) && ((Hex_cmd>>8)<=0x7E) && ((Hex_cmd & 0x00FF)>=0x20) && ((Hex_cmd & 0x00FF)<=0x7E))\
 {sendChar(Hex_cmd>>8); sendChar(Hex_cmd & 0x00FF);}\
 else { if(((Hex_cmd>>8)>=0x20) && ((Hex_cmd>>8)<=0x7E)){sendChar(Hex_cmd>>8); sendCharasASKI(16, (Hex_cmd & 0x00FF));}\
 if(((Hex_cmd & 0x00FF)>=0x20) && ((Hex_cmd & 0x00FF)<=0x7E)){sendCharasASKI(16, (Hex_cmd>>8)); sendChar(Hex_cmd & 0x00FF);}}}
-
+*/
