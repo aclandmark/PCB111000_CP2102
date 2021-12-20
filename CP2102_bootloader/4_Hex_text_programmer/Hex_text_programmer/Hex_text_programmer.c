@@ -53,7 +53,7 @@ if (MCUSR & (1 << PORF))													//POR detected
 	Prog_mem_address_H = 0;
 	Prog_mem_address_L = 0;
 	read_flash ();															//Check for the presence of a user application
-	if (Flash_readout == 0xFF)asm("jmp 0x5E80");							//Run the default application (does not use interrupts)
+	if (Flash_readout == 0xFF)asm("jmp 0x6080");							//Run the default application (does not use interrupts)
 	else asm("jmp 0x0000");}												//Run the user application
 	setRunBL_bit;}															//User switch pressed at POR.	Run bootloader
 
@@ -61,7 +61,7 @@ if((WD_RF_bit_set)&& (RunBL_bit_clear)){									//Reset caused by user or defau
 Prog_mem_address_H = 0;
 Prog_mem_address_L = 0;
 read_flash ();
-if (Flash_readout == 0xFF)asm("jmp 0x5E80");								//Reset default application
+if (Flash_readout == 0xFF)asm("jmp 0x6080");								//Reset default application
 else asm("jmp 0x0000");}													//Reset user application
 
 cal_device;																	//Otherwise initiate the bootloader by checking the calibration status
@@ -79,7 +79,7 @@ MCUCR = (1<<IVSEL);
 	case 'p':													//Program user application starting at address 09x0000
 		mode = 'h';												//Hex programming mode
 		hex_programmer();										//Run programmer subroutine
-		asm("jmp 0x66C0");										//Run hex verification routine
+		asm("jmp 0x6880");										//Run hex verification routine
 	
 		
 	case 'D':														//Delete first page of the user application
@@ -99,7 +99,7 @@ MCUCR = (1<<IVSEL);
 		keypress = 0;break;
 	
 	case 't':														//Read text document
-		asm("jmp 0x62C0");
+		asm("jmp 0x64C0");
 		
 	default: keypress = 0; break;
 		}}
@@ -135,7 +135,7 @@ return 1;}
 
 		/***************************************************************************************************************************************************/
 		void text_programmer (void){
-		int Text_start_address = 0x5E7E;									//address_in_flash;	
+		int Text_start_address = 0x607E;//0x5E7E;									//address_in_flash;	
 
 			w_pointer = 0; r_pointer = 0;										//Initialise variables
 			text_started =0; endoftext =3;txt_counter = 0;
@@ -154,7 +154,7 @@ return 1;}
 
 				if(endoftext != 3)endoftext -= 1;									//Indicates that the timer has been shut down
 
-				address_in_sram = store + r_pointer;								//Address in SRAM of characters to be written to flash
+				address_in_sram = (int)(store + r_pointer);////////////////////								//Address in SRAM of characters to be written to flash
 				loc_in_mem_H = address_in_sram >> 8;								//Variables used to pass the address to the assembly routines
 				loc_in_mem_L = address_in_sram;
 
@@ -247,7 +247,7 @@ return 1;}
 				if (!(++record_counter%10))sendChar('*');}
 
 				UCSR0B &= (~(1<<RXCIE0));	cli();									//download complete, disable UART Rx interrupt
-				LED_2_off;
+				LEDs_off;
 				while(1){if (isCharavailable(5)==1)receiveChar();else break;}		//Clear last few characters of hex file
 				
 				if((Flash_flag) && (!(orphan))){write_page_SUB(page_address);}	//Burn final contents of page_buffer to flash
@@ -290,8 +290,8 @@ return 1;}
 				txt_counter = (txt_counter + 1);									//"txt_counter" gives the number of characters downloaded
 			Rx_askii_char_old = Rx_askii_char;
 			
-			if(txt_counter & 0b10000000) {LED_2_on;}////////////////////////////////////////////////////////////////////////////////////////
-			else {LED_2_off;}
+			if(txt_counter & 0b10000000) {LEDs_on;}////////////////////////////////////////////////////////////////////////////////////////
+			else {LEDs_off;}
 			
 			
 			}
