@@ -39,23 +39,6 @@ TIFR0 = 0xFF;
 #define PINC5_up	(PINC & 0x20)
 
 
-/*
-#define  set_up_activity_leds \
-DDRB |= (1 << DDB0) | (1 << DDB1);\
-LED_1_off;\
-LED_2_off;
-
-#define LED_1_off	 PORTB &= (~(1 << PB1));
-#define LED_1_on	 PORTB |= (1 << PB1);
-
-#define LED_2_off	 PORTB &= (~(1 << PB0));
-#define LED_2_on	 PORTB |= (1 << PB0);
-*/
-
-
-
-
-
 
 
 
