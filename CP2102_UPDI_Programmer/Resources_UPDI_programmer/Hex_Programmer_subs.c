@@ -72,7 +72,7 @@ else record_type = 0;													//Record never occupies more than one page
 if (Hex_address == HW_address)orphan = 0;								//New record follows on immediately from the old
 else{if (Hex_address == 0);}											//Start of hex file: address is zero
 
-if(prog_led_control & 0b00001000) {LEDs_on;}	
+if(prog_led_control & 0b00000100) {LED_1_on;}	
 else {LEDs_off;}}
 
 /**********************************************************************************************************/
