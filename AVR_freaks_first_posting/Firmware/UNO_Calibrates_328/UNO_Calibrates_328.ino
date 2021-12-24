@@ -34,10 +34,11 @@ OSCCAL_test = 14;                                               //Test values OS
 while(1){OSCCAL_test += 1;
 error_percent = 
 measure_cal_error(OSCCAL_default, OSCCAL_test, &error);         //Returns actual error and percentage error 
-if ((error_percent <= 1) && (error_percent >= -1))break;} 
+if ((error_percent <= 1) && (error_percent >= -1))break; 
+else if (!(OSCCAL_test%8))Serial.write('.');}
 OSCCAL_2_percent = OSCCAL_test;                                 //Save OSCCAL giving and error of between 1 and 2%
 
-Serial.write("\r\nOSCCAL\t Error\t%error\tTCNT1\r\n");
+Serial.write("\r\n\r\nOSCCAL\t  Error\t   %error\r\n");
 _delay_ms(10);                                                  //Complete printing before changong OSCCAL
 
 for (int m = OSCCAL_2_percent; m <= 225; m++){                  //Continue testing OSCCAL values
@@ -49,7 +50,7 @@ if ((error_percent <= 1) && (error_percent >= -1))              //Print out resu
  OSCCAL_test += 1;}                                              //Next value of OSCCAL
  
 User_cal = 0;
-Serial.write("\r\rUser cal? Terminate with -cr-");
+Serial.write("\r\rUser cal? Terminate with -cr-\r\n");
 
 User_cal = Int_from_KBD();
 
@@ -110,6 +111,6 @@ Serial.write("\t   ");
 Serial.print(error);
 Serial.write("\t      ");
 Serial.print(int(percent));                                   //Sends char variable as askii char
-Serial.write("\t");
-Serial.print(TCNT1);
+//Serial.write("\t");
+//Serial.print(TCNT1);
 _delay_ms(5);}
