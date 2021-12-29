@@ -31,6 +31,15 @@ OSCCAL_default = OSCCAL;                                        //Default value 
 OSCCAL_2_percent = OSCCAL;                                      //Interim value of OSCCAL guaranteed to enable PC comms
 OSCCAL_test = 14;                                               //Test values OSCCAL starting with 15 and ending with 240
 
+/****************Generate OSCCAL error plot only**************************
+for(int m = 15; m <= 245; m++){
+error_percent = 
+measure_cal_error(OSCCAL_default, m, &error);
+print_cal_result(m, error, error_percent);
+_delay_ms(10);
+}while(1);
+*************************************************************************/
+
 while(1){OSCCAL_test += 1;
 error_percent = 
 measure_cal_error(OSCCAL_default, OSCCAL_test, &error);         //Returns actual error and percentage error 
