@@ -55,8 +55,13 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 ASSR = (1 << AS2);\
 initialise_timers_for_cal_error();\
 start_timers_for_cal_error();\
-for (int m = 0; m < 16; m++){\
+if(cal_speed == 2){\
+for (int m = 0; m < 256; m++){\
 while(!(TIFR2 & (1 << TOV2)));\
-TIFR2 |= (1 << TOV2);}
+TIFR2 |= (1 << TOV2);}}\
+else{\
+for (int m = 0; m < 32; m++){\
+while(!(TIFR2 & (1 << TOV2)));\
+TIFR2 |= (1 << TOV2);}} 
 
 
