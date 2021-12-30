@@ -18,6 +18,7 @@ unsigned char OSCCAL_default;                                  //Factory calibra
 unsigned char OSCCAL_2_percent;                                //Calibration accuracy of betwee 1% and 2%
 unsigned char OSCCAL_test;                                     //Takes on values of between 15 and 240
 unsigned char OSCCAL_previous;
+
 //int TCNT1_BKP;
 
 int main(void)
@@ -27,6 +28,7 @@ unsigned char User_cal;                                        //User enters the
 long error = 0;                                                 //Calibration error
 char error_percent = 0;
 
+ 
 setup_328_HW;                                                   //Sets watchdog IO and UART
 initialise_crystal;
 sei();
@@ -126,7 +128,7 @@ target_res = 7812;
 TCCR1B = 0;                           //Halt T1
 TCNT1_BKP = TCNT1;                        //Copy the value of TCNT1
 TCNT1 = 0;                            //Clear TCNT1
-TCCR1B = 3;//2;                           //Get T1 running again ASAP (Note T2 has not stopped running)
+TCCR1B = cal_speed;//2;//3;                           //Get T1 running again ASAP (Note T2 has not stopped running)
 
 if(!EA_counter)return 0;                    //Ignore first result to allow for warm up.
 else
@@ -158,9 +160,9 @@ _delay_ms(5);}
 
 /*********************************************************************************************/   
     void start_timers_for_cal_error(void)
-    {TCCR2B = 2;//1                      //32,768Hz clock derived from watch crystal 
+    {TCCR2B = cal_speed - 1;//1;//2                      //32,768Hz clock derived from watch crystal 
     while(ASSR & (1 << TCR2BUB));             //overflows every 7.8125mS
-    TCCR1B = 3;}//2;}                      //1MHz clock counts to 7,812 in 7.8125mS    
+    TCCR1B = cal_speed;}//2;3;}                      //1MHz clock counts to 7,812 in 7.8125mS    
 
 
 /*********************************************************************************************/  
