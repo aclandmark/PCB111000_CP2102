@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.6.2">
+<eagle version="9.5.2">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
 <setting keepoldvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.05" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
@@ -788,8 +788,12 @@ Source: avr.lbr</description>
 <library name="mo">
 <packages>
 <package name="XTAL">
-<pad name="P$1" x="0" y="-1.27" drill="0.6" shape="square"/>
-<pad name="P$2" x="0" y="1.27" drill="0.6" shape="square"/>
+<pad name="P$1" x="0" y="-1.27" drill="0.35"/>
+<pad name="P$2" x="0" y="0" drill="0.35"/>
+</package>
+<package name="SM_XTAL">
+<smd name="P$1" x="0.3" y="0" dx="1.75" dy="1.5" layer="1"/>
+<smd name="P$2" x="2.8" y="0" dx="1.75" dy="1.5" layer="1"/>
 </package>
 </packages>
 <symbols>
@@ -810,6 +814,22 @@ Source: avr.lbr</description>
 </gates>
 <devices>
 <device name="" package="XTAL">
+<connects>
+<connect gate="G$1" pin="P$1" pad="P$1"/>
+<connect gate="G$1" pin="P$2" pad="P$2"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="SM_XTAL">
+<gates>
+<gate name="G$1" symbol="EXTAL" x="-10.16" y="2.54"/>
+</gates>
+<devices>
+<device name="" package="SM_XTAL">
 <connects>
 <connect gate="G$1" pin="P$1" pad="P$1"/>
 <connect gate="G$1" pin="P$2" pad="P$2"/>
@@ -881,6 +901,7 @@ Source: avr.lbr</description>
 <part name="C3" library="1_Home_library" deviceset="1206C" device="" value="4.7uF"/>
 <part name="U$1" library="mo" deviceset="XTAL" device=""/>
 <part name="U$2" library="home_library" deviceset="DUAL_SM_LED" device=""/>
+<part name="U$3" library="mo" deviceset="SM_XTAL" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -1059,6 +1080,7 @@ Source: avr.lbr</description>
 </instance>
 <instance part="U$1" gate="G$1" x="-63.5" y="43.18" smashed="yes"/>
 <instance part="U$2" gate="G$1" x="78.74" y="55.88" smashed="yes" rot="R180"/>
+<instance part="U$3" gate="G$1" x="-63.5" y="33.02" smashed="yes"/>
 </instances>
 <busses>
 <bus name="SEVEN_SEG[0..7]">
@@ -1860,12 +1882,17 @@ Source: avr.lbr</description>
 <net name="N$12" class="0">
 <segment>
 <pinref part="U$1" gate="G$1" pin="P$1"/>
-<wire x1="-50.8" y1="44.45" x2="-35.56" y2="44.45" width="0.1524" layer="91"/>
+<wire x1="-50.8" y1="44.45" x2="-48.26" y2="44.45" width="0.1524" layer="91"/>
+<wire x1="-48.26" y1="44.45" x2="-35.56" y2="44.45" width="0.1524" layer="91"/>
 <wire x1="-35.56" y1="44.45" x2="-35.56" y2="48.26" width="0.1524" layer="91"/>
 <pinref part="IC2" gate="G$1" pin="PB6(XTAL1/TOSC1)"/>
 <wire x1="-29.21" y1="50.8" x2="-30.48" y2="50.8" width="0.1524" layer="91"/>
 <wire x1="-30.48" y1="50.8" x2="-30.48" y2="48.26" width="0.1524" layer="91"/>
 <wire x1="-30.48" y1="48.26" x2="-35.56" y2="48.26" width="0.1524" layer="91"/>
+<pinref part="U$3" gate="G$1" pin="P$1"/>
+<wire x1="-50.8" y1="34.29" x2="-48.26" y2="34.29" width="0.1524" layer="91"/>
+<wire x1="-48.26" y1="34.29" x2="-48.26" y2="44.45" width="0.1524" layer="91"/>
+<junction x="-48.26" y="44.45"/>
 </segment>
 </net>
 <net name="N$17" class="0">
@@ -1877,6 +1904,10 @@ Source: avr.lbr</description>
 <wire x1="-45.72" y1="40.64" x2="-45.72" y2="41.91" width="0.1524" layer="91"/>
 <pinref part="U$1" gate="G$1" pin="P$2"/>
 <wire x1="-45.72" y1="41.91" x2="-50.8" y2="41.91" width="0.1524" layer="91"/>
+<pinref part="U$3" gate="G$1" pin="P$2"/>
+<wire x1="-50.8" y1="31.75" x2="-45.72" y2="31.75" width="0.1524" layer="91"/>
+<wire x1="-45.72" y1="31.75" x2="-45.72" y2="40.64" width="0.1524" layer="91"/>
+<junction x="-45.72" y="40.64"/>
 </segment>
 </net>
 <net name="N$2" class="0">
