@@ -255,7 +255,7 @@ switch(sig_byte_2){\
 	\
 	default: sendString("\r\nUnknown, please enter device data.");\
 	sendString("\r\n"); wdt_enable(WDTO_60MS);while(1);break;}\
-	EE_top = EE_size-0x6;
+	EE_top = EE_size - 3;
 	
 
 
