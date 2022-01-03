@@ -125,6 +125,4 @@ Serial.write("\t   ");
 Serial.print(error);
 Serial.write("\t      ");
 Serial.print(int(percent));                                   //Sends char variable as askii char
-//Serial.write("\t");
-//Serial.print(TCNT1);
 _delay_ms(5);}
