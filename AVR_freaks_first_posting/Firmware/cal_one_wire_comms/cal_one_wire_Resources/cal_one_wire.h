@@ -1,7 +1,6 @@
 
 
-
-
+void One_wire_Tx_2_integers(unsigned int, unsigned int);
 void Print_table_headings(void);
 void Print_results(int, int, long, long);
 char waitforkeypress(void);
