@@ -20,9 +20,6 @@ return 1;}
 
 
 
-
-
-
 /***************************************************************************************************************************************************/
 int Int_from_KBD(void){                                       //Acquires an integer string from the keyboard and returns the binary equivalent
 char keypress;
@@ -40,12 +37,13 @@ break;}
  
 while(1){
 if ((keypress = wait_for_return_key())  =='\r')break;         //Detect return key press (i.e \r or\r\n)
-if (decimal_digit(keypress)){display_buffer[array_ptr++] = keypress;}}                                      
+if (decimal_digit(keypress))
+{display_buffer[array_ptr++] = keypress;}}                                      
 return atoi(display_buffer);}
 
 
 /************************************************************************************************************/
-char wait_for_return_key(void){                  //Detects \r\n, \r or \n
+char wait_for_return_key(void){                  				//Detects \r\n, \r or \n
 char keypress,temp;
 keypress = waitforkeypress();
 if((keypress == '\r') || (keypress == '\n')){
