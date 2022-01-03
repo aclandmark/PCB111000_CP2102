@@ -45,7 +45,7 @@ return atoi(display_buffer);}
 
 
 /************************************************************************************************************/
-char wait_for_return_key(void){                  //Detects \r\n, \r or \n
+char wait_for_return_key(void){                  				//Detects \r\n, \r or \n
 char keypress,temp;
 keypress = waitforkeypress();
 if((keypress == '\r') || (keypress == '\n')){
