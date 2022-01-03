@@ -1,7 +1,7 @@
 
  
 /*
-328_Recall Routine uses watch crystalas time standard
+328_Recall Routine uses the watch crystal as a time standard
 It uses two timers T1 and T2.
 T1 and clocked at 1MHz using the internal 8HMz RC clock.
 T2 is clocked using a 32.768KHz watch crystal.
@@ -19,7 +19,7 @@ unsigned char OSCCAL_2_percent;                                //Calibration acc
 unsigned char OSCCAL_test;                                     //Takes on values of between 15 and 240
 unsigned char OSCCAL_previous;
 
-//int TCNT1_BKP;
+
 
 int main(void)
 {char keypress;
@@ -111,11 +111,11 @@ initialise_timers_for_cal_error();
     start_timers_for_cal_error();    
     
     while(!(TIFR2 & (1 << TOV2)));              //Wait for T2 to overflow for first time
-    TIFR2 |= (1 << TOV2);                 //Reset overflow flag
-    get_error(EA_counter);                  //get result and ignore it
-    EA_counter = 1;                     //increment counter
+    TIFR2 |= (1 << TOV2);                       //Reset overflow flag
+    get_error(EA_counter);                      //get result and ignore it
+    EA_counter = 1;                             //increment counter
     while(!(TIFR2 & (1 << TOV2)));              //Wait for T2 to overflow for second time
-    TIFR2 |= (1 << TOV2);                 //Reset overflow flag
+    TIFR2 |= (1 << TOV2);                       //Reset overflow flag
 OSCCAL = OSCCAL_OK;  
 *error = get_error(EA_counter);
 return 100 * long(*error)/7812;}
@@ -125,24 +125,25 @@ return 100 * long(*error)/7812;}
 int get_error (char EA_counter){
 int TCNT1_BKP, target_res;
 target_res = 7812;                                
-TCCR1B = 0;                           //Halt T1
-TCNT1_BKP = TCNT1;                        //Copy the value of TCNT1
-TCNT1 = 0;                            //Clear TCNT1
-TCCR1B = cal_speed;//2;//3;                           //Get T1 running again ASAP (Note T2 has not stopped running)
+TCCR1B = 0;                                   //Halt T1
+TCNT1_BKP = TCNT1;                            //Copy the value of TCNT1
+TCNT1 = 0;                                    //Clear TCNT1
+TCCR1B = cal_speed;                           //Get T1 running again ASAP (Note T2 has not stopped running)
 
-if(!EA_counter)return 0;                    //Ignore first result to allow for warm up.
+if(!EA_counter)return 0;                      //Ignore first result to allow for warm up.
 else
-return (TCNT1_BKP - target_res);}               //return second error result
+return (TCNT1_BKP - target_res);}             //return second error result
 
 
 /************************************************************************************************/
-void print_cal_result(unsigned char OSCCAL_test, long error, char percent) {
-Serial.write("\r\n");                                         //Sends askii chars
-Serial.print(OSCCAL_test);                                    //Sends number as askii string
+void print_cal_result(unsigned char OSCCAL_test,
+long error, char percent) {
+Serial.write("\r\n");                          //Sends askii chars
+Serial.print(OSCCAL_test);                     //Sends number as askii string
 Serial.write("\t   ");
 Serial.print(error);
 Serial.write("\t      ");
-Serial.print(int(percent));                                   //Sends char variable as askii char
+Serial.print(int(percent));                    //Sends char variable as askii char
 //Serial.write("\t");
 //Serial.print(TCNT1);
 _delay_ms(5);}
@@ -151,18 +152,18 @@ _delay_ms(5);}
 
 /*********************************************************************************************/
     void initialise_timers_for_cal_error(void){
-    TCNT1=0;TCCR1B = 0;                   //Reset and halt T1
+    TCNT1=0;TCCR1B = 0;                               //Reset and halt T1
     TCCR2B =  0x0;  while(ASSR & (1 << TCR2BUB));     //Halt T2
-    TCCR2A = 0; while(ASSR & (1 << TCR2AUB));       //Reset T2 
-    TCNT2=0; while(ASSR & (1 << TCN2UB)); }       //Reset TCNT2
+    TCCR2A = 0; while(ASSR & (1 << TCR2AUB));         //Reset T2 
+    TCNT2=0; while(ASSR & (1 << TCN2UB)); }           //Reset TCNT2
 
 
 
 /*********************************************************************************************/   
     void start_timers_for_cal_error(void)
-    {TCCR2B = cal_speed - 1;//1;//2                      //32,768Hz clock derived from watch crystal 
-    while(ASSR & (1 << TCR2BUB));             //overflows every 7.8125mS
-    TCCR1B = cal_speed;}//2;3;}                      //1MHz clock counts to 7,812 in 7.8125mS    
+    {TCCR2B = cal_speed - 1;//1;//2                   //32,768Hz clock derived from watch crystal 
+    while(ASSR & (1 << TCR2BUB));                     //overflows every 7.8125mS
+    TCCR1B = cal_speed;}//2;3;}                       //1MHz clock counts to 7,812 in 7.8125mS    
 
 
 /*********************************************************************************************/  
