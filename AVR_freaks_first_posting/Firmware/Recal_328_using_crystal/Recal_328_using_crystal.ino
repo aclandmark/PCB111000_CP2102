@@ -97,6 +97,9 @@ Serial.write("\r\nPrevious value of OSCCAL was  ");
 Serial.print(OSCCAL_previous);
 _delay_ms(5);}
 
+Serial.write("\r\n\r\nPOR with reset control switch pressed to restore p/r/t/D prompt.\r\n");
+_delay_ms(10);
+
 return 1;}
 
 
