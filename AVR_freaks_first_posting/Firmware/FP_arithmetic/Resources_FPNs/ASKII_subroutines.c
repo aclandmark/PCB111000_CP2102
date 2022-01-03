@@ -13,11 +13,11 @@ unsigned char num_byte[4];
 long Long_Num_from_UNO = 0;
 
 void send_int_num(long);
-
+void send_float_num(float);
 
 
 /*************************************************************************************************************/
-void send_float_num(float);
+
 
 
 
