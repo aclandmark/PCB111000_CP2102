@@ -7,6 +7,8 @@ void Print_results(int, int, long, long);
 char waitforkeypress(void);
 char isCharavailable (int);
 int Int_from_KBD(void);
+char wait_for_return_key(void);
+char decimal_digit (char);
 
 
 char User_response;
