@@ -1,11 +1,12 @@
 
 
 
-#include <avr/io.h>
+/*#include <avr/io.h>
 #include <stdlib.h>
 #include <avr/interrupt.h>
+#include <avr/eeprom.h>*/
+
 #include <avr/wdt.h>
-#include <avr/eeprom.h>
 
 #define fast 2
 #define slow 3
