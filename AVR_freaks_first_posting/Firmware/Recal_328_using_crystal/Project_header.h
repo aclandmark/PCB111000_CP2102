@@ -1,11 +1,6 @@
 
 
 
-/*#include <avr/io.h>
-#include <stdlib.h>
-#include <avr/interrupt.h>
-#include <avr/eeprom.h>*/
-
 #include <avr/wdt.h>
 
 #define fast 2
