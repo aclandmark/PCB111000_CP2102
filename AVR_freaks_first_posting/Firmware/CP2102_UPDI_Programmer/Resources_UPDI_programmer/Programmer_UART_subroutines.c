@@ -5,7 +5,7 @@
 
 
 /*******************************************************************************************************************************/
-void UART_Tx(unsigned int data_byte_T){               //starts Hi Z
+void UART_Tx(unsigned int data_byte_T){               				//starts Hi Z
   unsigned char parity = 0;
   Prog_DD_Reg |= (1 << Prog_DD_bit);                                //start bit
   clock_delay_T;
@@ -17,9 +17,9 @@ for (int n = 0; n <= 7; n++){
 
 if (parity%2){Prog_DD_Reg &= (~(1 << Prog_DD_bit));} 
 else {Prog_DD_Reg |= (1 << Prog_DD_bit);}
-  clock_delay_T;                                      //clock parity bit
+  clock_delay_T;                                      				//clock parity bit
   Prog_DD_Reg &= (~(1 << Prog_DD_bit));                             //initiate stop bit 
-  clock_delay_T;                                      //Stop bits
+  clock_delay_T;                                      				//Stop bits
   clock_delay_T;}
 
 
@@ -28,18 +28,18 @@ unsigned char UART_Rx(void){
   unsigned char data_byte_R = 0;
     char parity = 0;
                           
-  while (Prog_IO_Port & (1 << Prog_pin));                        //wait for start bit
-  clock_delay_R;                                      //The full delay is required 
+  while (Prog_IO_Port & (1 << Prog_pin));                        	//wait for start bit
+  clock_delay_R;                                      				//The full delay is required 
   for (int n= 0; n <= 7; n++){clock_delay_R;
     if (Prog_IO_Port & (1 << Prog_pin))
     {data_byte_R |= (1 << n); parity += 1;}}
     clock_delay_R;
 
  if ((Prog_IO_Port & (1 << Prog_pin)) && (parity%2)); 
- else P_counter++;                                      //Parity often received in error?????
+ else P_counter++;                                      			//Parity often received in error?????
  
- clock_delay_R;                                         //stop bit
- clock_delay_R;                                         //stop bit  
+ clock_delay_R;                                         			//stop bit
+ clock_delay_R;                                         			//stop bit  
  return data_byte_R;}
 
 
