@@ -5,7 +5,7 @@
 char isCharavailable (int);
 char receiveChar(void);
 char measure_cal_error(unsigned char, unsigned char, long *);
-void num_to_PC(long);
+//void num_to_PC(long);
 void print_cal_result(unsigned char, long, char);
 
 #define wdr()  __asm__ __volatile__("wdr")
