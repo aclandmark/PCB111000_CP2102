@@ -75,7 +75,7 @@ sendString("\r\n\r\nRunning trial application (POR may be required)? \r\n\r\n");
 
 sei();
 comms_cal;
-set_up_pin_change_interrupt;                                    //Set up PCI on PC5 for SM switch
+set_up_pin_change_interrupt;                                    //Set up PCI on PC5 for SM switch (Reset control switch)
 set_up_one_wire_comms;                                          //One way comms for template requires port to be set to Tri state 
 Set_LED_ports;
 LEDs_off;
