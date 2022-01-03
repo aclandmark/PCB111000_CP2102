@@ -49,8 +49,6 @@ cli();
 if (UPDI_timeout) 
 sendString("\r\nFailure: Device still locked\t");
 else sendString("\r\nDevice unlocked\t\t\t");
-//sendHex(16, Rx_Byte);
-//sendHex(10, test);
 }
 
 
