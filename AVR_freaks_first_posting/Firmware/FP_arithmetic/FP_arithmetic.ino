@@ -19,7 +19,7 @@ char op;                                                //+, -, *, /, pow
 setup_328_HW;                                           //see "Resources\ATMEGA_Programmer
 while(1){
 sei();                                                  //Reads switch and changes intensity
-User_prompt_template;
+User_prompt;
 
 if (User_response =='f'){clear_display;
 sendString("Enter FPN from KBD \
