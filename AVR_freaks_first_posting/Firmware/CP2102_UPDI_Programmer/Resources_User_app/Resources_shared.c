@@ -2,7 +2,7 @@
 
 #define T0_delay_5ms 	5,178
 
-
+void One_wire_comms_any_segment(char, char);
 void USART_init (unsigned char, unsigned char);
 void Timer_T0_sub(char, unsigned char);
 char isCharavailable (int);
