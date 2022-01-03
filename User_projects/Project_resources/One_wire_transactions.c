@@ -1,7 +1,7 @@
 
 
-void sendChar(char);
-void sendString(const char*);
+//void sendChar(char);
+//void sendString(const char*);
 
 
 
