@@ -56,7 +56,7 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 
 
 /************************************************************************************************************************************/
-#define User_prompt_template \
+#define User_prompt \
 while(1){\
 do{sendString("f?  ");}   while((isCharavailable(100) == 0));\
 User_response = receiveChar();\
