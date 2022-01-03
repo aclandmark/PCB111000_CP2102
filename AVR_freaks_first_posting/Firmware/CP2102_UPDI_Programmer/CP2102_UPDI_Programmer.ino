@@ -6,7 +6,7 @@ The programmer and user app run with a baud rate of 14400.
 The bootloader runs at 57600
 
 PINB4 is used for the one wire comms
-PINC5 is used for the vertical switch
+PINC5 is used for the vertical switch (the reset control switch)
 PINB3 for programming
 */
 
@@ -68,7 +68,7 @@ UPDI_reset;
 Dissable_UPDI_sesion;}
 
 
-//************Code for a test user applicationis presented in the next section *************************
+//************Code for a test user application is presented in the next section *************************
 
 sendString("\r\n\r\nRunning trial application (POR may be required)? \r\n\r\n");
 /************************Programmmer code ends here*******************************************************************/
@@ -76,11 +76,10 @@ sendString("\r\n\r\nRunning trial application (POR may be required)? \r\n\r\n");
 sei();
 comms_cal;
 set_up_pin_change_interrupt;                                    //Set up PCI on PC5 for SM switch
-set_up_one_wire_comms;                                           //One way comms for template requires port to be set to Tri state 
-//set_up_activity_leds;
+set_up_one_wire_comms;                                          //One way comms for template requires port to be set to Tri state 
 Set_LED_ports;
 LEDs_off;
-Reset_ATtiny1606;                                                     //Command to reset 1606
+Reset_ATtiny1606;                                              //Command to reset 1606
 _delay_ms(500);
 
 while(1){
