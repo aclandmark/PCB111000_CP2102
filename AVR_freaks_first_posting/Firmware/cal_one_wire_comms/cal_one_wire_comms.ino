@@ -19,7 +19,6 @@ int main (void) {
 unsigned int PORT_1, PORT_2;
 
 setup_328_HW;  
-
 User_prompt;
 
 if(User_response == 'R'){                                    //Drive display to check that calibration factor enables comms 
