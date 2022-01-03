@@ -15,7 +15,7 @@ PINB3 for programming
 #include "Resources_User_app.h"                                //Contains resources used by template and shared with programmer
 #include "Resources_UPDI_programmer.h"                          //Only contains resources used by the programmer
 
-void One_wire_comms_any_segment(char, char);
+//void One_wire_comms_any_segment(char, char);
 
 
 int main (void){ 
