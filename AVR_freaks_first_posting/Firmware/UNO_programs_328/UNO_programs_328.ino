@@ -60,10 +60,13 @@ case 'd':                                                       //Delete content
 sendString("\r\nReset EEPROM! D or AOK to escape");             //but leave cal data.
 newline();
 if(waitforkeypress() == 'D'){
-sendString("10 sec wait");
-for (int m = 0; m <= EE_top; m++)  
+sendString("5 sec wait");
+for (int m = 0; m < EE_top; m++)  
 {Read_write_mem('I', m, 0xFF);}                                 //Write 0xFF to all EEPROM loactions bar the top 3
-sendString(" Done\r\n");}
+sendString(" Done. \r\nPress D to delete cal bytes or AOK\r\n");
+if(waitforkeypress() == 'D')
+{for (int m = EE_top; m < EE_top + 3; m++)Read_write_mem('I', m, 0xFF);}
+}
 SW_reset;break;
 
 case 'V': prog_counter = 0x4000; Verify_Flash_Hex();SW_reset; break;
