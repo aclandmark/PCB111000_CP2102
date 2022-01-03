@@ -61,7 +61,7 @@ _delay_ms(5);
 
 
 
-/**************Generate table of correction factor and error**************************/
+/**************Generate table of correction factors and errors**************************/
 Print_table_headings();
 
 Comms_clock_correction -= 15;                                    //Print results for adjacent correction factors                                
@@ -81,15 +81,18 @@ Serial.write("\r\n");
 
 /**********************************Check for presence of a previous correction factor******************************************************/
 if (((signed char)eeprom_read_byte((uint8_t*)0x3F7) > -50)
-&&  ((signed char)eeprom_read_byte((uint8_t*)0x3F7) < 50) && ((signed char)eeprom_read_byte((uint8_t*)0x3F7)
-== (signed char)eeprom_read_byte((uint8_t*)0x3F6))) {
-User_correction_factor_previous = (signed char)eeprom_read_byte((uint8_t*)0x3F7);}
+&&  ((signed char)eeprom_read_byte((uint8_t*)0x3F7) < 50) 
+&& ((signed char)eeprom_read_byte((uint8_t*)0x3F7)
+== (signed char)eeprom_read_byte((uint8_t*)0x3F6))) 
+{User_correction_factor_previous = 
+(signed char)eeprom_read_byte((uint8_t*)0x3F7);}
 else User_correction_factor_previous = 0;
 
 
 /********************************************User enters correction factor ****************************************************************/
 User_correction_factor = 0;
-Serial.write("\r\nUser correction? \r\nError of +4% recommended.  Terminate with -cr-.");
+Serial.write("\r\nUser correction? \r\nError of +4% recommended.  \
+Terminate with -cr-.");
 User_correction_factor = Int_from_KBD();
 
 
@@ -119,9 +122,6 @@ Serial.write("\r\n\r\n");
 
 SW_reset;
 return 1;}
-
-
-
 
 
 /**********************************************************************************************/
