@@ -8,34 +8,37 @@ The bootloader runs at 57600
 PINB4 is used for the one wire comms
 PINC5 is used for the vertical switch (the reset control switch)
 PINB3 for programming
+
+Note: The user app treats EEPROM like SRAM.  If left running two EEPROM locations will fail after 100,000 read write cycles!
 */
 
 
 
-#include "Resources_User_app.h"                                //Contains resources used by template and shared with programmer
+#include "Resources_User_app.h"                                 //Contains resources used by user app and shared with programmer
 #include "Resources_UPDI_programmer.h"                          //Only contains resources used by the programmer
 
-//void One_wire_comms_any_segment(char, char);
 
 
 int main (void){ 
-char letter=0, digit_num=0, seg_counter = 0,direction = 0;
 
+char letter=0, digit_num=0, seg_counter = 0,direction = 0;      //Required by user app
 
 setup_328_HW;    
 
+
 /************************Programmer code starts here and can be removed************************************/
-FlashSZ = 0x2000;                                      //Amount of flash availale in ATtiny 1606
+FlashSZ = 0x2000;                                             //Amount of flash availale in ATtiny 1606
 User_prompt;
 
 sendString("\r\nPress 'a' to program target or AOK to run test application");
 if(waitforkeypress() == 'a'){
 
+
 //********************************Programmer target connection sequence************************************
-Timer_T1_sub_with_interrupt(T1_delay_100ms);          //Generates a timeout if contact with the target fails
+Timer_T1_sub_with_interrupt(T1_delay_100ms);                  //Generates a timeout if contact with the target fails
 sei();
 contact_target;
-configure_updi;                                       //Increases UPDI clock to 16MHz and reduce guard band to 2 cycles
+configure_updi;                                               //Increases UPDI clock to 16MHz and reduce guard band to 2 cycles
 print_out_SIB;
 if(UPDI_timeout)
 {sendString("Power Cycle Required\r\n");
@@ -66,6 +69,7 @@ read_out_fuses();
 
 UPDI_reset; 
 Dissable_UPDI_sesion;}
+
 
 
 //************Code for a test user application is presented in the next section *************************
