@@ -61,12 +61,17 @@ if ((error_percent <= 1) && (error_percent >= -1))              //Print out resu
 User_cal = 0;
 Serial.write("\r\rUser cal? Terminate with -cr-\r\n");
 
-User_cal = Int_from_KBD();
+User_cal = Int_from_KBD();                                      //Enter user cal
+error_percent = 
+measure_cal_error(OSCCAL_2_percent, User_cal, &error);          //Reject if results in poor calibration
+if ((error_percent <= 1) && (error_percent >= -1));
+else {Serial.write("Excessive error!");SW_reset;} 
 
 if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
-&&  (eeprom_read_byte((uint8_t*)0x3FF) < 0xF0) && (eeprom_read_byte((uint8_t*)0x3FF)\
+&&  (eeprom_read_byte((uint8_t*)0x3FF) < 0xF0) && \
+(eeprom_read_byte((uint8_t*)0x3FF)\
 == eeprom_read_byte((uint8_t*)0x3FE))) {
-OSCCAL_previous = eeprom_read_byte((uint8_t*)0x3FF);}
+OSCCAL_previous = eeprom_read_byte((uint8_t*)0x3FF);}             //Get result of previous cal if done
 else OSCCAL_previous = 0;
 
 eeprom_write_byte((uint8_t*)0x3FF, User_cal);                      //Save user cal in EEPROM 
@@ -78,7 +83,7 @@ Serial.write("\r\nSaved to EEPROM");
 OSC_CAL;                                                            //Retrieves OSCCAL value from EEPROM
 
 error_percent = measure_cal_error(OSCCAL, OSCCAL, &error);          //Check error values and 
-print_cal_result(OSCCAL, error, error_percent);                     //print the out
+print_cal_result(OSCCAL, error, error_percent);                     //print them out
 
 Serial.write("\r\n\r\nDefault value of OSCCAL is\t   ");
 Serial.print(OSCCAL_default);
