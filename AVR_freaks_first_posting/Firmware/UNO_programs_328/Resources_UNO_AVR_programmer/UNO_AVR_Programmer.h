@@ -318,19 +318,6 @@ Atmel_config(write_lock_bits_h, 0xEF );
 
 
 /*************************************************************************************************************************************/
-/*#define Verify_config_bytes \
-if (op_code == 'P')sendString("Config bytes: Fuses extended (if used), \
-high, low and lock\t");\
-if (op_code == 'p')sendString("Config bytes: Fuses extended (if used), \
-high, low and lock\t");\
-\
-sendString("\r\n");\
-\
-sendHex(16, Atmel_config(read_extended_fuse_bits_h, 0));\
-sendHex(16, Atmel_config(read_fuse_bits_H_h,0));\
-sendHex(16, Atmel_config(read_fuse_bits_h, 0));\
-sendHex(16, Atmel_config(read_lock_bits_h, 0));*/
-
 #define Verify_config_bytes \
 sendString("Config bytes: Fuses extended, \
 high, low and lock\t");\
