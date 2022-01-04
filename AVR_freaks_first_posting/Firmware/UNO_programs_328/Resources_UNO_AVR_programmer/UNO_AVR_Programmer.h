@@ -31,8 +31,7 @@ char Suffix;													//Either P or space (i.e. 328P or 328 ).
 signed int EE_top;												//Limits EEPROM space available for strings and data		
 
 int text_start;												//First 5 addresses reserved to define string/data EEPROM partitions		
-//unsigned char pcb_type = 0;									//1 for UNO and 2 for PCB_A
-	
+
 unsigned int  cmd_counter;											//Counts commands as they are downloaded from the PC
 unsigned int prog_counter;											//Counts commands burned to flash
 unsigned int  read_ops=0;										//Total number of commands read from flash
