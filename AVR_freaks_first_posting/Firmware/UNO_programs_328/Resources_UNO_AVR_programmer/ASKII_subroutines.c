@@ -54,7 +54,7 @@ s[i] = '\0';}
 
 
 /**********************************************************************************************/
-void my_chartoa(char radix, unsigned char n, char s[]){								//char to askii
+void my_chartoa(char radix, unsigned char n, char s[]){									//char to askii
 unsigned char i;																		//Generates string in reverse order
 i=0; 		
 do{
