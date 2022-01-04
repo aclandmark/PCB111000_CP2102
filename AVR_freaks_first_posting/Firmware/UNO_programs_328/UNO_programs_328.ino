@@ -104,7 +104,7 @@ case 'P': upload_hex(); break;}}
 
 
 /***************************************************************************************************************************************************/
-ISR(TIMER2_OVF_vect) {                                          //Timer2 times out and halts at the end of the text file
+ISR(TIMER2_OVF_vect) {                                          //Timer2 times out and halts at the end of the text file NOT USED
 if(text_started == 3)                                           //Ignore timeouts occurring before start of file download
   {endoftext -= 1; TCCR2B = 0; TIMSK2 &= (~(1 << TOIE2));       //Shut timer down
   inc_w_pointer; store[w_pointer] = 0;                          //Append two '\0' chars to the end of the text
