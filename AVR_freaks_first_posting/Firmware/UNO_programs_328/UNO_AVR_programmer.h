@@ -1,13 +1,5 @@
 
-//#include <avr/io.h>
-//#include <stdlib.h>
-//#include <avr/interrupt.h>
 #include <avr/wdt.h>
-//#include <avr/eeprom.h>
-
-
-
-
 
 #include "Resources_UNO_AVR_programmer\UNO_AVR_Programmer.h"
 
@@ -18,7 +10,3 @@
 #include "Resources_UNO_AVR_programmer\EEPROM_programmer_sub.c"
 
 #include "Resources_UNO_AVR_programmer\Hex_Programmer.c"
-
-//#include "Resources_UNO_AVR_programmer\Text_programmer_subs.c"
-//#include "Resources_UNO_AVR_programmer\Device_characteristics.c"
-//#include "Device_characteristics.c"
