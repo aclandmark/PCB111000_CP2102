@@ -78,8 +78,8 @@ unsigned char  op_code;
 
 char User_response;
 
-unsigned int Last_Hex_Page;											//LAST PAGE NEEDED BY HEX
-unsigned int Last_Text_Page; 										//LAST PAGE TAKEN BY TEXT
+unsigned int Last_Hex_Page;									//LAST PAGE NEEDED BY HEX
+unsigned int Last_Text_Page; 								//LAST PAGE TAKEN BY TEXT
 unsigned int Unused_pages;
 
 int sig_byte_2, sig_byte_3;
@@ -114,7 +114,6 @@ text_start = 0x6;
 #define wdr()  __asm__ __volatile__("wdr")
 
 
-
 #define setup_watchdog \
 wdr();\
 MCUSR &= ~(1<<WDRF);\
@@ -123,9 +122,6 @@ WDTCSR = 0;
 
 
 #define SW_reset {wdt_enable(WDTO_30MS);while(1);}
-
-
-
 
 
 
@@ -146,8 +142,6 @@ counter = 1;
 
 
 /*************************Atmega programming commands (see data sheet)******************************/
-
-
 #define inc_w_pointer \
 w_pointer++;\
 w_pointer = w_pointer & 0x3F;
@@ -156,8 +150,6 @@ w_pointer = w_pointer & 0x3F;
 #define inc_r_pointer \
 r_pointer++;\
 r_pointer = r_pointer & 0b00111111;
-
-
 
 
 #define Prog_enable 0xAC530000
@@ -225,6 +217,7 @@ Reset_H;\
 Timer_T0_sub(T0_delay_2ms);\
 Reset_L;\
 Timer_T0_sub(T0_delay_20ms);
+
 
 
 /************************************************************************************************************************************/
@@ -299,9 +292,6 @@ if((User_response == 'R') || (User_response == 'r'))break;} sendString("\r\n");
 
 
 /**************************************************************************************************************************************/
-
-
-
 #define Prog_default_328_config_bytes \
 \
 Atmel_config(write_extended_fuse_bits_h, 0xFF );\
@@ -315,6 +305,7 @@ Atmel_config(write_extended_fuse_bits_h, 0xFD );\
 Atmel_config(write_fuse_bits_H_h, 0xD0 );\
 Atmel_config(write_fuse_bits_h, 0xC2 );\
 Atmel_config(write_lock_bits_h, 0xEF );
+
 
 
 /*************************************************************************************************************************************/
