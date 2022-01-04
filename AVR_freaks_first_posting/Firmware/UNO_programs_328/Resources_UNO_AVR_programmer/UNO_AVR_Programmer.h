@@ -78,9 +78,7 @@ unsigned char  op_code;
 
 char User_response;
 
-unsigned int Last_Hex_Page;									//LAST PAGE NEEDED BY HEX
-/*unsigned int Last_Text_Page; 								//LAST PAGE TAKEN BY TEXT
-unsigned int Unused_pages;*/
+unsigned int Last_Hex_Page;									//Last page used by hex (not used in this version)
 
 int sig_byte_2, sig_byte_3;
 signed int PageSZ;												//Size of a page of flash in 16 bit words
