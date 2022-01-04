@@ -9,6 +9,9 @@ Programmming pins are:
   reset       PORTC3          connect to target device pin 1 reset
 
 Calibration pin:   This also uses PORTB5
+
+Can also be used to program target EEPROM
+but not flash with text
  */
 
 
@@ -95,7 +98,6 @@ return 1;}
 /***************************************************************************************************************************************************/
 ISR(USART_RX_vect){
 switch (op_code){
-//case 't': upload_text();break;
 case 'p':
 case 'P': upload_hex(); break;}}
 
