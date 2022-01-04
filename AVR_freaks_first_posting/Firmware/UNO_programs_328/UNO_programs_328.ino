@@ -13,8 +13,8 @@ Target devive EEPROM use
 0xFF  User calibration value
 0xFE  User calibration value
 0xFD  Default calibration value
-0xFC  Signature byte 2
-0xFB  Signature byte 3
+0xFC  Signature byte 2    (Not used in this version)
+0xFB  Signature byte 3    (Not used in this version)
 0xFA
 
 
