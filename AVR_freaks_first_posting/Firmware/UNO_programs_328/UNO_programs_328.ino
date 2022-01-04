@@ -1,6 +1,7 @@
 
 /*
 Version of the UNO_AVR programmer adapted for the PCB111000_CP2102 project
+Designed to be uploaded to a UNO
 Programmming pins are:
   data out    PORTB3 (MOSI)   connect to target device MOSI
   data in     PORTB4 (MISO)   connect to target device MISO
@@ -14,7 +15,7 @@ Calibration pin:   This also uses PORTB5
 
 
 #include "UNO_AVR_programmer.h"
-#define Version "UNO_programmer_V1.5\r\n" 
+#define Version "UNO_programmer_V2.5\r\n" 
 
 int main (void){ 
 
