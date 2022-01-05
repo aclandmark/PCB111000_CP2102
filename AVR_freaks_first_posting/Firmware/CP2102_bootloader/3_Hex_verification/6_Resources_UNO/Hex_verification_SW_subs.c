@@ -99,14 +99,14 @@ else return 0;}
 
 
 /***********************************************************************************************/
-void sendCharasASKI(char radix, unsigned char CHR){ char print_out_string[4];
+/*void sendCharasASKI(char radix, unsigned char CHR){ char print_out_string[4];
 my_chartoa(radix, CHR, print_out_string); 
-sendString(print_out_string);sendString(" ");}
+sendString(print_out_string);sendString(" ");}*/
 
 
 
 /***********************************************************************************************/
-void my_chartoa(char radix, unsigned char n, char s[]){							//char to askii
+/*void my_chartoa(char radix, unsigned char n, char s[]){							//char to askii
 unsigned char i,sl,j,c;
 i=0; sl=0;
 do{sl++;
@@ -117,5 +117,5 @@ i++;
 }while((n/=radix)>0);
 s[i] = '\0';
 for(i=0, j=sl-1; i<j; i++,j--){
-c=s[i];  s[i] = s[j];  s[j] = c;}}
+c=s[i];  s[i] = s[j];  s[j] = c;}}*/
 
