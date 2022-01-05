@@ -26,7 +26,7 @@ int main (void){
 	if (!(waitforkeypress() - '0'))
 	{Verify_Flash();
 		newline();
-		sendString("Hex_file_size:	0x");									//Confirm file sizes are all identical
+		sendString("Hex_file_size:	0x");								//Confirm file sizes are all identical
 		Hex_to_PC(cmd_counter); sendString("  d'loaded:  0x");
 		Hex_to_PC(prog_counter); sendString(" in:  0x");
 	Hex_to_PC(read_ops); sendString(" out\r\n");}
@@ -35,10 +35,10 @@ int main (void){
 	address_in_flash = 0;
 	for(int m = 0; m<4; m++){
 		switch(m){
-			case 0: address_in_flash = 2; break;								//Print Fuse byte Extended
-			case 1: address_in_flash = 3; break;								//Print Fuse byte High
-			case 2: address_in_flash = 0; break;								//Print Fuse byte
-		case 3: address_in_flash = 1; break;}								//Print lock byte
+			case 0: address_in_flash = 2; break;						//Print Fuse byte Extended
+			case 1: address_in_flash = 3; break;						//Print Fuse byte High
+			case 2: address_in_flash = 0; break;						//Print Fuse byte
+		case 3: address_in_flash = 1; break;}							//Print lock byte
 
 		Prog_mem_address_H = address_in_flash >> 8;
 		Prog_mem_address_L = address_in_flash;
@@ -77,11 +77,11 @@ void Verify_Flash (void){
 	Hex_to_PC (print_line); sendString("   ");
 
 	while(1){if(!(prog_counter_mem))break;								//print out loop starts here, exit when finished
-		while(1){															//Start reading the flash memory searching for the next hex command
+		while(1){														//Start reading the flash memory searching for the next hex command
 			Hex_cmd = readCMD(phys_address);
 			phys_address++;
-			if (phys_address == FlashSZ)break;									//No more memory? Quit if yes
-			if (Hex_cmd != 0xFFFF) break;										//If the hex command is 0xFFFF remain in this loop otherwise exit.
+			if (phys_address == FlashSZ)break;							//No more memory? Quit if yes
+			if (Hex_cmd != 0xFFFF) break;								//If the hex command is 0xFFFF remain in this loop otherwise exit.
 		LED_1_on;}
 		LED_1_off;
 		if (print_line == 0){
@@ -89,21 +89,21 @@ void Verify_Flash (void){
 		if(!(line_no & 0b00010000))toggle_led_1;	
 		Timer_T0_sub(T0_delay_5ms);}
 				
-		if(print_line && (!(line_no%print_line)))							//Print out required: Print all lines or just a selection
+		if(print_line && (!(line_no%print_line)))						//Print out required: Print all lines or just a selection
 		{newline(); Hex_to_PC ((phys_address-1)*2);
 			sendString("   "); line_counter++;
-			 Hex_to_PC (Hex_cmd); 								//Print first command in askii or hex
+			 Hex_to_PC (Hex_cmd); 										//Print first command in askii or hex
 		if(!(line_no & 0b00100000))toggle_led_1;}
 		
-		read_ops++;															//Value to be sent to PC for comparison with the hex filer size
-		prog_counter_mem--;													//"prog_counter_mem" decrements to zero when the end of the file is reached
+		read_ops++;														//Value to be sent to PC for comparison with the hex filer size
+		prog_counter_mem--;												//"prog_counter_mem" decrements to zero when the end of the file is reached
 		for(int m=0; m<7; m++){    										//Read the next seven locations in the flash memory
 			Hex_cmd = readCMD(phys_address);
 			phys_address++;
-			if(Hex_cmd == 0xFFFF)break;											//Read 0xFFFF: return to start of print out loop
+			if(Hex_cmd == 0xFFFF)break;									//Read 0xFFFF: return to start of print out loop
 			prog_counter_mem--;
 			if(print_line && (!(line_no%print_line)))
-			{Timer_T0_sub(T0_delay_5ms);										//5ms delay prevents PC from getting overwhelmed with characters
+			{Timer_T0_sub(T0_delay_5ms);								//5ms delay prevents PC from getting overwhelmed with characters
 			 Hex_to_PC (Hex_cmd);}
 			read_ops++;
 		if(phys_address==FlashSZ)break;}
