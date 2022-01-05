@@ -61,7 +61,7 @@ int main (void){
 	
 	Page_num = Page_num_string[1] * 10 + Page_num_string[0];						//Convert page number string to binary
 	
-	if (Page_num >= num_pages){wdt_enable(WDTO_15MS);										//page does not exist	
+	if (Page_num > num_pages){wdt_enable(WDTO_15MS);										//page does not exist	
 	while(1);}
 	
 	page_address = address_page_num(Page_num, start_address);						//Address in flash of required page
