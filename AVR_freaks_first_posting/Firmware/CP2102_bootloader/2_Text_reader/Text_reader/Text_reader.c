@@ -87,19 +87,19 @@ unsigned int address_page_num (unsigned char Next_page, int address_in_flash){
 	unsigned char  Page_num = 1;
 	unsigned int Page_address;
 
-if(Next_page == 1)return address_in_flash;
+if(Next_page == 1)return address_in_flash;												//Return start address of commentary
 
-	while(Page_num < Next_page){star_counter = 0;
-		while(1){
-			Prog_mem_address_H = address_in_flash >> 8;
+	while(Page_num < Next_page){star_counter = 0;										//Exit at start of required page
+		while(1){																		//Scroll through text commentary
+			Prog_mem_address_H = address_in_flash >> 8;	
 			Prog_mem_address_L = address_in_flash;
 			read_flash ();																//assembly subroutine
 			next_char = Flash_readout;													//result provided by assembly subroutine
 			address_in_flash -= 1;
-			if(next_char == '*'){star_counter += 1;
+			if(next_char == '*'){star_counter += 1;	
 				if(star_counter == 3)break;}
-			else star_counter = 0;}
-		Page_num += 1;}
+			else star_counter = 0;}														//Search for the string "***"
+		Page_num += 1;}																	//and increment page counter when it is found
 		Page_address = Prog_mem_address_H;
 	Page_address = (Page_address << 8) | Prog_mem_address_L;
 	return --Page_address;}
