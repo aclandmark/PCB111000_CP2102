@@ -1,9 +1,16 @@
+/*
+Bootloader for PCB111000_CP2102.
+Uploads user apps to the Atmega328
+Uploads commentary text file to Atmega328 flash when pcb is being set up.
+
+Loaded at address 0x7000
+Talks to three other applications
+	Random_pattern_generator	A default app that runs in the absence of a user app
+	Text_reader					Reads commentary text one page at a time
+	Hex_verification
 
 
-#include "Hex_txt_bootloader.h"
-#define Version "Hex_txt_bootloader_V1 "
-
-/*EEPROM locations
+EEPROM locations
 0x3FF	User cal
 0x3FE	User cal
 0x3FD	Default cal
@@ -13,9 +20,9 @@
 	Clear this register if POR is detected  (i.e. set to 0xFF)	Use clear_reset_control_reg
 	Note: There is no external reset facility. User control is enabled using a switch on PINC3.
 
-0x3FB	prog_counter high byte				Commands copied to the target flash
+0x3FB	prog_counter high byte				Number of commands copied to the target flash
 0x3FA	prog_counter low byte
-0x3F9	cmd_counter high byte				Commands processed by the UART ISR
+0x3F9	cmd_counter high byte				Number of commands processed by the UART ISR
 0x3F8	cmd_counter low byte
 0x3F7	One_wire_call
 0x3F6	One wire cal
@@ -26,7 +33,8 @@
 0x3F1	Watch dog timeout
 */
 
-
+#include "Hex_txt_bootloader.h"
+#define Version "Hex_txt_bootloader_V1 "
 
 #define setWD_RF_bit				eeprom_write_byte((uint8_t*)0x3FC, (eeprom_read_byte((uint8_t*)(0x3FC)) & (~1)));
 #define setRunBL_bit				eeprom_write_byte((uint8_t*)0x3FC, (eeprom_read_byte((uint8_t*)(0x3FC)) & (~2)));
@@ -36,9 +44,8 @@
 #define clear_RunBL_bit				eeprom_write_byte((uint8_t*)0x3FC, (eeprom_read_byte((uint8_t*)(0x3FC)) | 2));	
 #define switch_up					(PINC & 0x20)
 
-		
-
 char mode;																	//'h' for hex file, 't' for text file
+
 int main (void){ 															//Loaded at address 0x7000, the start of the boot loader section
 char keypress;
 
@@ -76,29 +83,29 @@ MCUCR = (1<<IVSEL);
 	else _delay_ms(100);
 	
 	switch(keypress){
-	case 'p':													//Program user application starting at address 09x0000
-		mode = 'h';												//Hex programming mode
-		hex_programmer();										//Run programmer subroutine
-		asm("jmp 0x6880");										//Run hex verification routine
+	case 'p':																//Program user application starting at address 09x0000
+		mode = 'h';															//Hex programming mode
+		hex_programmer();													//Run programmer subroutine
+		asm("jmp 0x6880");													//Run hex verification routine
 	
 		
-	case 'D':														//Delete first page of the user application
+	case 'D':																//Delete first page of the user application
 		Prog_mem_address_H = 0;
 		Prog_mem_address_L = 0;
 		Page_erase ();
 		keypress = 'r'; break;
 	
-	case 'r':													//Run user/default application
+	case 'r':																//Run user/default application
 		clear_RunBL_bit;
 		wdt_enable(WDTO_15MS);while(1);
 	
 	
-	case 'T':														//Program text document starting at address	0x5BFF									
-		mode = 't';													//Text programming mode
+	case 'T':																//Program text document starting at address	0x5BFF									
+		mode = 't';															//Text programming mode
 		text_programmer();
 		keypress = 0;break;
 	
-	case 't':														//Read text document
+	case 't':																//Read text document
 		asm("jmp 0x64C0");
 		
 	default: keypress = 0; break;
@@ -124,10 +131,10 @@ return 1;}
 
 
 	/***************************************************************************************************************************************************/
-	ISR(TIMER0_OVF_vect) {													//Timer0 times out and halts at the end of the text file download
-		if(text_started == 3)												//Ignore timeouts occurring before start of file download
-		{endoftext -= 1; TCCR0B = 0;TIMSK0 &= (~(1 << TOIE0));				//Shut timer down
-			inc_w_pointer; store[w_pointer] = 0;							//Append two '\0' chars to the end of the text
+	ISR(TIMER0_OVF_vect) {														//Timer0 times out and halts at the end of the text file download
+		if(text_started == 3)													//Ignore timeouts occurring before start of file download
+		{endoftext -= 1; TCCR0B = 0;TIMSK0 &= (~(1 << TOIE0));					//Shut timer down
+			inc_w_pointer; store[w_pointer] = 0;								//Append two '\0' chars to the end of the text
 		inc_w_pointer; store[w_pointer] = 0; }}
 
 
@@ -260,28 +267,28 @@ return 1;}
 
 
 		/**********************************************************************************************************************************/
-		void get_text(char Rx_askii_char){
+		void get_text(char Rx_askii_char){									//Parses text file download and saves results to a buffer store
 
-		if((Rx_askii_char != '*') && (!(text_started)))return;			//Ignore header text occuring before a line of * characters
-		if((Rx_askii_char == '*')&&(!(text_started)))					//The number of * characters is not critical only one is required
+		if((Rx_askii_char != '*') && (!(text_started)))return;				//Ignore header text occuring before a line of * characters
+		if((Rx_askii_char == '*')&&(!(text_started)))						//The number of * characters is not critical only one is required
 		{ text_started = 1;return;}
-		if((Rx_askii_char == '*')&&(text_started == 1))return; 			//Ignore carriage returns occurring before the first text string
+		if((Rx_askii_char == '*')&&(text_started == 1))return; 				//Ignore carriage returns occurring before the first text string
 		else {if (text_started == 1)text_started = 2;}
 		if((text_started == 2) && ((Rx_askii_char == '\r')
-		|| (Rx_askii_char == '\n')))return; else text_started = 3;		//Enter main area of text file containing strings to be written to flash
+		|| (Rx_askii_char == '\n')))return; else text_started = 3;			//Enter main area of text file containing strings to be written to flash
 
-		if ((Rx_askii_char == '\r') || (Rx_askii_char == '\n')){		//Check for '\r' and or '\n' and convert to a single '\0' character
+		if ((Rx_askii_char == '\r') || (Rx_askii_char == '\n')){			//Check for '\r' and or '\n' and convert to a single '\0' character
 		if (Rx_askii_char_old == '\0') return;
 		else Rx_askii_char = '\0';}
 
 		TCNT0 = 0;
 
-		if(!(txt_counter%2)){											//Each location in array "store" holds two askii characters
+		if(!(txt_counter%2)){												//Each location in array "store" holds two askii characters
 		store[w_pointer] = Rx_askii_char;
-		store[w_pointer] = store[w_pointer] << 8;}						//"w_pointer" gives address in array of the next free location
+		store[w_pointer] = store[w_pointer] << 8;}							//"w_pointer" gives address in array of the next free location
 		else{store[w_pointer] += Rx_askii_char;
 		inc_w_pointer;}
-		txt_counter = (txt_counter + 1);								//"txt_counter" gives the number of characters downloaded
+		txt_counter = (txt_counter + 1);									//"txt_counter" gives the number of characters downloaded
 		Rx_askii_char_old = Rx_askii_char;
 			
 		if(txt_counter & 0b10000000) {LEDs_on;}
@@ -294,36 +301,36 @@ return 1;}
 
 	/***********************************************************************************************************************************/
 			
-	void get_hex(char Rx_askii_char){
+	void get_hex(char Rx_askii_char){										//Parses hex file download and saves results to the buffer store
 
 	unsigned char Rx_Hex_char=0;
 	int local_pointer;
 				
-	if (Rx_askii_char == ':')counter = 0;							//First char of hex file is ':'
+	if (Rx_askii_char == ':')counter = 0;									//First char of hex file is ':'
 	else {if (Rx_askii_char <= '9')
-	Rx_Hex_char = Rx_askii_char - '0'; 								//Convert chars '0' to '9' to numbers 0 to 9
-	else Rx_Hex_char = Rx_askii_char - '7';}						//and chars 'A' to 'F' to numbers 0xA to 0xF
+	Rx_Hex_char = Rx_askii_char - '0'; 										//Convert chars '0' to '9' to numbers 0 to 9
+	else Rx_Hex_char = Rx_askii_char - '7';}								//and chars 'A' to 'F' to numbers 0xA to 0xF
 
 	switch (counter){
-	case 0x0:  	break;												//Detect -:- at start of new line
-	case 0x1: 	tempInt1 = Rx_Hex_char<<4;  break;					//Acquire first digit
-	case 0x2: 	tempInt1 += Rx_Hex_char;  							//Acquire second digit and combine with first to obtain number of commands in line
-	char_count = 9 + ((tempInt1) *2); 								//Calculate line length in terms of individual characters
-	local_pointer = w_pointer++; 									//Update pointer to array "store"
-	store[local_pointer] = tempInt1; break;							//Save the number of commands in the line to the array
-	case 0x3: 	tempInt1 = Rx_Hex_char<<4;  break;					//Next 4 digits give the address of the first command in the line
+	case 0x0:  	break;														//Detect -:- at start of new line
+	case 0x1: 	tempInt1 = Rx_Hex_char<<4;  break;							//Acquire first digit
+	case 0x2: 	tempInt1 += Rx_Hex_char;  									//Acquire second digit and combine with first to obtain number of commands in line
+	char_count = 9 + ((tempInt1) *2); 										//Calculate line length in terms of individual characters
+	local_pointer = w_pointer++; 											//Update pointer to array "store"
+	store[local_pointer] = tempInt1; break;									//Save the number of commands in the line to the array
+	case 0x3: 	tempInt1 = Rx_Hex_char<<4;  break;							//Next 4 digits give the address of the first command in the line
 	case 0x4:	tempInt1 += Rx_Hex_char; tempInt1=tempInt1<<8; 
-	break;															//Acquire second digit and combine it with first
-	case 0x5:	tempInt1 += Rx_Hex_char<<4;  break;					//Continue for third digit
-	case 0x6: 	tempInt1 += Rx_Hex_char; 							//Acquire final digit and calculate address of next command
-	local_pointer = w_pointer++; 									//Update pointers to array "store"
-	store[local_pointer] = tempInt1; break;							//Save address of next command to array "store"
-	case 0x7: 	break;												//chars 7 and 8 are not used
+	break;																	//Acquire second digit and combine it with first
+	case 0x5:	tempInt1 += Rx_Hex_char<<4;  break;							//Continue for third digit
+	case 0x6: 	tempInt1 += Rx_Hex_char; 									//Acquire final digit and calculate address of next command
+	local_pointer = w_pointer++; 											//Update pointers to array "store"
+	store[local_pointer] = tempInt1; break;									//Save address of next command to array "store"
+	case 0x7: 	break;														//chars 7 and 8 are not used
 	case 0x8: 	break;
 	default: 	break;}
 
-	if ((counter > 8)&&(counter < char_count)){						//Continue to acquire, decode and store commands
-	if ((counter & 0x03) == 0x01){tempInt1 = Rx_Hex_char<<4;}		//Note: Final two chars at the end of every line are ignored
+	if ((counter > 8)&&(counter < char_count)){								//Continue to acquire, decode and store commands
+	if ((counter & 0x03) == 0x01){tempInt1 = Rx_Hex_char<<4;}				//Note: Final two chars at the end of every line are ignored
 	if ((counter & 0x03) == 0x02)  {tempInt1 += Rx_Hex_char;}
 	if ((counter & 0x03) == 0x03)  {tempInt2 = Rx_Hex_char<<4;}
 	if ((counter & 0x03) == 0x0)  	{tempInt2+= Rx_Hex_char;
@@ -332,7 +339,7 @@ return 1;}
 	store[local_pointer] = tempInt1; cmd_counter++;}}
 
 	counter++;
-	w_pointer = w_pointer & 0x1F;	}  								//Overwrites array after 32 entries
+	w_pointer = w_pointer & 0x1F;	}  										//Overwrites array after 32 entries
 
 
 
