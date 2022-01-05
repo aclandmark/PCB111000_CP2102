@@ -1,79 +1,82 @@
 /*
-This program is used to verify that a text file has been successully loaded into flash.
-It is loaded onto the UNO device at address 0x6C70 and works alongside the "Hex_text_programmer".
-It is accessed by the "Hex_text_programmer" using an assembly jump command and a WDTout returns
-controll the the "Hex_text_programmer"
-The EEPROM is used to share variables between the two programs.
+
+The entire commentary is programmed into flash when PCB111000_CP2102 is initially set up
+
+The commentary is split into pages each of which starts with three * characters
+and ends with the string *\0
+Pages contain strings each of which is terminated in a null character
+
+This program prints out the strings one at a time from a particular page
+
+Three subroutines are included:
+address_page_num() returns the address of a particular page
+string_counter() returns the number of strings on the page
+print_string_num() Formats and prints out the strings
+
+The first string starts at location 0x607F, and occupies addresses below 0x607F.
+The application and its text strings share the flash from addresses zero to 0x607F (>23kB).
 
 Compile it using optimisation level s ONLY
 Rx/Tx work at 57.6k
-
-
-Note:
-
-This program contains two subroutines, one to count the number of text strings and one to print out
-any given string.  The first string starts at location 0x5C7F, and occupies addresses below 0x5C7F.
-The application and its text strings share the flash from addresses zero to 0x5C7F (>23kB).
-Each string is termintaed with the '\0' char and the final string is ternimated wth two '\0' chars.
-It is anticipated that these subroutines will be used in any user aplication putting strings in flash.
 */
 
 
 
 
 #include "Text_verification.h"
+
+
+int char_counter;																	//Counts the number of characters on a page
+
+
 unsigned int address_page_num (unsigned char, int);
-
-int char_counter;
-
-void newpara(void);
 char string_counter(int);
 void print_string_num(int, int);
+void newpara(void);
 void newline(void);
 
 
 int main (void){
 
-	char Num_strings;																		//The number of strings written to flash
-	int  page_address;
-	int start_address;
-	char next_string_no = 1;																	//Address in flash of first character in a string,
-	unsigned char Page_num_string[2];
-	unsigned char Page_num;
+	char Num_strings;																//The number of strings on a single page
+	int  page_address;																//The start address of the page
+	int start_address;																//The start address of the commentary																	
+	char next_string_no = 1;														//The number of the next string to be printed
+	unsigned char Page_num_string[2];												//Enables user to enters required page number 
+	unsigned char Page_num;															//Page number in binary form
 	char keypress;
-	
-	
-	char_counter = 0;																		//counts the number of characters in the text file (excludes \r & \n)
+		
+	char_counter = 0;																//counts the number of characters in the text file (excludes \r & \n)
 
 	sendString("\r\n");
-	start_address =	0x607F;//0x5E7F;																	//start address of text
+	start_address =	0x607F;															//start address of text
 	
 	sendString("Page number 1 - 12?\r\n\r\n\r\n\r\n");
 	
-	keypress = waitforkeypress();
+	keypress = waitforkeypress();													//User enters page number
 	Page_num_string[0] = keypress - '0';
 	Page_num_string[1] = 0;
-	if(isCharavailable(75)){Page_num_string[1] = Page_num_string[0]; Page_num_string[0] = receiveChar() - '0';}
-	Page_num = Page_num_string[1] * 10 + Page_num_string[0];
+	if(isCharavailable(75)){Page_num_string[1] = Page_num_string[0]; 
+	Page_num_string[0] = receiveChar() - '0';}
 	
-	if (Page_num >= 12){wdt_enable(WDTO_15MS);													//SW_reset after printing each string
+	Page_num = Page_num_string[1] * 10 + Page_num_string[0];						//Convert page number string to binary
+	
+	if (Page_num >= 12){wdt_enable(WDTO_15MS);										//page does not exist	
 	while(1);}
 	
-	page_address = address_page_num(Page_num, start_address);
-	Num_strings = string_counter(page_address);
-	
-	
-	
-	while(next_string_no <= Num_strings){
+	page_address = address_page_num(Page_num, start_address);						//Address in flash of required page
+	Num_strings = string_counter(page_address);										//Number of strings on the page
+		
+	while(next_string_no <= Num_strings){											//Exit when last string on page has been printed
 		
 	print_string_num(next_string_no++,page_address);
 	
-	waitforkeypress();	}
+	waitforkeypress();	}															//Wait for keypress before printing next string 
 
-sendString("No page!");
+	sendString("No page!");
 	
-		wdt_enable(WDTO_15MS);																	//SW_reset after printing each string
-		while(1);
+	wdt_enable(WDTO_15MS);															//Restore the p/r/t/D user prompt	
+	while(1);
 
 	return 1;}
 
@@ -94,7 +97,7 @@ if(Next_page == 1)return start_address;
 			next_char = Flash_readout;
 			start_address -= 1;
 			if(next_char == '*'){star_counter += 1;
-				if(star_counter == 3)break;}											//Should be 3
+				if(star_counter == 3)break;}
 			else star_counter = 0;}
 		Page_num += 1;}
 		Page_address = Prog_mem_address_H;
@@ -104,7 +107,7 @@ if(Next_page == 1)return start_address;
 
 
 
-char string_counter(int start_address){													//Scroll through text section of flash counting the '\0' chars
+char string_counter(int start_address){														//Scroll through text section of flash counting the '\0' chars
 	char counter = 0, next, previous = 0; 													//until '\0' '\0' is detected to indicate the end of the
 	while(1){																				//last string
 
