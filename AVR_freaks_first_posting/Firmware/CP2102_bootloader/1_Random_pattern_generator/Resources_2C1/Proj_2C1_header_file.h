@@ -2,7 +2,7 @@
 
 void UART_Tx_1_wire(void);
 void UART_Rx_1_wire(void);
-void I2C_Tx_any_segment(char, char);
+void One_wire_comms_any_segment(char, char);
 
 
 volatile char One_wire_Rx_char, One_wire_Tx_char;
@@ -71,24 +71,15 @@ PORTD = 0xFF;
 
 
 /************************************************************************************************************************************/
-#define setup_one_wire_comms 	PORTB &= (~(1 << PORTB4));
-
-#define clear_display 			One_wire_Tx_char = 'c';  UART_Tx_1_wire();
+#define setup_one_wire_comms 				PORTB &= (~(1 << PORTB4));
+#define clear_display 						One_wire_Tx_char = 'c';  UART_Tx_1_wire();
 #define set_up_pin_change_interrupt  		PCICR |= (1 << PCIE1); PCMSK1 |= (1 << PCINT13); 
-//#define pause_pin_change_interrupt  		PCICR &= (~(1 << PCIE1));
-//#define reinstate_pin_change_interrupt  	PCICR |= (1 << PCIE1);
-
-#define Reset_ATtiny1606 \
-One_wire_Tx_char = 'F'; UART_Tx_1_wire();
+#define Reset_ATtiny1606					One_wire_Tx_char = 'F'; UART_Tx_1_wire();
 
 
 
 /************************************************************************************************************************************/
-//#define Tx_clock_1     		200									//5K Baud rate	
-//#define Rx_clock_1     		200		
 #define Start_clock		    	OCR0A = 0; TCNT0 = 0;  TCCR0B = (1 << CS01);
-//#define Half_Rx_clock_1 	100
-
 
 #define setRunBL_bit		eeprom_write_byte((uint8_t*)0x3FC, (eeprom_read_byte((uint8_t*)(0x3FC)) & (~2)));
 #define PINB4_down			((PINB & 0x10)^0x10)
