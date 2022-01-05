@@ -1,9 +1,9 @@
 
 /*
-This program is used to verify that a hex file has been successully loaded into flash.
-It is loaded onto the UNO device at address 0x6200 and works alongside the "Hex_text_programmer".
+This program is used to verify that a hex file has been successfully loaded into flash.
+It is loaded onto the Atmega328 at address 0x6880 and works alongside the "Hex_text_programmer".
 It is accessed by the "Hex_text_programmer" using an assembly jump command and a WDTout returns
-controll the the "Hex_text_programmer"
+control the the "Hex_text_programmer"
 The EEPROM is used to share variables between the two programs
 
 Compile it using optimisation level s ONLY
