@@ -2,7 +2,7 @@
 
 
 
-void I2C_Tx_any_segment(char letter, char digit_num){
+void One_wire_comms_any_segment(char letter, char digit_num){
 One_wire_Tx_char = 'b';			UART_Tx_1_wire();
 One_wire_Tx_char = letter;		UART_Tx_1_wire(); 
 One_wire_Tx_char = digit_num;	UART_Tx_1_wire();}
