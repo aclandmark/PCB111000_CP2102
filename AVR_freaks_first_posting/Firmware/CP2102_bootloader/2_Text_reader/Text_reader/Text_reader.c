@@ -80,7 +80,7 @@ int main (void){
 
 	return 1;}
 
-/**********scrolls through commentary identifying start of next page by the "***" string*****************/
+/*************************scrolls through commentary identifying start of next page by the "***" string*************************/
 unsigned int address_page_num (unsigned char Next_page, int address_in_flash){
 	char star_counter;
 	char next_char;
@@ -106,43 +106,43 @@ if(Next_page == 1)return address_in_flash;
 
 
 
-/**********************Scrolls through page counting the null characters***********************************/
-char string_counter(int start_address){	
+/********************************Scrolls through page counting the null characters******************************************/
+char string_counter(int address_in_flash){	
 	char counter = 0, next, previous = 0; 
 	while(1){	
 
-		Prog_mem_address_H = start_address >> 8;
-		Prog_mem_address_L = start_address;
+		Prog_mem_address_H = address_in_flash >> 8;
+		Prog_mem_address_L = address_in_flash;
 		read_flash ();	
 		next = Flash_readout;	
 		
-		if(next == 0){counter += 1; if ((previous == '*')) return counter-1;}
+		if(next == 0){counter += 1; if ((previous == '*')) return counter-1;}			//End of page reached
 		else char_counter += 1;															//Not used in this version
 
 		previous = next;
-	start_address -= 1;}}
+	address_in_flash -= 1;}}
 
 
 
 
 
-		/**************Scrolls through page to start of required string**************************************************/
-		void print_string_num(int text_num, int page_address){
+/***************************Scrolls through page to start of required string********************************************/
+		void print_string_num(int text_num, int address_in_flash){
 			int null_counter = 1;
 			char next,line_length = 0;
 
 			while(1){
 				if(null_counter == text_num)break;
-				Prog_mem_address_H = page_address >> 8;
-				Prog_mem_address_L = page_address;
+				Prog_mem_address_H = address_in_flash >> 8;
+				Prog_mem_address_L = address_in_flash;
 				read_flash ();
 				next = Flash_readout;
 				if(next == 0)null_counter += 1;
-			page_address -= 1;}
+			address_in_flash -= 1;}
 
 			while(1){
-				Prog_mem_address_H = page_address >> 8;
-				Prog_mem_address_L = page_address;
+				Prog_mem_address_H = address_in_flash >> 8;
+				Prog_mem_address_L = address_in_flash;
 				read_flash ();
 				if(Flash_readout){sendChar(Flash_readout); 
 				if(Flash_readout == ':'){sendString("\t\t");line_length += 20;}
@@ -150,7 +150,7 @@ char string_counter(int start_address){
 				line_length += 1;
 				if(((line_length >= 90) && (Flash_readout == ' ')) || (Flash_readout == '\t'))
 				{line_length = 0; sendString("\r\n\r\n");}
-			page_address -= 1; }
+			address_in_flash -= 1; }
 			newpara();	}
 
 
