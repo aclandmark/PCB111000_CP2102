@@ -124,9 +124,9 @@ return 1;}
 
 
 	/***************************************************************************************************************************************************/
-	ISR(TIMER0_OVF_vect) {												//Timer0 times out and halts at the end of the text file download
+	ISR(TIMER0_OVF_vect) {													//Timer0 times out and halts at the end of the text file download
 		if(text_started == 3)												//Ignore timeouts occurring before start of file download
-		{endoftext -= 1; TCCR0B = 0;TIMSK0 &= (~(1 << TOIE0));		//Shut timer down
+		{endoftext -= 1; TCCR0B = 0;TIMSK0 &= (~(1 << TOIE0));				//Shut timer down
 			inc_w_pointer; store[w_pointer] = 0;							//Append two '\0' chars to the end of the text
 		inc_w_pointer; store[w_pointer] = 0; }}
 
@@ -134,209 +134,205 @@ return 1;}
 
 
 		/***************************************************************************************************************************************************/
-		void text_programmer (void){
-		int Text_start_address = 0x607E;//0x5E7E;									//address_in_flash;	
+	void text_programmer (void){
+	int Text_start_address = 0x607E;											//address_in_flash;	
 
-			w_pointer = 0; r_pointer = 0;										//Initialise variables
-			text_started =0; endoftext =3;txt_counter = 0;
-			Rx_askii_char_old = '0';
+	w_pointer = 0; r_pointer = 0;												//Initialise variables
+	text_started =0; endoftext =3;txt_counter = 0;
+	Rx_askii_char_old = '0';
 
-			sendString("\r\nText_F?\r\n");
+	sendString("\r\nText_F?\r\n");
 			
-			Timer_T0_sub_with_interrupt(5,0);									//Start Timer0 with interrupt
-			UCSR0B |= (1<<RXCIE0); 											//Activate UART interrupt
-			sei();																//Set global interrupt
+	Timer_T0_sub_with_interrupt(5,0);											//Start Timer0 with interrupt
+	UCSR0B |= (1<<RXCIE0); 														//Activate UART interrupt
+	sei();																		//Set global interrupt
 
-			address_in_flash = Text_start_address;								//First character will be stored at 0x5BFF not 0x5BFE
+	address_in_flash = Text_start_address;										//First character will be stored at 0x607F not 0x607E
 
-			while (1){
-				while (r_pointer == w_pointer);										//wait for w_pointer to be incremented
+	while (1){
+	while (r_pointer == w_pointer);												//wait for w_pointer to be incremented
 
-				if(endoftext != 3)endoftext -= 1;									//Indicates that the timer has been shut down
+	if(endoftext != 3)endoftext -= 1;											//Indicates that the timer has been shut down
 
-				address_in_sram = (int)(store + r_pointer);////////////////////								//Address in SRAM of characters to be written to flash
-				loc_in_mem_H = address_in_sram >> 8;								//Variables used to pass the address to the assembly routines
-				loc_in_mem_L = address_in_sram;
+	address_in_sram = (int)(store + r_pointer);									//Address in SRAM of characters to be written to flash
+	loc_in_mem_H = address_in_sram >> 8;										//Variables used to pass the address to the assembly routines
+	loc_in_mem_L = address_in_sram;
 
-				Prog_mem_address_H = address_in_flash >> 8;							//Pass address in flash to the assembly routines
-				Prog_mem_address_L = address_in_flash;								//at which the text is to be written
+	Prog_mem_address_H = address_in_flash >> 8;									//Pass address in flash to the assembly routines
+	Prog_mem_address_L = address_in_flash;										//at which the text is to be written
 
-				write_to_page_buffer();												//assembly routine (note: these always leave the global interrupt flag set)
+	write_to_page_buffer();														//assembly routine (note: these always leave the global interrupt flag set)
 				
-				address_in_flash -= 2;												//next address in flash
-				store[r_pointer] = 0;												//clear the contents of the location in array store
-				inc_r_pointer;														//restore the value of "r_pointer" to that of "w_pointer"
+	address_in_flash -= 2;														//next address in flash
+	store[r_pointer] = 0;														//clear the contents of the location in array store
+	inc_r_pointer;																//restore the value of "r_pointer" to that of "w_pointer"
 
+	if (!((Text_start_address - address_in_flash)%128)){						//If page buffer is full
+	address_in_flash += 2;														//Get the address of the first entry in the page
+	Prog_mem_address_H = address_in_flash >> 8;									//Prepare the address for the assembly routines
+	Prog_mem_address_L = address_in_flash;
 
-				if (!((Text_start_address - address_in_flash)%128)){					//If page buffer is full
-					address_in_flash += 2;												//Get the address of the first entry in the page
-					Prog_mem_address_H = address_in_flash >> 8;							//Prepare the address for the assembly routines
-					Prog_mem_address_L = address_in_flash;
+	Page_erase ();																//Assembly routine
+	page_write();																//Assembly routine
+	address_in_flash -=2;}														//Restore address_in_flash
+	if(!(endoftext)) break;}													//Break when two '\0' chars have been appended to text stored in the array
 
-					Page_erase ();														//Assembly routine
-					page_write();														//Assembly routine
-				address_in_flash -=2;}												//Restore address_in_flash
-			if(!(endoftext)) break;}											//Break when two '\0' chars have been appended to text stored in the array
+	if((Text_start_address - address_in_flash)%128){							//Write remaining chars in partially full page buffer
+	address_in_flash += (Text_start_address - address_in_flash)%128 - 126;		//Get address of first character in the page
 
-			if((Text_start_address - address_in_flash)%128){									//Write remaining chars in partially full page buffer
-				address_in_flash += (Text_start_address - address_in_flash)%128 - 126;			//Get address of first character in the page
+	Prog_mem_address_H = address_in_flash >> 8;
+	Prog_mem_address_L = address_in_flash;
 
-				Prog_mem_address_H = address_in_flash >> 8;
-				Prog_mem_address_L = address_in_flash;
-
-				Page_erase ();
-				page_write();
-			}UCSR0B &= (~(1<<RXCIE0));cli();
-			clear_read_block();													//Subroutine provided in assembly file  (Not required for mode 't'??)
-			eeprom_write_byte((uint8_t*)0x3F4,0x40);							//Reset string pointer
-		LED_2_off;}
+	Page_erase ();
+	page_write();
+	}UCSR0B &= (~(1<<RXCIE0));cli();
+	clear_read_block();															//Subroutine provided in assembly file  (Not required for mode 't'??)
+	eeprom_write_byte((uint8_t*)0x3F4,0x40);									//Reset string pointer
+	LED_2_off;}
 		
 		
 		/*********************************************************************************************************/
 		void hex_programmer(void){
 
-			int record_counter = 0;
+		int record_counter = 0;
 
-			PageSZ = 0x40; PAmask = 0x3FC0;										//Define flash memory parameters
+		PageSZ = 0x40; PAmask = 0x3FC0;										//Define flash memory parameters
 
-			prog_led_control = 0;  record_length_old=0; prog_counter = 0;		//Initialise variables
-			Flash_flag = 0;  HW_address = 0;  section_break = 0; orphan = 0;
-			w_pointer = 0; r_pointer = 0; short_record=0;  cmd_counter = 0;
+		prog_led_control = 0;  record_length_old=0; prog_counter = 0;		//Initialise variables
+		Flash_flag = 0;  HW_address = 0;  section_break = 0; orphan = 0;
+		w_pointer = 0; r_pointer = 0; short_record=0;  cmd_counter = 0;
 
-			sendString("\r\nHex_F?");
+		sendString("\r\nHex_F?");
+
+		UCSR0B |= (1<<RXCIE0); sei();										//Receive interrupts now active
+
+		new_record();  														//Start reading first record which is being downloaded to array "store"
+		start_new_code_block(); 											//Initialise new programming block (usually starts at address zero but not exclusively so)
+		Program_record();													//Copy commands from array "store" to the page_buffer
 			
+		while(1){
+		new_record();														//Continue reading subsequent records
+		if (record_length==0)break; 										//Escape when end of hex file is reached
 
-			UCSR0B |= (1<<RXCIE0); sei();										//Receive interrupts now active
-
-			new_record();  														//Start reading first record which is being downloaded to array "store"
-			start_new_code_block(); 											//Initialise new programming block (usually starts at address zero but not exclusivle so)
-			Program_record();													//Copy commands from array "store" to the page_buffer
-			
-			
-			while(1){
-				new_record();														//Continue reading subsequent records
-				if (record_length==0)break; 										//Escape when end of hex file is reached
-
-
-				if (Hex_address == HW_address){										//Normal code: Address read from hex file equals HW address and lines contains 8 commands
-					switch(short_record){
-						case 0: if (space_on_page == (PageSZ - line_offset))				//If starting new page
-						{page_address = (Hex_address & PAmask);}break;			//get new page address
+		if (Hex_address == HW_address){										//Normal code: Address read from hex file equals HW address and lines contains 8 commands
+		switch(short_record){
+		case 0: if (space_on_page == (PageSZ - line_offset))				//If starting new page
+		{page_address = (Hex_address & PAmask);}break;						//get new page address
 						
 
-						case 1:	start_new_code_block();										//Short line with no break in file (often found in WinAVR hex files).
-					short_record=0;break;}}
-					
-					
-					if(Hex_address != HW_address){										//Break in file
-						if (section_break){												//Section break: always found when two hex files are combined into one
-							if((Flash_flag) && (!(orphan)))
-							{write_page_SUB(page_address);}								//Burn contents of the partially full page buffer to flash
-						if(orphan) write_page_SUB(page_address + PageSZ);} 		//Burn outstanding commands to the next page in flash
+		case 1:	start_new_code_block();										//Short line with no break in file (indicates start of text string section).
+		short_record=0;break;}}
 						
-						if(page_break)													//In practice page breaks and short jumps are rarely if ever found
-						{if((Flash_flag) && (!(orphan)))							//Burn contents of the partially filled page buffer to flash
-							{write_page_SUB(page_address);}
-						orphan = 0;}
+		if(Hex_address != HW_address){										//Break in file
+		if (section_break){													//Section break: always found when two hex files are combined into one
+		if((Flash_flag) && (!(orphan)))
+		{write_page_SUB(page_address);}										//Burn contents of the partially full page buffer to flash
+		if(orphan) write_page_SUB(page_address + PageSZ);} 					//Burn outstanding commands to the next page in flash
 						
-						start_new_code_block();											//A new code block is always required where there is a break in the hex file.
-					short_record=0;}
+		if(page_break)														//In practice page breaks and short jumps are rarely if ever found
+		{if((Flash_flag) && (!(orphan)))									//Burn contents of the partially filled page buffer to flash
+		{write_page_SUB(page_address);}
+		orphan = 0;}
+						
+		start_new_code_block();												//A new code block is always required where there is a break in the hex file.
+		short_record=0;}
 					
-					Program_record();													//Continue filling page_buffer
+		Program_record();													//Continue filling page_buffer
 
-				if (!(++record_counter%10))sendChar('*');}
+		if (!(++record_counter%10))sendChar('*');}
 
-				UCSR0B &= (~(1<<RXCIE0));	cli();									//download complete, disable UART Rx interrupt
-				LEDs_off;
-				while(1){if (isCharavailable(5)==1)receiveChar();else break;}		//Clear last few characters of hex file
+		UCSR0B &= (~(1<<RXCIE0));	cli();									//download complete, disable UART Rx interrupt
+		LEDs_off;
+		while(1){if (isCharavailable(5)==1)receiveChar();else break;}		//Clear last few characters of hex file
 				
-				if((Flash_flag) && (!(orphan))){write_page_SUB(page_address);}	//Burn final contents of page_buffer to flash
-				if(orphan) {write_page_SUB(page_address + PageSZ);}cli();
+		if((Flash_flag) && (!(orphan))){write_page_SUB(page_address);}		//Burn final contents of page_buffer to flash
+		if(orphan) {write_page_SUB(page_address + PageSZ);}cli();
+
+		clear_read_block();													//Subroutine provided in assembly file
+
+		eeprom_write_byte((uint8_t*)0x3FB, prog_counter >> 8);				//Save "prog_counter"		Commands counted by the programmer
+		eeprom_write_byte((uint8_t*)0x3FA, prog_counter);
+
+		eeprom_write_byte((uint8_t*)0x3F9, cmd_counter >> 8);				//Save "cmd_counter"		Commands counted by the ISR
+		eeprom_write_byte((uint8_t*)0x3F8, cmd_counter);}
 
 
-				clear_read_block();													//Subroutine provided in assembly file
-
-				eeprom_write_byte((uint8_t*)0x3FB, prog_counter >> 8);				//Save "prog_counter"		Commands counted by the programmer
-				eeprom_write_byte((uint8_t*)0x3FA, prog_counter);
-
-				eeprom_write_byte((uint8_t*)0x3F9, cmd_counter >> 8);				//Save "cmd_counter"		Commands counted by the ISR
-			eeprom_write_byte((uint8_t*)0x3F8, cmd_counter);}
 
 
+		/**********************************************************************************************************************************/
+		void get_text(char Rx_askii_char){
 
+		if((Rx_askii_char != '*') && (!(text_started)))return;			//Ignore header text occuring before a line of * characters
+		if((Rx_askii_char == '*')&&(!(text_started)))					//The number of * characters is not critical only one is required
+		{ text_started = 1;return;}
+		if((Rx_askii_char == '*')&&(text_started == 1))return; 			//Ignore carriage returns occurring before the first text string
+		else {if (text_started == 1)text_started = 2;}
+		if((text_started == 2) && ((Rx_askii_char == '\r')
+		|| (Rx_askii_char == '\n')))return; else text_started = 3;		//Enter main area of text file containing strings to be written to flash
 
-			/*********************************************************************************************************/
-			void get_text(char Rx_askii_char){
+		if ((Rx_askii_char == '\r') || (Rx_askii_char == '\n')){		//Check for '\r' and or '\n' and convert to a single '\0' character
+		if (Rx_askii_char_old == '\0') return;
+		else Rx_askii_char = '\0';}
 
-				if((Rx_askii_char != '*') && (!(text_started)))return;			//Ignore header text occuring before a line of * characters
-				if((Rx_askii_char == '*')&&(!(text_started)))						//The number of * characters is not critical only one is required
-				{ text_started = 1;return;}
-				if((Rx_askii_char == '*')&&(text_started == 1))return; 			//Ignore carriage returns occurring before the first text string
-				else {if (text_started == 1)text_started = 2;}
-				if((text_started == 2) && ((Rx_askii_char == '\r')
-				|| (Rx_askii_char == '\n')))return; else text_started = 3;		//Enter main area of text file containing strings to be written to flash
+		TCNT0 = 0;
 
-				if ((Rx_askii_char == '\r') || (Rx_askii_char == '\n')){			//Check for '\r' and or '\n' and convert to a single '\0' character
-					if (Rx_askii_char_old == '\0') return;
-				else Rx_askii_char = '\0';}
-
-				TCNT0 = 0;
-
-				if(!(txt_counter%2)){												//Each location in array "store" holds two askii characters
-					store[w_pointer] = Rx_askii_char;
-				store[w_pointer] = store[w_pointer] << 8;}							//"w_pointer" gives address in array of the next free location
-				else{store[w_pointer] += Rx_askii_char;
-				inc_w_pointer;}
-				txt_counter = (txt_counter + 1);									//"txt_counter" gives the number of characters downloaded
-			Rx_askii_char_old = Rx_askii_char;
+		if(!(txt_counter%2)){											//Each location in array "store" holds two askii characters
+		store[w_pointer] = Rx_askii_char;
+		store[w_pointer] = store[w_pointer] << 8;}						//"w_pointer" gives address in array of the next free location
+		else{store[w_pointer] += Rx_askii_char;
+		inc_w_pointer;}
+		txt_counter = (txt_counter + 1);								//"txt_counter" gives the number of characters downloaded
+		Rx_askii_char_old = Rx_askii_char;
 			
-			if(txt_counter & 0b10000000) {LEDs_on;}////////////////////////////////////////////////////////////////////////////////////////
-			else {LEDs_off;}
+		if(txt_counter & 0b10000000) {LEDs_on;}
+		else {LEDs_off;}}
 			
 			
-			}
+			
 
 
 
-			/*********************************************************************************************************/
-			void get_hex(char Rx_askii_char){
+	/***********************************************************************************************************************************/
+			
+	void get_hex(char Rx_askii_char){
 
-				unsigned char Rx_Hex_char=0;
-				int local_pointer;
+	unsigned char Rx_Hex_char=0;
+	int local_pointer;
 				
-				if (Rx_askii_char == ':')counter = 0;										//First char of hex file is ':'
-				else {if (Rx_askii_char <= '9')
-					Rx_Hex_char = Rx_askii_char - '0'; 										//Convert chars '0' to '9' to numbers 0 to 9
-				else Rx_Hex_char = Rx_askii_char - '7';}								//and chars 'A' to 'F' to numbers 0xA to 0xF
+	if (Rx_askii_char == ':')counter = 0;							//First char of hex file is ':'
+	else {if (Rx_askii_char <= '9')
+	Rx_Hex_char = Rx_askii_char - '0'; 								//Convert chars '0' to '9' to numbers 0 to 9
+	else Rx_Hex_char = Rx_askii_char - '7';}						//and chars 'A' to 'F' to numbers 0xA to 0xF
 
-				switch (counter){
-					case 0x0:  	break;															//Detect -:- at start of new line
-					case 0x1: 	tempInt1 = Rx_Hex_char<<4;  break;								//Acquire first digit
-					case 0x2: 	tempInt1 += Rx_Hex_char;  										//Acquire second digit and combine with first to obtain number of commands in line
-					char_count = 9 + ((tempInt1) *2); 								//Calculate line length in terms of individual characters
-					local_pointer = w_pointer++; 									//Update pointer to array "store"
-					store[local_pointer] = tempInt1; break;							//Save the number of commands in the line to the array
-					case 0x3: 	tempInt1 = Rx_Hex_char<<4;  break;								//Next 4 digits give the address of the first command in the line
-					case 0x4:	tempInt1 += Rx_Hex_char; tempInt1=tempInt1<<8; break;			//Acquire second digit and combine it with first
-					case 0x5:	tempInt1 += Rx_Hex_char<<4;  break;							//Continue for third digit
-					case 0x6: 	tempInt1 += Rx_Hex_char; 										//Acquire final digit and calculate address of next command
-					local_pointer = w_pointer++; 									//Update pointers to array "store"
-					store[local_pointer] = tempInt1; break;							//Save address of next command to array "store"
-					case 0x7: 	break;															//chars 7 and 8 are not used
-					case 0x8: 	break;
-				default: 	break;}
+	switch (counter){
+	case 0x0:  	break;												//Detect -:- at start of new line
+	case 0x1: 	tempInt1 = Rx_Hex_char<<4;  break;					//Acquire first digit
+	case 0x2: 	tempInt1 += Rx_Hex_char;  							//Acquire second digit and combine with first to obtain number of commands in line
+	char_count = 9 + ((tempInt1) *2); 								//Calculate line length in terms of individual characters
+	local_pointer = w_pointer++; 									//Update pointer to array "store"
+	store[local_pointer] = tempInt1; break;							//Save the number of commands in the line to the array
+	case 0x3: 	tempInt1 = Rx_Hex_char<<4;  break;					//Next 4 digits give the address of the first command in the line
+	case 0x4:	tempInt1 += Rx_Hex_char; tempInt1=tempInt1<<8; 
+	break;															//Acquire second digit and combine it with first
+	case 0x5:	tempInt1 += Rx_Hex_char<<4;  break;					//Continue for third digit
+	case 0x6: 	tempInt1 += Rx_Hex_char; 							//Acquire final digit and calculate address of next command
+	local_pointer = w_pointer++; 									//Update pointers to array "store"
+	store[local_pointer] = tempInt1; break;							//Save address of next command to array "store"
+	case 0x7: 	break;												//chars 7 and 8 are not used
+	case 0x8: 	break;
+	default: 	break;}
 
-				if ((counter > 8)&&(counter < char_count)){								//Continue to acquire, decode and store commands
-					if ((counter & 0x03) == 0x01){tempInt1 = Rx_Hex_char<<4;}					//Note: Final two chars at the end of every line are ignored
-					if ((counter & 0x03) == 0x02)  {tempInt1 += Rx_Hex_char;}
-					if ((counter & 0x03) == 0x03)  {tempInt2 = Rx_Hex_char<<4;}
-					if ((counter & 0x03) == 0x0)  	{tempInt2+= Rx_Hex_char;
-						tempInt2=tempInt2<<8;tempInt1+=tempInt2;
-						local_pointer = w_pointer++;
-					store[local_pointer] = tempInt1; cmd_counter++;}}
+	if ((counter > 8)&&(counter < char_count)){						//Continue to acquire, decode and store commands
+	if ((counter & 0x03) == 0x01){tempInt1 = Rx_Hex_char<<4;}		//Note: Final two chars at the end of every line are ignored
+	if ((counter & 0x03) == 0x02)  {tempInt1 += Rx_Hex_char;}
+	if ((counter & 0x03) == 0x03)  {tempInt2 = Rx_Hex_char<<4;}
+	if ((counter & 0x03) == 0x0)  	{tempInt2+= Rx_Hex_char;
+	tempInt2=tempInt2<<8;tempInt1+=tempInt2;
+	local_pointer = w_pointer++;
+	store[local_pointer] = tempInt1; cmd_counter++;}}
 
-					counter++;
-				w_pointer = w_pointer & 0x1F;	}  											//Overwrites array after 32 entries
+	counter++;
+	w_pointer = w_pointer & 0x1F;	}  								//Overwrites array after 32 entries
 
 
 
