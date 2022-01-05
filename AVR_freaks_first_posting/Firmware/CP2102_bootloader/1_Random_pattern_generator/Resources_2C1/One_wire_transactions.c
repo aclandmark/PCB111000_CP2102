@@ -55,7 +55,7 @@ void rst_cntr(void){ 										//Interrogates vertical switch presses
 	else{
 		LED_1_on; LED_2_on;
 		_delay_ms(500);
-		if((PINC5_down))								//Wait for switch to be released
+		if((PINC5_down))									//Wait for switch to be released
 		{One_wire_Tx_char = 'G'; UART_Tx_1_wire(); 
 		while(PINC5_down);}
 	}
