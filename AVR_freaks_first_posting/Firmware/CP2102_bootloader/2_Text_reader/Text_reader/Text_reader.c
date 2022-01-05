@@ -80,22 +80,22 @@ int main (void){
 
 	return 1;}
 
-
-unsigned int address_page_num (unsigned char Next_page, int start_address){
+/**********scrolls through commentary identifying start of next page by the "***" string*****************/
+unsigned int address_page_num (unsigned char Next_page, int address_in_flash){
 	char star_counter;
 	char next_char;
 	unsigned char  Page_num = 1;
 	unsigned int Page_address;
 
-if(Next_page == 1)return start_address;
+if(Next_page == 1)return address_in_flash;
 
 	while(Page_num < Next_page){star_counter = 0;
 		while(1){
-			Prog_mem_address_H = start_address >> 8;
-			Prog_mem_address_L = start_address;
-			read_flash ();
-			next_char = Flash_readout;
-			start_address -= 1;
+			Prog_mem_address_H = address_in_flash >> 8;
+			Prog_mem_address_L = address_in_flash;
+			read_flash ();																//assembly subroutine
+			next_char = Flash_readout;													//result provided by assembly subroutine
+			address_in_flash -= 1;
 			if(next_char == '*'){star_counter += 1;
 				if(star_counter == 3)break;}
 			else star_counter = 0;}
@@ -106,18 +106,18 @@ if(Next_page == 1)return start_address;
 
 
 
-
-char string_counter(int start_address){														//Scroll through text section of flash counting the '\0' chars
-	char counter = 0, next, previous = 0; 													//until '\0' '\0' is detected to indicate the end of the
-	while(1){																				//last string
+/**********************Scrolls through page counting the null characters***********************************/
+char string_counter(int start_address){	
+	char counter = 0, next, previous = 0; 
+	while(1){	
 
 		Prog_mem_address_H = start_address >> 8;
 		Prog_mem_address_L = start_address;
-		read_flash ();																			//assembly subroutine
-		next = Flash_readout;																	//result provided by assembly subroutine
+		read_flash ();	
+		next = Flash_readout;	
 		
 		if(next == 0){counter += 1; if ((previous == '*')) return counter-1;}
-		else char_counter += 1;
+		else char_counter += 1;															//Not used in this version
 
 		previous = next;
 	start_address -= 1;}}
@@ -126,10 +126,10 @@ char string_counter(int start_address){														//Scroll through text secti
 
 
 
-		/***************************************************************************************************************************************************/
-		void print_string_num(int text_num, int page_address){									//scroll through text section of flash counting '\0' chars
-			int null_counter = 1; 																	//until the start of the required string
-			char next,line_length = 0;																//Print the characters until '\0' is detected
+		/**************Scrolls through page to start of required string**************************************************/
+		void print_string_num(int text_num, int page_address){
+			int null_counter = 1;
+			char next,line_length = 0;
 
 			while(1){
 				if(null_counter == text_num)break;
