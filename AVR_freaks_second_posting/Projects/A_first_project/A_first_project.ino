@@ -23,8 +23,8 @@
 
 
 
-**************Example 2*************************************************/
-int main (void) {
+**************Example 2*************************************************
+  int main (void) {
   unsigned int PORT_1, m = 0, n = 0;
 
   setup_328_HW;
@@ -37,31 +37,34 @@ int main (void) {
     if (m == 0)n = 0;
   }
   return 1;
+  }
+
+
+
+
+***************Example 3************************************************/
+int main (void) {
+  unsigned int PORT_1, PORT_2;
+
+  setup_328_HW;
+  sei();
+  while (1) {
+    PORT_1 = 1;
+    PORT_2 = 0x8000;
+    for (int m = 0; m <= 15; m++) {
+      One_wire_Tx_2_integers(PORT_1, PORT_2);
+      _delay_ms(30);
+      PORT_1 = PORT_1 << 1;
+      PORT_2 = PORT_2 >> 1;
+    }
+  }
+  return 1;
 }
 
 
 
 
-/***************Example 3************************************************
-  int main (void){
-  unsigned int PORT_1, PORT_2;
-
-  setup_328_HW;
-  sei();
-  while(1){
-  PORT_1 = 1;
-  PORT_2 = 0x8000;
-  for(int m = 0; m <=15; m++){
-  One_wire_Tx_2_integers(PORT_1, PORT_2);
-  _delay_ms(30);
-  PORT_1 = PORT_1 << 1;
-  PORT_2 = PORT_2 >> 1;}}
-  return 1;}
-
-
-
-
-***************Example 4************************************************
+/***************Example 4************************************************
   int main (void){
   unsigned long PORT_1, PORT_2;
 
