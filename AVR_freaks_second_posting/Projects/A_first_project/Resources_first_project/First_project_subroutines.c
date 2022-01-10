@@ -14,10 +14,11 @@ One_wire_Tx_char = NUM_2 >> 8;  UART_Tx_1_wire();
 reinstate_pin_change_interrupt_on_PC5;}
 
 
-unsigned int PRN_16bit_GEN(unsigned int start){
+unsigned int PRN_16bit_GEN(unsigned int start){							//Pseuo random numbrer generation: Google  LFSR for details
 unsigned int bit, lfsr;
 
-if(!(start)) lfsr = (eeprom_read_byte((uint8_t*)(0x3F3)) << 8) + eeprom_read_byte((uint8_t*)(0x3F2));
+if(!(start)) lfsr = (eeprom_read_byte((uint8_t*)(0x3F3)) << 8) 
++ eeprom_read_byte((uint8_t*)(0x3F2));
 else lfsr = start;
 bit = (( lfsr >> 0) ^ (lfsr >> 2) ^ (lfsr >> 3) ^ (lfsr >> 5)) & 1;
 lfsr = (lfsr >> 1) | (bit << 15);
