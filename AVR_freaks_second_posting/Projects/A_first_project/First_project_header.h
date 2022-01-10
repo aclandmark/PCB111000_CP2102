@@ -5,6 +5,7 @@
 
 
 void One_wire_Tx_2_integers(unsigned int, unsigned int);
+unsigned int PRN_16bit_GEN(unsigned int);
 char User_response;
 
 
