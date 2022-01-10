@@ -131,8 +131,8 @@
 
 
 
-******************Example 7*********************************************/
-int main (void) {
+******************Example 7*********************************************
+  int main (void) {
   unsigned int PORT_1 = 1;
   char m = 1;
   char overflow = 0;
@@ -150,25 +150,28 @@ int main (void) {
     if (PORT_1 & 0x8000) overflow = 1;
     else overflow = 0;
   }
-}
+  }
 
 
 
 
-/*****************Example 8**********************************************
-  int main (void) {
+*****************Example 8**********************************************/
+int main (void) {
   unsigned int random_num;
   long PORT_1 = 1, PORT_2 = 1;
 
   setup_328_HW;
   while (1) {
-  random_num = (PRN_16bit_GEN(0)) % 3;
-  for (int m = 0; m < random_num; m++)
-  { if (!(PORT_1 = ((PORT_1 * 2) % 0x10000)))
-  PORT_1= 1; }
-  if (!(PORT_2 = ((PORT_2 * 2) % 0x10000)))
-  PORT_2= 1;
-  One_wire_Tx_2_integers(PORT_1, PORT_2);
-  Timer_T2_10mS_delay_x_m(4);}}
+    random_num = (PRN_16bit_GEN(0)) % 3;
+    for (int m = 0; m < random_num; m++)
+    { if (!(PORT_1 = ((PORT_1 * 2) % 0x10000)))
+        PORT_1 = 1;
+    }
+    if (!(PORT_2 = ((PORT_2 * 2) % 0x10000)))
+      PORT_2 = 1;
+    One_wire_Tx_2_integers(PORT_1, PORT_2);
+    Timer_T2_10mS_delay_x_m(4);
+  }
+}
 
-*****************************************************************/
+/*****************************************************************/
