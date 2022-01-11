@@ -82,7 +82,7 @@ void String_to_PC(const char s[]){
 int i = 0;
 while(i < 200){
 if(s[i] == '\0') break;
-sendChar(s[i++]);}}
+Char_to_PC(s[i++]);}}
 
 
 
