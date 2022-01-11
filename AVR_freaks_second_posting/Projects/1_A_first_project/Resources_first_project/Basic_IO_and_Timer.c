@@ -23,10 +23,10 @@ void USART_init (unsigned char, unsigned char);
 void Timer_T2_10mS_delay_x_m(int);
 void Timer_T2_sub(char, unsigned char);
 char isCharavailable (int);
-char receiveChar(void);
+char Char_from_PC(void);
 char waitforkeypress(void);
-void sendString(const char*);
-void sendChar(char);
+void String_to_PC(const char*);
+void Char_to_PC(char);
 
 
 
@@ -65,7 +65,7 @@ return 1;}
 
 
 /**********************************************************************************************/
-char receiveChar(void)
+char Char_from_PC(void)
 {return UDR0;}
 
 
@@ -78,7 +78,7 @@ return UDR0;}
 
 
 /**********************************************************************************************/
-void sendString(const char s[]){
+void String_to_PC(const char s[]){
 int i = 0;
 while(i < 200){
 if(s[i] == '\0') break;
@@ -87,7 +87,7 @@ sendChar(s[i++]);}}
 
 
 /**********************************************************************************************/
-void sendChar(char data){
+void Char_to_PC(char data){
 while (!(UCSR0A & (1 << UDRE0)));
 UDR0 = data;}
 
