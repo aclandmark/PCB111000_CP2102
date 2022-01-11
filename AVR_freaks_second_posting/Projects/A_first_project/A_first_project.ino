@@ -50,8 +50,8 @@
   setup_328_HW;
   sei();
   while (1)
-  { PORT_1 = 1;
-    PORT_2 = 0x8000;
+  { PORT_1 = 0b0000000000000001;      //1
+    PORT_2 = 0b1000000000000000;     //0x8000;
     for (int m = 0; m <= 15; m++)
     { One_wire_Tx_2_integers(PORT_1, PORT_2);
       _delay_ms(30);
