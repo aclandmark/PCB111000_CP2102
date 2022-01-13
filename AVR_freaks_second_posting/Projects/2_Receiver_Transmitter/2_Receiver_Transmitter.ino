@@ -9,7 +9,7 @@
 
 
 //Example 1 Echoes keypresses
-/*
+
   int main (void)
   { setup_328_HW;
   Char_to_PC('?');
@@ -21,7 +21,7 @@
   }
   return 1;
   }
-*/
+
 
 
 
