@@ -84,7 +84,7 @@
 */
 
 
-//Example 5 Geberate an ASKII table
+//Example 5 Generate an ASKII table
 /*
   int main (void)
   { char symbol = '!';
