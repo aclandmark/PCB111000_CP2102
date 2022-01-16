@@ -1,8 +1,8 @@
 
+
 #include "UART_timer_interrupt_header.h"
 
-int m, num_leds;
-int num_leds_new = 8;
+int m, num_leds = 8;
 unsigned int PORT_1, PORT_2;
 
 int main (void)
@@ -21,12 +21,9 @@ int main (void)
 }
 
 
+
 ISR(TIMER1_OVF_vect)
 { UCSR0B &= (~(1 << RXCIE0));
-  if (num_leds != num_leds_new)
-  {
-    reset_display;
-  }
   TCNT1 = 0xCF2C;
   if (m < num_leds)
   { PORT_2 = (PORT_2 << 1) | 1;
@@ -45,7 +42,6 @@ ISR(TIMER1_OVF_vect)
 }
 
 
-
 void T1_100ms_clock_tick(void)
 { TCNT1 = 0xCF2C;
   TIMSK1 |= (1 << TOIE1);
@@ -56,13 +52,14 @@ void T1_100ms_clock_tick(void)
 
 ISR(USART_RX_vect)
 { switch (Char_from_PC())
-  { case '2':   num_leds_new = 2; break;
-    case '4':   num_leds_new = 4; break;
-    case '6':   num_leds_new = 6; break;
-    case '8':   num_leds_new = 8; break;
-    case 'A':   num_leds_new = 10; break;
-    case 'C':   num_leds_new = 12; break;
-    case 'E':   num_leds_new = 14; break;
-    case '0':   num_leds_new = 16; break;
+  { case '2':   num_leds = 2; break;
+    case '4':   num_leds = 4; break;
+    case '6':   num_leds = 6; break;
+    case '8':   num_leds = 8; break;
+    case 'A':   num_leds = 10; break;
+    case 'C':   num_leds = 12; break;
+    case 'E':   num_leds = 14; break;
+    case '0':   num_leds = 16; break;
   }
+  reset_display;
 }
