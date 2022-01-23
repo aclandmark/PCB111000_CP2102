@@ -186,7 +186,7 @@ int main (void)
   char direction = 0;
 
   setup_328_HW;
-  One_wire_Tx_char = 'c';  UART_Tx_1_wire();
+  clear_display;
 
   while (1)
   { while (seg_counter < 56) {
