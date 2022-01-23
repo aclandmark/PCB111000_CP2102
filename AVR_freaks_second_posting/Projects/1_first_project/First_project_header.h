@@ -68,7 +68,7 @@ PORTD = 0xFF;
 
 //All ports are initialised to weak pull up (WPU)
 
-
+#define clear_display   One_wire_Tx_char = 'c';  UART_Tx_1_wire();
 
 
 /************************************************************************************************************************************/
