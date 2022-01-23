@@ -27,3 +27,16 @@ eeprom_write_byte((uint8_t*)(0x3F3),(lfsr>>8));
 eeprom_write_byte((uint8_t*)(0x3F2),lfsr);}
 
 return lfsr;}
+
+
+/*void I2C_Tx_any_segment_clear_all(void){
+char segment = 'a'; char digit_num = 0;
+char s[2]; char num_bytes=2; char mode = 'A';
+s[0] = segment;
+s[1] = digit_num; 
+I2C_Tx(num_bytes,mode, s);}*/
+
+void One_wire_comms_any_segment(char letter, char digit_num){
+One_wire_Tx_char = 'b';			UART_Tx_1_wire();
+One_wire_Tx_char = letter;		UART_Tx_1_wire(); 
+One_wire_Tx_char = digit_num;	UART_Tx_1_wire();}
