@@ -5,7 +5,7 @@
 
 
 /*****************Example 1**********************************************/
-/*int main (void)
+int main (void)
   { unsigned int PORT_1;
 
   setup_328_HW;
@@ -18,7 +18,7 @@
   }
   SW_reset;
   return 1;
-  }*/
+  }
 
 
 
@@ -175,7 +175,7 @@
 
 
 
-*****************Example 9**********************************************/
+*****************Example 9**********************************************
 char display_bkp[7];
 
 int main (void)
@@ -211,3 +211,19 @@ void backup_the_display(char segment, char digit_num)
 { display_bkp[segment - 'a'] =
     display_bkp[segment - 'a'] ^ (1 << digit_num);
 }
+
+
+
+*****************Example 10**********************************************
+int main (void)  
+{unsigned int PRN; 
+
+setup_328_HW;
+sei();
+while(1) 
+{PRN = PRN_16bit_GEN (0);
+One_wire_Tx_2_integers(PRN, (PRN<<((PRN%2) + 1))); 
+Timer_T2_10mS_delay_x_m(10);}}  
+
+***************************************************************************/
+ 
