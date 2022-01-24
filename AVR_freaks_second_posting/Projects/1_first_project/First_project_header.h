@@ -4,13 +4,6 @@
 #include <avr/wdt.h>
 
 
-void One_wire_Tx_2_integers(unsigned int, unsigned int);
-unsigned int PRN_16bit_GEN(unsigned int);
-char User_response;
-
-
-
-
 /**********************************************************************************/
 #define  OSC_CAL \
 if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
