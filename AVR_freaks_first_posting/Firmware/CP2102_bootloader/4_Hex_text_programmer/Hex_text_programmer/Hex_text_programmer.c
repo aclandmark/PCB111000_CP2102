@@ -31,6 +31,8 @@ EEPROM locations
 0x3F3	Used by PRN generators
 0x3F2	Used by PRN generators
 0x3F1	Watch dog timeout
+0x3F0	Reserved or use by PRN
+0x3EF	Reserved or use by PRN
 */
 
 #include "Hex_txt_bootloader.h"
