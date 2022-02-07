@@ -125,7 +125,7 @@ copy_cmd_to_page_buffer();
 write_address++;
 HW_address++;
 space_on_page--;
-prog_counter++;
+//prog_counter++;
 if (write_address == PageSZ){											//If page_buffrer is now full:
 write_page_SUB(page_address);											//Burn contents of page buffer to flash
 Flash_flag = 0;															//Buffer now contains no data to burn to flash
