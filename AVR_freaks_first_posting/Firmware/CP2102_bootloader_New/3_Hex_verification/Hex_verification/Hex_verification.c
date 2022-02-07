@@ -16,11 +16,14 @@ Rx/Tx work at 57.6k
 
 
 int main (void){
-
-	prog_counter = ((eeprom_read_byte((uint8_t*)0x3FB)) << 8) +\
-	eeprom_read_byte((uint8_t*)0x3FA);									//EEROM used to pass values from bootloader
-	cmd_counter = ((eeprom_read_byte((uint8_t*)0x3F9)) << 8) +\
+	
+	//EEROM used to pass values from bootloader
+	//prog_counter = ((eeprom_read_byte((uint8_t*)0x3FB)) << 8) + eeprom_read_byte((uint8_t*)0x3FA);	
+	
+	cmd_counter = ((eeprom_read_byte((uint8_t*)0x3F9)) << 8) +
 	eeprom_read_byte((uint8_t*)0x3F8);
+
+	prog_counter = cmd_counter;											//These are the same if everything is working OK
 
 	sendString("\t0 to verify or AOK\r\n");								//Press '0' to read out hex file from flash
 	if (!(waitforkeypress() - '0'))
@@ -28,7 +31,8 @@ int main (void){
 		newline();
 		sendString("Hex_file_size:	0x");								//Confirm file sizes are all identical
 		Hex_to_PC(cmd_counter); sendString("  d'loaded:  0x");
-		Hex_to_PC(prog_counter); sendString(" in:  0x");
+		//Hex_to_PC(prog_counter); 
+		//sendString(" in:  0x");
 	Hex_to_PC(read_ops); sendString(" out\r\n");}
 
 	sendString("UNO Fuses E, H, L and lock:\t");						//Print out device configuration bytes
