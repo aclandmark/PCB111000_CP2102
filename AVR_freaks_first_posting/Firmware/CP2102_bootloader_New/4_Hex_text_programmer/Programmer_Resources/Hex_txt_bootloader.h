@@ -57,9 +57,9 @@ volatile char Flash_readout;								//Used by assembly routines to return data
 /***************************Variales used to program hex file**************************************/
 
 int  cmd_counter;											//Counts commands as they are downloaded from the PC
-int prog_counter;											//Counts commands burned to flash
+//int prog_counter;											//Counts commands burned to flash
 
-volatile int counter;										//Counts characters in a record as they are downloded from the PC 
+volatile int counter;										//Counts characters in a record as they are downloaded from the PC 
 volatile int char_count;									//The number of askii character in a single record
 volatile char Count_down;									//Counts commands as record is programmed
 volatile int   tempInt1, tempInt2;							//Used to assemble commands and addresses as the are downloaded
