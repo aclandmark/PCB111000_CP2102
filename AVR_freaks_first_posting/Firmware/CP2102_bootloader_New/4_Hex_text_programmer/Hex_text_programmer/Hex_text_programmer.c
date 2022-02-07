@@ -20,14 +20,14 @@ EEPROM locations
 	Clear this register if POR is detected  (i.e. set to 0xFF)	Use clear_reset_control_reg
 	Note: There is no external reset facility. User control is enabled using a switch on PINC3.
 
-0x3FB	prog_counter high byte				Number of commands copied to the target flash
-0x3FA	prog_counter low byte
+0x3FB	prog_counter high byte				No longer used
+0x3FA	prog_counter low byte				No longer used
 0x3F9	cmd_counter high byte				Number of commands processed by the UART ISR
 0x3F8	cmd_counter low byte
-0x3F7	One_wire_call
+0x3F7	One_wire_cal
 0x3F6	One wire cal
-0x3F5	Watch dog timeout				PROBABLY no longer needed
-0x3F4	Used to control text print out  PROBABLY no longer needed
+0x3F5	Watch dog timeout					No longer needed
+0x3F4	Used to control text print out  	No longer needed
 0x3F3	Used by PRN generators
 0x3F2	Used by PRN generators
 0x3F1	Reserved or use by PRN
@@ -52,7 +52,7 @@ EEPROM locations
 char mode;																	//'h' for hex file, 't' for text file
 
 int main (void){ 															//Loaded at address 0x7000, the start of the boot loader section
-char keypress;
+char keypress, eep_offset;
 
 	if(MCUSR & (1<<WDRF))setWD_RF_bit;										//Record presence of a watch dog time out
 	setup_HW;																//Resets watch dog timer
@@ -93,13 +93,17 @@ MCUCR = (1<<IVSEL);
 		hex_programmer();													//Run programmer subroutine
 		asm("jmp 0x6880");													//Run hex verification routine
 	
+	case 'E':  eep_offset = eeprom_read_byte((uint8_t*)0x3ED);				//Required because EEP location fails after 100,000 writes
+				eep_offset += 2;
+				eep_offset = eep_offset%6;
+	eeprom_write_byte((uint8_t*)0x3ED, eep_offset);
 		
 	case 'D':																//Delete first page of the user application
 		Prog_mem_address_H = 0;
 		Prog_mem_address_L = 0;
 		Page_erase ();
 		keypress = 'r'; break;
-	
+		
 	case 'r':																//Run user/default application
 		clear_RunBL_bit;
 		wdt_enable(WDTO_15MS);while(1);
@@ -199,7 +203,7 @@ return 1;}
 	page_write();
 	}UCSR0B &= (~(1<<RXCIE0));cli();
 	clear_read_block();															//Subroutine provided in assembly file  (Not required for mode 't'??)
-	eeprom_write_byte((uint8_t*)0x3F4,0x40);									//Reset string pointer
+	//eeprom_write_byte((uint8_t*)0x3F4,0x40);									//Reset string pointer
 	LED_2_off;}
 		
 		
@@ -210,7 +214,7 @@ return 1;}
 
 		PageSZ = 0x40; PAmask = 0x3FC0;										//Define flash memory parameters
 
-		prog_led_control = 0;  record_length_old=0; prog_counter = 0;		//Initialise variables
+		prog_led_control = 0;  record_length_old=0; //prog_counter = 0;		//Initialise variables
 		Flash_flag = 0;  HW_address = 0;  section_break = 0; orphan = 0;
 		w_pointer = 0; r_pointer = 0; short_record=0;  cmd_counter = 0;
 
@@ -262,8 +266,8 @@ return 1;}
 
 		clear_read_block();													//Subroutine provided in assembly file
 
-		eeprom_write_byte((uint8_t*)0x3FB, prog_counter >> 8);				//Save "prog_counter"		Commands counted by the programmer
-		eeprom_write_byte((uint8_t*)0x3FA, prog_counter);
+		//eeprom_write_byte((uint8_t*)0x3FB, prog_counter >> 8);			//Save "prog_counter"		Commands counted by the programmer
+		//eeprom_write_byte((uint8_t*)0x3FA, prog_counter);
 
 		eeprom_write_byte((uint8_t*)0x3F9, cmd_counter >> 8);				//Save "cmd_counter"		Commands counted by the ISR
 		eeprom_write_byte((uint8_t*)0x3F8, cmd_counter);}
