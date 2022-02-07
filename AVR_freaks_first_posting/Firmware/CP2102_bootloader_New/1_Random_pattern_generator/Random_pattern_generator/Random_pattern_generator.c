@@ -17,15 +17,16 @@ int main (void){
 	char seg_counter = 0;
 	char direction = 0;
 	unsigned int PRN_L;
+	unsigned char eep_offset;
+	setup_328_HW;																					//see "Resources\header file
+	One_wire_Tx_char = 'c';  UART_Tx_1_wire();														//Clear display
 
-	setup_328_HW;																		//see "Resources\header file
-	One_wire_Tx_char = 'c';  UART_Tx_1_wire();											//Clear display
+eep_offset = eeprom_read_byte((uint8_t*)(0x3ED));
 
-PRN_L = (eeprom_read_byte((uint8_t*)(0x3F2)) << 8) + eeprom_read_byte((uint8_t*)(0x3F3));
+PRN_L = (eeprom_read_byte((uint8_t*)(0x3F2 - eep_offset)) << 8) + eeprom_read_byte((uint8_t*)(0x3F3 - eep_offset));
 
-
-	while(1){																			//Generate pattern
-		while(seg_counter < 56){															//There are 56 segments in total
+	while(1){																						//Generate pattern
+		while(seg_counter < 56){																	//There are 56 segments in total
 			letter = (PRN_L%7) + 'a';
 			PRN_L = (PRN_16bit_GEN (PRN_L));
 			digit_num = (PRN_L%8);
@@ -36,8 +37,8 @@ PRN_L = (eeprom_read_byte((uint8_t*)(0x3F2)) << 8) + eeprom_read_byte((uint8_t*)
 		seg_counter += 1;
 		PRN_L = (PRN_16bit_GEN (PRN_L));}
 
-eeprom_write_byte((uint8_t*)(0x3F2),(PRN_L>>8));
-eeprom_write_byte((uint8_t*)(0x3F3),PRN_L);
+eeprom_write_byte((uint8_t*)(0x3F2 - eep_offset),(PRN_L>>8));
+eeprom_write_byte((uint8_t*)(0x3F3 - eep_offset),PRN_L);
 		direction ^= 1;																		//Toggle the direction_counter value
 		seg_counter = 0;
 	_delay_ms(500);}
