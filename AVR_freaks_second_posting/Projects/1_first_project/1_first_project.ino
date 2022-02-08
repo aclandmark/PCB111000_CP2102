@@ -4,7 +4,7 @@
 
 
 
-/*****************Example 1**********************************************/
+/*****************Example 1**********************************************
 int main (void)
   { unsigned int PORT_1;
 
@@ -22,7 +22,7 @@ int main (void)
 
 
 
-/**************Example 2*************************************************
+**************Example 2*************************************************
   int main (void)
   { unsigned int PORT_1, m = 0, n = 0;
 
@@ -214,16 +214,19 @@ void backup_the_display(char segment, char digit_num)
 
 
 
-*****************Example 10**********************************************
+*****************Example 10**********************************************/
 int main (void)  
-{unsigned int PRN; 
+{unsigned int PRN;
+unsigned char PRN_counter; 
 
 setup_328_HW;
+PRN_counter = 0;
+PRN = PRN_16bit_GEN (0, &PRN_counter);
 sei();
 while(1) 
-{PRN = PRN_16bit_GEN (0);
+{PRN = PRN_16bit_GEN (PRN, &PRN_counter);
 One_wire_Tx_2_integers(PRN, (PRN<<((PRN%2) + 1))); 
 Timer_T2_10mS_delay_x_m(10);}}  
 
-***************************************************************************/
+/***************************************************************************/
  
