@@ -97,6 +97,7 @@ MCUCR = (1<<IVSEL);
 				eep_offset += 2;
 				eep_offset = eep_offset%6;
 	eeprom_write_byte((uint8_t*)0x3ED, eep_offset);
+	keypress = 'D'; break;
 		
 	case 'D':																//Delete first page of the user application
 		Prog_mem_address_H = 0;
