@@ -175,7 +175,7 @@ int main (void)
 
 
 
-*****************Example 9**********************************************
+*****************Example 9**********************************************/
 char display_bkp[7];
 
 int main (void)
@@ -184,19 +184,29 @@ int main (void)
   char digit_num = 0;
   char seg_counter = 0;
   char direction = 0;
+  unsigned int PRN;
+  unsigned char PRN_counter;
 
   setup_328_HW;
   clear_display;
 
+  PRN_counter = 0;
+  PRN = PRN_16bit_GEN (0, &PRN_counter);
+
   while (1)
   { while (seg_counter < 56) {
-      letter = (PRN_16bit_GEN (0) % 7) + 'a';
-      digit_num = (PRN_16bit_GEN (0) % 8);
+      //letter = (PRN_16bit_GEN (0) % 7) + 'a';
+      letter = (PRN % 7) + 'a';
+      PRN = PRN_16bit_GEN (PRN, &PRN_counter);
+      digit_num = (PRN % 8);
+      
+      //digit_num = (PRN_16bit_GEN (0) % 8);
       if ((!(direction)) && (display_bkp[letter - 'a'] & (1 << digit_num))) continue;
       if ((direction) && (!(display_bkp[letter - 'a'] & (1 << digit_num)))) continue;
       One_wire_comms_any_segment(letter, digit_num);
       backup_the_display(letter, digit_num);
       seg_counter += 1;
+     
     }
 
     direction ^= 1;
@@ -214,7 +224,7 @@ void backup_the_display(char segment, char digit_num)
 
 
 
-*****************Example 10**********************************************/
+/*****************Example 10**********************************************
 int main (void)  
 {unsigned int PRN;
 unsigned char PRN_counter; 
@@ -228,5 +238,5 @@ while(1)
 One_wire_Tx_2_integers(PRN, (PRN<<((PRN%2) + 1))); 
 Timer_T2_10mS_delay_x_m(10);}}  
 
-/***************************************************************************/
+**************************************************************************/
  
