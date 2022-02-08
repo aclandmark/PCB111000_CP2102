@@ -64,6 +64,7 @@ PORTD = 0xFF;
 #define clear_display   One_wire_Tx_char = 'c';  UART_Tx_1_wire();
 
 
+
 /************************************************************************************************************************************/
 #include "Resources_first_project\One_wire_header.h"
 #include "Resources_first_project\One_wire_transactions.c"
