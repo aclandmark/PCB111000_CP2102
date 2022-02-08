@@ -31,14 +31,15 @@ lfsr = (lfsr >> 1) | (bit << 15);
 *PRN_counter += 32;
 
 if(!(*PRN_counter))
-{eeprom_write_byte((uint8_t*)(0x3F3),(lfsr>>8));
-eeprom_write_byte((uint8_t*)(0x3F2),lfsr);
+{eeprom_write_byte((uint8_t*)(0x3F2 - eep_offset),(lfsr>>8));
+eeprom_write_byte((uint8_t*)(0x3F3 - eep_offset),lfsr);
 
 print_eep_address(0x3F3);
 Char_to_PC(' ');
 print_eep_address(0x3F2);
 String_to_PC("\r\n");
-Toggle_LED_1;}
+Toggle_LED_1;
+}
 
 return lfsr;}
 
@@ -72,6 +73,8 @@ s[1] = digit_num;
 I2C_Tx(num_bytes,mode, s);}*/
 
 void One_wire_comms_any_segment(char letter, char digit_num){
+pause_pin_change_interrupt_on_PC5;										//Reset control not allowed during transaction
 One_wire_Tx_char = 'b';			UART_Tx_1_wire();
 One_wire_Tx_char = letter;		UART_Tx_1_wire(); 
-One_wire_Tx_char = digit_num;	UART_Tx_1_wire();}
+One_wire_Tx_char = digit_num;	UART_Tx_1_wire();
+reinstate_pin_change_interrupt_on_PC5;}
