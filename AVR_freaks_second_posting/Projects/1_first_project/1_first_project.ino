@@ -157,11 +157,26 @@ int main (void)
 *****************Example 8**********************************************/
   int main (void)
   { unsigned int random_num;
+  unsigned char PRN_counter;
   long PORT_1 = 1, PORT_2 = 1;
 
   setup_328_HW;
+  PRN_counter = 0;
+  random_num = PRN_16bit_GEN (0, &PRN_counter);
+  
+  
   while (1)
-  { random_num = (PRN_16bit_GEN(0)) % 3;
+{for (int m = 0; m < random_num%3; m++)
+    { if (!(PORT_1 = ((PORT_1 * 2) % 0x10000)))
+        PORT_1 = 1;
+    }
+    if (!(PORT_2 = ((PORT_2 * 2) % 0x10000)))
+      PORT_2 = 1;
+   One_wire_Tx_2_integers(PORT_1, PORT_2);
+    Timer_T2_10mS_delay_x_m(4);
+random_num = PRN_16bit_GEN (random_num, &PRN_counter);}
+    
+ /* { random_num = (PRN_16bit_GEN(0)) % 3;
     for (int m = 0; m < random_num; m++)
     { if (!(PORT_1 = ((PORT_1 * 2) % 0x10000)))
         PORT_1 = 1;
@@ -170,7 +185,7 @@ int main (void)
       PORT_2 = 1;
     One_wire_Tx_2_integers(PORT_1, PORT_2);
     Timer_T2_10mS_delay_x_m(4);
-  }
+  }*/
   }
 
 
