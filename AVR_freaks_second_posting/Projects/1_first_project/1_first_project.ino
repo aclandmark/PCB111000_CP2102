@@ -195,20 +195,16 @@ int main (void)
 
   while (1)
   { while (seg_counter < 56) {
-      //letter = (PRN_16bit_GEN (0) % 7) + 'a';
       letter = (PRN % 7) + 'a';
       PRN = PRN_16bit_GEN (PRN, &PRN_counter);
       digit_num = (PRN % 8);
-      
-      //digit_num = (PRN_16bit_GEN (0) % 8);
-      if ((!(direction)) && (display_bkp[letter - 'a'] & (1 << digit_num))) continue;
-      if ((direction) && (!(display_bkp[letter - 'a'] & (1 << digit_num)))) continue;
+      if ((!(direction)) && (display_bkp[letter - 'a'] & (1 << digit_num))) {PRN_counter -= 1; continue;}
+      if ((direction) && (!(display_bkp[letter - 'a'] & (1 << digit_num)))) {PRN_counter -= 1; continue;}
       One_wire_comms_any_segment(letter, digit_num);
       backup_the_display(letter, digit_num);
       seg_counter += 1;
-     
+     Timer_T2_10mS_delay_x_m(4);
     }
-
     direction ^= 1;
     seg_counter = 0;
     _delay_ms(500);
