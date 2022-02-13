@@ -6,10 +6,8 @@
 
 #include "Receiver_Transmitter_header.h"
 
-
-
 //Example 1 Echoes keypresses
-
+/*********************************************
   int main (void)
   { setup_328_HW;
   Char_to_PC('?');
@@ -26,7 +24,7 @@
 
 
 //Example 2 Prints out ASKII characters
-/*
+
   int main (void)
   { char symbol;
   setup_328_HW;
@@ -46,10 +44,10 @@
 
 
 //Example 3  Echo character string or prints file
-/*
-  int main (void)
+
+  /*int main (void)
   { setup_328_HW;
-  while (!(isCharavailable(50)))
+  while (!(isCharavailable(65)))
     Char_to_PC('?');
   newline;
   Char_to_PC(Char_from_PC());
@@ -139,6 +137,77 @@ int main (void)
   return 1;
 }
 */
+
+//Example 8    More on pointers
+
+/*void test_SR( char, char*);
+
+int main (void)
+  { char keyboard_input;
+  char test = 1;
+    setup_328_HW;
+  Char_to_PC('?');
+  _delay_ms(10);
+  while(1)
+  {keyboard_input = waitforkeypress();
+test_SR( keyboard_input, &test);
+}
+  }
+
+void test_SR(char any_letter, char * offset )
+{Char_to_PC_Local (any_letter + *offset); *offset += 1;}
+*/
+
+
+//Example 9   Volatile chars
+
+void test_SR( char, char*);
+volatile char uart_interupt = 0;
+char keyboard_input = 0;
+char test;
+
+
+int main (void)
+  { //char keyboard_input;
+  //char test = 1;
+    setup_328_HW;
+    sei();
+    UCSR0B |= (1 << RXCIE0);
+  Char_to_PC('?');
+  _delay_ms(10);
+  while(1){
+  while(uart_interupt == 0); uart_interupt = 0;
+ 
+Char_to_PC(keyboard_input);
+//test_SR( keyboard_input, &test);
+
+
+  }}
+
+void test_SR(char any_letter, char * offset )
+{Char_to_PC_Local (any_letter + *offset); }
+
+
+ISR(USART_RX_vect){uart_interupt = 1;
+keyboard_input = ('A');
+Char_from_PC();
+test += 1;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
