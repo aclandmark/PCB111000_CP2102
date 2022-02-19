@@ -63,7 +63,7 @@
 
 
 
-********Example 4 Send strings to the PC**************************************/
+********Example 4 Send strings to the PC**************************************
 
   int main (void)
   { setup_328_HW;
@@ -82,7 +82,7 @@
 
 
 
-/************Example 5 Generate an ASKII table***********************************
+************Example 5 Generate an ASKII table***********************************/
 
   int main (void)
   { char symbol = '!';
@@ -101,7 +101,7 @@
 
 
 
-*****************Example 6  Sending numbers to the PC*************************
+/*****************Example 6  Sending numbers to the PC*************************
 
   int main (void)
   { int i = 0, number = 12345;
