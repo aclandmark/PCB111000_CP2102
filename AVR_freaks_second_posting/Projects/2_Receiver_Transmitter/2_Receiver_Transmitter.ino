@@ -7,7 +7,7 @@
 #include "Receiver_Transmitter_header.h"
 
 
-/********Example 1 Echoes keypresses*************************************/
+/********Example 1 Echoes keypresses*************************************
   int main (void)
   { setup_328_HW;
   Char_to_PC('?');
@@ -24,7 +24,7 @@
 
 
 
-/**********Example 2 Prints out ASKII characters**************************************
+**********Example 2 Prints out ASKII characters**************************************/
   int main (void)
   { char symbol;
   setup_328_HW;
@@ -43,7 +43,7 @@
 
 
 
-********Example 3  Echo character string or prints file*******************************
+/********Example 3  Echo character string or prints file*******************************
 
   int main (void)
   { setup_328_HW;
