@@ -65,6 +65,7 @@ PORTD = 0xFF;
 
 
 
+
 /************************************************************************************************************************************/
 #include "Resources_Receiver_transmitter\One_wire_header.h"
 #include "Resources_Receiver_transmitter\One_wire_transactions.c"
