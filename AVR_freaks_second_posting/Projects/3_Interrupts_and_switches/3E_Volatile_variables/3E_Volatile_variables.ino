@@ -6,27 +6,28 @@
 
 #include "Volatile_variables_header.h"
 
-
 volatile int interrupt_detected = 0 ;
 
 int main (void)
 { char keypress;
   int EEP_address = 0x3E8;
+  unsigned long PORT_1, PORT_2;
 
   setup_328_HW;
   User_prompt;
 
   if (User_response == 'r')
   { UCSR0B |= (1 << RXCIE0);
+  Initialise_display;
     String_to_PC("?\r\n");
     while (1)
-    { if (!(wait_for_interrupt(500, &keypress)))
+    { if (!(wait_for_interrupt(500, &keypress, &PORT_1, &PORT_2 )))
       {
         Char_to_PC('?');
       }
       else
       { interrupt_detected = 0;
-        EEP_address = Keypress_to_EEPROM(keypress, EEP_address );
+        EEP_address = Keypress_to_EEPROM(keypress, EEP_address);
       }
     }
   }
@@ -55,7 +56,7 @@ ISR(USART_RX_vect) {
 }
 
 
-char wait_for_interrupt (int m , char *keypress )
+char wait_for_interrupt (int m , char *keypress, unsigned long *PORT_1, unsigned long *PORT_2  )
 { int n = 0;
   while (1)
   { if (interrupt_detected == 1)
@@ -65,7 +66,7 @@ char wait_for_interrupt (int m , char *keypress )
     }
     else
     { n++; if (n > 8000)
-      {
+      { inc_display;
         m--;
         n = 0;
       }
