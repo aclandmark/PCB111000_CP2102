@@ -81,6 +81,25 @@ do{String_to_PC("R?    ");}   while((isCharavailable(250) == 0));\
 User_response = Char_from_PC();\
 if((User_response == 'R') || (User_response == 'r'))break;} String_to_PC("\r\n");
 
+
+#define Initialise_display \
+PORT_1 = 0b0000000000000001;\
+PORT_2 = 0b1000000000000000;\
+One_wire_Tx_2_integers(PORT_1, PORT_2);
+
+#define inc_display \
+*PORT_1 = *PORT_1 << 1;\
+*PORT_2 = *PORT_2 >> 1;\
+One_wire_Tx_2_integers(*PORT_1, *PORT_2);\
+if (*PORT_2 == 1)\
+{*PORT_1 = 0b0000000000000001;\
+*PORT_2 = 0b1000000000000000;}
+
+
+
+
+
+
 /************************************************************************************************************************************/
 #include "Resources\One_wire_header.h"
 #include "Resources\One_wire_transactions.c"
