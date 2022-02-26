@@ -13,10 +13,8 @@ int main (void)                          //Example 1
   newline;
   while (1)
   { Char_to_PC_Local
-    (waitforkeypress());
-  }
-  return 1;
-  }
+    (waitforkeypress());}
+  return 1; }
 
 
 
@@ -43,12 +41,10 @@ int main (void)                          //Example 1
   while (symbol <= '~')
   { Char_to_PC_Local(symbol);
     _delay_ms(10);
-    symbol++;
-  }
+    symbol++;}
   waitforkeypress();
   SW_reset;
-  return 1;
-  }
+  return 1;}
 
 
 
@@ -64,12 +60,10 @@ int main (void)                          //Example 1
   while (1)
   { if (isCharavailable(10))
       Char_to_PC(Char_from_PC());
-    else break;
-  }
+    else break; }
   String_to_PC("Done\r\n");
   SW_reset;
-  return 1;
-  }
+  return 1;}
 
 
 
@@ -87,8 +81,7 @@ int main (void)                          //Example 1
   String_to_PC(message_3);
   String_to_PC(message_4);
   while (1);
-  return 1;
-  }
+  return 1; }
 
 
 
@@ -103,11 +96,9 @@ int main (void)                          //Example 1
     Char_to_PC_Local(symbol++);
     _delay_ms(50);
     if (!((symbol - '!') % 8))newline;
-    else Char_to_PC_Local('\t');
-  }
+    else Char_to_PC_Local('\t'); }
   while (1);
-  return 1;
-  }
+  return 1;}
 
 
 
@@ -117,16 +108,13 @@ int main (void)                          //Example 1
   { int i = 0, number = 12345;
   char s[12];
   setup_328_HW;
-  do {
-    s[i++] = number % 10 + '0';
-  }
+  do {s[i++] = number % 10 + '0';}
   while ((number = number / 10) > 0);
   s[i] = '\0';
   for (int m = i; m > 0; m--)
     Char_to_PC(s[m - 1]);
   while (1);
-  return 1;
-  }
+  return 1; }
 
 
 
@@ -139,13 +127,11 @@ int main (void)                          //Example 7
   num = 0; Char_to_PC('?');
   while ((keypress = waitforkeypress()) != '\r')
   { num = num * 10 + keypress  - '0';
-    Int_num_to_display(num);
-  }
+    Int_num_to_display(num);}
   Num_to_PC(num * 2);
   Int_num_to_display(num * 2);
   SW_reset;
-  return 1;
-}
+  return 1;}
 
 
 *******Example 8: Simple arithmetic Data to & from PC*********************************************************
@@ -174,8 +160,7 @@ Char_to_PC(Num_string[m - 1]);
 Int_num_to_display(num);
 
 SW_reset;
-return 1;
-}
+return 1;}
 
 
 
@@ -209,8 +194,7 @@ no_decimal_places =    divide(mod*10, B, &Div, &mod, no_decimal_places);
 return 1; }
 
 long divide(long A, long B, long *Div, long *mod, int no_decimal_places)
-{
-*Div = A/B;
+{*Div = A/B;
 *mod = A%B;
 no_decimal_places -= 1;
 return no_decimal_places; }
