@@ -1,15 +1,15 @@
 
 #include "First_project_header.h"
 
-int main (void)                          //Example 3
-{ unsigned int PORT_1, PORT_2;
+int main (void)                          //Example 4
+{ unsigned long PORT_1, PORT_2;
 
   setup_328_HW;
   sei();
   while (1)
-  { PORT_1 = 0b0000000000000001;      //1
-    PORT_2 = 0b1000000000000000;     //0x8000;
-    for (int m = 0; m <= 15; m++)
+  { PORT_1 = 1;
+    PORT_2 = 0x80000000;
+    for (int m = 0; m <= 31; m++)
     { One_wire_Tx_2_integers(PORT_1, PORT_2);
       _delay_ms(30);
       PORT_1 = PORT_1 << 1;
@@ -68,20 +68,15 @@ int main (void)                          //Example 3
 
 
  ***************Example 3************************************************
-
-
-
-
-***************Example 4************************************************
-  int main (void)
-  { unsigned long PORT_1, PORT_2;
+  int main (void)                          //Example 3
+  { unsigned int PORT_1, PORT_2;
 
   setup_328_HW;
   sei();
   while (1)
-  { PORT_1 = 1;
-    PORT_2 = 0x80000000;
-    for (int m = 0; m <= 31; m++)
+  { PORT_1 = 0b0000000000000001;      //1
+    PORT_2 = 0b1000000000000000;     //0x8000;
+    for (int m = 0; m <= 15; m++)
     { One_wire_Tx_2_integers(PORT_1, PORT_2);
       _delay_ms(30);
       PORT_1 = PORT_1 << 1;
@@ -90,6 +85,11 @@ int main (void)                          //Example 3
   }
   return 1;
   }
+
+
+
+***************Example 4************************************************
+
 
 
 
