@@ -6,17 +6,17 @@
 
 #include "Receiver_Transmitter_header.h"
 
-int main (void)                          //Example 4
-{ setup_328_HW;
-  String_to_PC("\r\nDefining and using text strings\r\n");
-  const char *message_1 = "Hello world\r\n";
-  const char *message_2 = "Sending text to a PC\r\n";
-  const char message_3[] = "Writing C programs and\r\n";
-  const char message_4[] = "Uploading them to a device\r\n";
-  String_to_PC(message_1);
-  String_to_PC(message_2);
-  String_to_PC(message_3);
-  String_to_PC(message_4);
+int main (void)                          //Example 5
+{ char symbol = '!';
+  setup_328_HW;
+  newline;
+  while (symbol <= '~')
+  { Num_to_PC(symbol);
+    Char_to_PC_Local(symbol++);
+    _delay_ms(50);
+    if (!((symbol - '!') % 8))newline;
+    else Char_to_PC_Local('\t');
+  }
   while (1);
   return 1;
 }
@@ -88,25 +88,27 @@ int main (void)                          //Example 4
 
 
 ********Example 4: Send strings to the PC********************************************************************
-
+  int main (void)                          //Example 4
+  { setup_328_HW;
+  String_to_PC("\r\nDefining and using text strings\r\n");
+  const char *message_1 = "Hello world\r\n";
+  const char *message_2 = "Sending text to a PC\r\n";
+  const char message_3[] = "Writing C programs and\r\n";
+  const char message_4[] = "Uploading them to a device\r\n";
+  String_to_PC(message_1);
+  String_to_PC(message_2);
+  String_to_PC(message_3);
+  String_to_PC(message_4);
+  while (1);
+  return 1;
+  }
 
 
 
 
 ************Example 5: Generate an ASKII table****************************************************************
 
-  int main (void)                          //Example 5
-  { char symbol = '!';
-  setup_328_HW;
-  newline;
-  while (symbol <= '~')
-  { Num_to_PC(symbol);
-    Char_to_PC_Local(symbol++);
-    _delay_ms(50);
-    if (!((symbol - '!') % 8))newline;
-    else Char_to_PC_Local('\t'); }
-  while (1);
-  return 1;}
+
 
 
 
