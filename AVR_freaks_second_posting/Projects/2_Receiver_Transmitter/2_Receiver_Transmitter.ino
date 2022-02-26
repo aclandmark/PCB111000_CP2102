@@ -5,33 +5,39 @@
 
 
 #include "Receiver_Transmitter_header.h"
-int main (void)                          //Example 8
-{ long num = 0;
-  char numLength;
+int main (void)                          //Example 9
+  { char keyboard_input;
   char Num_string[12];
-  setup_328_HW;
-  String_to_PC("\r\n?\r\n");
-  Num_string_from_KBD(Num_string);
+  long Num, A = 55; long B = 7; long Div; long mod;
+  int no_decimal_places;
 
-  { int m = 0; while (Num_string[m])
-      Char_to_PC(Num_string[m++]);
-  }
+    setup_328_HW;
+  String_to_PC("?\r\n");
+  _delay_ms(10);
 
-  num = Askii_to_binary(Num_string);
+  for(int m = 0; m <=2; m++)
+  {Num_string_from_KBD(Num_string);
+  Num = Askii_to_binary(Num_string);
+  switch (m)
+  { case 0: A = Num; Char_to_PC('?');break;
+  case 1: B = Num; String_to_PC("?\r\n");break;
+  case 2: no_decimal_places = Num; break;}}
 
-  num = num * 2;
+  divide(A, B, &Div, &mod, no_decimal_places);
+  Num_to_PC(Div);
+  String_to_PC(". ");
+    while (no_decimal_places) {
+  no_decimal_places =    divide(mod*10, B, &Div, &mod, no_decimal_places);
+  Num_to_PC(Div);}
   String_to_PC("\r\n");
+   SW_reset;
+  return 1; }
 
-  numLength = Binary_to_Askii(num, Num_string);
-
-  for (int m = numLength; m > 0; m--)
-    Char_to_PC(Num_string[m - 1]);
-
-  Int_num_to_display(num);
-
-  SW_reset;
-  return 1;
-}
+  long divide(long A, long B, long *Div, long *mod, int no_decimal_places)
+  {*Div = A/B;
+  *mod = A%B;
+  no_decimal_places -= 1;
+  return no_decimal_places; }
 
 
 
@@ -177,44 +183,38 @@ int main (void)                          //Example 8
 
 
 *******Example 8: Simple arithmetic Data to & from PC*********************************************************
+int main (void)                          //Example 8
+{ long num = 0;
+  char numLength;
+  char Num_string[12];
+  setup_328_HW;
+  String_to_PC("\r\n?\r\n");
+  Num_string_from_KBD(Num_string);
 
+  { int m = 0; while (Num_string[m])
+      Char_to_PC(Num_string[m++]);
+  }
+
+  num = Askii_to_binary(Num_string);
+
+  num = num * 2;
+  String_to_PC("\r\n");
+
+  numLength = Binary_to_Askii(num, Num_string);
+
+  for (int m = numLength; m > 0; m--)
+    Char_to_PC(Num_string[m - 1]);
+
+  Int_num_to_display(num);
+
+  SW_reset;
+  return 1;
+}
 
 
 
 *************Example 9: Arithmetic: More on pointers********************************************************
-  int main (void)                          //Example 9
-  { char keyboard_input;
-  char Num_string[12];
-  long Num, A = 55; long B = 7; long Div; long mod;
-  int no_decimal_places;
-
-    setup_328_HW;
-  String_to_PC("?\r\n");
-  _delay_ms(10);
-
-  for(int m = 0; m <=2; m++)
-  {Num_string_from_KBD(Num_string);
-  Num = Askii_to_binary(Num_string);
-  switch (m)
-  { case 0: A = Num; Char_to_PC('?');break;
-  case 1: B = Num; String_to_PC("?\r\n");break;
-  case 2: no_decimal_places = Num; break;}}
-
-  divide(A, B, &Div, &mod, no_decimal_places);
-  Num_to_PC(Div);
-  String_to_PC(". ");
-    while (no_decimal_places) {
-  no_decimal_places =    divide(mod*10, B, &Div, &mod, no_decimal_places);
-  Num_to_PC(Div);}
-  String_to_PC("\r\n");
-   SW_reset;
-  return 1; }
-
-  long divide(long A, long B, long *Div, long *mod, int no_decimal_places)
-  {*Div = A/B;
-  mod = A%B;
-  no_decimal_places -= 1;
-  return no_decimal_places; }
+  
 
 
 
