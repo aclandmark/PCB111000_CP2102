@@ -5,21 +5,21 @@
 
 
 #include "Receiver_Transmitter_header.h"
-
-int main (void)                          //Example 6
-{ int i = 0, number = 12345;
-  char s[12];
+int main (void)                          //Example 7
+{ long num = 0;
+  char keypress;
   setup_328_HW;
-  do {
-    s[i++] = number % 10 + '0';
+  num = 0; Char_to_PC('?');
+  while ((keypress = waitforkeypress()) != '\r')
+  { num = num * 10 + keypress  - '0';
+    Int_num_to_display(num);
   }
-  while ((number = number / 10) > 0);
-  s[i] = '\0';
-  for (int m = i; m > 0; m--)
-    Char_to_PC(s[m - 1]);
-  while (1);
+  Num_to_PC(num * 2);
+  Int_num_to_display(num * 2);
+  SW_reset;
   return 1;
 }
+
 
 
 /************************************************************************************************************
@@ -127,24 +127,26 @@ int main (void)                          //Example 6
 
 
 *****************Example 6: Sending numbers to the PC*********************************************************
-
+  int main (void)                          //Example 6
+  { int i = 0, number = 12345;
+  char s[12];
+  setup_328_HW;
+  do {
+    s[i++] = number % 10 + '0';
+  }
+  while ((number = number / 10) > 0);
+  s[i] = '\0';
+  for (int m = i; m > 0; m--)
+    Char_to_PC(s[m - 1]);
+  while (1);
+  return 1;
+  }
 
 
 
 **************Example 7: Entering numbers at the keyboard*****************************************************
 
-  int main (void)                          //Example 7
-  { long num = 0;
-  char keypress;
-  setup_328_HW;
-  num = 0; Char_to_PC('?');
-  while ((keypress = waitforkeypress()) != '\r')
-  { num = num * 10 + keypress  - '0';
-    Int_num_to_display(num);}
-  Num_to_PC(num * 2);
-  Int_num_to_display(num * 2);
-  SW_reset;
-  return 1;}
+
 
 
 *******Example 8: Simple arithmetic Data to & from PC*********************************************************
