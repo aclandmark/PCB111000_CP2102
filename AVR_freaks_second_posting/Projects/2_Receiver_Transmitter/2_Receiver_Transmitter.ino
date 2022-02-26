@@ -5,17 +5,30 @@
 
 
 #include "Receiver_Transmitter_header.h"
-int main (void)                          //Example 7
+int main (void)                          //Example 8
 { long num = 0;
-  char keypress;
+  char numLength;
+  char Num_string[12];
   setup_328_HW;
-  num = 0; Char_to_PC('?');
-  while ((keypress = waitforkeypress()) != '\r')
-  { num = num * 10 + keypress  - '0';
-    Int_num_to_display(num);
+  String_to_PC("\r\n?\r\n");
+  Num_string_from_KBD(Num_string);
+
+  { int m = 0; while (Num_string[m])
+      Char_to_PC(Num_string[m++]);
   }
-  Num_to_PC(num * 2);
-  Int_num_to_display(num * 2);
+
+  num = Askii_to_binary(Num_string);
+
+  num = num * 2;
+  String_to_PC("\r\n");
+
+  numLength = Binary_to_Askii(num, Num_string);
+
+  for (int m = numLength; m > 0; m--)
+    Char_to_PC(Num_string[m - 1]);
+
+  Int_num_to_display(num);
+
   SW_reset;
   return 1;
 }
@@ -145,37 +158,26 @@ int main (void)                          //Example 7
 
 
 **************Example 7: Entering numbers at the keyboard*****************************************************
+  int main (void)                          //Example 7
+  { long num = 0;
+  char keypress;
+  setup_328_HW;
+  num = 0; Char_to_PC('?');
+  while ((keypress = waitforkeypress()) != '\r')
+  { num = num * 10 + keypress  - '0';
+    Int_num_to_display(num);
+  }
+  Num_to_PC(num * 2);
+  Int_num_to_display(num * 2);
+  SW_reset;
+  return 1;
+  }
 
 
 
 
 *******Example 8: Simple arithmetic Data to & from PC*********************************************************
 
-  int main (void)                          //Example 8
-  {long num = 0;
-  char numLength;
-  char Num_string[12];
-  setup_328_HW;
-  String_to_PC("\r\n?\r\n");
-  Num_string_from_KBD(Num_string);
-
-  {int m = 0; while (Num_string[m])
-  Char_to_PC(Num_string[m++]);}
-
-  num = Askii_to_binary(Num_string);
-
-  num = num *2;
-  String_to_PC("\r\n");
-
-  numLength = Binary_to_Askii(num, Num_string);
-
-  for (int m = numLength; m > 0; m--)
-  Char_to_PC(Num_string[m - 1]);
-
-  Int_num_to_display(num);
-
-  SW_reset;
-  return 1;}
 
 
 
