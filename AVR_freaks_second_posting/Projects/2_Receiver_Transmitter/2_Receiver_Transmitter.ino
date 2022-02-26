@@ -6,19 +6,18 @@
 
 #include "Receiver_Transmitter_header.h"
 
-int main (void)                          //Example 3
+int main (void)                          //Example 4
 { setup_328_HW;
-  while (!(isCharavailable(65)))
-    Char_to_PC('?');
-  newline;
-  Char_to_PC(Char_from_PC());
-  while (1)
-  { if (isCharavailable(10))
-      Char_to_PC(Char_from_PC());
-    else break;
-  }
-  String_to_PC("Done\r\n");
-  SW_reset;
+  String_to_PC("\r\nDefining and using text strings\r\n");
+  const char *message_1 = "Hello world\r\n";
+  const char *message_2 = "Sending text to a PC\r\n";
+  const char message_3[] = "Writing C programs and\r\n";
+  const char message_4[] = "Uploading them to a device\r\n";
+  String_to_PC(message_1);
+  String_to_PC(message_2);
+  String_to_PC(message_3);
+  String_to_PC(message_4);
+  while (1);
   return 1;
 }
 
@@ -68,6 +67,21 @@ int main (void)                          //Example 3
 
 
 ********Example 3: Echo character string or prints file*******************************************************
+  int main (void)                          //Example 3
+  { setup_328_HW;
+  while (!(isCharavailable(65)))
+    Char_to_PC('?');
+  newline;
+  Char_to_PC(Char_from_PC());
+  while (1)
+  { if (isCharavailable(10))
+      Char_to_PC(Char_from_PC());
+    else break;
+  }
+  String_to_PC("Done\r\n");
+  SW_reset;
+  return 1;
+  }
 
 
 
@@ -75,19 +89,7 @@ int main (void)                          //Example 3
 
 ********Example 4: Send strings to the PC********************************************************************
 
-  int main (void)                          //Example 4
-  { setup_328_HW;
-  String_to_PC("\r\nDefining and using text strings\r\n");
-  const char *message_1 = "Hello world\r\n";
-  const char *message_2 = "Sending text to a PC\r\n";
-  const char message_3[] = "Writing C programs and\r\n";
-  const char message_4[] = "Uploading them to a device\r\n";
-  String_to_PC(message_1);
-  String_to_PC(message_2);
-  String_to_PC(message_3);
-  String_to_PC(message_4);
-  while (1);
-  return 1; }
+
 
 
 
