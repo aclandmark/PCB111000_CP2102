@@ -7,8 +7,18 @@
 #include "Receiver_Transmitter_header.h"
 
 
-/********Example 1 Echoes keypresses*************************************
-  int main (void)
+
+
+
+/************************************************************************************************************
+
+  Use this area for saving the examples when they have been got working and finished with
+  Use the space above for the active program (the one eing worked on)
+
+
+
+********Example 1: Echoes keypresses*************************************************************************
+  int main (void)                          //Example 1
   { setup_328_HW;
   Char_to_PC('?');
   _delay_ms(10);
@@ -24,8 +34,8 @@
 
 
 
-**********Example 2 Prints out ASKII characters**************************************
-  int main (void)
+**********Example 2: Prints out ASKII characters**************************************************************
+  int main (void)                          //Example 2
   { char symbol;
   setup_328_HW;
   newline;
@@ -43,9 +53,9 @@
 
 
 
-********Example 3  Echo character string or prints file*******************************
+********Example 3: Echo character string or prints file*******************************************************
 
-  int main (void)
+  int main (void)                          //Example 3
   { setup_328_HW;
   while (!(isCharavailable(65)))
     Char_to_PC('?');
@@ -63,9 +73,9 @@
 
 
 
-********Example 4 Send strings to the PC**************************************
+********Example 4: Send strings to the PC********************************************************************
 
-  int main (void)
+  int main (void)                          //Example 4
   { setup_328_HW;
   String_to_PC("\r\nDefining and using text strings\r\n");
   const char *message_1 = "Hello world\r\n";
@@ -82,9 +92,9 @@
 
 
 
-************Example 5 Generate an ASKII table***********************************
+************Example 5: Generate an ASKII table****************************************************************
 
-  int main (void)
+  int main (void)                          //Example 5
   { char symbol = '!';
   setup_328_HW;
   newline;
@@ -101,9 +111,9 @@
 
 
 
-*****************Example 6  Sending numbers to the PC*************************
+*****************Example 6: Sending numbers to the PC*********************************************************
 
-  int main (void)
+  int main (void)                          //Example 6
   { int i = 0, number = 12345;
   char s[12];
   setup_328_HW;
@@ -120,9 +130,9 @@
 
 
 
-**************Example 7    Entering numbers at the keyboard*************************
+**************Example 7: Entering numbers at the keyboard*****************************************************
 
-int main (void)
+int main (void)                          //Example 7
 { long num = 0;
   char keypress;
   setup_328_HW;
@@ -138,9 +148,9 @@ int main (void)
 }
 
 
-*******Example 8    Simple arithmetic Data to & from PC**************************************************/
+*******Example 8: Simple arithmetic Data to & from PC*********************************************************
 
-int main (void)
+int main (void)                          //Example 8
 {long num = 0;
 char numLength;
 char Num_string[12];
@@ -169,8 +179,8 @@ return 1;
 
 
 
-/*************Example 9 Arithmetic: More on pointers****************************************************************
-int main (void)
+*************Example 9: Arithmetic: More on pointers********************************************************
+int main (void)                          //Example 9
   { char keyboard_input;
   char Num_string[12];
   long Num, A = 55; long B = 7; long Div; long mod;
@@ -208,9 +218,7 @@ return no_decimal_places; }
 
 
 
-
-
-****************************************************************************/
+************This area is for project subroutines*************************************************************/
 void Num_string_from_KBD(char * array_ptr)
 {char keypress;
 while ((keypress = waitforkeypress()) != '\r')
@@ -220,7 +228,7 @@ array_ptr += 1;}
 
 
 
-/****************************************************************************/
+/********************************************************************************************************/
 long Askii_to_binary(char * array_ptr){
 long num = 0;
 {int m = 0; while (*(array_ptr + m)){
@@ -229,7 +237,7 @@ return num;}
 
 
 
-/****************************************************************************/
+/********************************************************************************************************/
 int Binary_to_Askii (long number, char * array_ptr)
 {int i = 0;
 do {
@@ -241,7 +249,7 @@ return i;
 }
 
 
-/****************************************************************************/
+/********************************************************************************************************/
 void Char_to_PC_Local(char data)
 { while (!(UCSR0A & (1 << UDRE0)));
   UDR0 = data;
