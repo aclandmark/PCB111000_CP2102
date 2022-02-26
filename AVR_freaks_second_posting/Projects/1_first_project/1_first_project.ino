@@ -3,8 +3,13 @@
 
 
 
+/***********************************************************************
 
-/*****************Example 1**********************************************
+Use this area for saving the examples when they have been got working and finished with
+Use the space above for the active program (the one eing worked on)
+
+ 
+*****************Example 1**********************************************
 int main (void)
   { unsigned int PORT_1;
 
@@ -154,7 +159,7 @@ int main (void)
   }
 
 
-*****************Example 8**********************************************/
+*****************Example 8**********************************************
   int main (void)
   { unsigned int random_num;
   unsigned char PRN_counter;
@@ -178,7 +183,7 @@ random_num = PRN_16bit_GEN (random_num, &PRN_counter);}}
 
 
 
-/*****************Example 9**********************************************
+*****************Example 9**********************************************
 char display_bkp[7];
 
 int main (void)
