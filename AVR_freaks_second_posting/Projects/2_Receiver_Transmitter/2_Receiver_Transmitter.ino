@@ -6,6 +6,28 @@
 
 #include "Receiver_Transmitter_header.h"
 
+int main (void)                          //Example 2
+  { char symbol;
+  setup_328_HW;
+  newline;
+  symbol = '!';
+  while (symbol <= '~')
+  { Char_to_PC_Local(symbol);
+    _delay_ms(10);
+    symbol++;}
+  waitforkeypress();
+  SW_reset;
+  return 1;}
+
+
+/************************************************************************************************************
+
+  Use this area for saving the examples when they have been got working and finished with
+  Use the space above for the active program (the one eing worked on)
+
+
+
+********Example 1: Echoes keypresses*************************************************************************
 int main (void)                          //Example 1
 { setup_328_HW;
   Char_to_PC('?');
@@ -20,33 +42,11 @@ int main (void)                          //Example 1
 
 
 
-/************************************************************************************************************
-
-  Use this area for saving the examples when they have been got working and finished with
-  Use the space above for the active program (the one eing worked on)
-
-
-
-********Example 1: Echoes keypresses*************************************************************************
-
-
-
 
 
 
 **********Example 2: Prints out ASKII characters**************************************************************
-  int main (void)                          //Example 2
-  { char symbol;
-  setup_328_HW;
-  newline;
-  symbol = '!';
-  while (symbol <= '~')
-  { Char_to_PC_Local(symbol);
-    _delay_ms(10);
-    symbol++;}
-  waitforkeypress();
-  SW_reset;
-  return 1;}
+  
 
 
 
