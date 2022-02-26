@@ -6,17 +6,17 @@
 
 #include "Receiver_Transmitter_header.h"
 
-int main (void)                          //Example 5
-{ char symbol = '!';
+int main (void)                          //Example 6
+{ int i = 0, number = 12345;
+  char s[12];
   setup_328_HW;
-  newline;
-  while (symbol <= '~')
-  { Num_to_PC(symbol);
-    Char_to_PC_Local(symbol++);
-    _delay_ms(50);
-    if (!((symbol - '!') % 8))newline;
-    else Char_to_PC_Local('\t');
+  do {
+    s[i++] = number % 10 + '0';
   }
+  while ((number = number / 10) > 0);
+  s[i] = '\0';
+  for (int m = i; m > 0; m--)
+    Char_to_PC(s[m - 1]);
   while (1);
   return 1;
 }
@@ -107,6 +107,20 @@ int main (void)                          //Example 5
 
 
 ************Example 5: Generate an ASKII table****************************************************************
+  int main (void)                          //Example 5
+  { char symbol = '!';
+  setup_328_HW;
+  newline;
+  while (symbol <= '~')
+  { Num_to_PC(symbol);
+    Char_to_PC_Local(symbol++);
+    _delay_ms(50);
+    if (!((symbol - '!') % 8))newline;
+    else Char_to_PC_Local('\t');
+  }
+  while (1);
+  return 1;
+  }
 
 
 
@@ -114,17 +128,6 @@ int main (void)                          //Example 5
 
 *****************Example 6: Sending numbers to the PC*********************************************************
 
-  int main (void)                          //Example 6
-  { int i = 0, number = 12345;
-  char s[12];
-  setup_328_HW;
-  do {s[i++] = number % 10 + '0';}
-  while ((number = number / 10) > 0);
-  s[i] = '\0';
-  for (int m = i; m > 0; m--)
-    Char_to_PC(s[m - 1]);
-  while (1);
-  return 1; }
 
 
 
