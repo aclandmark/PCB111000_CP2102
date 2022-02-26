@@ -6,7 +6,17 @@
 
 #include "Receiver_Transmitter_header.h"
 
-
+int main (void)                          //Example 1
+  { setup_328_HW;
+  Char_to_PC('?');
+  _delay_ms(10);
+  newline;
+  while (1)
+  { Char_to_PC_Local
+    (waitforkeypress());
+  }
+  return 1;
+  }
 
 
 
@@ -18,17 +28,7 @@
 
 
 ********Example 1: Echoes keypresses*************************************************************************
-  int main (void)                          //Example 1
-  { setup_328_HW;
-  Char_to_PC('?');
-  _delay_ms(10);
-  newline;
-  while (1)
-  { Char_to_PC_Local
-    (waitforkeypress());
-  }
-  return 1;
-  }
+  
 
 
 
