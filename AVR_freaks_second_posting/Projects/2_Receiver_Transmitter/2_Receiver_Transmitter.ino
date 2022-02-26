@@ -6,18 +6,21 @@
 
 #include "Receiver_Transmitter_header.h"
 
-int main (void)                          //Example 2
-  { char symbol;
-  setup_328_HW;
+int main (void)                          //Example 3
+{ setup_328_HW;
+  while (!(isCharavailable(65)))
+    Char_to_PC('?');
   newline;
-  symbol = '!';
-  while (symbol <= '~')
-  { Char_to_PC_Local(symbol);
-    _delay_ms(10);
-    symbol++;}
-  waitforkeypress();
+  Char_to_PC(Char_from_PC());
+  while (1)
+  { if (isCharavailable(10))
+      Char_to_PC(Char_from_PC());
+    else break;
+  }
+  String_to_PC("Done\r\n");
   SW_reset;
-  return 1;}
+  return 1;
+}
 
 
 /************************************************************************************************************
@@ -28,8 +31,8 @@ int main (void)                          //Example 2
 
 
 ********Example 1: Echoes keypresses*************************************************************************
-int main (void)                          //Example 1
-{ setup_328_HW;
+  int main (void)                          //Example 1
+  { setup_328_HW;
   Char_to_PC('?');
   _delay_ms(10);
   newline;
@@ -38,7 +41,7 @@ int main (void)                          //Example 1
     (waitforkeypress());
   }
   return 1;
-}
+  }
 
 
 
@@ -46,26 +49,27 @@ int main (void)                          //Example 1
 
 
 **********Example 2: Prints out ASKII characters**************************************************************
-  
+  int main (void)                          //Example 2
+  { char symbol;
+  setup_328_HW;
+  newline;
+  symbol = '!';
+  while (symbol <= '~')
+  { Char_to_PC_Local(symbol);
+    _delay_ms(10);
+    symbol++;
+  }
+  waitforkeypress();
+  SW_reset;
+  return 1;
+  }
 
 
 
 
 ********Example 3: Echo character string or prints file*******************************************************
 
-  int main (void)                          //Example 3
-  { setup_328_HW;
-  while (!(isCharavailable(65)))
-    Char_to_PC('?');
-  newline;
-  Char_to_PC(Char_from_PC());
-  while (1)
-  { if (isCharavailable(10))
-      Char_to_PC(Char_from_PC());
-    else break; }
-  String_to_PC("Done\r\n");
-  SW_reset;
-  return 1;}
+
 
 
 
