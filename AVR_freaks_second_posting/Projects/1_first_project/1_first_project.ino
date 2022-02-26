@@ -17,13 +17,13 @@ int main (void)                          //Example 10
 }
 
 
-/***********************************************************************
+/**************************************************************************************************
 
   Use this area for saving the examples when they have been got working and finished with
   Use the space above for the active program (the one eing worked on)
 
 
-***************Example 1************************************************
+***************Example 1: One bar sweep right to left*********************************************
   int main (void)                          //Example 1
   { unsigned int PORT_1;
 
@@ -40,7 +40,7 @@ int main (void)                          //Example 10
   }
 
 
-***************Example 2************************************************
+***************Example 2: One bar sweep right to left and back to right again*********************
   int main (void)                          //Example 2
   { unsigned int PORT_1, m = 0, n = 0;
 
@@ -61,7 +61,7 @@ int main (void)                          //Example 10
 
 
 
- ***************Example 3************************************************
+ ***************Example 3: Both half bars running back and forth together**************************
   int main (void)                          //Example 3
   { unsigned int PORT_1, PORT_2;
 
@@ -82,7 +82,7 @@ int main (void)                          //Example 10
 
 
 
-***************Example 4************************************************
+***************Example 4: Single half bar runs back and forth**************************************
   int main (void)                          //Example 4
   { unsigned long PORT_1, PORT_2;
 
@@ -103,7 +103,7 @@ int main (void)                          //Example 10
 
 
 
-*****************Example 5**********************************************
+*****************Example 5: Four half bars execute two ellipses************************************
   int main (void)                          //Example 5
   { unsigned int PORT_1, PORT_2;
 
@@ -128,7 +128,7 @@ int main (void)                          //Example 10
 
 
 
-******************Example 6*********************************************
+******************Example 6: Two half bars execute see-saw motion *********************************
   int main (void)                          //Example 6
   { unsigned int PORT_1, PORT_2, m = 0, n = 0;
 
@@ -150,7 +150,7 @@ int main (void)                          //Example 10
 
 
 
-******************Example 7********************************************
+******************Example 7: Multi bar display****************************************************
   int main (void)                          //Example 7
   { unsigned int PORT_1 = 1;
   char m = 1;
@@ -173,7 +173,7 @@ int main (void)                          //Example 10
   }
 
 
-*****************Example 8**********************************************
+*****************Example 8: Leds sweep left to right with random motion***************************
   int main (void)                          //Example 8
   { unsigned int random_num;
   unsigned char PRN_counter;
@@ -196,7 +196,7 @@ int main (void)                          //Example 10
 
 
 
-*****************Example 9**********************************************
+*****************Example 9: The default program****************************************************
   char display_bkp[7];
 
   int main (void)                          //Example 9
@@ -247,7 +247,7 @@ int main (void)                          //Example 10
 
 
 
-*****************Example 10**********************************************
+*****************Example 10: Another Random number display*****************************************
 
 
-**************************************************************************/
+**************************************************************************************************/
