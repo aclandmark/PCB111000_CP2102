@@ -2,18 +2,20 @@
 #include "First_project_header.h"
 
 
-int main (void)                          //Example 1
-{ unsigned int PORT_1;
+int main (void)                          //Example 2
+{ unsigned int PORT_1, m = 0, n = 0;
 
   setup_328_HW;
   sei();
   PORT_1 = 1;
-  for (int m = 0; m <= 15; m++)
-  { One_wire_Tx_2_integers(PORT_1, PORT_1);
+  while (1)
+  { One_wire_Tx_2_integers(PORT_1 << m, PORT_1 << m);
     _delay_ms(30);
-    PORT_1 = PORT_1 << 1;
+    if (!(n))m += 1; 
+    if (m == 16)n = 1; 
+    if (n == 1)m -= 1;
+    if (m == 0)n = 0;
   }
-  SW_reset;
   return 1;
 }
 
@@ -27,27 +29,24 @@ int main (void)                          //Example 1
   Use this area for saving the examples when they have been got working and finished with
   Use the space above for the active program (the one eing worked on)
 
-
-
-
-
-**************Example 2*************************************************
-  int main (void)
-  { unsigned int PORT_1, m = 0, n = 0;
+  int main (void)                          //Example 1
+  { unsigned int PORT_1;
 
   setup_328_HW;
   sei();
   PORT_1 = 1;
-  while (1)
-  { One_wire_Tx_2_integers(PORT_1 << m, PORT_1 << m);
+  for (int m = 0; m <= 15; m++)
+  { One_wire_Tx_2_integers(PORT_1, PORT_1);
     _delay_ms(30);
-    if (!(n)) m += 1;
-    if (m == 16)n = 1;
-    if (n == 1)m -= 1;
-    if (m == 0)n = 0;
+    PORT_1 = PORT_1 << 1;
   }
+  SW_reset;
   return 1;
   }
+
+
+
+
 
 
 
