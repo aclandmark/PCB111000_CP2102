@@ -1,26 +1,53 @@
 
 #include "First_project_header.h"
 
+char display_bkp[7];
 
-int main (void)                          //Example 8
-{ unsigned int random_num;
+int main (void)                          //Example 9
+{ char letter = 0;
+  char digit_num = 0;
+  char seg_counter = 0;
+  char direction = 0;
+  unsigned int PRN;
   unsigned char PRN_counter;
-  long PORT_1 = 1, PORT_2 = 1;
-  
-  setup_328_HW;  
+
+  setup_328_HW;
+  clear_display;
+
   PRN_counter = 0;
-  random_num = PRN_16bit_GEN (0, &PRN_counter);
+  PRN = PRN_16bit_GEN (0, &PRN_counter);
+
   while (1)
-  { for (int m = 0; m < random_num % 3; m++)
-    { if (!(PORT_1 = ((PORT_1 * 2) % 0x10000)))
-        PORT_1 = 1;
+  { while (seg_counter < 56) {
+      letter = (PRN % 7) + 'a';
+      PRN = PRN_16bit_GEN (PRN, &PRN_counter);
+      digit_num = (PRN % 8);
+      if ((!(direction)) && (display_bkp[letter - 'a'] & (1 << digit_num))) {
+        PRN_counter -= 1;
+        continue;
+      }
+      if ((direction) && (!(display_bkp[letter - 'a'] & (1 << digit_num)))) {
+        PRN_counter -= 1;
+        continue;
+      }
+      One_wire_comms_any_segment(letter, digit_num);
+      backup_the_display(letter, digit_num);
+      seg_counter += 1;
+      Timer_T2_10mS_delay_x_m(4);
     }
-    if (!(PORT_2 = ((PORT_2 * 2) % 0x10000)))PORT_2 = 1;
-    One_wire_Tx_2_integers(PORT_1, PORT_2);
-    Timer_T2_10mS_delay_x_m(4);
-    random_num = PRN_16bit_GEN (random_num, &PRN_counter);
+    direction ^= 1;
+    seg_counter = 0;
+    _delay_ms(500);
   }
+  SW_reset;
+  return 1;
 }
+
+void backup_the_display(char segment, char digit_num)
+{ display_bkp[segment - 'a'] =
+    display_bkp[segment - 'a'] ^ (1 << digit_num);
+}
+
 
 
 /***********************************************************************
@@ -178,52 +205,30 @@ int main (void)                          //Example 8
 
 
 *****************Example 8**********************************************
+  int main (void)                          //Example 8
+  { unsigned int random_num;
+  unsigned char PRN_counter;
+  long PORT_1 = 1, PORT_2 = 1;
 
+  setup_328_HW;
+  PRN_counter = 0;
+  random_num = PRN_16bit_GEN (0, &PRN_counter);
+  while (1)
+  { for (int m = 0; m < random_num % 3; m++)
+    { if (!(PORT_1 = ((PORT_1 * 2) % 0x10000)))
+        PORT_1 = 1;
+    }
+    if (!(PORT_2 = ((PORT_2 * 2) % 0x10000)))PORT_2 = 1;
+    One_wire_Tx_2_integers(PORT_1, PORT_2);
+    Timer_T2_10mS_delay_x_m(4);
+    random_num = PRN_16bit_GEN (random_num, &PRN_counter);
+  }
+  }
 
 
 
 *****************Example 9**********************************************
-  char display_bkp[7];
 
-  int main (void)
-
-  { char letter = 0;
-  char digit_num = 0;
-  char seg_counter = 0;
-  char direction = 0;
-  unsigned int PRN;
-  unsigned char PRN_counter;
-
-  setup_328_HW;
-  clear_display;
-
-  PRN_counter = 0;
-  PRN = PRN_16bit_GEN (0, &PRN_counter);
-
-  while (1)
-  { while (seg_counter < 56) {
-      letter = (PRN % 7) + 'a';
-      PRN = PRN_16bit_GEN (PRN, &PRN_counter);
-      digit_num = (PRN % 8);
-      if ((!(direction)) && (display_bkp[letter - 'a'] & (1 << digit_num))) {PRN_counter -= 1; continue;}
-      if ((direction) && (!(display_bkp[letter - 'a'] & (1 << digit_num)))) {PRN_counter -= 1; continue;}
-      One_wire_comms_any_segment(letter, digit_num);
-      backup_the_display(letter, digit_num);
-      seg_counter += 1;
-     Timer_T2_10mS_delay_x_m(4);
-    }
-    direction ^= 1;
-    seg_counter = 0;
-    _delay_ms(500);
-  }
-  SW_reset;
-  return 1;
-  }
-
-  void backup_the_display(char segment, char digit_num)
-  { display_bkp[segment - 'a'] =
-    display_bkp[segment - 'a'] ^ (1 << digit_num);
-  }
 
 
 
