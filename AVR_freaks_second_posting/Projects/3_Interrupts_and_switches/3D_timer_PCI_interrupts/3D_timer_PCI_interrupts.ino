@@ -1,5 +1,5 @@
 #include "Timer_PCI_header.h"
-volatile char T1_OVF;
+volatile char T1_COMP;
 unsigned int n, n_max;
 long PORT_1, PORT_2;
 char p = 0;
@@ -14,12 +14,12 @@ int main (void)
   }
   set_up_PCI;
   enable_PCI;
-  T1_OVF = 0;
+  T1_COMP = 0;
   sei();
   T1_100ms_clock_tick();
   initialise_display();
   while (1)
-  { while (!(T1_OVF)); T1_OVF = 0;
+  { while (!(T1_COMP)); T1_COMP = 0;
     Inc_Display();
   }
 }
@@ -27,7 +27,7 @@ int main (void)
 ISR(TIMER1_COMPA_vect)
 {
   OCR1A += 0x30D4;
-  T1_OVF = 1;
+  T1_COMP = 1;
 }
 
 ISR(PCINT2_vect)
