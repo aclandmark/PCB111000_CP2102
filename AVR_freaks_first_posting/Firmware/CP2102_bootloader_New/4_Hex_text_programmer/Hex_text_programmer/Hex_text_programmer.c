@@ -5,9 +5,10 @@ Uploads commentary text file to Atmega328 flash when pcb is being set up.
 
 Loaded at address 0x7000
 Talks to three other applications
-	Random_pattern_generator	A default app that runs in the absence of a user app
-	Text_reader					Reads commentary text one page at a time
-	Hex_verification
+	Random_pattern_generator	Loaded at address 0x6000	A default app that runs in the absence of a user app
+	Text_reader					Loaded at address 0x6480	Reads commentary text one page at a time
+	Hex_verification			Loaded at address 0x6880
+	Text commentary starts at 0x5FFF
 
 
 EEPROM locations
