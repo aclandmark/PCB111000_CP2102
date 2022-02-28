@@ -1,0 +1,2 @@
+
+***Our first project a simple C program is based on JP’s Blinky, see JP p30 and chapter 3.   A selection is offered here.  Why not choose one and type it in. Verify the code and upload it to the pcb as shown in the user guide.*
