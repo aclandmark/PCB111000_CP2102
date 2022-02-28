@@ -22,9 +22,9 @@ int main (void)
 
 
 
-ISR(TIMER1_OVF_vect)
+ISR(TIMER1_COMPA_vect)
 { UCSR0B &= (~(1 << RXCIE0));
-  TCNT1 = 0xCF2C;
+  TCNT1 = 0;
   if (m < num_leds)
   { PORT_2 = (PORT_2 << 1) | 1;
     PORT_1 = PORT_1 & (~(1 << m));
@@ -43,8 +43,9 @@ ISR(TIMER1_OVF_vect)
 
 
 void T1_100ms_clock_tick(void)
-{ TCNT1 = 0xCF2C;
-  TIMSK1 |= (1 << TOIE1);
+{ TCNT1 = 0;
+OCR1A = 12500;
+  TIMSK1 |= (1 <<  OCF1A);
   TCCR1B = 0x03;
 }
 
