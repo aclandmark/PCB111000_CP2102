@@ -56,12 +56,13 @@ int main (void){
 	keypress = waitforkeypress();													//User enters page number
 	Page_num_string[0] = keypress - '0';
 	Page_num_string[1] = 0;
-	if(isCharavailable(75)){Page_num_string[1] = Page_num_string[0]; 
+	if(isCharavailable(100)){Page_num_string[1] = Page_num_string[0]; 
 	Page_num_string[0] = receiveChar() - '0';}
 	
 	Page_num = Page_num_string[1] * 10 + Page_num_string[0];						//Convert page number string to binary
 	
-	if (Page_num > num_pages){wdt_enable(WDTO_15MS);										//page does not exist	
+	if (Page_num > num_pages)
+	{sendString("No more text!");wdt_enable(WDTO_15MS);									//page does not exist	
 	while(1);}
 	
 	page_address = address_page_num(Page_num, start_address);						//Address in flash of required page
@@ -71,9 +72,9 @@ int main (void){
 		
 	print_string_num(next_string_no++,page_address);
 	
-	waitforkeypress();	}															//Wait for keypress before printing next string 
+	waitforkeypress();}																//Wait for keypress before printing next string 
 
-	sendString("No page!");
+	sendString("End of page!");
 	
 	wdt_enable(WDTO_15MS);															//Restore the p/r/t/D user prompt	
 	while(1);
