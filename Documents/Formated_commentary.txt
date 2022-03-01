@@ -1,5 +1,11 @@
 
-***Our first project a simple C program is based on JP’s Blinky, see JP p30 and chapter 3.   A selection is offered here.  Why not choose one and type it in. Verify the code and upload it to the pcb as shown in the user guide.
+
+***
+Learning with PCB111000 is based on playing with simple programs, getting familiar with the way they are written, understanding them and finally modifying them to make them our own. The programs drive an 8 digit display, generating patterns and numbers and pass data to and from a PC.
+
+
+Our first project a simple C program is based on JP’s Blinky, see JP p30 and 
+chapter 3.   A selection is offered here.  Why not choose one and type it in. Verify the code and upload it to the pcb as shown in the user guide.
 
 
 Having got it working pressing Tools/Auto Format will make the code much clearer to read.  Why not try several others and then take a look at them and notice a number of features:
@@ -7,6 +13,9 @@ Having got it working pressing Tools/Auto Format will make the code much clearer
 #include “First_project_header.h”  	Click on it and see that it contains additional information required by the compiler, including other .h and .c files with essential definitions and resource subroutines  (pn is recommended for opening these).   
 
 The main routine.  This is where the program starts when power is first applied or after a reset.*
+
+
+
 
 ***setup_328_HW (Hard Ware) which contains a block of code and is known as (k\a) a macro. Details are given in the header file.
 
