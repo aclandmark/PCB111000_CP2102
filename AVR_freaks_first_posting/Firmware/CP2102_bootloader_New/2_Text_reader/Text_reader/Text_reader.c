@@ -68,7 +68,7 @@ int main (void){
 	page_address = address_page_num(Page_num, start_address);						//Address in flash of required page
 	Num_strings = string_counter(page_address);										//Number of strings on the page
 		
-	while(next_string_no <= Num_strings){											//Exit when last string on page has been printed
+	while(next_string_no <= Num_strings + 1){											//Exit when last string on page has been printed
 		
 	print_string_num(next_string_no++,page_address);
 	
