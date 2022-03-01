@@ -1,5 +1,4 @@
 
-Page 1	General introduction
 ***
 PCB_111000_CP2102 (or just the PCB):Press a/k to contine.
 
@@ -22,9 +21,6 @@ Having got it working pressing Tools/Auto Format will make the code much clearer
 The main routine.  This is where the program starts when power is first applied or after a reset.	Move on the page 2 for more features (press a/k).*
 
 
-Page 2	Basic C programs
-
-
 ***More things to take note of in our C programs.	setup_328_HW (Hard Ware):This contains a block of code and is known as (k\a) a macro. Details are given in the header file.
 
 Unsigned int PORT_1:PORT_1 is the name of a memory location that holds numbers.  The smallest element of computer memory is a bit and can hold either a 1 or a 0.  Memory is often divided into blocks of 8 bits which can hold numbers between 0 and 255. 16 bits are reserved for PORT_1.  See JP chapter 4 for an introduction.
@@ -44,18 +40,11 @@ Before leaving example 1 why not comment each line stating what it does as a lea
 Having looked at the examples why not mix and match to compose your own code.*
 
 
-Page 3	Talking to the PC, using the USART
-
-
-
 ***Talking to the PC, introducing the USART (Universal .... Receiver Transmitter module)	Many devices have a receiver transmitter module for communicating with a PC.  See JP page 98 chapter 6 for a few details.	Arduino provides a comprehensive set of functions for using the USART.  Here basic do it yourself (DIY) functions are used.  This approach provides a good introduction to the data sheet, a vital resource for setting up other things such a timers and interrupts. 
 
 Take a look at the project subroutine Char_to_PC_Local() and see section 20.11.1 of the data sheet.	UDR0 and UCSR0A are registers in the USART.	Data to be transmitted must first be written to UDR0.	If data has been received it can be read from UDR0.	UDRE0 is bit 5 of register UCRS0A.	The USART sets this bit to one when it is ready to accept new data for transmission.	Similarly it sets bit RXC0 to 1 when data has been received and can be read. 
 
 A number of these DIY functions can be found in	Resources_Receiver_transmitter\Basic_IO_and_Timer	They are best viewed using programmers notepad (pn).*
-
-
-Page 4	The first 4 UART programs
 
 
 ***9 sample programs that transfer data to and from the PC are offered.	Study of each is recommended.	Example 1 simply echoes keypresses to the screen.
@@ -67,10 +56,6 @@ Example 3 prints a file.	Resource "isCharavailable(65)" returns a 1 immediately 
 Example 4 introduces character strings and shows they can be sent to the PC.	It also shows how they are stored in arrays (consecutive locations) in memory.	We compose the strings and choose a name for each one.	The compiler adds a 0 to the end of each string.  It also replaces the names (i.e.  message_1) with the address of the first character in the string.	Note the two ways of writing the appropriate the C statements:	The * character indicates that memory location message_1 holds an address.	The [ ] characters indicate that message_3 is an array of characters.	See page 5 for more UART examples.*
 
 
-
-Page 5	More UART examples
-
-
 ***More examples of data going to and from the PC.	Example 5 simply prints out the characters together with their numeric equivalents.	Example 6 Converts a number to a string of characters and sends them to the PC and example 7 Does the reverse.	These are two very important operations. Take time to understand what is going on. See JP pages 81 to 84 for some help.
 
 Example 8 Uses project subroutines to: Accept a numerical string from the keyboard, convert this to a number which it doubles, reconvert the result to a string and send this to the PC.	All the strings are stored in array Num_string which has 12 memory locations. The subroutines require the address of the first element in this array (hence the use of the * symbols).	Variables preceded by the * symbol are k/a pointers.  See JP ch. 8 for a discussion of pointers.
@@ -78,9 +63,6 @@ Example 8 Uses project subroutines to: Accept a numerical string from the keyboa
 Example 9 uses repeated division to convert a fraction to decimal.	It calls subroutine divide which returns the number the outstanding decimal places. It also calculates the result of the division and the remainder (modulo see JP page 51).	Memory for these two variables is provided by the main routine.	The & symbols indicate that the subroutine will not be providing memory for these variables. The & in front of a variable indicates that is its address that is being passed to the subroutine.
 
 As an alternative to the use of pointers (i.e. the * and & symbols), variables can be declared in the header file rather than in the main.  This may be OK for small projects but is not normally considered good practice (see JP page 90).*
-
-
-Page 6	Using interrupts
 
 
 ***Using interrupts: 5 examples are given.	See JP chapter 7 p109 for a general introduction to interrupts.	3A does some calculations and prints out the results when sw2 is pressed. A HW timer running in the background interrupts this process every 100mS. The micro jumps to the ISR (interrupt service routine) and updates the display.	A key press interrupt is also shown enabling users to to manipulate the display manually.	We see that the interrupt enables 2 processes to run at once.
@@ -96,6 +78,7 @@ Look at the timer clock_tick() subroutine.	The timer is configured as a counter 
 
 3E Is an interrupt driven key press logger that also drives the display.	Projects 3D and E include the volatile declaration. This is because variables are being changed by an ISR.  Unlike for a subroutine the compiler cannot anticipate that the ISR will be called. The variables are therefore declared to be volatile as a warning to the compiler.*
 
+***Additional projects include	Building a clock/stop watch	entering data from the user switches	a brief look at some of the C library functions	a bit on floating point numbers	But the commentary stops here because nothing really new is introduced.	And of course JP also introduces some interesting projects in his book for anyone wishing to modify a PCB111000 slightly.*
 
 
 
