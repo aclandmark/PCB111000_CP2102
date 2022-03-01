@@ -1,14 +1,14 @@
 
 ***
-PCB_111000_CP2102 (or just the PCB):Press a/k to contine.
+PCB_111000_CP2102 (or just the PCB):Press a/k to continue.
 
 
 Learning with PCB111000 is based on playing with simple programs, getting familiar with the way they are written, understanding them and finally modifying them to make them our own. The programs drive an 8 digit display, generating patterns and numbers and pass data to and from a PC.
 
-Before attempting to begin programming in ernest it is a good idea to read the Introduction and User Guide and of course download the applications sugested there.
+Before attempting to begin programming in earnest it is a good idea to read the Introduction and User Guide and of course download the applications suggested there.
 
 
-Our first project a simple C program is based on JP's Blinky, see JP p30 and chapter 3.   A selection is offered here.  A freebee is given, just to make sure that everything is working OK. Just follow the instructions given in the user guide.
+Our first project a simple C program is based on JP's Blinky, see JP p30 and chapter 3.   A selection is offered here.  A free-bee is given, just to make sure that everything is working OK. Just follow the instructions given in the user guide.
 
 Why not choose another and type it in. Verify the code and upload it to the pcb (remember Ctrl z, the most useful go back feature).
 
