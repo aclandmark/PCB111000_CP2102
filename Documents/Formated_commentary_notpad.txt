@@ -1,0 +1,35 @@
+
+
+***
+PCB_111000_CP2102 (or just the PCB):Press a/k to contine.
+
+
+Learning with PCB111000 is based on playing with simple programs, getting familiar with the way they are written, understanding them and finally modifying them to make them our own. The programs drive an 8 digit display, generating patterns and numbers and pass data to and from a PC.
+
+Before attempting to begin programming in ernest it is a good idea to read the Introduction and User Guide and of course download the applications sugested there.
+
+
+Our first project a simple C program is based on JP's Blinky, see JP p30 and chapter 3.   A selection is offered here.  A freebee is given, just to make sure that everything is working OK.
+
+Why not choose another and type it in. Verify the code and upload it to the pcb as shown in the user guide (remember Ctrl z, the most useful go back feature).
+
+
+Having got it working pressing Tools/Auto Format will make the code much clearer to read. Why not try several others and then take a look at them and notice a number of features:
+
+
+#include "First_project_header.h"  	Click on it and see that it contains additional information required by the compiler, including other .h and .c files with essential definitions and resource subroutines  (pn is recommended for opening these). 
+
+The main routine.  This is where the program starts when power is first applied or after a reset.	Move on the page 2 for more features.
+
+Last section*
+
+
+
+
+***setup_328_HW (Hard Ware) which contains a block of code and is known as (k\a) a macro. Details are given in the header file.
+
+Unsigned int PORT_1	PORT_1 is the name of a memory location that holds numbers.  The smallest element of computer memory is a bit and can hold either a 1 or a 0.  Memory is often divided into blocks of 8 bits which can hold numbers between 0 and 255. 16 bits are reserved for PORT_1.  See JP chapter 4 for an introduction.
+
+sei(); 	This enables interrupts which are required by the one wire link (and will be discussed later)
+
+Hexadecimal numbers (i.e. 0x8000) . See JP chapter 4.*
