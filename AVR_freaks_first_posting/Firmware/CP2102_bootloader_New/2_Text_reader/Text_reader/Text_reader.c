@@ -146,7 +146,7 @@ char string_counter(int address_in_flash){
 				Prog_mem_address_L = address_in_flash;
 				read_flash ();
 				if(Flash_readout){sendChar(Flash_readout); 
-				if(Flash_readout == ':'){sendString("\t\t");line_length += 20;}
+				if(Flash_readout == ':'){sendString("\t");line_length += 10;}
 					}else break;
 				line_length += 1;
 				if(((line_length >= 90) && (Flash_readout == ' ')) || (Flash_readout == '\t'))
