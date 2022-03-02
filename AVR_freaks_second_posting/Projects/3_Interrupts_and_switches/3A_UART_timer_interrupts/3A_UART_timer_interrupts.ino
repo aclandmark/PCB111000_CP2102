@@ -45,7 +45,7 @@ ISR(TIMER1_COMPA_vect)
 void T1_100ms_clock_tick(void)
 { TCNT1 = 0;
 OCR1A = 12500;
-  TIMSK1 |= (1 <<  OCF1A);
+  TIMSK1 |= (1 <<  OCIE1A);
   TCCR1B = 0x03;
 }
 
