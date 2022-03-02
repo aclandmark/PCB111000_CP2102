@@ -21,7 +21,7 @@ Rx/Tx work at 57.6k
 */
 
 
-#define num_pages	12																//Set when commentary is complete
+#define num_pages	7																//Set when commentary is complete
 
 #include "Text_verification.h"
 
