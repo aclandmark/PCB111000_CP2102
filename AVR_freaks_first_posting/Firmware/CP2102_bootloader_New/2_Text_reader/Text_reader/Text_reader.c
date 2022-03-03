@@ -62,7 +62,7 @@ int main (void){
 	Page_num = Page_num_string[1] * 10 + Page_num_string[0];						//Convert page number string to binary
 	
 	if (Page_num > num_pages)
-	{sendString("No more text!");wdt_enable(WDTO_15MS);									//page does not exist	
+	{sendString("Page not present!\r\n");wdt_enable(WDTO_15MS);									//page does not exist	
 	while(1);}
 	
 	page_address = address_page_num(Page_num, start_address);						//Address in flash of required page
@@ -74,7 +74,7 @@ int main (void){
 	
 	waitforkeypress();}																//Wait for keypress before printing next string 
 
-	sendString("End of page!");
+	sendString("End of page\r\n");
 	
 	wdt_enable(WDTO_15MS);															//Restore the p/r/t/D user prompt	
 	while(1);
