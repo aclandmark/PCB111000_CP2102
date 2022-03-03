@@ -51,7 +51,7 @@ int main (void){
 	sendString("\r\n");
 	start_address =	0x5FFF;															//start address of text
 	
-	sendString("Page number 1 - 12?\r\n\r\n\r\n\r\n");								//set last page number so that it equals num_pages
+	sendString("Page number 1 - 7?\r\n\r\n\r\n\r\n");								//set last page number so that it equals num_pages
 	
 	keypress = waitforkeypress();													//User enters page number
 	Page_num_string[0] = keypress - '0';
