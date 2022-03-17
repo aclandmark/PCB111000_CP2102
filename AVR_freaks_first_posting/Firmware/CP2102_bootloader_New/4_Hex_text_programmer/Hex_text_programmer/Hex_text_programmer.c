@@ -27,7 +27,7 @@ EEPROM locations
 0x3F8	cmd_counter low byte
 0x3F7	One_wire_cal
 0x3F6	One wire cal
-0x3F5	Watch dog timeout					No longer needed
+0x3F5	Watch dog timeout					Set to zero just before timeout, set to 0xFF at reset
 0x3F4	Used to control text print out  	No longer needed
 0x3F3	Used by PRN generators
 0x3F2	Used by PRN generators
