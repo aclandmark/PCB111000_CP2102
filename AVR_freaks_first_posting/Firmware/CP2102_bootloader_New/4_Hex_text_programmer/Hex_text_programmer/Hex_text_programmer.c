@@ -108,6 +108,7 @@ MCUCR = (1<<IVSEL);
 		
 	case 'r':																//Run user/default application
 		clear_RunBL_bit;
+		eeprom_write_byte((uint8_t*)0x3F5, 0xFF);							//NEW LINE	Tells user app that r has just been pressed at p/r/t/D prompt
 		wdt_enable(WDTO_15MS);while(1);
 	
 	
