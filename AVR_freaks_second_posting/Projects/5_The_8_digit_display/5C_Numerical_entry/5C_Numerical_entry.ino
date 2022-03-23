@@ -1,6 +1,9 @@
 
-#include "Segment_driver_header.h"
-#define zero "abcdef"                    //chars a,b,c,d,e and f are stored in an array named "zero"
+#include "numerical_entry_header.h"
+
+
+
+#define zero "abcdef"                   //chars a,b,c,d,e and f are stored in an array named "zero"
 #define one "bc"                        //chars b and c are stored in an array named "one"
 #define two "abged"                     //Note: the compiler terminates each string in zero
 #define three "abcdg"
@@ -17,23 +20,26 @@ void display_num_string (const char*, int);
 int main (void){
 
 char   digit;
-int digit_num=0;                                                          //defines number of next digit on display           
-const char* string_ptr = 0;                                                      //pointer: will be loaded with the address of a segment string 
-setup_328_HW;                                                             //(i.e. the address of string "zero", "one", "two" etc....) 
+int digit_num=0;                                                            //defines number of next digit on display           
+const char* string_ptr = 0;                                                 //pointer: will be loaded with the address of a segment string 
+setup_328_HW;                                                               //(i.e. the address of string "zero", "one", "two" etc....) 
+
 Serial.begin(115200);
-    while (!Serial);
-    
-Serial.write("Send digits?");
+while (!Serial);
+Serial.write("\r\nSend digits?");
+
+clear_display;
+
 while(1){
 
-digit_num = 0;                                                              //First digit on display
+digit_num = 0;                                                      //First digit on display
 
-do{                                                                     //start of "do{}while();" loop
-while(!(Serial.available())); digit = Serial.read();               //user enters digit (0 to 9) at the PC keyboard
+do{                                                                 //start of "do{}while();" loop
+while(!(Serial.available())); digit = Serial.read();                //user enters digit (0 to 9) at the PC keyboard
 
 
-switch(digit){                                                        //The appropriate address is loaded into location "string_pointer"
-case '0': string_ptr = zero; break;                                   //The address of array zero is loaded into location "string_ptr"
+switch(digit){                                                      //The appropriate address is loaded into location "string_pointer"
+case '0': string_ptr = zero; break;                                 //The address of array zero is loaded into location "string_ptr"
 case '1': string_ptr = one; break;
 case '2': string_ptr = two; break;
 case '3': string_ptr = three; break;
@@ -50,23 +56,28 @@ display_num_string(string_ptr, digit_num);digit_num++;}
 while (digit_num < 8);                                              //return to the top of the "do" loop until all digits have been illuminated
 
 while(!(Serial.available())); Serial.read();
-clear_display;}}                                                       //clear display and repeat
+clear_display;}}                                                    //clear display and repeat
 
 
-void display_num_string (const char* s, int digit_num){                     //Subroutine requires a pointer to the string   
-int char_ptr=0;                                                       //containing segments used to define a digit
+void display_num_string (const char* s, int digit_num){             //Subroutine requires a pointer to the string   
+int char_ptr=0;                                                     //containing segments used to define a digit
 char letter;
 
 while(1){
-letter = *(s + char_ptr);// (s[char_ptr]);                              //Note these two expressions are equivalent
-switch(letter){                                                         //Work through the segments contained in the 
-case 'a':                                                               //string until '\0' is encountered
+letter = *(s + char_ptr);// (s[char_ptr]);                          //Note these two expressions are equivalent
+switch(letter){                                                     //Work through the segments contained in the 
+case 'a':                                                           //string until '\0' is encountered
 case 'b': 
 case 'c': 
 case 'd': 
 case 'e': 
 case 'f': 
-case 'g': One_wire_comms_any_segment(letter, digit_num);break;        //update display one segment at a time
-case 0:  return; break;                                                 //zero indicates the end of the string
-default: break;}char_ptr++;}}                                            //incrementing "char_ptr" steps through the string
-                                                                        //Selecting segment letters in turn
+case 'g': One_wire_comms_any_segment(letter, digit_num);
+break;                                                              //update display one segment at a time
+case 0:  return; break;                                             //zero indicates the end of the string
+default: break;}char_ptr++;}}                                       //incrementing "char_ptr" steps through the string
+                                                                    //Selecting segment letters in turn
+
+
+
+                                                                    
