@@ -3,7 +3,7 @@
 
 #include <avr/wdt.h>
 
-#define newline String_to_PC("\r\n")
+#define newline   Serial.write("\r\n");
 
 
 /**********************************************************************************/
@@ -17,7 +17,7 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 
 
 
-/************************************************************************************************************************************/
+/**********************************************************************************/
 #define setup_328_HW \
 \
 setup_watchdog;\
@@ -37,7 +37,7 @@ sei();
 
 
 
-/************************************************************************************************************************************/
+/**********************************************************************************/
 #define wdr()  __asm__ __volatile__("wdr")
 
 #define setup_watchdog \
@@ -51,7 +51,7 @@ WDTCSR = 0;
 
 
 
-/************************************************************************************************************************************/
+/**********************************************************************************/
 #define initialise_IO \
 MCUCR &= (~(1 << PUD));\
 DDRB = 0;\
@@ -64,18 +64,18 @@ PORTD = 0xFF;
 //All ports are initialised to weak pull up (WPU)
 
 
+
+
+/**********************************************************************************/
 #define User_prompt \
 while(1){\
 do{Serial.write("R?    ");}   while((isCharavailable(75) == 0));\
 User_response = Serial.read();\
-if((User_response == 'R') || (User_response == 'r'))break;} String_to_PC("\r\n");
+if((User_response == 'R') || (User_response == 'r'))break;} newline;
 
 
 
-
-
-/************************************************************************************************************************************/
-#include "Resources_Receiver_transmitter\One_wire_header.h"
-#include "Resources_Receiver_transmitter\One_wire_transactions.c"
-#include "Resources_Receiver_transmitter\Basic_IO_and_Timer.c"
-#include "Resources_Receiver_transmitter\Rx_Tx_subroutines.c"
+/**********************************************************************************/
+#include "Resources_Integer_numbers\One_wire_header.h"
+#include "Resources_Integer_numbers\One_wire_transactions.c"
+#include "Resources_Integer_numbers\Arduino_IO_and_Timer.c"
