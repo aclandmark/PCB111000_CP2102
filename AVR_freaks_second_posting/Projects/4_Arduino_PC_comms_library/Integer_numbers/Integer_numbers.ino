@@ -36,6 +36,8 @@ SW_reset;
 
 
 
+
+
 /******************************************************************************************/
 int Int_Num_from_PC(char * num_as_string,char next_char)
 {char strln;
@@ -45,12 +47,16 @@ strln = Serial.readBytesUntil('\r',num_as_string, 20);
 num_as_string[strln] = 0;
 Serial.write(num_as_string);
 Serial.write(next_char);
-if(atol(num_as_string) > 0x7FFF){Serial.write("Number is too large"); SW_reset;}
+if(atol(num_as_string) > 0x7FFF)
+{Serial.write("Number is too large"); SW_reset;}
 return atoi(num_as_string);}
 
 
+
+/******************************************************************************************/
 void Int_Num_to_PC(long Int_num, char * num_as_string, char next_char)
 {
 ltoa(Int_num, num_as_string, 10);
-Serial.print(num_as_string);Serial.print(next_char);
+Serial.print(num_as_string);
+Serial.print(next_char);
 }
