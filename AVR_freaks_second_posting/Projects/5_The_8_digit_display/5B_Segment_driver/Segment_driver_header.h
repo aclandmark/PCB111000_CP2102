@@ -61,12 +61,16 @@ PORTD = 0xFF;
 
 //All ports are initialised to weak pull up (WPU)
 
-#define clear_display   One_wire_Tx_char = 'c';  UART_Tx_1_wire();
+
+
 
 /************************************************************************************************************************************/
 #define set_up_PCI_on_sw2         PCICR |= (1 << PCIE2);
 #define enable_pci_on_sw2         PCMSK2 |= (1 << PCINT21);
 #define switch_2_up               (PIND & 0x20)
+#define clear_display             One_wire_Tx_char = 'c';  UART_Tx_1_wire();
+
+
 
 /************************************************************************************************************************************/
 #define User_prompt \
@@ -80,5 +84,5 @@ if((User_response == 'R') || (User_response == 'r'))break;} Serial.write("\r\n")
 /************************************************************************************************************************************/
 #include "Resources_segment_driver\One_wire_header.h"
 #include "Resources_segment_driver\One_wire_transactions.c"
-#include "Resources_segment_driver\Basic_IO_and_Timer.c"
-#include "Resources_segment_driver\First_project_subroutines.c"
+#include "Resources_segment_driver\Arduino_IO_and_Timer.c"
+#include "Resources_segment_driver\Segment_driver_subroutines.c"
