@@ -3,7 +3,7 @@
 
 #include <avr/wdt.h>
 
-#define newline String_to_PC("\r\n")
+#define newline   Serial.write("\r\n")
 
 
 /**********************************************************************************/
@@ -68,14 +68,13 @@ PORTD = 0xFF;
 while(1){\
 do{Serial.write("R?    ");}   while((isCharavailable(75) == 0));\
 User_response = Serial.read();\
-if((User_response == 'R') || (User_response == 'r'))break;} String_to_PC("\r\n");
+if((User_response == 'R') || (User_response == 'r'))break;} newline;
 
 
 
 
 
 /************************************************************************************************************************************/
-#include "Resources_Receiver_transmitter\One_wire_header.h"
-#include "Resources_Receiver_transmitter\One_wire_transactions.c"
-#include "Resources_Receiver_transmitter\Basic_IO_and_Timer.c"
-#include "Resources_Receiver_transmitter\Rx_Tx_subroutines.c"
+#include "Resources_Prime_factors\One_wire_header.h"
+#include "Resources_Prime_factors\One_wire_transactions.c"
+#include "Resources_Prime_factors\Arduino_IO_and_Timer.c"
