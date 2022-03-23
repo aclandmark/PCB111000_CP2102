@@ -28,7 +28,7 @@ int main (void)
 num = Sc_Num_from_PC(num_string, '\r');
 
 while(1){
-num = pow (num,3);
+num = pow (num,1.5);
 Sc_Num_to_PC(num, 2, 4, '\r');
 
 while(!(Serial.available()));
