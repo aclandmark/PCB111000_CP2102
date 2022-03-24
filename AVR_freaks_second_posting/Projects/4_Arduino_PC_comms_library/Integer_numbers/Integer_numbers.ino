@@ -1,11 +1,24 @@
 
+/*
+ From this point on Arduino library functions are introduced where possible.
+ For example 
+ Serial.begin(115200):    This initialsed the UART for 57600 Baud (assuming an 8MHz clock)
+ Serial.write:            This sends text to the PC
+ Serial print:            This sends numbers to the PC as text
+ atol/atoi:               This converts a text string to a long / integer number
+ ltoa:                    This converts a long number to text (askii characters)
+
+ Note all characters received by the UART are saved to a buffer.
+ Serial.readBytesUntil as implemented here reads these characters and transfers them
+ to a separate buffer "num_as_string" stoping only when a cairrage return (cr) is detected
+ or 20 keypresses have been made.
+ The keypresses contained in the buffer "num_as_string" are then converted to a number. 
+ */
+
+
 
 #include "Integer_numbers_header.h"
 
-//NOTE ARDUINO automatically configures the UART for 115200 Baud
-//This translates to 57600 for PCB111000_PCB2102
-//The header file includes a macro to initiate the UART
-//This allows users to determine their own baud rate
 
 
 /************************************************************************************************************/
