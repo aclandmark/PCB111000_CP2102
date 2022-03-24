@@ -1,6 +1,14 @@
 
-/**************Proj_3E_Acquire_and process_Data_from_the _KBD********************/
-/*Open terminal program, press 'r' at the user prompt, enter number and then press any key (AK)*/
+/**************Proj_5D_Acquire_and process_Data_from_the _KBD********************/
+
+/*
+Here we leave the mini_OS (the Attiny1606) to deal with all the details of displaying a number.
+We can use one_wire_comms to send it a string or binary number.
+If we send it a string then it will return the number in binary form.
+
+Obviouly Arduino do not supply library functions to drive the display and therefore a
+bit of DIY programming is required.
+*/
 
 
 
@@ -44,7 +52,6 @@ SW_reset;}
 /******************************************************************************************/
 long Int_from_KBD_Local(char display_buffer[]){                     //Acquires an integer string from the keyboard and returns the binary equivalent
 char keypress;
-//long I_number;
 char cr_keypress;
 unsigned char num_byte[4];
 long Long_Num_from_mini_OS;
