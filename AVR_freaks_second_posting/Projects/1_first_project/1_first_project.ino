@@ -1,4 +1,20 @@
 
+
+
+
+/*A selection of short programs designed to shown what a simple C program might look like
+ and give practice entering and compiling several of them.
+
+ It introduces
+ one_wire subroutines which send data to the mini_OS that resides on the ATtiny1606
+ and drives the display
+ A PRN generator that produces pseudo random noise
+ The setup_328_HW macro: This sets up the IO, the watch dog timer, calibrates the 8MHz clock etc...
+ The SW_reset macro: This enables the Atmega328 to be reset at any time.
+ */
+
+
+
 #include "First_project_header.h"
 
 int main (void)                          //Example 10
