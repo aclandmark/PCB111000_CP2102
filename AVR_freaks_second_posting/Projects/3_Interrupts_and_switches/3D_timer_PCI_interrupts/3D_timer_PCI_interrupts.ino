@@ -1,3 +1,19 @@
+
+/*
+ Timer interrupts drive the display with any one of thee patterns
+ User switch SW1, 2 or 3 are used to select the pattern.
+ 
+ Three interrupts are active
+ The timer, the one wire comms and PCI
+ To simplify operation the PCI ISR resets the Atmega328.
+ However before doing this it writes to the EEPROM.
+ EEPROM is special memory the survives reset.
+ The first thing the program does following a reset is to 
+ read the EEPROM to determine which pattern is required.
+ 
+ */
+
+
 #include "Timer_PCI_header.h"
 volatile char T1_COMP;
 unsigned int n, n_max;
@@ -5,6 +21,8 @@ long PORT_1, PORT_2;
 char p = 0;
 char mode = 1;
 
+
+/************************************************************************/
 int main (void)
 { setup_328_HW;
   mode = eeprom_read_byte((uint8_t*)0);
@@ -24,12 +42,16 @@ int main (void)
   }
 }
 
+
+/************************************************************************/
 ISR(TIMER1_COMPA_vect)
 {
   OCR1A += 0x30D4;
   T1_COMP = 1;
 }
 
+
+/************************************************************************/
 ISR(PCINT2_vect)
 { if ((switch_1_up) && (switch_2_up) && (switch_3_up)) {
     return;
@@ -40,6 +62,8 @@ ISR(PCINT2_vect)
   SW_reset;
 }
 
+
+/************************************************************************/
 void T1_100ms_clock_tick(void)
 { TCNT1 = 0;
   OCR1A = 0x30D4;
@@ -47,6 +71,8 @@ void T1_100ms_clock_tick(void)
   TCCR1B = 0x03;
 }
 
+
+/************************************************************************/
 void initialise_display()
 { n = 1;
   PORT_1 = 1;
@@ -57,11 +83,12 @@ void initialise_display()
     case 1:  n_max = 17; break;
     case 2: n_max = 16; break;
   }
-  //sei();
   One_wire_Tx_2_integers(PORT_1, PORT_2);
 }
 
 
+
+/************************************************************************/
 void Inc_Display()
 { switch (mode)
   { case 0: PORT_1 = PORT_1 << 1;
