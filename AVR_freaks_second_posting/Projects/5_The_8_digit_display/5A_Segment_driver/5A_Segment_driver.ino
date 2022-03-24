@@ -1,4 +1,15 @@
 
+/*
+ Enables users to drive the display manually
+ This indicates that there is not necessarily any connection between 
+ the display and an actual number.
+
+ Note:  The PCB111000 bootloader enables user programs to distinguish between
+ SW_resets and other resets (i.e POR and first time run following programming).
+ This facility is excercised here.
+ */
+
+
 #include "Segment_driver_header.h"
 
 
