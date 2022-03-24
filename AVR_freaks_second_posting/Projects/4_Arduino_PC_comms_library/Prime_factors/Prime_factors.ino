@@ -1,11 +1,13 @@
 
+/*
+ Accepts an integer number and converts it to its prime factors
+ */
+
+
+
 
 #include "Prime_factors_header.h"
 
-//NOTE ARDUINO automatically configures the UART for 115200 Baud
-//This translates to 57600 for PCB111000_PCB2102
-//The header file includes a macro to initiate the UART
-//This allows users to determine their own baud rate
 
 
 /************************************************************************************************************/
