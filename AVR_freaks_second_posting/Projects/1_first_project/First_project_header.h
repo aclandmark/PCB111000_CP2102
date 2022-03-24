@@ -25,10 +25,10 @@ OSC_CAL;\
 \
 comms_cal;\
 set_up_pin_change_interrupt_on_PC5;\
-USART_init(0,16);\
+\
 setup_one_wire_comms;\
-set_up_activity_leds;\
-sei();
+set_up_activity_leds;
+
 
 //The reset control switch is connected to PC5
 
