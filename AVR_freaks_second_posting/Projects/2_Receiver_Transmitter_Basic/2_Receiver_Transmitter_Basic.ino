@@ -1,7 +1,15 @@
-//NOTE ARDUINO automatically configures the UART for 115200 Baud
-//This translates to 57600 for PCB111000_PCB2102
-//The header file includes a macro to initiate the UART
-//This allows users to determine their own baud rate
+
+
+/*NOTE ARDUINO automatically configures the UART for 115200 Baud
+This translates to 57600 for PCB111000_PCB2102
+The PCB111000 bootloader includes a subroutine to initiate the UART
+so this does not have to be done by the user projects.
+
+Arduino provides a comprehensive library for sending data to and from a PC.
+However simple DIY (do it yourself) functions are used here to illustate
+the steps involved and introduce the Atmega328 data sheet.
+*/
+
 
 
 #include "Receiver_Transmitter_header.h"
