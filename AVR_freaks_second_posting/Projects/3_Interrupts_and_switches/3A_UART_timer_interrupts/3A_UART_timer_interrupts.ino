@@ -1,4 +1,16 @@
 
+/*
+Interrupts enable several process to run at the same time.
+Here the main task is to do some simple arithmetic and send the results to the PC
+However a timer interrup that occcurs every 100ms is used to drive the LED display.
+Code to setup a keypress interrupt is also given.  This enables the user to adjust 
+the display.
+
+When an interrupt occurs program coontrol jumps to the Interrupt Serice Routine (ISR)
+
+*/
+
+
 
 #include "UART_timer_interrupt_header.h"
 
