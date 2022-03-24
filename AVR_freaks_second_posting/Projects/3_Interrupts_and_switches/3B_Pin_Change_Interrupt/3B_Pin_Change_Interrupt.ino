@@ -1,3 +1,14 @@
+/*
+ Target practice:
+ In this example a basic LED driver routine runs in the for ground.
+ The user operates user switch SW2 to shoot the LEDs down.
+ 
+ Note SW2 is connected to a pin on the Atmega328 that is configured as input.
+ When SW2 is pressed the voltage level on the pin changes from 5V to zero volts.
+ A Pin Change Interrrupt (PCI) is generated.
+ */
+
+
 
 #include "Pin_Change_Interrupt_header.h"
 
