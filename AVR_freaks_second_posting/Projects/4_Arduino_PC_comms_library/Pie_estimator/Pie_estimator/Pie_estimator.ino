@@ -10,38 +10,7 @@
 
 
 
-
-/************************************************************************************************************
-
-  Use this area for saving the examples when they have been got working and finished with
-  Use the space above for the active program (the one being worked on)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-****************************PIE calculator*********************************************************************
+/****************************PIE calculator*********************************************************************
 A circle is drawn over a fine grid of squares of side 1 unit in length
 The number of squares within the circle is counted to give its area 
 from which pie is calculated.**********************************************************************************/
@@ -76,7 +45,7 @@ Serial.write("\r\nEstimate value for PIE. Enter radius (65500 max)\r\n");}
 R = Unsigned_Int_from_PC(Num_string, '\r'); 
 
 
-//for(int p = 0; p <= 249; p++){
+for(int p = 0; p <= 60; p++){
 
 r_mem = R;
 
@@ -97,15 +66,15 @@ Serial.write("\t");
 
 if ((pie = (float)Area / (float)R / (float)R * 4) < 0.0)
 Serial.write ("Overflows");
-else Serial.print (pie,8);
+else {Serial.print (pie,8);
+send_float_num(pie);}
 
-
-R = r_mem + 100;
+R = r_mem + 1000;
 
 for(int n = 0; n <= 11; n++)Num_string[n] = 0;
 numLength = 0;
-
-//}
+_delay_ms(100);
+}
 
 
 
@@ -188,4 +157,17 @@ array[ptr] += 1;
 if (array[ptr] != ':')break;}
 }
 
- 
+
+/**************************************************************************************************************************/
+ void send_float_num(float FP_num){
+char * Char_ptr;
+
+pause_pin_change_interrupt_on_PC5;
+Char_ptr = (char*)&FP_num;
+One_wire_Tx_char = 'D';                //Command 'D' indicates the a floating point number will be sent
+UART_Tx_1_wire();
+for(int m = 0; m <= 3; m++){              //Split the number into 4 chars
+One_wire_Tx_char = *Char_ptr;             //and send them individually
+UART_Tx_1_wire(); 
+Char_ptr += 1;}
+reinstate_pin_change_interrupt_on_PC5;}
