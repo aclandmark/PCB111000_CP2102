@@ -30,6 +30,7 @@ float pie;
 unsigned long r_mem;
 
 setup_328_HW;
+Reset_ATtiny1606;
  Serial.begin(115200);
     while (!Serial);
 
@@ -45,7 +46,7 @@ Serial.write("\r\nEstimate value for PIE. Enter radius (65500 max)\r\n");}
 R = Unsigned_Int_from_PC(Num_string, '\r'); 
 
 
-for(int p = 0; p <= 60; p++){
+for(int p = 0; p <= 250; p++){
 
 r_mem = R;
 
@@ -61,19 +62,21 @@ Area += Y;}
 divide(Area, R*R/4, no_decimal_places, Num_string);
 Serial.write(Num_string);
 Serial.write("\t");
+//atol(Num_string);
+send_float_num(atof(Num_string));
 
-
-
+/*
 if ((pie = (float)Area / (float)R / (float)R * 4) < 0.0)
 Serial.write ("Overflows");
 else {Serial.print (pie,8);
 send_float_num(pie);}
-
-R = r_mem + 1000;
+*/
+R = r_mem *10/9;
 
 for(int n = 0; n <= 11; n++)Num_string[n] = 0;
 numLength = 0;
-_delay_ms(100);
+//_delay_ms(10);
+while(switch_2_up);
 }
 
 
