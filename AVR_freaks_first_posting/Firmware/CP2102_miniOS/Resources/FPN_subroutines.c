@@ -21,7 +21,7 @@ void ftoaL(float Fnum){
 	
 	Fnum_int = (long)Fnum;															//Obtain integer part of the number
 	
-	if (Fnum_int < 10)afterpoint = 7;												//Number of decimal places is matched to display length
+	if (Fnum_int < 10)afterpoint = 6;												//Number of decimal places is matched to display length
 	if ((Fnum_int >= 10) && (Fnum_int < 100))afterpoint = 4;
 	if ((Fnum_int >= 100) && (Fnum_int < 1000))afterpoint = 3;
 	if ((Fnum_int >= 1000) && (Fnum_int < 10000))afterpoint = 2;
