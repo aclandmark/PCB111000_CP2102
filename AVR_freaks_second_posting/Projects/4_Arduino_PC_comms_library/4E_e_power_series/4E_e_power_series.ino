@@ -1,7 +1,18 @@
 
 #include "e_power_series_header.h"
 
-
+/*
+ Raises number Num to a power Pow
+ Num must be between 1 and 2
+ A power series calculates the natural log of Num
+ The log is then multiplied by Pow
+ The power series expansion of the exponential function
+ is used to obtain the final result (i.e the antilog)
+See https://en.wikipedia.org/wiki/Exponential_function
+and https://en.wikipedia.org/wiki/Natural_logarithm
+for the power series deffinitions
+ 
+ */
 
 int main (void) 
 
@@ -9,25 +20,33 @@ int main (void)
 char Num_string[12];
 char numLength;
 
-float logN, logN_old;
-float ans, ans_old;
-float Num,  term, difference, Pow;
+float logN, logN_old;                                 //logs are calculated iteratively
+float ans, ans_old;                                   //Final result
+float Num,   Pow;
+float term;                                           //Power series terms
+float difference;                                     //difference berween consequtive terms
 long term_counter;
+
+int loop_counter;
 
 
 setup_328_HW;
 Serial.begin(115200);
 while (!Serial);
 
-Serial.write("\r\nPower function: Enter number 1 to 1.9999\r\n");
+Serial.write("\r\nPower function: Enter number 1 to 2\r\n");
 Num = Sc_Num_from_PC(Num_string, '\t');
 Num -= 1;
 
 Reset_ATtiny1606;
 
-/****************Calculate the natural logarithm*********************************************/
+if (Num > 0.9999){logN = 6.9315E-1;}
+else if (Num < 0.00001){logN = 1E-6;}
+/****************Use power series to calculate the natural logarithm*********************************************/
+else 
+{
+int m = 1;
 term = 1.0;
-{int m = 1;
 while(1){
 term = term * Num/(float)m;
 if (m == 1){logN = term; difference= logN;}
@@ -36,13 +55,17 @@ else{
   else logN -= term;
   difference = logN - logN_old;}
 
-if ((difference/logN > -0.000001) && (difference/logN < 0.000001))break;  
+if ((difference/logN > -0.0000001) && (difference/logN < 0.0000001))break; 
+  
 logN_old = logN;
 term = term * (float)m;
-m += 1;}}
+if ((m += 1) > 5000)break; }}
+
 
 Serial.write("Natural log is  ");
 Sc_Num_to_PC(logN,1,5,'\r');
+
+//Int_Num_to_PC(test, Num_string, '\r');
 
 Serial.write("Enter power  ");
 Pow = Sc_Num_from_PC(Num_string, '\t');
@@ -55,7 +78,7 @@ ans = 1.0;
 ans_old = 1.0;
 
 while(1){
-term = (term * Num)/float(term_counter);term_counter += 1;
+term = (term * Num)/float(term_counter);  term_counter += 1;
 ans += term;
 difference = ans - ans_old;
 if ((difference/ans > -0.0000001) && (difference/ans < 0.0000001))break;
