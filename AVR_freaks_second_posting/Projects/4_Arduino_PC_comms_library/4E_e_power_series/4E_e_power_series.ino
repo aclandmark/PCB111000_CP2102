@@ -11,8 +11,12 @@
 See https://en.wikipedia.org/wiki/Exponential_function
 and https://en.wikipedia.org/wiki/Natural_logarithm
 for the power series deffinitions
+See https://en.wikipedia.org/wiki/Natural_logarithm
+for an efficient way to calculate a natural log of any number
  
  */
+
+
 
 int main (void) 
 
@@ -20,59 +24,66 @@ int main (void)
 char Num_string[12];
 char numLength;
 
-float logN, logN_old;                                 //logs are calculated iteratively
-float ans, ans_old;                                   //Final result
+float logN;
 float Num,   Pow;
-float term;                                           //Power series terms
-float difference;                                     //difference berween consequtive terms
-long term_counter;
-
-int loop_counter;
-
+int twos_exp;
+float Result;
+char sign;
 
 setup_328_HW;
 Serial.begin(115200);
 while (!Serial);
 
+
 Serial.write("\r\nPower function: Enter number 1 to 2\r\n");
 Num = Sc_Num_from_PC(Num_string, '\t');
-Num -= 1;
+
+
+sign = 0;
+if (Num >= 1.0)
+{twos_exp = 0; while (Num >= 2.0){Num = Num/2.0; twos_exp += 1;}}
+
+if (Num < 1.0)
+{twos_exp = 0; while (Num < 1.0){Num = Num*2.0; twos_exp -= 1;}}
+
+Sc_Num_to_PC(Num, 1, 6, '\t'); Int_Num_to_PC(twos_exp, Num_string, '\r');
+
+
 
 Reset_ATtiny1606;
+logN = logE_power_series(Num) + ((float)twos_exp * 0.693147);
 
-if (Num > 0.9999){logN = 6.9315E-1;}
-else if (Num < 0.00001){logN = 1E-6;}
-/****************Use power series to calculate the natural logarithm*********************************************/
-else 
-{
-int m = 1;
-term = 1.0;
-while(1){
-term = term * Num/(float)m;
-if (m == 1){logN = term; difference= logN;}
-else{
-  if (m%2)logN += term;
-  else logN -= term;
-  difference = logN - logN_old;}
+Serial.write("Natural log is  "); Sc_Num_to_PC(logN,1,5,'\r');
 
-if ((difference/logN > -0.0000001) && (difference/logN < 0.0000001))break; 
-  
-logN_old = logN;
-term = term * (float)m;
-if ((m += 1) > 5000)break; }}
-
-
-Serial.write("Natural log is  ");
-Sc_Num_to_PC(logN,1,5,'\r');
-
-//Int_Num_to_PC(test, Num_string, '\r');
 
 Serial.write("Enter power  ");
 Pow = Sc_Num_from_PC(Num_string, '\t');
 
-Num = logN * Pow;
+Num = logN * Pow;                           //Use Num to hold the log of the result
 
-term = 1.0;
+Result = expE_power_series(Num);
+
+display_float_num(Result);
+Sc_Num_to_PC(Result,1,5,'\r');
+
+
+SW_reset;
+return 1; }
+
+
+
+
+/**************************************************************************************************************************/
+float expE_power_series(float Num)
+{float term;                                           //Power series terms
+float difference;
+float ans, ans_old;
+long term_counter;
+char sign = 0;
+
+if (Num < 0){sign = 1; Num = Num * (-1);}
+
+  term = 1.0;
 term_counter = 1;
 ans = 1.0;
 ans_old = 1.0;
@@ -83,12 +94,43 @@ ans += term;
 difference = ans - ans_old;
 if ((difference/ans > -0.0000001) && (difference/ans < 0.0000001))break;
 ans_old = ans;}
-display_float_num(ans);
-Sc_Num_to_PC(ans,1,5,'\r');
 
-/************************Calculate 4*Area/R^2****************************/
-SW_reset;
-return 1; }
+if(!(sign))return ans;
+else return 1.0/ans;
+}
+
+
+
+
+
+/**************************************************************************************************************************/
+float logE_power_series(float Num)
+{float logE, logE_old;                                 //logs are calculated iteratively
+float term;                                           //Power series terms
+float difference;                                     //difference berween consequtive terms
+
+
+Num -= 1;
+if (Num > 0.9999){logE = 6.9315E-1;}
+else if (Num < 0.00001){logE = 1E-6;}
+else                                                  //Use power series to calculate the natural logarithm
+{
+int m = 1;
+term = 1.0;
+while(1){
+term = term * Num/(float)m;
+if (m == 1){logE = term; difference= logE;}
+else{
+  if (m%2)logE += term;
+  else logE -= term;
+  difference = logE - logE_old;}
+
+if ((difference/logE > -0.0000001) && (difference/logE < 0.0000001))break; 
+  
+logE_old = logE;
+term = term * (float)m;
+if ((m += 1) > 5000)break; }}
+return logE;}
 
 
 
