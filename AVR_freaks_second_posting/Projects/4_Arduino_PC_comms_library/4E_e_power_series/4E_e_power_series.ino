@@ -1,6 +1,4 @@
 
-#include "e_power_series_header.h"
-
 /*
  Raises number Num to a power Pow
  Num must be between 1 and 2
@@ -15,6 +13,11 @@ See https://en.wikipedia.org/wiki/Natural_logarithm
 for an efficient way to calculate a natural log of any number
  
  */
+ 
+#include "e_power_series_header.h"
+
+#define message_1 "\r\nPower function: Enter number 1 to 2\r\n"
+#define message_2 "\r\n\r\nTime_out: Number too large or small. Try again!\r\n"
 
 
 
@@ -22,22 +25,23 @@ int main (void)
 
 {
 char Num_string[12];
-char numLength;
 
 float logN;
-float Num,   Pow;
+float Num,   Pow, Num_2;
 int twos_exp;
 float Result;
 char sign;
 
-setup_328_HW;
+setup_328_HW_extra;
 Serial.begin(115200);
 while (!Serial);
 
+if(WDT_out_status == 1)Serial.write(message_1);
+if(WDT_out_status == 2)Serial.write(message_2);
 
-Serial.write("\r\nPower function: Enter number 1 to 2\r\n");
 Num = Sc_Num_from_PC(Num_string, '\t');
 
+Num_2 = Num;
 
 sign = 0;
 if (Num >= 1.0)
@@ -65,7 +69,7 @@ Result = expE_power_series(Num);
 
 display_float_num(Result);
 Sc_Num_to_PC(Result,1,5,'\r');
-
+Serial.write("Library result\t");Sc_Num_to_PC((pow(Num_2,Pow)),1,5,'\r');
 
 SW_reset;
 return 1; }
@@ -80,6 +84,10 @@ float difference;
 float ans, ans_old;
 long term_counter;
 char sign = 0;
+
+One_Sec_WDT_with_interrupt;
+
+
 
 if (Num < 0){sign = 1; Num = Num * (-1);}
 
@@ -100,6 +108,9 @@ else return 1.0/ans;
 }
 
 
+
+/**************************************************************************************************************************/
+ISR (WDT_vect){Signal_WDTout_with_interrupt; SW_reset;}
 
 
 
