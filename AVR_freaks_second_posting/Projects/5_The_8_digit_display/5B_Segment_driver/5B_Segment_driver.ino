@@ -18,17 +18,15 @@ int main (void){
 
 char keypress = 0, digit_num=0;            
 
-setup_328_HW;
+setup_328_HW_extra;
 
 Serial.begin(115200);
     while (!Serial);
-if (eeprom_read_byte ((uint8_t*)0x3FC) == 0xFF)
-eeprom_write_byte((uint8_t*)0x3F5, 0xFF);                               //POR detected
 
-if(!(eeprom_read_byte ((uint8_t*)0x3F5)))
-Serial.write(message_2);    
-else{eeprom_write_byte((uint8_t*)0x3F5, 0xFF);
-Serial.write(message_1);}
+
+if(WDT_out_status == 1)Serial.write(message_1);
+if(WDT_out_status == 2)Serial.write(message_2);
+
 sei();
 
 while(1){                                                               //Keep inputting data until x is received
@@ -44,7 +42,7 @@ case 'a': case 'b': case 'c':                                           //If a l
 case 'd': case 'e': case 'f': 
 case 'g': One_wire_comms_any_segment(keypress, digit_num); break;
 
-case 'x': {eeprom_write_byte((uint8_t*)0x3F5, 0);
+case 'x': {Signal_WDTout_with_interrupt;
 clear_display;SW_reset;} break;                                          //if any other key (AOK) execute a SW_reset.
 
 defaut: break;
