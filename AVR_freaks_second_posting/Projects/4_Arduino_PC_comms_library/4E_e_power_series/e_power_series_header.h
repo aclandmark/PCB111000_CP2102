@@ -3,7 +3,6 @@
 
 #include <avr/wdt.h>
 
-#define newline String_to_PC("\r\n")
 char WDT_out_status;
 
 /**********************************************************************************/
@@ -14,10 +13,15 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 
 //If the internal clock has been calibrated, a calibration byte will be found in EEPROM locations 0x3FF/E
 
+
+
+/**********************************************************************************/
 #define POR_detected                      eeprom_read_byte ((uint8_t*)0x3FC) == 0xFF
 #define WDTout_with_interrupt_detected    !(eeprom_read_byte ((uint8_t*)0x3F5))
 #define Signal_WDTout_with_interrupt      eeprom_write_byte((uint8_t*)0x3F5, 0);
 #define Reset_WDT_out_register            eeprom_write_byte((uint8_t*)0x3F5, 0xFF);
+#define switch_2_up                       (PIND & 0x20)
+
 
 /************************************************************************************************************************************/
 #define setup_328_HW_extra \
@@ -44,7 +48,9 @@ sei();
 
 
 
-//The reset control switch is connected to PC5  USART_init(0,16);
+//The reset control switch is connected to PC5
+
+
 
 
 /************************************************************************************************************************************/
@@ -66,6 +72,7 @@ WDTCSR = (1<< WDE) | (1 << WDIE) |  (1 << WDP2)  |  (1 << WDP1);
 
 
 
+
 /************************************************************************************************************************************/
 #define initialise_IO \
 MCUCR &= (~(1 << PUD));\
@@ -78,7 +85,7 @@ PORTD = 0xFF;
 
 //All ports are initialised to weak pull up (WPU)
 
-#define switch_2_up               (PIND & 0x20)
+
 
 
 /************************************************************************************************************************************/
