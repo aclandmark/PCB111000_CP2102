@@ -27,7 +27,7 @@ while (!Serial);
 Serial.write("\r\nEnter positive number \
 & terminate with Return key.\r\n");
 //Num_1 = Int_from_KBD(digits);                                               //Acquires data from keyboard
-Num_1 = Int_from_KBD_Local(digits);                                           //Local version: +Ve numbers only & no back key
+Num_1 = Int_KBD_to_display_Local(digits);                                           //Local version: +Ve numbers only & no back key
 
 do{
 Serial.print(++counter); Serial.write('\t');
@@ -50,7 +50,7 @@ SW_reset;}
 
 
 /******************************************************************************************/
-long Int_from_KBD_Local(char display_buffer[]){                     //Acquires an integer string from the keyboard and returns the binary equivalent
+long Int_KBD_to_display_Local(char display_buffer[]){                     //Acquires an integer string from the keyboard and returns the binary equivalent
 char keypress;
 char cr_keypress;
 unsigned char num_byte[4];
