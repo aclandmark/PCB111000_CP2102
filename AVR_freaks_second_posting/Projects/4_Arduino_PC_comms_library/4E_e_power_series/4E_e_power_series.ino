@@ -1,18 +1,21 @@
 
 /*
  Raises number Num to a power Pow
- Num must be between 1 and 2
- A power series calculates the natural log of Num
- The log is then multiplied by Pow
+ Num must be reduced to the form 1.A * 2^B 
+ where 1.A is between 1 and 2 and 1.A * 2^B = Num
+
+ A power series calculates the natural log of 1.A
+ The natural log (ln) of 2^B is B *  ln 2
+ These two results are added and multiplied by Pow
+ 
  The power series expansion of the exponential function
- is used to obtain the final result (i.e the antilog)
+ is then used to obtain the final result (i.e the antilog)
+
 See https://en.wikipedia.org/wiki/Exponential_function
 and https://en.wikipedia.org/wiki/Natural_logarithm
 for the power series deffinitions
-See https://en.wikipedia.org/wiki/Natural_logarithm
-for an efficient way to calculate a natural log of any number
- 
- */
+*/
+
  
 #include "e_power_series_header.h"
 
@@ -26,11 +29,12 @@ int main (void)
 {
 char Num_string[12];
 
-float logN;
-float Num,   Pow, Num_2;
-int twos_exp;
+float Num, Num_bkp;                               //Scientfic number pus its backup
+float Pow;                                        //Power to which the number is to be raised
+int twos_exp;                                     //Power to which 2 is raised 
+float logN;                                       //The log of Num
+float Log_result;                                 
 float Result;
-char sign;
 
 setup_328_HW_extra;
 Serial.begin(115200);
@@ -39,37 +43,42 @@ while (!Serial);
 if(WDT_out_status == 1)Serial.write(message_1);
 if(WDT_out_status == 2)Serial.write(message_2);
 
-Num = Sc_Num_from_PC(Num_string, '\t');
+Num = Sc_Num_from_PC(Num_string, '\t');           //User enters the scientific number
 
-Num_2 = Num;
+Num_bkp = Num;
 
-sign = 0;
-if (Num >= 1.0)
-{twos_exp = 0; while (Num >= 2.0){Num = Num/2.0; twos_exp += 1;}}
+if (Num >= 1.0)                                   //Multiply or divide number by 2 untill it
+{twos_exp = 0; while (Num >= 2.0)                 //is between 1 and 2 and adjust its twos_exp 
+{Num = Num/2.0; twos_exp += 1;}}                  //so that its value remains unchanged 
 
 if (Num < 1.0)
-{twos_exp = 0; while (Num < 1.0){Num = Num*2.0; twos_exp -= 1;}}
+{twos_exp = 0; while (Num < 1.0)
+{Num = Num*2.0; twos_exp -= 1;}}
 
-Sc_Num_to_PC(Num, 1, 6, '\t'); Int_Num_to_PC(twos_exp, Num_string, '\r');
+Sc_Num_to_PC(Num, 1, 6, '\t'); 
+Int_Num_to_PC(twos_exp, Num_string, '\r');
 
 
 
 Reset_ATtiny1606;
-logN = logE_power_series(Num) + ((float)twos_exp * 0.693147);
+logN = logE_power_series(Num) + 
+((float)twos_exp * 0.693147);                     //Log to base e of the scientific number
 
-Serial.write("Natural log is  "); Sc_Num_to_PC(logN,1,5,'\r');
+Serial.write("Natural log is  "); 
+Sc_Num_to_PC(logN,1,5,'\r');
 
 
 Serial.write("Enter power  ");
-Pow = Sc_Num_from_PC(Num_string, '\t');
+Pow = Sc_Num_from_PC(Num_string, '\t');           //User enters the power.
 
-Num = logN * Pow;                           //Use Num to hold the log of the result
+Log_result = logN * Pow;                          //The Log of the result
 
-Result = expE_power_series(Num);
+Result = expE_power_series(Log_result);           //Returns the antilog
 
 display_float_num(Result);
 Sc_Num_to_PC(Result,1,5,'\r');
-Serial.write("Library result\t");Sc_Num_to_PC((pow(Num_2,Pow)),1,5,'\r');
+Serial.write("Library result\t");
+Sc_Num_to_PC((pow(Num_bkp,Pow)),1,5,'\r');
 
 SW_reset;
 return 1; }
