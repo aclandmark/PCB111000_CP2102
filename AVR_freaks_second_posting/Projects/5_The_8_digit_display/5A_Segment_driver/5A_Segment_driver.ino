@@ -13,25 +13,24 @@
 #include "Segment_driver_header.h"
 
 
+#define message_1 "\r\nPress key a to g (x for next digit)\r\n"
+#define message_2 "  ?"
+
+
+
 int main (void){
 
 char letter = 0, digit_num;            
 
-setup_328_HW;
+setup_328_HW_extra;
 set_up_PCI_on_sw2;
   enable_pci_on_sw2;
  Serial.begin(115200);
     while (!Serial);
 
-if (eeprom_read_byte ((uint8_t*)0x3FC) == 0xFF)
-eeprom_write_byte((uint8_t*)0x3F5, 0xFF);                     //POR detected
-    
-if(!(eeprom_read_byte ((uint8_t*)0x3F5)))
-Serial.write("  ?");    
+if(WDT_out_status == 1)Serial.write(message_1);
+if(WDT_out_status == 2)Serial.write(message_2);
 
-else{eeprom_write_byte((uint8_t*)0x3F5, 0xFF);
-Serial.write("\r\nPress key a to g \
-(x for next digit)\r\n");}
 sei();
 
 
@@ -55,7 +54,7 @@ default: break;}}}}}
 /***************************************************************************************************************/
 ISR(PCINT2_vect)
 { if (switch_2_up)return;
-eeprom_write_byte((uint8_t*)0x3F5, 0);
+Signal_WDTout_with_interrupt;
   sei(); clear_display;
   SW_reset;
 }
