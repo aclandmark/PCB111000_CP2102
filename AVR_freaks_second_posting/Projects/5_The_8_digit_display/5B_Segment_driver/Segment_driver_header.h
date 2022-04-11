@@ -4,6 +4,9 @@
 #include <avr/wdt.h>
 
 char User_response;
+char WDT_out_status;
+
+
 
 /**********************************************************************************/
 #define  OSC_CAL \
@@ -15,9 +18,16 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 
 
 
+/**********************************************************************************/
+#define POR_detected                      eeprom_read_byte ((uint8_t*)0x3FC) == 0xFF
+#define WDTout_with_interrupt_detected    !(eeprom_read_byte ((uint8_t*)0x3F5))
+#define Signal_WDTout_with_interrupt      eeprom_write_byte((uint8_t*)0x3F5, 0);
+#define Reset_WDT_out_register            eeprom_write_byte((uint8_t*)0x3F5, 0xFF);
+
+
 
 /************************************************************************************************************************************/
-#define setup_328_HW \
+#define setup_328_HW_extra \
 \
 setup_watchdog;\
 ADMUX |= (1 << REFS0);\
@@ -26,8 +36,17 @@ OSC_CAL;\
 \
 comms_cal;\
 set_up_pin_change_interrupt_on_PC5;\
+\
 setup_one_wire_comms;\
 set_up_activity_leds;\
+\
+if (POR_detected)\
+Reset_WDT_out_register;\
+if(WDTout_with_interrupt_detected)\
+WDT_out_status = 2;\
+else\
+{WDT_out_status = 1;}\
+Reset_WDT_out_register;\
 sei();
 
 //The reset control switch is connected to PC5
