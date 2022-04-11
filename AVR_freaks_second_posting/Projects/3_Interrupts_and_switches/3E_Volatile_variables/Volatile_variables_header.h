@@ -104,4 +104,4 @@ if (*PORT_2 == 1)\
 #include "Resources\One_wire_header.h"
 #include "Resources\One_wire_transactions.c"
 #include "Resources\Basic_IO_and_Timer.c"
-#include "Resources\Rx_Tx_subroutines.c"
+#include "Resources\Proj_3E_subroutines.c"
