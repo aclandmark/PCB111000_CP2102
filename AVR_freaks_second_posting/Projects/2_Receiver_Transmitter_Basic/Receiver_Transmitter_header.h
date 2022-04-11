@@ -70,4 +70,4 @@ PORTD = 0xFF;
 #include "Resources_Receiver_transmitter\One_wire_header.h"
 #include "Resources_Receiver_transmitter\One_wire_transactions.c"
 #include "Resources_Receiver_transmitter\Basic_IO_and_Timer.c"
-#include "Resources_Receiver_transmitter\Rx_Tx_subroutines.c"
+#include "Resources_Receiver_transmitter\Proj_2_subroutines.c"
