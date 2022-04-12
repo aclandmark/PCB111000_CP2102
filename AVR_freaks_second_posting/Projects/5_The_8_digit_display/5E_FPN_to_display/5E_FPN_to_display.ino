@@ -31,6 +31,7 @@ Serial.write("\r\nEnter scientific number \
 
 Num_1 = Float_KBD_to_display(digits);                                     //Data from keyboard
 while (1){
+ 
 Sc_Num_to_PC(Num_1,1,5 ,'\r');
 waitforkeypress();
 Num_1 = pow(Num_1, 3);
