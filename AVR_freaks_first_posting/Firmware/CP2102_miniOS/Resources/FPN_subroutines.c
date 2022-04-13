@@ -30,7 +30,7 @@ void ftoaL(float Fnum){
 	if (Fnum  >= 10000) {while (Fnum >= 10)
 		{Fnum /= 10; expt += 1;}afterpoint = 5;}
 		
-		if(Fnum < 0.01) {while (Fnum < 1){Fnum *= 10; expt -= 1;}}
+		if(Fnum < 0.01) {while (Fnum < 1){Fnum *= 10; expt -= 1;}afterpoint = 5;}	//afterpoint = 5; added
 		
 		Fnum = Local_Round_function(Fnum, afterpoint);
 		
