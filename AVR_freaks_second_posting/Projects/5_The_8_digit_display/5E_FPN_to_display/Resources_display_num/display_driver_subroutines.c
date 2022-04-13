@@ -33,6 +33,8 @@ Long_Num_from_mini_OS |= num_byte[m];}
 void int_num_to_display(long);
 void float_num_to_display(float);
 
+void Check_num_for_to_big_or_small(float);
+
 
 
 
