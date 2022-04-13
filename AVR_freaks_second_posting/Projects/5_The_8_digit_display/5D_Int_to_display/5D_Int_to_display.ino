@@ -26,8 +26,7 @@ while (!Serial);
 
 Serial.write("\r\nEnter positive number \
 & terminate with Return key.\r\n");
-//Num_1 = Int_from_KBD(digits);                                               //Acquires data from keyboard
-Num_1 = Int_KBD_to_display_Local(digits);                                           //Local version: +Ve numbers only & no back key
+Num_1 = Int_KBD_to_display(digits);                                         //Acquires data from keyboard
 
 do{
 Serial.print(++counter); Serial.write('\t');
