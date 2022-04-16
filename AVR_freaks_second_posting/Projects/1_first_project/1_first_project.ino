@@ -173,6 +173,7 @@ int main (void)                          //Example 10
   char overflow = 0;
 
   setup_328_HW;
+  sei();  ///////////////////////////////////////////////////////////
   while (1)
   { One_wire_Tx_2_integers(PORT_1, ~PORT_1);
     _delay_ms(60);
@@ -196,6 +197,7 @@ int main (void)                          //Example 10
   long PORT_1 = 1, PORT_2 = 1;
 
   setup_328_HW;
+  sei();  ///////////////////////////////////////////////////
   PRN_counter = 0;
   random_num = PRN_16bit_GEN (0, &PRN_counter);
   while (1)
@@ -224,6 +226,7 @@ int main (void)                          //Example 10
   unsigned char PRN_counter;
 
   setup_328_HW;
+  sei();////////////////////////////////////////////////////
   clear_display;
 
   PRN_counter = 0;
