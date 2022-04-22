@@ -73,7 +73,7 @@ PORTD = 0xFF;
 while(1){\
 do{String_to_PC("r    ");}   while((isCharavailable(40) == 0));\
 User_response = Char_from_PC();\
-if(User_response == 'r') break;} String_to_PC("\r\n");
+if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 
 
 
