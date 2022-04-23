@@ -29,14 +29,12 @@ String_to_PC("Num_1?  ");
 Num_string_from_KBD(digits);
 Num_1 = Askii_to_binary(digits);
 
-//Num_1 = Num_from_KBD(digits);Num_to_PC(10,Num_1); newline();      //"num_from_KBD" subroutine provides a number in binary form
-
 String_to_PC("Num_2?  ");
 Num_string_from_KBD(digits);
 Num_2 = Askii_to_binary(digits);
 
-
-//Num_2 = Num_from_KBD(digits);Num_to_PC(10,Num_2);newline();
+clear_display;
+for(int m = 0; m <= 7; m++)digits[m] = 0;
 
 String_to_PC("Answer =   ");
 
@@ -49,10 +47,10 @@ String_to_PC("\r\n");}SW_reset;}
 /**************************************************************************************************/
 void fraction_to_decimal_string_Local(long remainder, long denominator, char digits[]){
 long digit;
-int m=6;
+int m=7;
 clear_display;
-digits[7]= '0';
-digits[6] = '_';
+digits[7]= '0' | 0x80;
+//digits[6] = '_';
 String_to_PC("0.");
 
 while(switch_2_up){
@@ -90,11 +88,7 @@ return (A - product_AB(divide_A_by_B(A,B),B));}
 
 
 
-/****************************************************************************************************/
-
-
-
-/************This area is for project subroutines*************************************************************/
+/*******************************************************************************************************/
 void Num_string_from_KBD(char * array_ptr)
 { char keypress;
   while ((keypress = waitforkeypress()) != '\r')
