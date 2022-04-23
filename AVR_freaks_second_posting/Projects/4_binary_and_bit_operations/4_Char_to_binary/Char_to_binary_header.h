@@ -66,8 +66,17 @@ PORTD = 0xFF;
 
 //All ports are initialised to weak pull up (WPU)
 
-#define clear_display             One_wire_Tx_char = 'c';  UART_Tx_1_wire();
-#define switch_2_up               (PIND & 0x20)
+#define clear_display                       One_wire_Tx_char = 'c';  UART_Tx_1_wire();
+#define set_up_PCI_on_user_switches         PCICR |= (1 << PCIE2);
+#define enable_PCI_on_user_switches         PCMSK2 |= (1 << PCINT18) | (1 << PCINT21) | (1 << PCINT23);
+#define switch_1_up                         (PIND & 0x04)
+#define switch_2_up                         (PIND & 0x20)
+#define switch_3_up                         (PIND & 0x80)
+
+#define switch_1_down                       ((PIND & 0x04)^0x04)
+#define switch_2_down                       ((PIND & 0x20)^0x20)
+#define switch_3_down                       ((PIND & 0x80)^0x80)
+
 
 #define User_prompt \
 while(1){\
@@ -81,24 +90,11 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 /************************************************************************************************************************************/
 
 
+
+/************************************************************************************************************************************/
+
+
 #include "Resources_Char_to_binary/One_wire_header.h"
 #include "Resources_Char_to_binary/Basic_IO_and_Timer.c"
 #include "Resources_Char_to_binary/Bit_ops_2_subroutines.c"
 #include "Resources_Char_to_binary/One_wire_transactions.c"
-
-
-
-
-
-#define message_1 \
-"\r\nMore on bitwise ops\r\n\
-Press r or R at the user prompt\r\n\
-and x or X to escape\r\n\
-giving 4 modes of operation\r\n"
-
-#define User_instructions \
-String_to_PC (message_1);
-
-
-char logical_op(char, char, char, char);
-char binary_char_from_KBD_Local(void);
