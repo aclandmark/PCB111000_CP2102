@@ -96,5 +96,4 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 
 #include "Resources_Char_to_binary/One_wire_header.h"
 #include "Resources_Char_to_binary/Basic_IO_and_Timer.c"
-#include "Resources_Char_to_binary/Bit_ops_2_subroutines.c"
 #include "Resources_Char_to_binary/One_wire_transactions.c"
