@@ -27,32 +27,47 @@ switch (p){\
 
  
 #include "Basic_clock_header.h"
+ 
 
 
 char digits[8];
+volatile char clock_tick;
+
 
 int main (void){
 char User_response;
 
 setup_328_HW;
+initialise_T2();
 sei();
 String_to_PC("Press 'R' to enter time or 'r' to start at time zero  ");
 User_prompt;
 
-if(User_response == 'R')set_time();
+if(User_response == 'R')
+
+//{clock_tick = 0;  start_clock();
+//while(1){while(!(clock_tick));clock_tick = 0; Char_to_PC('A');}}
+
+
+
+
+
+
+set_time();
 else {reset_clock_1;}
 Display_time;
+clock_tick = 0;
+
 
 String_to_PC("AK to start\r\n");
 waitforkeypress();
 
-while(1){Timer_T2_10mS_delay_x_m(10);Inc_display();}}
-
-
+start_clock();
+while(1){while(clock_tick <= 1);clock_tick = 0; Inc_time();Inc_time();Display_time;}}
 
 
 /**********************************************************************************************************************************************************/
-void Inc_display(void){
+void Inc_time(void){
  if (msecsH < '9') msecsH++; 
   else {msecsH = '0'; if ((SecsL) < '9') SecsL++;   
               else {SecsL = '0'; if (SecsH < '5') SecsH++; 
@@ -67,8 +82,7 @@ void Inc_display(void){
  }  //  update msecs, seconds units and tens and minutes units
  }  //  update msecs and seconds units and tens
  }  //  update msecs and seconds units
-
-Display_time;}
+}
 
 /**********************************************************************************************************************************************************/
 void set_time(void){
@@ -87,3 +101,30 @@ Display_time;}
 waitforkeypress();
 clear_display;
 _delay_ms(50);}
+
+/**********************************************************************************************************************************************/
+
+void initialise_T2(void){
+ASSR = (1 << AS2); 
+TCNT2 = 0;
+TCCR2A = 0;
+TCCR2B |= (1 << CS20) | (1 << CS21);
+OCR2B = 0;}
+
+
+void start_clock(void){
+TCNT2 = 0;
+OCR2A = 102; 
+TIMSK2 |= (1 << OCIE2A);}
+
+
+
+ISR (TIMER2_COMPA_vect){
+  OCR2A += 102;
+  clock_tick += 1;}
+
+ISR (TIMER2_OVF_vect){}
+
+
+
+/**********************************************************************************/
