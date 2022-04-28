@@ -1,4 +1,4 @@
-/****************************************
+/****************************************************************************************************************
 Time reference
 Use 32768 watch crystal with /32 prescaler giving 1024 clock
 Counts to 1024 in 1 second
@@ -6,24 +6,7 @@ Counts to 102 in 100mS
 Counts to 204 in 200mS
 Counts to 918 in 900mS
 Counts 106 in the last 100mS
-
-TCNT2 = 102
-Start clock
-9 times (At interrupt TCNT2 = (TCNT2 + 102)%256    Update display)
-On the tenth time wait for overflow
-
- 
- ****************************************/
-
-
-#define Display_time \
-{One_wire_Tx_char = 'A'; UART_Tx_1_wire();\
-for(int p = 0; p <= 7; p++){\
-switch (p){\
-  case 2:\
-  case 4:\
-  case 6: One_wire_Tx_char = digits[p] | 0x80; UART_Tx_1_wire(); break;\
-  default: One_wire_Tx_char = digits[p]; UART_Tx_1_wire(); break;}}}
+****************************************************************************************************************/
 
  
 #include "Basic_clock_header.h"
@@ -32,7 +15,7 @@ switch (p){\
 
 char digits[8];
 volatile char clock_tick;
-
+volatile char tick_counter; 
 
 int main (void){
 char User_response;
@@ -44,15 +27,6 @@ String_to_PC("Press 'R' to enter time or 'r' to start at time zero  ");
 User_prompt;
 
 if(User_response == 'R')
-
-//{clock_tick = 0;  start_clock();
-//while(1){while(!(clock_tick));clock_tick = 0; Char_to_PC('A');}}
-
-
-
-
-
-
 set_time();
 else {reset_clock_1;}
 Display_time;
@@ -66,7 +40,7 @@ start_clock();
 while(1){while(clock_tick <= 1);clock_tick = 0; Inc_time();Inc_time();Display_time;}}
 
 
-/**********************************************************************************************************************************************************/
+/****************************************************************************************************************/
 void Inc_time(void){
  if (msecsH < '9') msecsH++; 
   else {msecsH = '0'; if ((SecsL) < '9') SecsL++;   
@@ -84,7 +58,7 @@ void Inc_time(void){
  }  //  update msecs and seconds units
 }
 
-/**********************************************************************************************************************************************************/
+/****************************************************************************************************************/
 void set_time(void){
 
 for(int m = 0; m <= 7; m++)digits[m] = 0;
@@ -98,12 +72,14 @@ for (int m = 0; m<=4; m++){while(isCharavailable(5) == 0);
 if(m == 4){digits[2] = Char_from_PC();msecsH = '0'; msecsL = 0;}
 else digits[6 - m] = Char_from_PC(); 
 Display_time;}
+
 waitforkeypress();
 clear_display;
 _delay_ms(50);}
 
-/**********************************************************************************************************************************************/
 
+
+/****************************************************************************************************************/
 void initialise_T2(void){
 ASSR = (1 << AS2); 
 TCNT2 = 0;
@@ -113,18 +89,35 @@ OCR2B = 0;}
 
 
 void start_clock(void){
+tick_counter = 0;
 TCNT2 = 0;
 OCR2A = 102; 
 TIMSK2 |= (1 << OCIE2A);}
 
 
-
-ISR (TIMER2_COMPA_vect){
+ISR (TIMER2_COMPA_vect){ char string[5];
   OCR2A += 102;
-  clock_tick += 1;}
+  clock_tick += 1;
+  tick_counter += 1;
+  if(tick_counter == 9){tick_counter = -1; OCR2A += 4;}
+  
+  
+ /*Binary_to_Askii (OCR2A, string) ;
+  String_to_PC("\r\n");
+  String_to_PC(string);*/
+  
+  }
 
-ISR (TIMER2_OVF_vect){}
+   
+int Binary_to_Askii (long number, char * array_ptr)
+{ int i = 0;
+  do {
+    array_ptr[i++] = number % 10 + '0';
+  }
+  while ((number = number / 10) > 0);
+  array_ptr[i] = '\0';
+  return i;
+}
 
 
-
-/**********************************************************************************/
+/****************************************************************************************************************/
