@@ -6,8 +6,8 @@
 #define MinsL digits[4]
 #define SecsH digits[3]
 #define SecsL digits[2]
-#define msecsH digits[1]
-#define msecsL digits[0]
+#define deci_SecsL digits[1]
+#define deci_SecsH digits[0]
 
 
 
