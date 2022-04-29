@@ -53,7 +53,7 @@ deci_Secs = ((deci_sec_counter%36000)%600)%10;
 timer_utoa(Hours); HoursH = charH; HoursL = charL; 
 timer_utoa(Minutes); MinsH = charH; MinsL = charL; 
 timer_utoa(Seconds); SecsH = charH; SecsL = charL; 
-timer_utoa(deci_Secs); deci_SecsH = charH; deci_SecsL = charL; }
+timer_utoa(deci_Secs * 10); deci_SecsH = charH; deci_SecsL = charL; }
 
 
 /*******************************************************************************************************************************/
