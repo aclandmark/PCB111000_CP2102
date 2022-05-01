@@ -42,8 +42,8 @@ while(1){while(clock_tick <= 1);clock_tick = 0; Inc_time();Inc_time();Display_ti
 
 /****************************************************************************************************************/
 void Inc_time(void){
- if (msecsH < '9') msecsH++; 
-  else {msecsH = '0'; if ((SecsL) < '9') SecsL++;   
+ if (deci_SecsH < '9') deci_SecsH++; 
+  else {deci_SecsH = '0'; if ((SecsL) < '9') SecsL++;   
               else {SecsL = '0'; if (SecsH < '5') SecsH++; 
                           else {SecsH = '0';  if ((MinsL) < '9') MinsL++; 
                                       else {MinsL = '0'; if (MinsH < '5') MinsH++; else {MinsH = '0';
@@ -69,7 +69,7 @@ while(isCharavailable(50) == 0){String_to_PC("T?  ");}
 
 digits[7] = Char_from_PC();Display_time;
 for (int m = 0; m<=4; m++){while(isCharavailable(5) == 0);
-if(m == 4){digits[2] = Char_from_PC();msecsH = '0'; msecsL = 0;}
+if(m == 4){digits[2] = Char_from_PC();deci_SecsH = '0'; deci_SecsL = '0';}
 else digits[6 - m] = Char_from_PC(); 
 Display_time;}
 
