@@ -24,3 +24,7 @@ switch (p){\
   case 6: One_wire_Tx_char = digits[p] | 0x80; UART_Tx_1_wire(); break;\
   default: One_wire_Tx_char = digits[p]; UART_Tx_1_wire(); break;}}}
 
+
+#define Inc_OS_time \
+{One_wire_Tx_char = 'K'; UART_Tx_1_wire();}
+
