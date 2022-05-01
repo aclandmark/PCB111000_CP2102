@@ -1,7 +1,7 @@
 
 
-#include "Resources_Basic_clock/One_wire_header.h"
-#include "Resources_Basic_clock/clock_timer_header.h"
+//#include "Resources_Basic_clock/One_wire_header.h"
+//#include "Resources_Basic_clock/clock_timer_header.h"
 
 #include <avr/wdt.h>
 
@@ -87,7 +87,7 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 /************************************************************************************************************************************/
 
 
-//#include "Resources_Basic_clock/One_wire_header.h"
-//#include "Resources_Basic_clock/clock_timer_header.h"
+#include "Resources_Basic_clock/One_wire_header.h"
+#include "Resources_Basic_clock/clock_timer_header.h"
 #include "Resources_Basic_clock/Basic_IO_and_Timer.c"
 #include "Resources_Basic_clock/One_wire_transactions.c"
