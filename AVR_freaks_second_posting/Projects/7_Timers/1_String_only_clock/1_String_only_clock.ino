@@ -99,25 +99,9 @@ ISR (TIMER2_COMPA_vect){ char string[5];
   OCR2A += 102;
   clock_tick += 1;
   tick_counter += 1;
-  if(tick_counter == 9){tick_counter = -1; OCR2A += 4;}
-  
-  
- /*Binary_to_Askii (OCR2A, string) ;
-  String_to_PC("\r\n");
-  String_to_PC(string);*/
-  
-  }
+  if(tick_counter == 9){tick_counter = -1; OCR2A += 4;}}
 
    
-int Binary_to_Askii (long number, char * array_ptr)
-{ int i = 0;
-  do {
-    array_ptr[i++] = number % 10 + '0';
-  }
-  while ((number = number / 10) > 0);
-  array_ptr[i] = '\0';
-  return i;
-}
 
 
 /****************************************************************************************************************/
