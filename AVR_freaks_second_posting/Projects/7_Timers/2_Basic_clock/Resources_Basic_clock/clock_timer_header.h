@@ -16,7 +16,7 @@
 
 
 #define Display_time \
-{One_wire_Tx_char = 'A'; UART_Tx_1_wire();\
+{One_wire_Tx_char = 'J'; UART_Tx_1_wire();\
 for(int p = 0; p <= 7; p++){\
 switch (p){\
   case 2:\
