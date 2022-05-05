@@ -8,48 +8,60 @@
 volatile int digit_num = 7;
 char digits[8];
 volatile char Data_Entry_complete=0;
-char keypress = 0;
-volatile char tick_counter; 
-volatile char clock_tick;
 
- 
+
+
+
 int main (void){
-char display_mode;
+
 long deci_sec_counter = 0;
 setup_328_HW;
 initialise_T2();
 sei();
+
 clear_display;                       
-User_instructions;
 time_from_IO();
 
 while(switch_2_up);
 
 sei();
 start_clock();
-while(1){while(clock_tick <= 1);clock_tick = 0; Inc_OS_time;
-deci_sec_counter += 2;
-if (deci_sec_counter == 864000)deci_sec_counter = 0;}
+while(1)
+{while(clock_tick <= 1);clock_tick = 0; 
+Inc_OS_time;
 
 
-} 
+if((switch_1_down) || (switch_3_down))
+{TIMSK2 &= (~(1 << OCIE2A));
+
+deci_secs_from_mini_OS;
+deci_sec_counter = deci_sec_counter/10 * 10;
+ 
+while((switch_1_down) || (switch_3_down)){
+if(switch_1_down)deci_sec_counter += 10;
+else deci_sec_counter -= 10;
+deci_Seconds_to_display(deci_sec_counter); 
+_delay_ms(25); }
+while(switch_2_up);
+TIMSK2 |= (1 << OCIE2A);}
+}} 
+
 
 
 /***********************************************************************************************************************/
-
 void time_from_IO(void){
 char temp=0;
 set_up_PCI;
 enable_PCI;
 disable_pci_on_sw2;
 for(int m = 0; m<= 7; m++)digits[m] = 0;
-
 while(!(Data_Entry_complete));                          //Line A. wait here for pci interrupts used to enter data
-Data_Entry_complete = 0;}
+Data_Entry_complete = 0;
+disable_pci_on_sw1_and_sw3;}
+
 
 
 /***********************************************************************************************************************/
-
 ISR(PCINT2_vect) {                                    //input number: store keypresses in array -start_time
 if((switch_1_up) && (switch_3_up))return;
 
@@ -115,7 +127,7 @@ while(switch_3_down);}}
 disable_pci_on_sw1_and_sw3;
 sei();
 Display_time(digits); 
-Timer_T1_sub(T1_delay_50ms);
+//Timer_T1_sub(T1_delay_50ms);
 enable_PCI;
 disable_pci_on_sw2;
 clear_PCI;}
@@ -125,71 +137,6 @@ clear_PCI;}
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*******************************************************************************************************************************/
-/*void set_time(void){
-
-for(int m = 0; m <= 7; m++)digits[m] = 0;
-String_to_PC("Enter start time Hours, Minutes and Seconds\
-\r\n(24 hour clock with no spaces). Terminate with cr\r\n");
-
-while(isCharavailable(50) == 0){String_to_PC("T?  ");}
-
-digits[7] = Char_from_PC();Display_time;
-for (int m = 0; m<=4; m++){while(isCharavailable(5) == 0);
-if(m == 4)
-{digits[2] = Char_from_PC();deci_SecsH = '0'; deci_SecsL = '0'; }
-else 
-digits[6 - m] = Char_from_PC(); 
-Display_time;}
-
-waitforkeypress();
-
-clear_display;
-_delay_ms(50);}*/
-
-
-
-
-
-
-
-/****************************************************************************************************************/
-void initialise_T2(void){
-ASSR = (1 << AS2); 
-TCNT2 = 0;
-TCCR2A = 0;
-TCCR2B |= (1 << CS20) | (1 << CS21);
-OCR2B = 0;}
-
-
-void start_clock(void){
-tick_counter = 0;
-TCNT2 = 0;
-OCR2A = 102; 
-TIMSK2 |= (1 << OCIE2A);}
-
-
-ISR (TIMER2_COMPA_vect){ char string[5];
-  OCR2A += 102;
-  clock_tick += 1;
-  tick_counter += 1;
-  if(tick_counter == 9){tick_counter = -1; OCR2A += 4;}}
   
 
 /************************************************************************************************************/
