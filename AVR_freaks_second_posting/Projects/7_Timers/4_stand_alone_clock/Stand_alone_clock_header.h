@@ -3,29 +3,9 @@
 #include <avr/wdt.h>
 
 char User_response;
-
-#define message_1 \
-"\r\nSTAND-a-LONE CLOCK\r\n\
-Use sw1 and 3 to enter time (24Hr clock).\r\n\
-\r\n\
-Press sw1 to toggle the display on and off\r\n"
-
-#define message_2 \
-"Press sw3 to pause or resume the clock\r\n\
-To adjust the clock:\r\n"
-
-#define message_3 \
-"pulse sw2 then press sw1 and sw3 to advance the time\r\n\
-or press and hold sw2 (for 500ms)\r\n\
-then press sw1 and sw3 to retard the time\r\n\
-Always pulse sw2 when the time is correct\r\n"
-
-#define User_instructions \
-String_to_PC(message_1);\
-String_to_PC(message_2);\
-String_to_PC(message_3);
-
-
+volatile char tick_counter; 
+volatile char clock_tick;
+unsigned char deci_secs_byte[4];
 
 /**********************************************************************************/
 #define  OSC_CAL \
@@ -123,3 +103,4 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 #include "Resources_Stand_alone_clock/clock_timer_header.h"
 #include "Resources_Stand_alone_clock/Basic_IO_and_Timer.c"
 #include "Resources_Stand_alone_clock/One_wire_transactions.c"
+#include "Resources_Stand_alone_clock/Stand_alone_clock_subroutines.c"
