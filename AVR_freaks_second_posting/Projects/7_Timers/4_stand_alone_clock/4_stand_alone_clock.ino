@@ -126,7 +126,7 @@ while(switch_3_down);}}
 disable_pci_on_sw1_and_sw3;
 sei();
 Display_time(digits); 
-//Timer_T1_sub(T1_delay_50ms);
+Timer_T1_sub(T1_delay_100ms);
 enable_PCI;
 disable_pci_on_sw2;
 clear_PCI;}
