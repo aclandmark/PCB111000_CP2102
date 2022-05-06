@@ -1,5 +1,8 @@
 
 
+#define centi_sec_couter_to_display ;
+
+
 
  
 #include "Stopwatch_header.h"
@@ -15,12 +18,13 @@ volatile char Data_Entry_complete=0;
 int main (void){
 
 long deci_sec_counter = 0;    //centi_sec_counter
+
 setup_328_HW;
 initialise_T2();
 sei();
 
 clear_display;                       
-time_from_IO();
+//time_from_IO();
 
 while(switch_2_up);
 
@@ -31,37 +35,26 @@ while(1)
 Inc_OS_time;
 
 
-if((switch_1_down) || (switch_3_down))
-{TIMSK2 &= (~(1 << OCIE2A));
-
-deci_secs_from_mini_OS;
-deci_sec_counter = deci_sec_counter/10 * 10;
- 
-while((switch_1_down) || (switch_3_down)){
-if(switch_1_down)deci_sec_counter += 10;
-else deci_sec_counter -= 10;
-deci_Seconds_to_display(deci_sec_counter); 
-_delay_ms(25); }
-while(switch_2_up);
-TIMSK2 |= (1 << OCIE2A);}
-}} 
+if(switch_2_down){
+centi_sec_couter_to_display;
+}}} 
 
 
 
 /***********************************************************************************************************************/
-void time_from_IO(void){
+/*void time_from_IO(void){
 set_up_PCI;
 enable_PCI;
 disable_pci_on_sw2;
 for(int m = 0; m<= 7; m++)digits[m] = 0;
 while(!(Data_Entry_complete));                          //Line A. wait here for pci interrupts used to enter data
 Data_Entry_complete = 0;
-disable_pci_on_sw1_and_sw3;}
+disable_pci_on_sw1_and_sw3;}*/
 
 
 
 /***********************************************************************************************************************/
-ISR(PCINT2_vect) {                                    //input number: store keypresses in array -start_time
+/*ISR(PCINT2_vect) {                                    //input number: store keypresses in array -start_time
 if((switch_1_up) && (switch_3_up))return;
 
 if (switch_1_down){                                 //Switch_1: used to scroll through the permissible                    
@@ -129,10 +122,8 @@ Display_time(digits);
 Timer_T1_sub(T1_delay_10ms);
 enable_PCI;
 disable_pci_on_sw2;
-clear_PCI;}
+clear_PCI;}*/
   
-
-
 
 
 
