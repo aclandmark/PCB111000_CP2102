@@ -27,7 +27,7 @@ while(switch_2_up);
 sei();
 start_clock();
 while(1)
-{while(clock_tick <= 1);clock_tick = 0; 
+{while(clock_tick < 20);clock_tick = 0; 
 Inc_OS_time;
 
 
