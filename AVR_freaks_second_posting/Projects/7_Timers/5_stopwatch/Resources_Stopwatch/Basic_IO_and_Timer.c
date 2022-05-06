@@ -18,6 +18,7 @@ and can be modified at will by the user.
 
 #define T2_delay_10ms 	7,178
 
+#define T1_delay_10ms	2,0xD8EF
 #define T1_delay_50ms 5,0xFE78
 #define T1_delay_100ms 5,0xFCF2
 #define T1_delay_250ms 5,0xF85F
