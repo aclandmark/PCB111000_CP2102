@@ -6,7 +6,7 @@ char User_response;
 volatile char tick_counter; 
 volatile char clock_tick;
 unsigned char deci_secs_byte[4];
-
+long centi_sec_counter;
 /**********************************************************************************/
 #define  OSC_CAL \
 if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
