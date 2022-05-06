@@ -19,7 +19,7 @@ TIMSK2 |= (1 << OCIE2A);}
 
 
 ISR (TIMER2_COMPA_vect){ char string[5];
-  OCR2A += 102;
+  OCR2A += 41;
   clock_tick += 1;
   tick_counter += 1;
   if(tick_counter == 99){tick_counter = -1; OCR2A -= 4;}}
