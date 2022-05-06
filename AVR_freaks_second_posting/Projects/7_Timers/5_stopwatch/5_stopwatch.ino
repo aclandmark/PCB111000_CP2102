@@ -14,7 +14,7 @@ volatile char Data_Entry_complete=0;
 
 int main (void){
 
-long deci_sec_counter = 0;
+long deci_sec_counter = 0;    //centi_sec_counter
 setup_328_HW;
 initialise_T2();
 sei();
@@ -126,7 +126,7 @@ while(switch_3_down);}}
 disable_pci_on_sw1_and_sw3;
 sei();
 Display_time(digits); 
-//Timer_T1_sub(T1_delay_50ms);
+Timer_T1_sub(T1_delay_10ms);
 enable_PCI;
 disable_pci_on_sw2;
 clear_PCI;}
