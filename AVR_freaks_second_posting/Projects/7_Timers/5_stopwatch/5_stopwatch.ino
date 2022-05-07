@@ -44,9 +44,10 @@ while(1)
 Inc_OS_time;
 
 
-if(switch_2_down){
-centi_sec_couter_to_display;
-}}} 
+//if(switch_2_down){
+//centi_Seconds_to_display(centi_sec_counter);}
+
+} }
 
 
 
@@ -84,7 +85,7 @@ centi_sec_counter += 1;
   
   
 /****************************************************************************************************************/
-void deci_Seconds_to_display(long num){
+void centi_Seconds_to_display(long num){
 One_wire_Tx_char = 'L';                           //Command 'C' indicates the a long number will be sent
 UART_Tx_1_wire();
 for(int m = 0; m <= 3; m++){
