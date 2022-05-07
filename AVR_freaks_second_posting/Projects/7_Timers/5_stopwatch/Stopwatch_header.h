@@ -103,4 +103,3 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 #include "Resources_Stopwatch/clock_timer_header.h"
 #include "Resources_Stopwatch/Basic_IO_and_Timer.c"
 #include "Resources_Stopwatch/One_wire_transactions.c"
-#include "Resources_Stopwatch/Stopwatch_subroutines.c"
