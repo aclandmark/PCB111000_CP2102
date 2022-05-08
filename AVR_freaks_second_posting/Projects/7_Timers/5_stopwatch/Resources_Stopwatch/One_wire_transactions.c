@@ -23,7 +23,7 @@ while (!(Rx_complete));}
 
 
 /*************************************************************************************************************/
-ISR(PCINT0_vect){                                   //Detect low on PINC4
+ISR(PCINT0_vect){  sei();////////////////////////////                                 //Detect low on PINC4
 
 if(PINB4_down){										//If start bit:
 
