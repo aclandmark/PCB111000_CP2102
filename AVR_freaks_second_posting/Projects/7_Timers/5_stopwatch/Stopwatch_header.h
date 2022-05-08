@@ -5,8 +5,13 @@
 char User_response;
 volatile char tick_counter; 
 volatile char clock_tick;
-unsigned char deci_secs_byte[4];
-long centi_sec_counter;
+//unsigned char deci_secs_byte[4];
+volatile long centi_sec_counter;
+volatile long stop_watch_time;
+char stop_watch_mode;
+
+
+
 /**********************************************************************************/
 #define  OSC_CAL \
 if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
@@ -82,7 +87,12 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 #define clear_PCI                   PCIFR |= (1<< PCIF2);
 #define enable_PCI                  PCMSK2 |= (1 << PCINT18) | (1 << PCINT21) | (1 << PCINT23);
 #define dissable_PCI                PCMSK2 &= (~((1 << PCINT18) | (1 << PCINT21) | (1 << PCINT23)));
+
+#define enable_pci_on_sw1           PCMSK2 |= (1 << PCINT18);
+#define enable_pci_on_sw2           PCMSK2 |= (1 << PCINT21);
 #define disable_pci_on_sw2          PCMSK2 &= (~(1 << PCINT21));
+#define disable_pci_on_sw1          PCMSK2 &= (~(1 << PCINT18));
+
 #define disable_pci_on_sw1_and_sw3  PCMSK2 &= (~((1 << PCINT18) | (1 << PCINT23)));
 
 #define switch_1_up               (PIND & 0x04)
