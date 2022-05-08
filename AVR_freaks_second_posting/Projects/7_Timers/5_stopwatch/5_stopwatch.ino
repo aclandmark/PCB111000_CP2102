@@ -1,18 +1,5 @@
 
-
-#define centi_sec_couter_to_display ;
-
-
-
-#define deci_secs_from_mini_OS \
-{deci_sec_counter = 0;\
-One_wire_Tx_char = 'M'; UART_Tx_1_wire();\
-for(int m = 0; m <= 3; m++){\
-UART_Rx_1_wire(); deci_secs_byte[m] = One_wire_Rx_char;}\
-\
-for(int m = 0; m <= 3; m++){\
-deci_sec_counter = deci_sec_counter << 8;\
-deci_sec_counter |= deci_secs_byte[m];}}
+//////////////////////////////Uses special One_wire_transactions.c
 
  
 #include "Stopwatch_header.h"
@@ -27,8 +14,6 @@ volatile char Data_Entry_complete=0;
 
 int main (void){
 
-long deci_sec_counter = 0;    //centi_sec_counter
-
 setup_328_HW;
 initialise_T2();
 sei();
@@ -38,14 +23,21 @@ clear_display;
 while(switch_2_up);
 
 sei();
+stop_watch_mode = 0;
+centi_sec_counter = 0;
 start_clock();
+set_up_PCI;
+enable_pci_on_sw2;
+enable_pci_on_sw1;
+
+
 while(1)
-{while(clock_tick < 20);clock_tick = 0; 
-Inc_OS_time;
+{while(clock_tick < 20); clock_tick = 0; 
 
-
-//if(switch_2_down){
-//centi_Seconds_to_display(centi_sec_counter);}
+switch(stop_watch_mode){
+  case 0: {Inc_OS_time;}break;
+  case 1: centi_Seconds_to_display(stop_watch_time);stop_watch_mode = 0; {Inc_OS_time;}break;
+}
 
 } }
 
@@ -53,8 +45,20 @@ Inc_OS_time;
 
 
 /***********************************************************************************************************************/
-ISR(PCINT2_vect) {  }                                  //input number: store keypresses in array -start_time
-
+ISR(PCINT2_vect) { 
+  if((switch_1_up) && (switch_2_up) && (switch_3_up)){return;}
+ if(switch_2_down){disable_pci_on_sw2;
+  stop_watch_time = centi_sec_counter;
+  stop_watch_mode = 1;
+  enable_pci_on_sw1;}
+  
+  if(switch_1_down){
+    disable_pci_on_sw1;  
+  One_wire_Tx_char = 'O';    
+sei();UART_Tx_1_wire();
+enable_pci_on_sw2;}}
+  
+  
   
 
 
@@ -86,7 +90,7 @@ centi_sec_counter += 1;
   
 /****************************************************************************************************************/
 void centi_Seconds_to_display(long num){
-One_wire_Tx_char = 'L';                           //Command 'C' indicates the a long number will be sent
+One_wire_Tx_char = 'N';                           //Command 'C' indicates the a long number will be sent
 UART_Tx_1_wire();
 for(int m = 0; m <= 3; m++){
 One_wire_Tx_char = num >> (8 * (3 - m));        //Split the number into 4 chars
