@@ -19,9 +19,7 @@ setup_328_HW;
 initialise_T2();
 sei();
 
-                      
 Reset_ATtiny1606;
-
 while(switch_2_up);
 
 sei();
@@ -30,7 +28,6 @@ centi_sec_counter = 0;
 start_clock();
 set_up_PCI;
 enable_PCI;
-
 
 while(1)
 {while(clock_tick < 20); clock_tick = 0; 
