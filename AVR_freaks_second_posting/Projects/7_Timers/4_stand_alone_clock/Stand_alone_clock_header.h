@@ -2,10 +2,12 @@
 
 #include <avr/wdt.h>
 
+
 char User_response;
 volatile char tick_counter; 
 volatile char clock_tick;
 unsigned char deci_secs_byte[4];
+
 
 /**********************************************************************************/
 #define  OSC_CAL \
@@ -85,6 +87,7 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 #define disable_pci_on_sw2          PCMSK2 &= (~(1 << PCINT21));
 #define disable_pci_on_sw1_and_sw3  PCMSK2 &= (~((1 << PCINT18) | (1 << PCINT23)));
 
+
 #define switch_1_up               (PIND & 0x04)
 #define switch_2_up               (PIND & 0x20)
 #define switch_3_up               (PIND & 0x80)
@@ -97,10 +100,14 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 
 
 /************************************************************************************************************************************/
-
-
 #include "Resources_Stand_alone_clock/One_wire_header.h"
 #include "Resources_Stand_alone_clock/clock_timer_header.h"
 #include "Resources_Stand_alone_clock/Basic_IO_and_Timer_extra.c"
 #include "Resources_Stand_alone_clock/One_wire_transactions.c"
 #include "Resources_Stand_alone_clock/Stand_alone_clock_subroutines.c"
+
+
+
+
+
+/************************************************************************************************************************************/
