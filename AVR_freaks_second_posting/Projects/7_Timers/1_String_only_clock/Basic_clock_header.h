@@ -1,7 +1,5 @@
 
 
-//#include "Resources_Basic_clock/One_wire_header.h"
-//#include "Resources_Basic_clock/clock_timer_header.h"
 
 #include <avr/wdt.h>
 
@@ -67,8 +65,10 @@ PORTD = 0xFF;
 
 //All ports are initialised to weak pull up (WPU)
 
+
 #define clear_display             One_wire_Tx_char = 'c';  UART_Tx_1_wire();
 #define switch_2_up               (PIND & 0x20)
+
 
 #define User_prompt \
 while(1){\
@@ -91,3 +91,7 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 #include "Resources_Basic_clock/clock_timer_header.h"
 #include "Resources_Basic_clock/Basic_IO_and_Timer_extra.c"
 #include "Resources_Basic_clock/One_wire_transactions.c"
+
+
+
+/*************************************************************************************************************************************/
