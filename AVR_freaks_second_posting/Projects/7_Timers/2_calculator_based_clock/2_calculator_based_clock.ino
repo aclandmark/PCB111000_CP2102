@@ -11,12 +11,14 @@ Counts 106 in the last 100mS
  
 #include "Basic_clock_header.h"
 
+
 volatile char clock_tick;
 volatile char tick_counter; 
 
 char digits[8], charH, charL ;
 char Hours, Minutes, Seconds, deci_Secs;
 long deci_sec_counter;
+
 
 
 
@@ -54,6 +56,8 @@ timer_utoa(Hours); HoursH = charH; HoursL = charL;
 timer_utoa(Minutes); MinsH = charH; MinsL = charL; 
 timer_utoa(Seconds); SecsH = charH; SecsL = charL; 
 timer_utoa(deci_Secs * 10); deci_SecsH = charH; deci_SecsL = charL; }
+
+
 
 
 /*******************************************************************************************************************************/
