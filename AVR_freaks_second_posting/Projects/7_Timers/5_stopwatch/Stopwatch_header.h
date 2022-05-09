@@ -1,13 +1,14 @@
 
 
+
+
 #include <avr/wdt.h>
 
-char User_response;
+
 volatile char tick_counter; 
 volatile char clock_tick;
-//unsigned char deci_secs_byte[4];
-volatile long centi_sec_counter;
-volatile long stop_watch_time;
+long centi_sec_counter;
+long stop_watch_time;
 char stop_watch_mode;
 
 
@@ -69,8 +70,10 @@ PORTD = 0xFF;
 
 //All ports are initialised to weak pull up (WPU)
 
+
 #define clear_display             One_wire_Tx_char = 'c';  UART_Tx_1_wire();
 #define switch_2_up               (PIND & 0x20)
+
 
 #define User_prompt \
 while(1){\
@@ -80,11 +83,9 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 
 
 
+
 /************************************************************************************************************************************/
 #define set_up_PCI                  PCICR |= (1 << PCIE2);
-#define pause_PCI                   PCICR &= (~(1 << PCIE2));
-#define reinstate_PCI               PCICR |= (1 << PCIE2);
-#define clear_PCI                   PCIFR |= (1<< PCIF2);
 #define enable_PCI                  PCMSK2 |= (1 << PCINT18) | (1 << PCINT21) | (1 << PCINT23);
 #define dissable_PCI                PCMSK2 &= (~((1 << PCINT18) | (1 << PCINT21) | (1 << PCINT23)));
 
@@ -92,8 +93,6 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 #define enable_pci_on_sw2           PCMSK2 |= (1 << PCINT21);
 #define disable_pci_on_sw2          PCMSK2 &= (~(1 << PCINT21));
 #define disable_pci_on_sw1          PCMSK2 &= (~(1 << PCINT18));
-
-#define disable_pci_on_sw1_and_sw3  PCMSK2 &= (~((1 << PCINT18) | (1 << PCINT23)));
 
 #define switch_1_up               (PIND & 0x04)
 #define switch_2_up               (PIND & 0x20)
@@ -107,9 +106,10 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 
 
 /************************************************************************************************************************************/
-
-
 #include "Resources_Stopwatch/One_wire_header.h"
 #include "Resources_Stopwatch/clock_timer_header.h"
-#include "Resources_Stopwatch/Basic_IO_and_Timer.c"
-#include "Resources_Stopwatch/One_wire_transactions.c"
+#include "Resources_Stopwatch/One_wire_transactions_special.c"
+
+
+
+/*************************************************************************************************************************************/
