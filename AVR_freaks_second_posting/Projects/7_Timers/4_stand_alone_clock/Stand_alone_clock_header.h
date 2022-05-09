@@ -101,6 +101,6 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 
 #include "Resources_Stand_alone_clock/One_wire_header.h"
 #include "Resources_Stand_alone_clock/clock_timer_header.h"
-#include "Resources_Stand_alone_clock/Basic_IO_and_Timer.c"
+#include "Resources_Stand_alone_clock/Basic_IO_and_Timer_extra.c"
 #include "Resources_Stand_alone_clock/One_wire_transactions.c"
 #include "Resources_Stand_alone_clock/Stand_alone_clock_subroutines.c"
