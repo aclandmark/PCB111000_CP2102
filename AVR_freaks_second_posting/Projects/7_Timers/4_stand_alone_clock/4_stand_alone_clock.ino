@@ -5,6 +5,7 @@
 #include "Stand_alone_clock_header.h"
 
 
+
 volatile int digit_num = 7;
 char digits[8];
 volatile char Data_Entry_complete=0;
