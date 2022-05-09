@@ -1,14 +1,15 @@
 
-//////////////////////////////Uses special One_wire_transactions.c
+
+/*
+ Press sw2 to start and stop timer
+ Press sw1 to restart it
+ Press sw3 to change intensity
+
+ Uses special version of One_wire_transactions.c
+ */
 
  
 #include "Stopwatch_header.h"
-
-
-volatile int digit_num = 7;
-char digits[8];
-volatile char Data_Entry_complete=0;
-
 
 
 
@@ -18,7 +19,8 @@ setup_328_HW;
 initialise_T2();
 sei();
 
-clear_display;                       
+                      
+Reset_ATtiny1606;
 
 while(switch_2_up);
 
@@ -28,8 +30,6 @@ centi_sec_counter = 0;
 start_clock();
 set_up_PCI;
 enable_PCI;
-//enable_pci_on_sw2;
-//enable_pci_on_sw1;
 
 
 while(1)
@@ -37,10 +37,9 @@ while(1)
 
 switch(stop_watch_mode){
   case 0: {Inc_OS_time;}break;
-  case 1: centi_Seconds_to_display(stop_watch_time);stop_watch_mode = 0; {Inc_OS_time;}break;
-}
+  case 1: centi_Seconds_to_display(stop_watch_time);stop_watch_mode = 0; {Inc_OS_time;}break;}
+}}
 
-} }
 
 
 
@@ -48,7 +47,9 @@ switch(stop_watch_mode){
 /***********************************************************************************************************************/
 ISR(PCINT2_vect) { 
   if((switch_1_up) && (switch_2_up) && (switch_3_up)){return;}
- if(switch_2_down){disable_pci_on_sw2;
+ 
+ if(switch_2_down)
+ {disable_pci_on_sw2;
   stop_watch_time = centi_sec_counter;
   stop_watch_mode = 1;
   enable_pci_on_sw1;}
@@ -65,7 +66,7 @@ sei();One_wire_Tx_char = 'G'; UART_Tx_1_wire();}}
   
   
 
-
+/***********************************************************************************************************************/
 void initialise_T2(void){
 ASSR = (1 << AS2); 
 TCNT2 = 0;
