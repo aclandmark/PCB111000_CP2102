@@ -9,7 +9,8 @@ Counts 106 in the last 100mS
 ****************************************************************************************************************/
 
  
-#include "Basic_clock_header.h"
+#include "mini_OS_clock_header.h"
+
 
 volatile char clock_tick;
 volatile char tick_counter; 
