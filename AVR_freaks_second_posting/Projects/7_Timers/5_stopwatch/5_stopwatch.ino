@@ -27,8 +27,9 @@ stop_watch_mode = 0;
 centi_sec_counter = 0;
 start_clock();
 set_up_PCI;
-enable_pci_on_sw2;
-enable_pci_on_sw1;
+enable_PCI;
+//enable_pci_on_sw2;
+//enable_pci_on_sw1;
 
 
 while(1)
@@ -56,7 +57,10 @@ ISR(PCINT2_vect) {
     disable_pci_on_sw1;  
   One_wire_Tx_char = 'O';    
 sei();UART_Tx_1_wire();
-enable_pci_on_sw2;}}
+enable_pci_on_sw2;}
+
+if(switch_3_down){
+sei();One_wire_Tx_char = 'G'; UART_Tx_1_wire();}}
   
   
   
