@@ -1,5 +1,7 @@
 
-
+/*
+ SW1 scrolls through the available digits 
+ */
 
  
 #include "FPN_from_IO_header.h"
