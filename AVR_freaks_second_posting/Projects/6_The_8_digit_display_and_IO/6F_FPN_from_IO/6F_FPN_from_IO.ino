@@ -1,6 +1,22 @@
 
 /*
- SW1 scrolls through the available digits 
+ 
+ OLD design
+ SW1 PORTD2 PCINT18 scrolls through the available digits 
+ SW2 PORTD7 PCINT23
+ SW3 PORTB2 PCINT2
+
+ PCIE2 / PCMSK2 / PCINT2_vect     PCINT 16 to 23
+ PCIE0 / PCMSK0 / PCINT0_vect     PCINT 0 to 7 
+
+  NEW design
+SW1 PORTD2 PCINT18 
+SW2 PORTD5 PCINT21
+SW3 PORTD7 PCINT23
+  
+
+
+ 
  */
 
  
