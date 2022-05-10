@@ -1,0 +1,23 @@
+
+
+One_wire_Tx_2_integers()		a	A
+I2C_Tx_any_segment;			b	B
+clear display				c	E
+Receive int string			A	F
+Receive float string			B	G
+Receive binary int			C	H
+Receive binary float			D	I
+Return binary (int or float)		E	J
+
+Reset ATtiny1606			F	K
+Brigntness control			G	L
+
+Receive 3 chars				H	C
+Char as binary				I	D
+Disply time string			J
+Increment time every 200mS		K
+Display deci-secs (timer)		L
+Deci-secs to user app			M
+Display centi-secs (Stop watch)		N
+Restore timer				O
+				
