@@ -8,6 +8,9 @@ volatile char tick_counter;
 volatile char clock_tick;
 unsigned char deci_secs_byte[4];
 
+volatile char Data_Entry_complete, digit_entry;
+volatile char cr_keypress;
+char scroll_control, dp_control, neg_sign, exp_control;  
 
 /**********************************************************************************/
 #define  OSC_CAL \
@@ -83,9 +86,14 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 #define reinstate_PCI               PCICR |= (1 << PCIE2);
 #define clear_PCI                   PCIFR |= (1<< PCIF2);
 #define enable_PCI                  PCMSK2 |= (1 << PCINT18) | (1 << PCINT21) | (1 << PCINT23);
+#define enable_PCI_on_sw1_and_sw2   PCMSK2 |= (1 << PCINT18) | (1 << PCINT21);
+#define enable_PCI_on_sw3           PCMSK2 |= (1 << PCINT23);
+
 #define dissable_PCI                PCMSK2 &= (~((1 << PCINT18) | (1 << PCINT21) | (1 << PCINT23)));
-#define disable_pci_on_sw2          PCMSK2 &= (~(1 << PCINT21));
-#define disable_pci_on_sw1_and_sw3  PCMSK2 &= (~((1 << PCINT18) | (1 << PCINT23)));
+#define disable_PCI_on_sw2          PCMSK2 &= (~(1 << PCINT21));
+#define disable_PCI_on_sw3          PCMSK2 &= (~(1 << PCINT23));
+#define disable_PCI_on_sw1_and_sw3  PCMSK2 &= (~((1 << PCINT18) | (1 << PCINT23)));
+#define disable_PCI_on_sw1_and_sw2  PCMSK2 &= (~((1 << PCINT18) | (1 << PCINT21)));
 
 
 #define switch_1_up               (PIND & 0x04)
