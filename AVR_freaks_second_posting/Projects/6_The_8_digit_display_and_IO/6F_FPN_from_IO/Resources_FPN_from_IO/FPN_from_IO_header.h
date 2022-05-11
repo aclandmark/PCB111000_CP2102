@@ -28,3 +28,10 @@ switch (p){\
 #define Inc_OS_time \
 {One_wire_Tx_char = 'K'; UART_Tx_1_wire();}
 
+
+/*********************************************************************/
+#define Send_float_num_string \
+One_wire_Tx_char = 'B'; UART_Tx_1_wire();\
+for(int m = 0; m <= 7; m++){One_wire_Tx_char = display_buffer[m]; UART_Tx_1_wire();}\
+One_wire_Tx_char = cr_keypress;  UART_Tx_1_wire();
+
