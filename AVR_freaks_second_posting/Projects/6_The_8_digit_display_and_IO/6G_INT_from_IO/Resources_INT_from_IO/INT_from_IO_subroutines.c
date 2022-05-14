@@ -47,46 +47,24 @@ digit_entry = 1;}
 
 
 /********************************************************************************************************/
-void scroll_display_zero(void){
+void scroll_display_zero(void){				//Done
 unsigned char data_zero;
 
-disable_PCI_on_sw3;
-
-data_zero = display_buffer[0];
-
-if (switch_3_up){display_buffer[0] &= (~(0x80));             //Decimal point dissabled
-
 switch (display_buffer[0]){
-case '9':
-switch(scroll_control){ 
-case 0: display_buffer[0] = '-'; break;                    //Initial state scroll 0-9 -ve 0...... dp is enabled
-case 1: display_buffer[0] = '0'; break;                    //First char entered -ve sign dissabled  dp enabled
-case 3: display_buffer[0] = 'e'; break;                    //Decimal point entered.  Dissable DP. Enable E.
-case 6: display_buffer[0] = '-'; break;                    //E entered. Enable -ve sign
-case 7: display_buffer[0] = '0'; break;}break;              //Dissable -ve sign
+case '9': if(!(display_buffer[1])) 
+display_buffer[0] = '-'; 
+else display_buffer[0] = '0'; break;
+case '-': display_buffer[0] = '0'; break;
+default: display_buffer[0] += 1;break;}
 
-case '-':
-switch(scroll_control){
-case 0: display_buffer[0] = '0'; break;                    //Initial state
-case 6: display_buffer[0] = '0'; break;}break;
+pause_PCI_and_Send_int_num_string;
+return;
 
-case 'e':
-switch(scroll_control){
-case 0: display_buffer[0] = '0'; break;                       //Initial state
-case 1: display_buffer[0] = '0'; break;    
-case 3: display_buffer[0] = '0'; break;}break;
 
-default: display_buffer[0] += 1; break;}}
 
-if((switch_3_down) && (!(dp_control)))
-{display_buffer[0] |= 0x80;                                   //Decimal point enabled 
 
-switch ((byte)display_buffer[0] & (~(0x80))){
-case '9': 
-display_buffer[0] = ('0' | 0x80);break;
-default:  display_buffer[0] += 1;break;}}
 
-pause_PCI_and_Send_float_num_string;}
+
 
 
 
