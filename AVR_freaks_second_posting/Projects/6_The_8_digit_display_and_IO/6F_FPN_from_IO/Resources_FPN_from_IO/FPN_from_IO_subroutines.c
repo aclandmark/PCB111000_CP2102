@@ -1,61 +1,94 @@
 
+void float_num_to_display(float FP_num){
+char * Char_ptr;
 
-
-
-/****************************************************************************************************************/
-void initialise_T2(void){
-ASSR = (1 << AS2); 
-TCNT2 = 0;
-TCCR2A = 0;
-TCCR2B |= (1 << CS20) | (1 << CS21);
-OCR2B = 0;}
-
-
-void start_clock(void){
-tick_counter = 0;
-TCNT2 = 0;
-OCR2A = 102; 
-TIMSK2 |= (1 << OCIE2A);}
-
-
-ISR (TIMER2_COMPA_vect){ char string[5];
-  OCR2A += 102;
-  clock_tick += 1;
-  tick_counter += 1;
-  if(tick_counter == 9){tick_counter = -1; OCR2A += 4;}}
-  
-  
-  
-  
-  
-/****************************************************************************************************************/
-void deci_Seconds_to_display(long num){
-One_wire_Tx_char = 'L';                           //Command 'C' indicates the a long number will be sent
+pause_pin_change_interrupt_on_PC5;
+Char_ptr = (char*)&FP_num;
+One_wire_Tx_char = 'D';                                       //Command 'D' indicates the a floating point number will be sent
 UART_Tx_1_wire();
-for(int m = 0; m <= 3; m++){
-One_wire_Tx_char = num >> (8 * (3 - m));        //Split the number into 4 chars
-UART_Tx_1_wire();}}                             //and send them individually
+for(int m = 0; m <= 3; m++){                                  //Split the number into 4 chars
+One_wire_Tx_char = *Char_ptr;                                 //and send them individually
+UART_Tx_1_wire(); 
+Char_ptr += 1;}
+reinstate_pin_change_interrupt_on_PC5;}
+
+
+/******************************************************************************************************************************************/
+void int_num_to_display(long Int_num){
+pause_pin_change_interrupt_on_PC5;
+
+One_wire_Tx_char = 'C';                                 //Command 'C' indicates the a long number will be sent
+UART_Tx_1_wire();
+for(int m = 0; m <= 3; m++){                            //Split the number into 4 chars
+One_wire_Tx_char = Int_num >> ((3-m) * 8);              //and send them individually
+UART_Tx_1_wire(); 
+}
+reinstate_pin_change_interrupt_on_PC5;}
 
 
 
 
-/*
-#define deci_secs_from_mini_OS \
-{One_wire_Tx_char = 'E'; UART_Tx_1_wire();\
-for(int m = 0; m <= 3; m++)\
-{UART_Rx_1_wire();\
-if(!(m))deci_sec_counter = {One_wire_Rx_char;}\
-else\
-deci_sec_counter = (deci_sec_counter << 8) | {One_wire_Rx_char;}}}
-*/
+/******************************************************************************************************************************************/
+void shift_display_left(void){
+
+if((byte)display_buffer[0] & 0x80)dp_control = 1;                       //No more decimal points allowed
+if (display_buffer[0] == 'e')
+{exp_control = 1; neg_sign = 0;}                                       //Negative exponent allowed
+else neg_sign = 1;                                                      //FP number can have one negative sign 
+
+scroll_control = (exp_control << 2) | (dp_control << 1) | neg_sign;   
+
+shift_digits_left; 
+display_buffer[0] = '0'; 
+pause_PCI_and_Send_float_num_string;
+digit_entry = 1;}
 
 
-#define deci_secs_from_mini_OS \
-{deci_sec_counter = 0;\
-One_wire_Tx_char = 'M'; UART_Tx_1_wire();\
-for(int m = 0; m <= 3; m++){\
-UART_Rx_1_wire(); deci_secs_byte[m] = One_wire_Rx_char;}\
-\
-for(int m = 0; m <= 3; m++){\
-deci_sec_counter = deci_sec_counter << 8;\
-deci_sec_counter |= deci_secs_byte[m];}}
+
+
+/********************************************************************************************************/
+void scroll_display_zero(void){
+unsigned char data_zero;
+
+disable_PCI_on_sw3;
+
+data_zero = display_buffer[0];
+
+if (switch_3_up){display_buffer[0] &= (~(0x80));             //Decimal point dissabled
+
+switch (display_buffer[0]){
+case '9':
+switch(scroll_control){ 
+case 0: display_buffer[0] = '-'; break;                    //Initial state scroll 0-9 -ve 0...... dp is enabled
+case 1: display_buffer[0] = '0'; break;                    //First char entered -ve sign dissabled  dp enabled
+case 3: display_buffer[0] = 'e'; break;                    //Decimal point entered.  Dissable DP. Enable E.
+case 6: display_buffer[0] = '-'; break;                    //E entered. Enable -ve sign
+case 7: display_buffer[0] = '0'; break;}break;              //Dissable -ve sign
+
+case '-':
+switch(scroll_control){
+case 0: display_buffer[0] = '0'; break;                    //Initial state
+case 6: display_buffer[0] = '0'; break;}break;
+
+case 'e':
+switch(scroll_control){
+case 0: display_buffer[0] = '0'; break;                       //Initial state
+case 1: display_buffer[0] = '0'; break;    
+case 3: display_buffer[0] = '0'; break;}break;
+
+default: display_buffer[0] += 1; break;}}
+
+if((switch_3_down) && (!(dp_control)))
+{display_buffer[0] |= 0x80;                                   //Decimal point enabled 
+
+switch ((byte)display_buffer[0] & (~(0x80))){
+case '9': 
+display_buffer[0] = ('0' | 0x80);break;
+default:  display_buffer[0] += 1;break;}}
+
+pause_PCI_and_Send_float_num_string;}
+
+
+
+
+/*************************************************************************************************************/
