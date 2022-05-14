@@ -156,22 +156,10 @@ long Int_number_from_IO(void){
 char keypress = 0;
 long Long_Num_from_mini_OS;
 
-//for(int n = 0; n<=8; n++) data_buff[n] = 0;                //Clear display
-
-//num_type = int_num;                               //Integer
-
 set_up_PCI;
 enable_PCI_on_sw1_and_sw2;
 
 initialise_display;
-
-
-//Data_Entry_complete = 0;                          //Set to 1 when FP number entry is complete
-//digit_entry = 0;                              //Set to 1 when digit is selected
-
-//cr_keypress = 0;                              //Set to 1 when atoi() conversion is required  
-//data_buff[0] = '0';
-//int_string_to_display();                          //Initialise display
 
 do{                                                           //Repeat untill FPN string entry is complete
 while
@@ -187,11 +175,8 @@ cr_keypress = 1;                              //Entry of FP string complete
 
 pause_PCI_and_Send_int_num_string;
 
-//int_string_to_display();                          //Acquire FP number from display driver
 cr_keypress = 0;
-
 Int_from_mini_OS;
-
 
 disable_pci_on_sw1_and_sw2;
 disable_pci_on_sw3;
