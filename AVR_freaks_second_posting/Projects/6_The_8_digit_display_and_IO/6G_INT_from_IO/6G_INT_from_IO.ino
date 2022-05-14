@@ -14,19 +14,6 @@ Switch assignments:
 
 
 
-#define Int_from_mini_OS \
-One_wire_Tx_char = 'E'; UART_Tx_1_wire();\
-for(int m = 0; m <= 3; m++){\
-UART_Rx_1_wire(); num_byte[m] = One_wire_Rx_char;}\
-\
-for(int m = 0; m <= 3; m++){\
-Long_Num_from_mini_OS = Long_Num_from_mini_OS << 8;\
-Long_Num_from_mini_OS |= num_byte[m];}
-
-
-
-
-
 
 
 int main (void){
