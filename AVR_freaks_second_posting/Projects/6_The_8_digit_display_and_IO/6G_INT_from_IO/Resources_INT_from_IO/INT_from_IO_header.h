@@ -52,7 +52,7 @@ pause_PCI;sei();Send_int_num_string;cli();reinstate_PCI;
 #define initialise_display \
 clear_display_buffer;\
 display_buffer[0] = '0';\
-pause_PCI_and_Send_float_num_string;\
+pause_PCI_and_Send_int_num_string;\
 sei();
 
 
