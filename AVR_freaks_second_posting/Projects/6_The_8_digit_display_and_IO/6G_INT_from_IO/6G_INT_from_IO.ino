@@ -11,15 +11,9 @@ Switch assignments:
 #include "INT_from_IO_header.h"
 
 
-
-
-
-
-
 int main (void){
 
 long Long_num;
-
 int twos_exp;
 
 setup_328_HW;
