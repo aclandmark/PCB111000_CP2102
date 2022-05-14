@@ -10,6 +10,25 @@ Switch assignments:
  
 #include "INT_from_IO_header.h"
 
+
+
+
+
+#define Int_from_mini_OS \
+One_wire_Tx_char = 'E'; UART_Tx_1_wire();\
+for(int m = 0; m <= 3; m++){\
+UART_Rx_1_wire(); num_byte[m] = One_wire_Rx_char;}\
+\
+for(int m = 0; m <= 3; m++){\
+Long_Num_from_mini_OS = Long_Num_from_mini_OS << 8;\
+Long_Num_from_mini_OS |= num_byte[m];}
+
+
+
+
+
+
+
 int main (void){
 
 float FPN_1_num;
@@ -132,6 +151,50 @@ clear_PCI;}                                              //was clear_PCI_on_sw1_
 
 
 /********************************************************************************************************/
+long Int_number_from_IO(void){
 
+char keypress = 0;
+long Long_Num_from_mini_OS;
+
+//for(int n = 0; n<=8; n++) data_buff[n] = 0;                //Clear display
+
+//num_type = int_num;                               //Integer
+
+set_up_PCI;
+enable_PCI_on_sw1_and_sw2;
+
+initialise_display;
+
+
+//Data_Entry_complete = 0;                          //Set to 1 when FP number entry is complete
+//digit_entry = 0;                              //Set to 1 when digit is selected
+
+//cr_keypress = 0;                              //Set to 1 when atoi() conversion is required  
+//data_buff[0] = '0';
+//int_string_to_display();                          //Initialise display
+
+do{                                                           //Repeat untill FPN string entry is complete
+while
+((!(Data_Entry_complete)) && (!(digit_entry)));            //Wait for input from IO 
+
+enable_PCI_on_sw3;
+
+digit_entry = 0;
+}while(!(Data_Entry_complete));
+Data_Entry_complete = 0;
+
+cr_keypress = 1;                              //Entry of FP string complete 
+
+pause_PCI_and_Send_int_num_string;
+
+//int_string_to_display();                          //Acquire FP number from display driver
+cr_keypress = 0;
+
+Int_from_mini_OS;
+
+
+disable_pci_on_sw1_and_sw2;
+disable_pci_on_sw3;
+return Long_Num_from_mini_OS;}
 
 /************************************************************************************************************/
