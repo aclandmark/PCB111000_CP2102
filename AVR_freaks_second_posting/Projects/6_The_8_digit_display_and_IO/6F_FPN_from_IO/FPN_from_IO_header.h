@@ -3,14 +3,15 @@
 #include <avr/wdt.h>
 
 
-char User_response;
-volatile char tick_counter; 
-volatile char clock_tick;
-unsigned char deci_secs_byte[4];
 
 volatile char Data_Entry_complete, digit_entry;
 volatile char cr_keypress;
 char scroll_control, dp_control, neg_sign, exp_control;  
+volatile int digit_num = 7;
+char display_buffer[8];
+
+
+
 
 /**********************************************************************************/
 #define  OSC_CAL \
@@ -70,6 +71,7 @@ PORTD = 0xFF;
 //All ports are initialised to weak pull up (WPU)
 
 #define clear_display             One_wire_Tx_char = 'c';  UART_Tx_1_wire();
+#define clear_display_buffer      for(int m = 0; m <= 7; m++)display_buffer[m] = 0; display_buffer[0] = '0';
 #define switch_2_up               (PIND & 0x20)
 
 #define User_prompt \
@@ -88,6 +90,8 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 #define enable_PCI                  PCMSK2 |= (1 << PCINT18) | (1 << PCINT21) | (1 << PCINT23);
 #define enable_PCI_on_sw1_and_sw2   PCMSK2 |= (1 << PCINT18) | (1 << PCINT21);
 #define enable_PCI_on_sw3           PCMSK2 |= (1 << PCINT23);
+#define enable_PCI_on_sw2           PCMSK2 |= (1 << PCINT21);
+
 
 #define dissable_PCI                PCMSK2 &= (~((1 << PCINT18) | (1 << PCINT21) | (1 << PCINT23)));
 #define disable_PCI_on_sw2          PCMSK2 &= (~(1 << PCINT21));
@@ -113,7 +117,6 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 #include "Resources_FPN_from_IO/Basic_IO_and_Timer_extra.c"
 #include "Resources_FPN_from_IO/One_wire_transactions.c"
 #include "Resources_FPN_from_IO/FPN_from_IO_subroutines.c"
-
 
 
 
