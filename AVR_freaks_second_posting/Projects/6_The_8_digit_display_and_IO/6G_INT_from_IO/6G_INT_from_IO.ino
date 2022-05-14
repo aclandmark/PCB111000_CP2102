@@ -15,6 +15,7 @@ int main (void){
 
 long Long_num;
 int twos_exp;
+float FPN_1_num;
 
 setup_328_HW;
 
@@ -22,6 +23,31 @@ sei();
 Data_Entry_complete=0;
 clear_display;                       
 Long_num = Int_number_from_IO();
+
+FPN_1_num = (float)Long_num;
+
+
+if(FPN_1_num < 0){
+_delay_ms(250);
+FPN_1_num *= -1.0; 
+float_num_to_display(FPN_1_num);}
+
+
+if (FPN_1_num >= 1.0)                                   //Multiply or divide number by 2 untill it
+{twos_exp = 0; while (FPN_1_num >= 2.0)                 //is between 1 and 2 and adjust its twos_exp 
+{FPN_1_num = FPN_1_num/2.0; twos_exp += 1;}}                  //so that its value remains unchanged 
+
+while(1){
+while(switch_1_up);
+float_num_to_display(FPN_1_num);
+while(switch_3_up);
+int_num_to_display(twos_exp);
+while(switch_1_up);
+float_num_to_display(pow(2, twos_exp) * FPN_1_num);
+while(switch_3_up);
+if(switch_2_down){SW_reset;}}
+
+
 } 
 
 
@@ -97,6 +123,7 @@ cr_keypress = 1;                              //Entry of FP string complete
 pause_PCI_and_Send_int_num_string;
 
 cr_keypress = 0;
+sei();
 Int_from_mini_OS;
 
 disable_PCI_on_sw1_and_sw2;
