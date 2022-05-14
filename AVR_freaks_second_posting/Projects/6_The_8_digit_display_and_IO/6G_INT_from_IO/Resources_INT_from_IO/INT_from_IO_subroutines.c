@@ -1,5 +1,5 @@
 
-/*void float_num_to_display(float FP_num){
+void float_num_to_display(float FP_num){
 char * Char_ptr;
 
 pause_pin_change_interrupt_on_PC5;
@@ -10,7 +10,10 @@ for(int m = 0; m <= 3; m++){                                  //Split the number
 One_wire_Tx_char = *Char_ptr;                                 //and send them individually
 UART_Tx_1_wire(); 
 Char_ptr += 1;}
-reinstate_pin_change_interrupt_on_PC5;}*/
+reinstate_pin_change_interrupt_on_PC5;}
+
+
+
 
 
 /******************************************************************************************************************************************/
