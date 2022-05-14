@@ -40,7 +40,7 @@ scroll_control = (exp_control << 2) | (dp_control << 1) | neg_sign;
 
 shift_digits_left; 
 display_buffer[0] = '0'; 
-pause_PCI_and_Send_float_num_string;
+pause_PCI_and_Send_int_num_string;
 digit_entry = 1;}
 
 
@@ -58,7 +58,7 @@ case '-': display_buffer[0] = '0'; break;
 default: display_buffer[0] += 1;break;}
 
 pause_PCI_and_Send_int_num_string;
-return;
+return;}
 
 
 
