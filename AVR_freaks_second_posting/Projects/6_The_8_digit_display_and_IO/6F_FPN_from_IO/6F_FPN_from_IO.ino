@@ -1,65 +1,51 @@
 
 /*
  
- OLD design
- SW1 PORTD2 PCINT18 scrolls through the available digits 
- SW2 PORTD7 PCINT23
- SW3 PORTB2 PCINT2
-
- PCIE2 / PCMSK2 / PCINT2_vect     PCINT 16 to 23
- PCIE0 / PCMSK0 / PCINT0_vect     PCINT 0 to 7 
-
-  NEW design
-SW1 PORTD2 PCINT18 
-SW2 PORTD5 PCINT21
-SW3 PORTD7 PCINT23
-  
-
-
- 
- */
+Switch assignments:
+    SW1 PORTD2 PCINT18 
+    SW2 PORTD5 PCINT21
+    SW3 PORTD7 PCINT23
+*/
 
  
 #include "FPN_from_IO_header.h"
 
-#define shift_digits_left {for (int n = 0; n < 7; n++){display_buffer[7-n] = display_buffer[6-n];}}
-
-
-#define Send_int_num_string \
-One_wire_Tx_char = 'A'; UART_Tx_1_wire();\
-for(int m = 0; m <= 7; m++){One_wire_Tx_char = display_buffer[m]; UART_Tx_1_wire();}\
-One_wire_Tx_char = cr_keypress;  UART_Tx_1_wire();
-
-
-#define Send_int_num_string \
-One_wire_Tx_char = 'A'; UART_Tx_1_wire();\
-for(int m = 0; m <= 7; m++){One_wire_Tx_char = display_buffer[m]; UART_Tx_1_wire();}\
-One_wire_Tx_char = cr_keypress;  UART_Tx_1_wire();
-
-
-volatile int digit_num = 7;
-char display_buffer[8];
-//volatile char Data_Entry_complete=0;
-
-
-
-
 int main (void){
 
-long deci_sec_counter = 0;
+float FPN_1_num;
+long ipart, Fnum_int;
+int twos_exp;
+
 setup_328_HW;
 
 sei();
 Data_Entry_complete=0;
 clear_display;                       
-FPN_number_from_IO();
-//for(int m = 0; m <= 7; m++){display_buffer[m] = m + '0';}
-//cr_keypress = 1;
-//Send_int_num_string;
+FPN_1_num = FPN_number_from_IO();
+
+if(FPN_1_num < 0){
+_delay_ms(250);
+FPN_1_num *= -1.0; 
+float_num_to_display(FPN_1_num);}
 
 
-while(1);
-} 
+if (FPN_1_num >= 1.0)                                   //Multiply or divide number by 2 untill it
+{twos_exp = 0; while (FPN_1_num >= 2.0)                 //is between 1 and 2 and adjust its twos_exp 
+{FPN_1_num = FPN_1_num/2.0; twos_exp += 1;}}                  //so that its value remains unchanged 
+
+if (FPN_1_num < 1.0)
+{twos_exp = 0; while (FPN_1_num < 1.0)
+{FPN_1_num = FPN_1_num*2.0; twos_exp -= 1;}}
+
+while(1){
+while(switch_1_up);
+float_num_to_display(FPN_1_num);
+while(switch_3_up);
+int_num_to_display(twos_exp);
+while(switch_1_up);
+float_num_to_display(pow(2, twos_exp) * FPN_1_num);
+while(switch_3_up);
+if(switch_2_down){SW_reset;}}} 
 
 
 
@@ -70,23 +56,20 @@ float FPN_number_from_IO(void){
 
 char keypress = 0;
 float f_number;
-float * Flt_ptr_local;
-char * Char_ptr_local;
+float * Flt_ptr;
+char * Char_ptr;
 
-for(int m = 0; m <= 7; m++){display_buffer[m] = 0;}                //Clear display
-
-Flt_ptr_local = &f_number;
-Char_ptr_local = (char*)&f_number;
+Flt_ptr = &f_number;
+Char_ptr = (char*)&f_number;
 
 set_up_PCI;
 enable_PCI_on_sw1_and_sw2;
 
-clear_display;
+initialise_display;
 
-display_buffer[0] = '0';//Send_float_num_string;while(1);
-
-do{                                                             //Repeat untill FPN string entry is complete
-while((!(Data_Entry_complete)) && (!(digit_entry)));            //Wait for input from IO 
+do{                                                         //Repeat untill FPN string entry is complete
+while
+((!(Data_Entry_complete)) && (!(digit_entry)));            //Wait for input from IO 
 
 enable_PCI_on_sw3;
 
@@ -94,16 +77,11 @@ digit_entry = 0;
 }while(!(Data_Entry_complete));
 Data_Entry_complete = 0;
 
-cr_keypress = 1;                                              //Entry of FP string complete 
-Send_float_num_string;                                      //Acquire FP number from display driver
+cr_keypress = 1;                                          //Entry of FP string complete 
+pause_PCI_and_Send_float_num_string;                     //Acquire FP number from display driver
 cr_keypress = 0;
 
-One_wire_Tx_char = 'E'; UART_Tx_1_wire();
-for(int m = 0; m <= 3; m++){
-UART_Rx_1_wire(); *Char_ptr_local = One_wire_Rx_char;
-Char_ptr_local += 1;}
-
-f_number = *Flt_ptr_local;
+f_number_from_mini_OS;
 
 disable_PCI_on_sw1_and_sw2;
 disable_PCI_on_sw3;
@@ -116,31 +94,37 @@ ISR(PCINT2_vect){
 char disp_bkp[8];
 
 if((switch_1_up) && (switch_2_up) && (switch_3_up))return;
-sei();
+
 if(switch_3_down){                                        //End of data entry
-if (switch_2_down){clear_display;return;}               //No backspace but dispaly can be re-initialised
+if (switch_2_down){sei();clear_display;cli();
+
+while ((switch_3_down) || (switch_2_down));
+
+initialise_display;
+return; }
+
+
 
 for(int m = 0; m<=7; m++)
 {disp_bkp[m]=display_buffer[m]; display_buffer[m]= 0;}
-Send_float_num_string;
-Timer_T2_10mS_delay_x_m(50);                                //Flash display
+pause_PCI_and_Send_float_num_string;
+Timer_T2_10mS_delay_x_m(25);                                //Flash display
 for(int m = 0; m<=7; m++)
 {display_buffer[m]=disp_bkp[m];}
 digit_entry = 1;
 Data_Entry_complete=1;
-Send_float_num_string;
-while(switch_3_down);                           //Pause update of display
-_delay_ms(250);
+pause_PCI_and_Send_float_num_string;
+while(switch_3_down);                                     //Pause update of display
 return;}
 
 
 while(switch_1_down)
-{scroll_display_zero();                           //Hold SW1 down to scroll throuh the availble chars (0-9, E anf -)
-Timer_T2_10mS_delay_x_m(20);}
+{scroll_display_zero();                                   //Hold SW1 down to scroll throuh the availble chars (0-9, E anf -)
+Timer_T2_10mS_delay_x_m(10);}
 
 while(switch_3_down);enable_PCI_on_sw3;                   //Wait for SW3 to be released (may have been pressed to select dp)
 if(switch_2_down)shift_display_left();                    //Press SW2 to accept the next char and shift the display
-Timer_T2_10mS_delay_x_m(20);
+Timer_T2_10mS_delay_x_m(10);
 clear_PCI;}                                              //was clear_PCI_on_sw1_and_sw2;}
 
 
@@ -148,66 +132,6 @@ clear_PCI;}                                              //was clear_PCI_on_sw1_
 
 
 /********************************************************************************************************/
-void shift_display_left(void){
-
-if(display_buffer[0] & 0x80)dp_control = 1;                    //No more decimal points allowed
-if (display_buffer[0] == 'e')
-{exp_control = 1; neg_sign = 0;}                      //Negative exponent allowed
-else neg_sign = 1;                              //FP number can have one negative sign 
-
-scroll_control = (exp_control << 2) | (dp_control << 1) | neg_sign;   
-
-shift_digits_left; 
-display_buffer[0] = '0'; 
-Send_float_num_string;
-digit_entry = 1;}
-
-
-
-
-/********************************************************************************************************/
-void scroll_display_zero(void){
-unsigned char data_zero;
-
-disable_PCI_on_sw3;
-
-data_zero = display_buffer[0];
-
-if (switch_3_up){display_buffer[0] &= (~(0x80));             //Decimal point dissabled
-
-switch (display_buffer[0]){
-case '9':
-switch(scroll_control){ 
-case 0: display_buffer[0] = '-'; break;                    //Initial state scroll 0-9 -ve 0...... dp is enabled
-case 1: display_buffer[0] = '0'; break;                    //First char entered -ve sign dissabled  dp enabled
-case 3: display_buffer[0] = 'e'; break;                    //Decimal point entered.  Dissable DP. Enable E.
-case 6: display_buffer[0] = '-'; break;                    //E entered. Enable -ve sign
-case 7: display_buffer[0] = '0'; break;}break;               //Dissable -ve sign
-
-case '-':
-switch(scroll_control){
-case 0: display_buffer[0] = '0'; break;                    //Initial state
-case 6: display_buffer[0] = '0'; break;}break;
-
-case 'e':
-switch(scroll_control){
-case 0: display_buffer[0] = '0'; break;                    //Initial state
-case 1: display_buffer[0] = '0'; break;    
-case 3: display_buffer[0] = '0'; break;}break;
-
-default: display_buffer[0] += 1; break;}}
-
-if((switch_3_down) && (!(dp_control))){display_buffer[0] |= 0x80;      //Decimal point enabled 
-
-switch (display_buffer[0] & (~(0x80))){
-case '9': 
-display_buffer[0] = ('0' | 0x80);break;
-default:  display_buffer[0] += 1;break;}}
-
-sei();Send_float_num_string;}
-
-
-
 
 
 /************************************************************************************************************/
