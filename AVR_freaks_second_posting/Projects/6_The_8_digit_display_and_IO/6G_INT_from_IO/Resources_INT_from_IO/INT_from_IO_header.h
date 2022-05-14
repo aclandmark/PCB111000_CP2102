@@ -45,8 +45,8 @@ for(int m = 0; m <= 7; m++){One_wire_Tx_char = display_buffer[m]; UART_Tx_1_wire
 One_wire_Tx_char = cr_keypress;  UART_Tx_1_wire();
 
 
-#define pause_PCI_and_Send_float_num_string \
-pause_PCI;sei();Send_float_num_string;cli();reinstate_PCI;
+#define pause_PCI_and_Send_int_num_string \
+pause_PCI;sei();Send_int_num_string;cli();reinstate_PCI;
 
 
 #define initialise_display \
