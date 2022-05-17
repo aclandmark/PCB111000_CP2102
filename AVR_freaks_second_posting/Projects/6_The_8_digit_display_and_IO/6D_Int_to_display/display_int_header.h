@@ -17,7 +17,7 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 
 
 /************************************************************************************************************************************/
-#define setup_328_HW \
+#define setup_328_HW_Arduino \
 \
 setup_watchdog;\
 ADMUX |= (1 << REFS0);\
@@ -27,6 +27,7 @@ OSC_CAL;\
 comms_cal;\
 set_up_pin_change_interrupt_on_PC5;\
 setup_one_wire_comms;\
+\
 set_up_activity_leds;\
 sei();
 
@@ -62,13 +63,7 @@ PORTD = 0xFF;
 //All ports are initialised to weak pull up (WPU)
 
 
-
-
 /************************************************************************************************************************************/
-#define set_up_PCI_on_sw2                   PCICR |= (1 << PCIE2);
-#define enable_pci_on_sw2                   PCMSK2 |= (1 << PCINT21);
-#define switch_2_up                         (PIND & 0x20)
-
 #define newline                               Serial.write("\r\n");
 
 
@@ -87,4 +82,8 @@ if((User_response == 'R') || (User_response == 'r'))break;} Serial.write("\r\n")
 #include "Resources_display_int\One_wire_header.h"
 #include "Resources_display_int\One_wire_transactions.c"
 #include "Resources_display_int\Arduino_IO_and_Timer.c"
-#include "Resources_display_int\display_driver_subroutines.c"
+#include "Resources_display_int\display_driver_subroutines_KBD.c"
+
+
+
+/*************************************************************************************************************************************/
