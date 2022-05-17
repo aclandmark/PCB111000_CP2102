@@ -1,19 +1,16 @@
 
 
 
-#define Send_int_num_string \
-One_wire_Tx_char = 'A'; UART_Tx_1_wire();\
-for(int m = 0; m <= 7; m++){One_wire_Tx_char = display_buffer[m]; UART_Tx_1_wire();}\
-One_wire_Tx_char = cr_keypress;  UART_Tx_1_wire();
-
-
-
 #define Send_float_num_string \
 One_wire_Tx_char = 'B'; UART_Tx_1_wire();\
 for(int m = 0; m <= 7; m++){One_wire_Tx_char = display_buffer[m]; UART_Tx_1_wire();}\
 One_wire_Tx_char = cr_keypress;  UART_Tx_1_wire();
 
 
+#define Send_int_num_string \
+One_wire_Tx_char = 'A'; UART_Tx_1_wire();\
+for(int m = 0; m <= 7; m++){One_wire_Tx_char = display_buffer[m]; UART_Tx_1_wire();}\
+One_wire_Tx_char = cr_keypress;  UART_Tx_1_wire();
 
 
 
@@ -29,11 +26,34 @@ Long_Num_from_mini_OS |= num_byte[m];}
 
 
 
+#define f_number_from_mini_OS \
+S_reg_bkp = SREG; sei();\
+One_wire_Tx_char = 'E'; UART_Tx_1_wire();\
+for(int m = 0; m <= 3; m++){\
+UART_Rx_1_wire(); *Char_ptr = One_wire_Rx_char;\
+Char_ptr += 1;}\
+f_number = *Flt_ptr;\
+SREG = S_reg_bkp;
 
-void int_num_to_display(long);
-void float_num_to_display(float);
 
 void Check_num_for_to_big_or_small(float);
+
+
+
+/******************************************************************************************************************************************/
+void float_num_to_display(float FP_num){
+char * Char_ptr;
+
+pause_pin_change_interrupt_on_PC5;
+Check_num_for_to_big_or_small(FP_num);
+Char_ptr = (char*)&FP_num;
+One_wire_Tx_char = 'D'; 								//Command 'D' indicates the a floating point number will be sent
+UART_Tx_1_wire();
+for(int m = 0; m <= 3; m++){							//Split the number into 4 chars
+One_wire_Tx_char = *Char_ptr;							//and send them individually
+UART_Tx_1_wire();	
+Char_ptr += 1;}
+reinstate_pin_change_interrupt_on_PC5;}
 
 
 
@@ -53,20 +73,6 @@ reinstate_pin_change_interrupt_on_PC5;}
 
 
 
-/******************************************************************************************************************************************/
-void float_num_to_display(float FP_num){
-char * Char_ptr;
-
-pause_pin_change_interrupt_on_PC5;
-Check_num_for_to_big_or_small(FP_num);
-Char_ptr = (char*)&FP_num;
-One_wire_Tx_char = 'D'; 								//Command 'D' indicates the a floating point number will be sent
-UART_Tx_1_wire();
-for(int m = 0; m <= 3; m++){							//Split the number into 4 chars
-One_wire_Tx_char = *Char_ptr;							//and send them individually
-UART_Tx_1_wire();	
-Char_ptr += 1;}
-reinstate_pin_change_interrupt_on_PC5;}
 
 
 
