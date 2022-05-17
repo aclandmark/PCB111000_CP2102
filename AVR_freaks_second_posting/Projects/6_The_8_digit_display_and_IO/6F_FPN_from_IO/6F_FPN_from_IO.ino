@@ -29,7 +29,6 @@ int twos_exp;
 
 setup_328_HW;
 
-sei();
 Data_Entry_complete=0;
 clear_display;                       
 FPN_1_num = FPN_number_from_IO();
@@ -98,6 +97,7 @@ disable_PCI_on_sw3;
 return f_number;}
 
 
+
 /********************************************************************************************************/
 ISR(PCINT2_vect){
 char disp_bkp[8];
@@ -110,14 +110,6 @@ while ((switch_3_down) || (switch_2_down));
 initialise_display;
 return; }
 
-
-
-for(int m = 0; m<=7; m++)
-{disp_bkp[m]=display_buffer[m]; display_buffer[m]= 0;}
-pause_PCI_and_Send_float_num_string;
-Timer_T2_10mS_delay_x_m(25);                                      //Flash display
-for(int m = 0; m<=7; m++)
-{display_buffer[m]=disp_bkp[m];}
 digit_entry = 1;
 Data_Entry_complete=1;
 pause_PCI_and_Send_float_num_string;
@@ -126,11 +118,11 @@ return;}
 
 
 while(switch_1_down)
-{scroll_display_zero();                                         //Hold SW1 down to scroll throuh the availble chars (0-9, E and -)
+{scroll_float_display_zero();                                    //Hold SW1 down to scroll throuh the availble chars (0-9, E and -)
 Timer_T2_10mS_delay_x_m(10);}
 
 while(switch_3_down);enable_PCI_on_sw3;                         //Wait for SW3 to be released (may have been pressed to select dp)
-if(switch_2_down)shift_display_left();                          //Press SW2 to accept the next char and shift the display
+if(switch_2_down)shift_float_display_left();                    //Press SW2 to accept the next char and shift the display
 Timer_T2_10mS_delay_x_m(10);
 clear_PCI;} 
 
