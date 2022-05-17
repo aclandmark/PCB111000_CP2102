@@ -28,9 +28,8 @@ float FPN_1_num;
 
 setup_328_HW;
 
-sei();
 Data_Entry_complete=0;
-clear_display;                       
+clear_display;                    
 Long_num = Int_number_from_IO();
 
 FPN_1_num = (float)Long_num;
@@ -70,25 +69,19 @@ while ((switch_3_down) || (switch_2_down));
 initialise_display;
 return; }
 
-for(int m = 0; m<=7; m++)
-{disp_bkp[m]=display_buffer[m]; display_buffer[m]= 0;}
-pause_PCI_and_Send_int_num_string;
-Timer_T2_10mS_delay_x_m(25);     
-for(int m = 0; m<=7; m++)
-{display_buffer[m]=disp_bkp[m];}
 digit_entry = 1;
 Data_Entry_complete=1;
 pause_PCI_and_Send_int_num_string;
-while(switch_3_down); 
+while(switch_3_down);
 return;}
 
 
 while(switch_1_down)
-{scroll_display_zero(); 
+{scroll_int_display_zero(); 
 Timer_T2_10mS_delay_x_m(10);}
 
 while(switch_3_down);enable_PCI_on_sw3;  
-if(switch_2_down)shift_display_left();  
+if(switch_2_down)shift_int_display_left();  
 Timer_T2_10mS_delay_x_m(10);
 clear_PCI;}       
 
@@ -119,7 +112,6 @@ Data_Entry_complete = 0;
 cr_keypress = 1;  
 pause_PCI_and_Send_int_num_string;
 cr_keypress = 0;
-sei();
 Int_from_mini_OS;
 
 disable_PCI_on_sw1_and_sw2;
