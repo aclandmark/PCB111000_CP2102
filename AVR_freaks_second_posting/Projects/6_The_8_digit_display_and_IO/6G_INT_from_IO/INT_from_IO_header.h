@@ -7,9 +7,8 @@
 volatile char Data_Entry_complete, digit_entry;
 volatile char cr_keypress;
 char scroll_control, dp_control, neg_sign, exp_control;  
-volatile int digit_num = 7;
 char display_buffer[8];
-
+char S_reg_bkp;
 
 
 
@@ -36,7 +35,9 @@ comms_cal;\
 set_up_pin_change_interrupt_on_PC5;\
 setup_one_wire_comms;\
 \
-set_up_activity_leds;
+set_up_activity_leds;\
+setup_PC_comms(0,16);\
+sei();
 
 
 //The reset control switch is connected to PC5  
@@ -72,7 +73,7 @@ PORTD = 0xFF;
 
 #define clear_display             One_wire_Tx_char = 'c';  UART_Tx_1_wire();
 #define clear_display_buffer      for(int m = 0; m <= 7; m++)display_buffer[m] = 0; display_buffer[0] = '0';
-#define switch_2_up               (PIND & 0x20)
+
 
 #define User_prompt \
 while(1){\
@@ -87,18 +88,11 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 #define pause_PCI                   PCICR &= (~(1 << PCIE2));
 #define reinstate_PCI               PCICR |= (1 << PCIE2);
 #define clear_PCI                   PCIFR |= (1<< PCIF2);
-#define enable_PCI                  PCMSK2 |= (1 << PCINT18) | (1 << PCINT21) | (1 << PCINT23);
 #define enable_PCI_on_sw1_and_sw2   PCMSK2 |= (1 << PCINT18) | (1 << PCINT21);
 #define enable_PCI_on_sw3           PCMSK2 |= (1 << PCINT23);
-#define enable_PCI_on_sw2           PCMSK2 |= (1 << PCINT21);
 
-
-#define dissable_PCI                PCMSK2 &= (~((1 << PCINT18) | (1 << PCINT21) | (1 << PCINT23)));
-#define disable_PCI_on_sw2          PCMSK2 &= (~(1 << PCINT21));
 #define disable_PCI_on_sw3          PCMSK2 &= (~(1 << PCINT23));
-#define disable_PCI_on_sw1_and_sw3  PCMSK2 &= (~((1 << PCINT18) | (1 << PCINT23)));
 #define disable_PCI_on_sw1_and_sw2  PCMSK2 &= (~((1 << PCINT18) | (1 << PCINT21)));
-
 
 #define switch_1_up               (PIND & 0x04)
 #define switch_2_up               (PIND & 0x20)
@@ -108,15 +102,12 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 #define switch_3_down             (PIND & 0x80)^0x80
 
 
-
-
-
 /************************************************************************************************************************************/
 #include "Resources_INT_from_IO/One_wire_header.h"
-#include "Resources_INT_from_IO/INT_from_IO_header.h"
 #include "Resources_INT_from_IO/Basic_IO_and_Timer_extra.c"
 #include "Resources_INT_from_IO/One_wire_transactions.c"
-#include "Resources_INT_from_IO/INT_from_IO_subroutines.c"
+#include "Resources_INT_from_IO/display_driver_subroutines.c"
+#include "Resources_INT_from_IO/IO_data_entry_subroutines.c"
 
 
 
