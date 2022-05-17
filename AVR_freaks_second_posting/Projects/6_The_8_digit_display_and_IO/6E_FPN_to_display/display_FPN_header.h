@@ -17,7 +17,7 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 
 
 /************************************************************************************************************************************/
-#define setup_328_HW \
+#define setup_328_HW_Arduino \
 \
 setup_watchdog;\
 ADMUX |= (1 << REFS0);\
@@ -88,4 +88,9 @@ if((User_response == 'R') || (User_response == 'r'))break;} Serial.write("\r\n")
 #include "Resources_display_num\One_wire_transactions.c"
 #include "Resources_display_num\Arduino_IO_and_Timer.c"
 #include "Resources_display_num\Arduino_Rx_Tx.c"
-#include "Resources_display_num\display_driver_subroutines.c"
+#include "Resources_display_num\display_driver_subroutines_KBD.c"
+
+
+
+
+/***************************************************************************************************************************************/
