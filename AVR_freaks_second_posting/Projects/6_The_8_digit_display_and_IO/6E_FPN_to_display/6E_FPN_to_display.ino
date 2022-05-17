@@ -21,7 +21,7 @@ char digits[12];
 
 
 
-setup_328_HW;
+setup_328_HW_Arduino;
 Serial.begin(115200);
 while (!Serial);
 
