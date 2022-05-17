@@ -33,7 +33,7 @@ and can be modified at will by the user.
 
 
 
-void USART_init (unsigned char, unsigned char);
+void setup_PC_comms (unsigned char, unsigned char);
 void Timer_T1_sub(char, unsigned int);
 void Timer_T2_10mS_delay_x_m(int);
 void Timer_T2_sub(char, unsigned char);
@@ -47,7 +47,7 @@ void Char_to_PC(char);
 
 
 /**********************************************************************************************/
-void USART_init (unsigned char UBRROH_N, unsigned char UBRR0L_N ){
+void setup_PC_comms (unsigned char UBRROH_N, unsigned char UBRR0L_N ){
 UCSR0B = 0;
 UBRR0H = UBRROH_N;
 UBRR0L = UBRR0L_N;  
