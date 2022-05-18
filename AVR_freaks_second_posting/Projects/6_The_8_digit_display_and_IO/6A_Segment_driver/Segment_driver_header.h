@@ -48,8 +48,8 @@ else\
 {WDT_out_status = 1;}\
 Reset_WDT_out_register;\
 sei();\
- Serial.begin(115200);\
- while (!Serial);
+Serial.begin(115200);\
+while (!Serial);
 
 
 //The reset control switch is connected to PC5
@@ -108,3 +108,7 @@ if((User_response == 'R') || (User_response == 'r'))break;} Serial.write("\r\n")
 #include "Resources_segment_driver\One_wire_transactions.c"
 #include "Resources_segment_driver\Arduino_IO_and_Timer.c"
 #include "Resources_segment_driver\Segment_driver_subroutines.c"
+
+
+
+/**************************************************************************************************************************************/
