@@ -29,13 +29,13 @@ Serial.write("\r\nEnter scientific number \
 & terminate with Return key.\r\n");
 
 
-Num_1 = Float_KBD_to_display(digits);                                     //Data from keyboard
+Num_1 = Float_KBD_to_display(digits);                     //Data from keyboard
 while (1){
  
-Sc_Num_to_PC(Num_1,1,5 ,'\r');
+Sc_Num_to_PC(Num_1,1,5 ,'\r');                            //Send number to PC
 waitforkeypress();
-Num_1 = pow(Num_1, 1.2);
-float_num_to_display(Num_1);                                                    //Sends number to the display
-}                                                                                 //Do some arithmetic
+Num_1 = pow(Num_1, 1.2);                                  //Do some arithmetic
+float_num_to_display(Num_1);                              //Sends result to the display
+}                                                         //Generates reset if result of arithmetic is too large or small
 
 SW_reset;}
