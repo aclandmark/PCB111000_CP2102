@@ -20,14 +20,8 @@ char keypress = 0, digit_num=0;
 
 setup_328_HW_extra;
 
-Serial.begin(115200);
-    while (!Serial);
-
-
 if(WDT_out_status == 1)Serial.write(message_1);
 if(WDT_out_status == 2)Serial.write(message_2);
-
-sei();
 
 while(1){                                                               //Keep inputting data until x is received
 
