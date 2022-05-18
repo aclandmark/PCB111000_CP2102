@@ -1,6 +1,6 @@
 
 /*
- Almost identical to 5A
+ Almost identical to 6A
  */
 
 
@@ -9,9 +9,6 @@
 
 #define message_1 "\r\nFor each digit press 0 to 7 then a to g for segments.\t"
 #define message_2 "Again!\t"
-
-
-
 
 
 int main (void){
@@ -44,3 +41,8 @@ defaut: break;
 }                                                                        //Bottom of switch block return to top of "do-loop"
 }
 }                                                                         //Repeat program
+
+
+
+
+/***************************************************************************************************************************/
