@@ -12,7 +12,7 @@ bit of DIY programming is required.
 
 
 
-#include "display_int_header.h"
+#include "display_INT_header.h"
 
 
 int main (void){
