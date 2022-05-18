@@ -48,7 +48,7 @@ SW_reset;}
 
 
 /******************************************************************************************/
-long Int_KBD_to_display_Local(char display_buffer[]){                     //Acquires an integer string from the keyboard and returns the binary equivalent
+long Int_KBD_to_display_Local(char display_buffer[]){               //Acquires an integer string from the keyboard and returns the binary equivalent
 char keypress;
 char cr_keypress;
 unsigned char num_byte[4];
@@ -74,3 +74,9 @@ Send_int_num_string;                                                //Send cr ke
 cr_keypress = 0;
 Int_from_mini_OS;
 return Long_Num_from_mini_OS;}
+
+
+
+
+
+/************************************************************************************************************************/
