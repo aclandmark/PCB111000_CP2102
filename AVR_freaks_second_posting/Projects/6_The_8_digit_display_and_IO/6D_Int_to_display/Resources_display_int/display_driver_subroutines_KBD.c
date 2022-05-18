@@ -8,12 +8,11 @@ One_wire_Tx_char = cr_keypress;  UART_Tx_1_wire();
 
 
 
+
 #define Send_float_num_string \
 One_wire_Tx_char = 'B'; UART_Tx_1_wire();\
 for(int m = 0; m <= 7; m++){One_wire_Tx_char = display_buffer[m]; UART_Tx_1_wire();}\
 One_wire_Tx_char = cr_keypress;  UART_Tx_1_wire();
-
-
 
 
 
@@ -42,9 +41,6 @@ void Check_num_for_to_big_or_small(float);
 
 
 
-
-
-
 /******************************************************************************************************************************************/
 void float_num_to_display(float FP_num){
 char * Char_ptr;
@@ -62,6 +58,7 @@ reinstate_pin_change_interrupt_on_PC5;}
 
 
 
+
 /******************************************************************************************************************************************/
 void int_num_to_display(long Int_num){
 pause_pin_change_interrupt_on_PC5;
@@ -73,6 +70,9 @@ One_wire_Tx_char = Int_num >> ((3-m) * 8);              //and send them individu
 UART_Tx_1_wire(); 
 }
 reinstate_pin_change_interrupt_on_PC5;}
+
+
+
 
 
 
