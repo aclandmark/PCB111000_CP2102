@@ -33,8 +33,7 @@ int digit_num=0;                                                            //de
 const char* string_ptr = 0;                                                 //pointer: will be loaded with the address of a segment string 
 setup_328_HW;                                                               //(i.e. the address of string "zero", "one", "two" etc....) 
 
-Serial.begin(115200);
-while (!Serial);
+
 Serial.write("\r\nSend digits?");
 
 clear_display;
