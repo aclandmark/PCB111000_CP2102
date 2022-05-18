@@ -25,8 +25,7 @@ char letter = 0, digit_num;
 setup_328_HW_extra;
 set_up_PCI_on_sw2;
   enable_pci_on_sw2;
- Serial.begin(115200);
-    while (!Serial);
+
 
 if(WDT_out_status == 1)Serial.write(message_1);
 if(WDT_out_status == 2)Serial.write(message_2);
