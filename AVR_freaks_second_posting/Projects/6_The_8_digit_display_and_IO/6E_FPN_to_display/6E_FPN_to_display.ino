@@ -22,8 +22,7 @@ char digits[12];
 
 
 setup_328_HW_Arduino;
-Serial.begin(115200);
-while (!Serial);
+
 
 Serial.write("\r\nEnter scientific number \
 & terminate with Return key.\r\n");
