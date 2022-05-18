@@ -47,7 +47,9 @@ WDT_out_status = 2;\
 else\
 {WDT_out_status = 1;}\
 Reset_WDT_out_register;\
-sei();
+sei();\
+ Serial.begin(115200);\
+ while (!Serial);
 
 
 //The reset control switch is connected to PC5
