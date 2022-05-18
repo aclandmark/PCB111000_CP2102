@@ -34,7 +34,7 @@ while (1){
  
 Sc_Num_to_PC(Num_1,1,5 ,'\r');
 waitforkeypress();
-Num_1 = pow(Num_1, 3);
+Num_1 = pow(Num_1, 1.2);
 float_num_to_display(Num_1);                                                    //Sends number to the display
 }                                                                                 //Do some arithmetic
 
