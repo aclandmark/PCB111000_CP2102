@@ -21,8 +21,7 @@ char digits[8];
 int counter = 0;
 
 setup_328_HW_Arduino;
-Serial.begin(115200);
-while (!Serial);
+
 
 Serial.write("\r\nEnter positive number \
 & terminate with Return key.\r\n");
