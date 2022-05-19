@@ -31,7 +31,7 @@ int main (void){
 char   digit;
 int digit_num=0;                                                     //defines number of next digit on display           
 const char* string_ptr = 0;                                         //pointer: will be loaded with the address of a segment string 
-setup_328_HW;                                                       //(i.e. the address of string "zero", "one", "two" etc....) 
+setup_328_HW_Arduino;                                                       //(i.e. the address of string "zero", "one", "two" etc....) 
 
 
 Serial.write("\r\nSend digits?");
