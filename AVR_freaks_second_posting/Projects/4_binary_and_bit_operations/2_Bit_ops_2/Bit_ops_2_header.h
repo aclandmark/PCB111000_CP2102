@@ -34,8 +34,7 @@ set_up_pin_change_interrupt_on_PC5;\
 setup_one_wire_comms;\
 set_up_activity_leds;\
 sei();\
-Serial.begin(115200);\
-while (!Serial);
+setup_PC_comms(0,16);
 
 
 
