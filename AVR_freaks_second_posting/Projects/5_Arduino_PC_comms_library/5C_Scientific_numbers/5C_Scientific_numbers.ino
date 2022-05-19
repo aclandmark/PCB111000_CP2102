@@ -19,9 +19,8 @@ int main (void)
     char num_string[12], User_response;
     float  num;
  
- setup_328_HW;
-    Serial.begin(115200);
-    while (!Serial);
+ setup_328_HW_Arduino;
+    
    User_prompt;
  
    Serial.write("Scientific number\t");
