@@ -36,9 +36,8 @@ float logN;                                       //The log of Num
 float Log_result;                                 
 float Result;
 
-setup_328_HW_extra;
-Serial.begin(115200);
-while (!Serial);
+setup_328_HW_Arduino_plus;
+
 
 if(WDT_out_status == 1)Serial.write(message_1);
 if(WDT_out_status == 2)Serial.write(message_2);
@@ -170,3 +169,11 @@ One_wire_Tx_char = *Char_ptr;                         //and send them individual
 UART_Tx_1_wire(); 
 Char_ptr += 1;}
 reinstate_pin_change_interrupt_on_PC5;}
+
+
+
+
+
+
+
+/************************************************************************************************************************/
