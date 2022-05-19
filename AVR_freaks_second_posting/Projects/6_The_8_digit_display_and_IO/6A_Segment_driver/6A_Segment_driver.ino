@@ -22,7 +22,7 @@ int main (void){
 
 char letter = 0, digit_num;            
 
-setup_328_HW_extra;
+setup_328_HW_Arduino_plus;
 set_up_PCI_on_sw2;
   enable_pci_on_sw2;
 
