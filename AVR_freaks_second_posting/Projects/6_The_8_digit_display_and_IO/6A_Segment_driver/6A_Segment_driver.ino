@@ -30,8 +30,6 @@ set_up_PCI_on_sw2;
 if(WDT_out_status == 1)Serial.write(message_1);
 if(WDT_out_status == 2)Serial.write(message_2);
 
-//////sei();
-
 
 while(1){digit_num=0;
 while(digit_num < 8){
