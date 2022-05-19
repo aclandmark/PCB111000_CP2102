@@ -25,10 +25,9 @@ char numLength;
 float pie;
 unsigned long r_mem;
 
-setup_328_HW;
+setup_328_HW_Arduino;
 Reset_ATtiny1606;
-Serial.begin(115200);
-while (!Serial);
+
 
 Serial.write("\r\nEstimate value for PIE. Enter radius (65500 max)\r\n");
 
