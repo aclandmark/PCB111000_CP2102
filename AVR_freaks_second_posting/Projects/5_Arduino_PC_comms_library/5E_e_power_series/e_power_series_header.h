@@ -24,7 +24,7 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 
 
 /************************************************************************************************************************************/
-#define setup_328_HW_extra \
+#define setup_328_HW_Arduino_plus \
 \
 setup_watchdog;\
 ADMUX |= (1 << REFS0);\
@@ -44,7 +44,9 @@ WDT_out_status = 2;\
 else\
 {WDT_out_status = 1;}\
 Reset_WDT_out_register;\
-sei();
+sei();\
+Serial.begin(115200);\
+while (!Serial);
 
 
 
