@@ -27,7 +27,7 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 
 
 /************************************************************************************************************************************/
-#define setup_328_HW_extra \
+#define setup_328_HW_Arduino_plus \
 \
 setup_watchdog;\
 ADMUX |= (1 << REFS0);\
