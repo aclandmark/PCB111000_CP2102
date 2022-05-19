@@ -13,8 +13,7 @@ int main (void) {
 
 
   setup_328_HW;
-  sei();
-
+  
   Reset_ATtiny1606;
   lfsr = PRN_8bit_GEN(0xF);
 
