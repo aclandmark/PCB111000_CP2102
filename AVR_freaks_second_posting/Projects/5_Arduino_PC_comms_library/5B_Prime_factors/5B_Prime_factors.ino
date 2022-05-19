@@ -23,9 +23,8 @@ int main (void)
     long factor;
     char factor_counter;
  
- setup_328_HW;
-    Serial.begin(115200);
-    while (!Serial);
+ setup_328_HW_Arduino;
+    
    User_prompt;
  
    Serial.write("Integer number\t");
