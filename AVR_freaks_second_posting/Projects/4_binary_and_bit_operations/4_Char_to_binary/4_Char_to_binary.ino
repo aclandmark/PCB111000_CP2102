@@ -12,7 +12,7 @@ int main (void){
 
 mode = 0;                          //mode: signed or unsigned
 setup_328_HW;
-sei();
+
 clear_display;
 
 One_wire_char_as_binary(1,'u');
