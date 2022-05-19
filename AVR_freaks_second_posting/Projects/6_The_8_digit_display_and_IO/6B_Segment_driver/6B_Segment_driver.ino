@@ -15,7 +15,7 @@ int main (void){
 
 char keypress = 0, digit_num=0;            
 
-setup_328_HW_extra;
+setup_328_HW_Arduino_plus;
 
 if(WDT_out_status == 1)Serial.write(message_1);
 if(WDT_out_status == 2)Serial.write(message_2);
