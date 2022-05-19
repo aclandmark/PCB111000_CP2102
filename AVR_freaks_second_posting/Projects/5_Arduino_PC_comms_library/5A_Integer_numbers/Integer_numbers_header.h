@@ -18,7 +18,7 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 
 
 /**********************************************************************************/
-#define setup_328_HW \
+#define setup_328_HW_Arduino \
 \
 setup_watchdog;\
 ADMUX |= (1 << REFS0);\
@@ -30,7 +30,9 @@ set_up_pin_change_interrupt_on_PC5;\
 \
 setup_one_wire_comms;\
 set_up_activity_leds;\
-sei();
+sei();\
+Serial.begin(115200);\
+while (!Serial);
 
 //The reset control switch is connected to PC5  USART_init(0,16);
 
