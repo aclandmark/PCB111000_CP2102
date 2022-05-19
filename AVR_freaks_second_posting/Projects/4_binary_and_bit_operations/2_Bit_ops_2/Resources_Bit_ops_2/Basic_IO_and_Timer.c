@@ -32,7 +32,7 @@ void Char_to_PC(char);
 
 
 /**********************************************************************************************/
-void USART_init (unsigned char UBRROH_N, unsigned char UBRR0L_N ){
+void setup_PC_comms (unsigned char UBRROH_N, unsigned char UBRR0L_N ){
 UCSR0B = 0;
 UBRR0H = UBRROH_N; 
 UBRR0L = UBRR0L_N;  
