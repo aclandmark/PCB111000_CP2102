@@ -19,7 +19,7 @@ and can be modified at will by the user.
 #define T2_delay_10ms 	7,178
 
 
-void USART_init (unsigned char, unsigned char);
+void setup_PC_comms (unsigned char, unsigned char);
 void Timer_T2_10mS_delay_x_m(int);
 void Timer_T2_sub(char, unsigned char);
 char isCharavailable (int);
