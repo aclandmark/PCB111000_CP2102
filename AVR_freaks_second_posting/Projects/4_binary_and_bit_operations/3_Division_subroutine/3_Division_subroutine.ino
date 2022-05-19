@@ -20,9 +20,7 @@ long Num_1, Num_2;
 char digits[8];
 
 setup_328_HW;
-  sei();
-
-  
+   
 while(1){
 String_to_PC("Num_1?  ");
 
