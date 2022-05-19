@@ -13,7 +13,7 @@ char BWop;                                  //bit wise operation and complement 
 
 
 setup_328_HW;
-sei();
+
 
 String_to_PC("\r\nSelect OP:  |   ^   &   ~|  ~^  or  ~&");
 BWop = waitforkeypress();
