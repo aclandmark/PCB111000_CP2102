@@ -17,12 +17,10 @@ int main (void){
 
 setup_328_HW;
 initialise_T2();
-sei();
 
 Reset_ATtiny1606;
 while(switch_2_up);
 
-sei();
 stop_watch_mode = 0;
 centi_sec_counter = 0;
 start_clock();
