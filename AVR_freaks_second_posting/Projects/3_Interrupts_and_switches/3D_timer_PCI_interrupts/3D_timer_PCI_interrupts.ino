@@ -33,7 +33,7 @@ int main (void)
   set_up_PCI;
   enable_PCI;
   T1_COMP = 0;
-  sei();
+  
   T1_100ms_clock_tick();
   initialise_display();
   while (1)
