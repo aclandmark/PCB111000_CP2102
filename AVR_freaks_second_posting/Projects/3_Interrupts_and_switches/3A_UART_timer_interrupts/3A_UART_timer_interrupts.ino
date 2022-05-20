@@ -23,7 +23,7 @@ int main (void)
 
   setup_328_HW;
   reset_display;
-  sei();
+  
   UCSR0B |= (1 << RXCIE0);
   T1_100ms_clock_tick();
   while (1)
