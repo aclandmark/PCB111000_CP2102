@@ -18,14 +18,12 @@ int main (void){
 long deci_sec_counter = 0;
 setup_328_HW;
 initialise_T2();
-sei();
 
 clear_display;                       
 time_from_IO();
 
 while(switch_2_up);
 
-sei();
 start_clock();
 while(1)
 {while(clock_tick <= 1);clock_tick = 0; 
