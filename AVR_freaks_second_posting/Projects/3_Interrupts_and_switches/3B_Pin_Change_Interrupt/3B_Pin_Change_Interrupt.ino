@@ -23,7 +23,7 @@ int main (void)
   enable_pci_on_sw2;
 
   mask = 0xFFFF;
-  sei();
+  
   while (mask)
   { scan = 1;
     PORT_1 = 1;
