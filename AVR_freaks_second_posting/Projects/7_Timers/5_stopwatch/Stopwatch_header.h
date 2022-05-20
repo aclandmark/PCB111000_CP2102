@@ -111,6 +111,7 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 #include "Resources_Stopwatch/One_wire_header.h"
 #include "Resources_Stopwatch/clock_timer_header.h"
 #include "Resources_Stopwatch/One_wire_transactions_special.c"
+#include "Resources_Stopwatch/Basic_IO_and_Timer_extra.c"
 
 
 
