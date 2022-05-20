@@ -22,7 +22,7 @@ char User_response;
 
 setup_328_HW;
 initialise_T2();
-sei();
+
 String_to_PC("Press 'R' to enter time or 'r' to start at time zero  ");
 User_prompt;
 
