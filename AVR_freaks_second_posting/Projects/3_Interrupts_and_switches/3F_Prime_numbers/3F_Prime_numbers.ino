@@ -32,7 +32,6 @@ set_up_PCI_on_sw2;
 enable_pci_on_sw2;
 
 counter = 0;
-sei();
 
 while(1){
 
