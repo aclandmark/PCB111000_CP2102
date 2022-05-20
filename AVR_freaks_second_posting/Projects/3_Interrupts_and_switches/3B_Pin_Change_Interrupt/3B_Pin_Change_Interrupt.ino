@@ -12,10 +12,10 @@
 
 #include "Pin_Change_Interrupt_header.h"
 
-unsigned int PORT_1, mask;
-char scan;
-char switch_control;
-
+unsigned int PORT_1;
+char scan;           
+char switch_control; 
+volatile unsigned int mask;
 
 int main (void)
 { setup_328_HW;
