@@ -21,7 +21,7 @@ int main (void)
   if (User_response == 'r')
   { UCSR0B |= (1 << RXCIE0);
   Initialise_display;
-    String_to_PC("?\r\n");
+    String_to_PC("Send string and terminate it in a -cr- ?\r\n");
     while (1)
     { if (!(wait_for_interrupt(500, &keypress, &PORT_1, &PORT_2 )))
       {
