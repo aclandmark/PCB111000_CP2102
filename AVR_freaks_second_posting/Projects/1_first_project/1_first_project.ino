@@ -16,7 +16,7 @@
 
 
 #include "First_project_header.h"
-
+ 
 int main (void)                          //Example 10
 { unsigned int PRN;
   unsigned char PRN_counter;
@@ -24,13 +24,14 @@ int main (void)                          //Example 10
   setup_328_HW;
   PRN_counter = 0;
   PRN = PRN_16bit_GEN (0, &PRN_counter);
-  sei();
   while (1)
   { PRN = PRN_16bit_GEN (PRN, &PRN_counter);
     One_wire_Tx_2_integers(PRN, (PRN << ((PRN % 2) + 1)));
     Timer_T2_10mS_delay_x_m(10);
   }
 }
+  
+
 
 
 /**************************************************************************************************
@@ -40,11 +41,10 @@ int main (void)                          //Example 10
 
 
 ***************Example 1: One bar sweep right to left*********************************************
-  int main (void)                          //Example 1
+int main (void)                          //Example 1
   { unsigned int PORT_1;
 
   setup_328_HW;
-  sei();
   PORT_1 = 1;
   for (int m = 0; m <= 15; m++)
   { One_wire_Tx_2_integers(PORT_1, PORT_1);
@@ -54,14 +54,14 @@ int main (void)                          //Example 10
   SW_reset;
   return 1;
   }
+  
 
 
 ***************Example 2: One bar sweep right to left and back to right again*********************
-  int main (void)                          //Example 2
+int main (void)                          //Example 2
   { unsigned int PORT_1, m = 0, n = 0;
 
   setup_328_HW;
-  sei();
   PORT_1 = 1;
   while (1)
   { One_wire_Tx_2_integers(PORT_1 << m, PORT_1 << m);
@@ -72,17 +72,16 @@ int main (void)                          //Example 10
     if (m == 0)n = 0;
   }
   return 1;
-  }
+  }  
 
 
 
 
  ***************Example 3: Both half bars running back and forth together**************************
-  int main (void)                          //Example 3
+ int main (void)                          //Example 3
   { unsigned int PORT_1, PORT_2;
 
   setup_328_HW;
-  sei();
   while (1)
   { PORT_1 = 0b0000000000000001;      //1
     PORT_2 = 0b1000000000000000;     //0x8000;
@@ -94,7 +93,7 @@ int main (void)                          //Example 10
     }
   }
   return 1;
-  }
+  } 
 
 
 
@@ -103,7 +102,6 @@ int main (void)                          //Example 10
   { unsigned long PORT_1, PORT_2;
 
   setup_328_HW;
-  sei();
   while (1)
   { PORT_1 = 1;
     PORT_2 = 0x80000000;
@@ -120,11 +118,10 @@ int main (void)                          //Example 10
 
 
 *****************Example 5: Four half bars execute two ellipses************************************
-  int main (void)                          //Example 5
+ int main (void)                          //Example 5
   { unsigned int PORT_1, PORT_2;
 
   setup_328_HW;
-  sei();
   while (1)
   { PORT_1 = 1;
     PORT_2 = 0x8000;
@@ -137,7 +134,7 @@ int main (void)                          //Example 10
     }
   }
   return 1;
-  }
+  } 
 
 
 
@@ -145,11 +142,10 @@ int main (void)                          //Example 10
 
 
 ******************Example 6: Two half bars execute see-saw motion *********************************
-  int main (void)                          //Example 6
+ int main (void)                          //Example 6
   { unsigned int PORT_1, PORT_2, m = 0, n = 0;
 
   setup_328_HW;
-  sei();
   PORT_1 = 1;
   PORT_2 = 0x8000;
   while (1)
@@ -161,19 +157,17 @@ int main (void)                          //Example 10
     if (m == 0)n = 0;
   }
   return 1;
-  }
-
+  } 
 
 
 
 ******************Example 7: Multi bar display****************************************************
-  int main (void)                          //Example 7
+int main (void)                          //Example 7
   { unsigned int PORT_1 = 1;
   char m = 1;
   char overflow = 0;
 
   setup_328_HW;
-  sei();  ///////////////////////////////////////////////////////////
   while (1)
   { One_wire_Tx_2_integers(PORT_1, ~PORT_1);
     _delay_ms(60);
@@ -187,17 +181,16 @@ int main (void)                          //Example 10
     if (PORT_1 & 0x8000) overflow = 1;
     else overflow = 0;
   }
-  }
+  }  
 
 
 *****************Example 8: Leds sweep left to right with random motion***************************
-  int main (void)                          //Example 8
+int main (void)                          //Example 8
   { unsigned int random_num;
   unsigned char PRN_counter;
   long PORT_1 = 1, PORT_2 = 1;
 
   setup_328_HW;
-  sei();  ///////////////////////////////////////////////////
   PRN_counter = 0;
   random_num = PRN_16bit_GEN (0, &PRN_counter);
   while (1)
@@ -210,14 +203,14 @@ int main (void)                          //Example 10
     Timer_T2_10mS_delay_x_m(4);
     random_num = PRN_16bit_GEN (random_num, &PRN_counter);
   }
-  }
+  }  
 
 
 
 *****************Example 9: The default program****************************************************
-  char display_bkp[7];
-
-  int main (void)                          //Example 9
+ char display_bkp[7];
+ 
+ int main (void)                          //Example 9
   { char letter = 0;
   char digit_num = 0;
   char seg_counter = 0;
@@ -226,7 +219,6 @@ int main (void)                          //Example 10
   unsigned char PRN_counter;
 
   setup_328_HW;
-  sei();////////////////////////////////////////////////////
   clear_display;
 
   PRN_counter = 0;
