@@ -130,6 +130,7 @@ counter = 1;
 #define Set_LED_ports 	DDRB = (1 << DDB0) | (1 << DDB1);
 #define LEDs_on  PORTB |= (1 << PB0)|(1 << PB1);
 #define LEDs_off  PORTB &= (~((1 << PB0)|(1 << PB1)));
+#define toggle_LEDs PORTB ^= (1 << PB0)|(1 << PB1);
 
 
 
