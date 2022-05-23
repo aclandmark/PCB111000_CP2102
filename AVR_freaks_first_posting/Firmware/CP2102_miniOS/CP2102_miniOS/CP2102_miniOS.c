@@ -23,18 +23,15 @@ int mag(int);
 
 
 int main(void){
-		
-	//char cal_factor;											//Used to adjust internal oscillator frequency
+	
 	char null_bit_counter;										//Counts number of blank display digits
 	int array_ptr;												//Points to display digits
 	
 	
+	
+	
 	CPU_CCP = 0xD8;												//Config change protection key
 	CLKCTRL_MCLKCTRLB = CLKCTRL_PDIV_16X_gc | 1;				//Generates 1MHz Peripheral clock
-	
-	/*cal_factor = CLKCTRL_OSC20MCALIBA - 3;						//Adjust calibration factor if necessary
-	CPU_CCP = 0xD8;
-	CLKCTRL_OSC20MCALIBA = cal_factor;*/
 	
 	if(RSTCTRL.RSTFR & RSTCTRL_PORF_bm)							//If POR reset brightness to low
 	{RSTCTRL.RSTFR |= RSTCTRL_PORF_bm;
@@ -43,11 +40,12 @@ int main(void){
 	else 														//If non POR reset maintain brightness as set by user
 	{restore_brightness_control;}
 		
-	
    	PORTA.DIR &= ~PIN2_bm;										//Configure comm port as input
    	 PORTA.OUT &= ~(PIN2_bm);									//I/O pin low when configured as output
    	 PORTA.PIN2CTRL |= PORT_PULLUPEN_bm;						//Pull-up enabled 
-      
+   
+   stop_watch_mode = 0;											//Default timer display is clock   
+   
    sei();
    Start_TCA0();												//Display (2mS) tick rate
    	
@@ -84,7 +82,6 @@ int main(void){
 	char_ptr += 1;}
 	}break;
 		
-		
 	case 'C':													//Convert long from UNO to string
 	clear_display_buffer;
 	clear_temp_buffer;
@@ -114,7 +111,43 @@ int main(void){
 	
 	case 'F': break;											//Resets ATtiny1606									
 	case 'G': break;											//Toggles brightness
+	case 'H': break;											//Displays 3 char numbers horizontally
+	
+	case 'I':													//Displays char as digit and binary
+	for(int m = 0; m <= 7; m++)display_buffer[m] = 0;			//Clear display
+	if (sign_bit == 's') {Disp_CharS (one_char);}
+	if (sign_bit == 'u') {Disp_CharU (one_char);}break;
+	
+	
+	case 'J':													//Converts time display to seconds * ten (deci seconds)
+	deci_sec_counter = 10*(long)((((long)
+	((display_buffer[7] -'0') * 10) + 
+	((display_buffer[6] & 0x7F)-'0')) * 3600) +
+	((((display_buffer[5]-'0') * 10) + 
+	((display_buffer[4] & 0x7F)-'0')) * 60) + 
+	(display_buffer[3]-'0') * 10 + 
+	(display_buffer[2] & 0x7F) - '0');break;
+	
+	case 'K':	deci_sec_counter += 2;							//Increment clock counter and display
+	if(deci_sec_counter == 864000)deci_sec_counter = 0;
+	if (!(stop_watch_mode))Format_deci_secs_and_display();
+	break;
+	
+	case 'L':	deci_sec_counter = Long_Num_from_UNO;			//Clock/timer display  
+	Format_deci_secs_and_display();
+	break;
+	
+	
+	case 'N':	
+	stop_watch_mode = 1;										//Stop watch display
+	centi_sec_counter = Long_Num_from_UNO;
+	Format_centi_secs_and_display();
+	break;
+	
+	
 	}
+	
+	
 	if(transaction_type != 'G')mode = transaction_type;	
 	transaction_type = 0;
 	busy_flag = 0;
@@ -133,7 +166,9 @@ int main(void){
 	TCA0_SINGLE_CNT = 0;										//Initialise counter
 	TCA0_SINGLE_CMP0 = display_tick;							//2mS period for 2MHz clock
 	TCA0_SINGLE_CTRLA = TCA_SINGLE_CLKSEL_DIV1_gc | 1;			//Start clock with 2MHz clock
-	TCA0_SINGLE_INTCTRL |= TCA_SINGLE_CMP0EN_bm;}				//Interrupt flag on compare match/*****************************************************************************************************************************/	ISR (TCA0_CMP0_vect){										//ISR which responds to clock ticks	TCA0_SINGLE_INTFLAGS |= TCA_SINGLE_CMP0EN_bm;				//Clear the interrupt flag	if(display_ptr <= 7)										//Drive the 8 display digits	{Display_driver();	if(display_ptr < 7){inc_display_clock;}						//Setup 2mS clock tick for first 7 digits	else TCA0_SINGLE_CMP0 += 1800;								//setup 0.9mS clock tick for last digit	display_ptr += 1;	return;}	display_ptr += 1;	cmp0_bkp = TCA0_SINGLE_CMP0 + 2200;							//Save 1.1mS clock tick for first digit	if (!(busy_flag))	{inc_comms_clock;											//only poll UNO if no transactions are ongoing	PORTA.DIR |= PIN2_bm;										//initiate start pulse	comms_transaction();}										//Poll the UNO	TCA0_SINGLE_CMP0 = cmp0_bkp;								//Reinstate the 1.1ms clock tick	display_ptr = 0;}											//Set display_pointer to the first digit											/*****************************************************************************************************************************/	void Display_driver(void){				switch(display_ptr){			case 0: digit_0; break;			case 1: digit_1; break;			case 2: digit_2; break;			case 3: digit_3; break;			case 4: digit_4; break;			case 5: digit_5; break;			case 6: digit_6; break;			case 7: digit_7; break;}						switch(mode){		case 'A': case'B': case 'C': case 'D': case 'E':		Char_definition(); break;				case 'a':
+	TCA0_SINGLE_INTCTRL |= TCA_SINGLE_CMP0EN_bm;}				//Interrupt flag on compare match/*****************************************************************************************************************************/	ISR (TCA0_CMP0_vect){										//ISR which responds to clock ticks	TCA0_SINGLE_INTFLAGS |= TCA_SINGLE_CMP0EN_bm;				//Clear the interrupt flag	if(display_ptr <= 7)										//Drive the 8 display digits	{Display_driver();	if(display_ptr < 7){inc_display_clock;}						//Setup 2mS clock tick for first 7 digits	else TCA0_SINGLE_CMP0 += 1800;								//setup 0.9mS clock tick for last digit	display_ptr += 1;	return;}	display_ptr += 1;	cmp0_bkp = TCA0_SINGLE_CMP0 + 2200;							//Save 1.1mS clock tick for first digit	if (!(busy_flag))	{inc_comms_clock;											//only poll UNO if no transactions are ongoing	PORTA.DIR |= PIN2_bm;										//initiate start pulse	comms_transaction();}										//Poll the UNO	TCA0_SINGLE_CMP0 = cmp0_bkp;								//Reinstate the 1.1ms clock tick	display_ptr = 0;}											//Set display_pointer to the first digit											/*****************************************************************************************************************************/	void Display_driver(void){				switch(display_ptr){			case 0: digit_0; break;			case 1: digit_1; break;			case 2: digit_2; break;			case 3: digit_3; break;			case 4: digit_4; break;			case 5: digit_5; break;			case 6: digit_6; break;			case 7: digit_7; break;}						switch(mode){		case 'A': case'B': case 'C': case 'D': case 'E': 		case 'J': case 'K': case 'L':  case 'M': case 'N':
+		case 'O':
+						Char_definition(); break;				case 'a':
 		
 		switch (display_ptr){
 			
@@ -169,7 +204,13 @@ int main(void){
 			case 7: if(display_buffer[2] & 0x40) one_U;  if(display_buffer[2] & 0x80) ONE_U;
 					if(display_buffer[3] & 0x40) one_L;  if(display_buffer[3] & 0x80) ONE_L;
 					break;
-					}break;				case 'b': Seg_definitions(); break;		}		Start_TCB0(brightness_control);										//TCB0 controls the brightness
+					}break;						case 'b': case 'H': Seg_definitions(); break;				case 'I': Char_definition();
+		switch(display_ptr){
+			case 4: if(one_char & 0x01) {one;} if(one_char & 0x02) {ONE;} break;
+			case 5: if(one_char & 0x04) {one;} if(one_char & 0x08) {ONE;} break;
+			case 6: if(one_char & 0x10) {one;} if(one_char & 0x20) {ONE;} break;
+			case 7:if(one_char & 0x40) {one;} if(one_char & 0x80) {ONE;} break; }break;
+		}		Start_TCB0(brightness_control);										//TCB0 controls the brightness
 		}									
 								/******************************************************************************************************************/	void Char_definition()
 	{switch (display_buffer[display_ptr]){
@@ -237,3 +278,33 @@ void Seg_definitions(){ char m=0;
 		if (m < 0)n = m * (-1);
 		else n = m;
 		return n;}
+		
+		
+		
+/*********************************************************************/
+void Disp_CharS(signed char n){ 
+unsigned char i; signed char sign;
+for(int m = 0; m <= 3; m++){display_buffer[m] = '\0';}
+if (n == -128) {display_buffer[0] = '8';display_buffer[1] = '2';display_buffer[2] = '1';display_buffer[3] = '-';}
+else{
+if ((sign = n) < 0) n = -n;
+i=0; 
+do{
+display_buffer[i] = n % 10  +  '0';
+i++;
+}while((n/=10)>0);
+if (sign < 0)display_buffer[i] = '-';}}
+
+
+/*********************************************************************/
+void Disp_CharU(unsigned char n){ 
+unsigned char i; 
+for(int m = 0; m <= 3; m++){display_buffer[m] = '\0';}
+i=0; 
+do{
+display_buffer[i] = n % 10  +  '0';
+i++;
+}while((n/=10)>0);}
+
+
+
