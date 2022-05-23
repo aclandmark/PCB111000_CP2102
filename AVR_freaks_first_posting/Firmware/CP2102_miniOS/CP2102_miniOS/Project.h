@@ -30,6 +30,12 @@ void Seg_definitions(void);
 void comms_transaction(void);							//Transfer data or string
 void Transmit_data_byte (char);							//Tx/Rx FW modules which communicate with UNO
 char Receive_data_byte (void);
+void Disp_CharS(signed char);
+void Disp_CharU(unsigned char);
+void Format_deci_secs_and_display(void);
+void Format_centi_secs_and_display(void);
+void timer_utoa(char);
+
 
 
 
@@ -48,6 +54,10 @@ float Float_Num_to_UNO, Float_Num_from_UNO;
 char cr_keypress = 0;									//Set to 1 when user presses carriage return
 unsigned char data_byte[4];								//32 bit numbers are split into 4 bytes for transmission
 volatile int data_byte_ptr = 0;							//Points to next FPN/long byte to be transfered to the UNO
+volatile char one_char;									//Displayed as both digit and in binary form
+char sign_bit;											//Used when displaying char as digit and binary
+
+
 
 char * char_ptr;										//Used to convert float to four separate bytes
 float * float_ptr;
@@ -58,7 +68,18 @@ volatile char busy_flag = 0;							//Data processing in progress: Do not poll At
 int brightness_control;
 int digit_num;
 int  letter;
- 
+
+char charH, charL;										//Used for clock/stop watch
+char Hours, Minutes, Seconds;
+char deci_Secs, centi_Secs;
+char stop_watch_mode;
+
+long deci_sec_counter;
+long centi_sec_counter;
+
+
+
+
  
  #define I2C_Tx_any_segment \
   switch (letter){\
@@ -190,4 +211,4 @@ brightness_control = (eeprom_read_byte((uint8_t*)0xFF) << 8)\
 #include "../Resources/One_wire_transactions.c"
 #include "../Resources/Display_header.h"
 #include "../Resources/FPN_subroutines.c"
-
+#include "../Resources/Timer_subroutines.c"
