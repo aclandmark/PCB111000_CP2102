@@ -27,8 +27,23 @@ switch(transaction_type){
 				transaction_complete = 1;
 				byte_counter = 0;
 				break;
-				}
 	
+	case 'K':														//200mS tick 
+				transaction_complete = 1;
+				byte_counter = 0;				
+				break;
+
+	case 'O':														//restore clock 
+				transaction_complete = 1;
+				byte_counter = 0;				
+				stop_watch_mode = 0;
+				break;}
+
+
+
+
+
+
 return;}}
 	
 	
@@ -50,7 +65,8 @@ case 'b': switch(byte_counter){
 case 'c': break;													//Clear display and display buffer
 
 case 'A':															//Receiving long number string
-case 'B':															//Receiving FPN string
+case 'B':
+case 'J':															//Receive time string
 Rx_symbol = Receive_data_byte();
 if(Rx_symbol == 1){Rx_symbol = 0; cr_keypress = 1;}					//Carriage return detected
 		
@@ -62,6 +78,8 @@ break;
 
 		
 case 'C':															//Receive long binary number
+case 'L':															//Receive deci_secs for conversion to time string
+case 'N':															//Receive centi_secs for conversion to time string
 Rx_symbol = Receive_data_byte();
 Long_Num_from_UNO = (Long_Num_from_UNO << 8) | 
 Rx_symbol; byte_counter += 1;
@@ -91,6 +109,33 @@ break;
 
 case 'F': break;													//Resets ATtiny1606
 case 'G': break;													//Toggles brightness
+
+case 'H':															//Receive 3 bytes and display horizontally
+display_buffer[byte_counter - 1] = Receive_data_byte();
+byte_counter += 1;
+if(byte_counter == 4){
+	for(int m = 3; m<=14; m++)display_buffer[m] = 0;
+transaction_complete = 1;byte_counter = 0; }
+break;
+
+case 'I':															//Receive 1 byte plus sign and display as digit and binary
+switch (byte_counter){
+	case 1: one_char = Receive_data_byte(); byte_counter += 1; break;
+	case 2: sign_bit = Receive_data_byte(); 
+	transaction_complete = 1;byte_counter = 0; break;} 
+	break;
+
+case 'M':															//Return deci_sec_counter to user app.
+Transmit_data_byte(deci_sec_counter >> (8*(3-data_byte_ptr++)));
+byte_counter += 1;
+if(byte_counter == 5)												//Four bytes transmitted
+{transaction_complete = 1; byte_counter = 0;
+data_byte_ptr = 0;}
+break;
+
+
+
+
 default: CCP = 0xD8;WDT.CTRLA = 0x03; while(1); break;				//32 mS WDTimer (SW reset)
 
 }}
