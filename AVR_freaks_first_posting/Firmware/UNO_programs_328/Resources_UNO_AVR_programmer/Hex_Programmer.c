@@ -178,9 +178,8 @@ Hex_cmd = (Hex_cmd<<8) + (Read_write_mem('H',phys_address, 0x0));
 phys_address++;        
 if (phys_address == FlashSZ)break;									//No more memory? Quit if yes
 if (Hex_cmd != 0xFFFF) break;										//If the hex command is 0xFFFF remain in this loop otherwise exit.
-LEDs_on;}
+}
 
-LEDs_off;
 if (phys_address == FlashSZ)break;									//Exit when there is no more flash to read
 
 if ((print_line == 0)  && (!(line_no%10)))
@@ -202,8 +201,6 @@ Hex_cmd = (Hex_cmd<<8) + (Read_write_mem('H',phys_address, 0x0));
 phys_address++; 
 if(Hex_cmd == 0xFFFF)break;											//Read 0xFFFF: return to start of print out loop
 prog_counter_mem--;
-
-if ((print_line) &&  (!(line_counter%2))) {LEDs_on;} else {LEDs_off;}              
 
 if(print_line && (!(line_no%print_line)))
 {if(print_out_mode == '1'){send_as_askii;} 
