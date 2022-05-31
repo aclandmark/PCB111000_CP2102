@@ -19,7 +19,7 @@ for the power series deffinitions
  
 #include "e_power_series_header.h"
 
-#define message_1 "\r\nPower function: Enter number 1 to 2\r\n"
+#define message_1 "\r\nPower function: Scientific number\r\n"
 #define message_2 "\r\n\r\nTime_out: Number too large or small. Try again!\r\n"
 
 
