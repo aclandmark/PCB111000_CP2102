@@ -1,0 +1,85 @@
+
+***
+PCB_111000_CP2102 (or just the PCB):Press a/k to continue.
+
+
+Learning with PCB111000 is based on playing with simple programs, getting familiar with the way they are written, understanding them and finally modifying them to make them our own. The programs drive an 8 digit display, generating patterns and numbers and pass data to and from a PC.
+
+Before attempting to begin programming in earnest it is a good idea to read the Introduction and User Guide and of course download the applications suggested there.
+
+
+Our first project a simple C program is based on JP's Blinky, see JP p30 and chapter 3.   A selection is offered here.  A free-bee is given, just to make sure that everything is working OK. Just follow the instructions given in the user guide.
+
+Why not choose another and type it in. Verify the code and upload it to the pcb (remember Ctrl z, the most useful go back feature).
+
+
+Having got it working pressing Tools/Auto Format will make the code much clearer to read. Why not try several others and then take a look at them and notice a number of features:
+
+
+#include "First_project_header.h"  	Click on it and see that it contains additional information required by the compiler, including other .h and .c files with essential definitions and resource subroutines  (pn is recommended for opening these). 
+
+The main routine.  This is where the program starts when power is first applied or after a reset.	Move on the page 2 for more features (press a/k).*
+
+
+***More things to take note of in our C programs.	setup_328_HW (Hard Ware):This contains a block of code and is known as (k\a) a macro. Details are given in the header file.
+
+Unsigned int PORT_1:PORT_1 is the name of a memory location that holds numbers.  The smallest element of computer memory is a bit and can hold either a 1 or a 0.  Memory is often divided into blocks of 8 bits which can hold numbers between 0 and 255. 16 bits are reserved for PORT_1.  See JP chapter 4 for an introduction.
+
+sei():This enables interrupts which are required by the one wire link (and will be discussed later).		Hexadecimal numbers (i.e. 0x8000). See JP chapter 4.		The arithmetic and logic symbols included in the examples. JP gives full definitions of these in chapter 4. 
+
+The for loop, the while loop and the if statement which are very important features of C. A good look at JP chapter 5 C Control flow is recommended before moving on from this first project.
+
+Subroutines	One_wire_Tx_2_integers(PORT_1, PORT_1)	which sends data over the one wire link to drive the display.	PRN_16bit_GEN(0) which generates random numbers	Timer_T2_10mS_delay_x_m() which uses a HW timer to generate delays.		Note: Subroutines are called by the main routine or other subroutines. Here we define them as either resource subroutines which are for general use or project subroutines which are written for a particular project.  See JP page 87 chapter 6 for more on subroutines.
+
+break and continue commands:  These are both executed when a particular condition is met.  Break causes the program to exit a for or while loop.  Continue causes it to skip a number of lines of code and jump back to the start of the loop.  See JP page 79.
+
+SW_reset;	This is also a macro. It uses a device k/a a watch dog timer (wtd) to reset the program so that it repeats endlessly.
+
+Before leaving example 1 why not comment each line stating what it does as a learning aide (See JP p39). 
+
+Having looked at the examples why not mix and match to compose your own code.*
+
+
+***Talking to the PC, introducing the USART (Universal .... Receiver Transmitter module)	Many devices have a receiver transmitter module for communicating with a PC.  See JP page 98 chapter 6 for a few details.	Arduino provides a comprehensive set of functions for using the USART.  Here basic do it yourself (DIY) functions are used.  This approach provides a good introduction to the data sheet, a vital resource for setting up other things such a timers and interrupts. 
+
+Take a look at the project subroutine Char_to_PC_Local() and see section 20.11.1 of the data sheet.	UDR0 and UCSR0A are registers in the USART.	Data to be transmitted must first be written to UDR0.	If data has been received it can be read from UDR0.	UDRE0 is bit 5 of register UCRS0A.	The USART sets this bit to one when it is ready to accept new data for transmission.	Similarly it sets bit RXC0 to 1 when data has been received and can be read. 
+
+A number of these DIY functions can be found in	Resources_Receiver_transmitter\Basic_IO_and_Timer	They are best viewed using programmers notepad (pn).*
+
+
+***9 sample programs that transfer data to and from the PC are offered.	Study of each is recommended.	Example 1 simply echoes keypresses to the screen.
+
+Example 2 prints many of the common characters to the screen.	Clicking on the hex button in the receive section of the Bray window shows that each character is represented by a number. See JP p283.
+
+Example 3 prints a file.	Resource "isCharavailable(65)" returns a 1 immediately if a character is received in a 1 second window. Otherwise it returns zero and is called again.	Having received the first character it can then receive any number but will exit (break) immediately if no character is received after a pause of 154mS.
+
+Example 4 introduces character strings and shows they can be sent to the PC.	It also shows how they are stored in arrays (consecutive locations) in memory.	We compose the strings and choose a name for each one.	The compiler adds a 0 to the end of each string.  It also replaces the names (i.e.  message_1) with the address of the first character in the string.	Note the two ways of writing the appropriate the C statements:	The * character indicates that memory location message_1 holds an address.	The [ ] characters indicate that message_3 is an array of characters.	See page 5 for more UART examples.*
+
+
+***More examples of data going to and from the PC.	Example 5 simply prints out the characters together with their numeric equivalents.	Example 6 Converts a number to a string of characters and sends them to the PC and example 7 Does the reverse.	These are two very important operations. Take time to understand what is going on. See JP pages 81 to 84 for some help.
+
+Example 8 Uses project subroutines to: Accept a numerical string from the keyboard, convert this to a number which it doubles, reconvert the result to a string and send this to the PC.	All the strings are stored in array Num_string which has 12 memory locations. The subroutines require the address of the first element in this array (hence the use of the * symbols).	Variables preceded by the * symbol are k/a pointers.  See JP ch. 8 for a discussion of pointers.
+
+Example 9 uses repeated division to convert a fraction to decimal.	It calls subroutine divide() which returns the number of outstanding decimal places. It also calculates the result of the division and the remainder (modulo see JP page 51).	Memory for these two variables is provided by the main routine.	The & symbols indicate that the subroutine will not be providing memory for these variables.  It is the address of each variable that is being passed to the subroutine not its value.
+
+As an alternative to the use of pointers (i.e. the * and & symbols), variables can be declared in the header file rather than in the main.  This may be OK for small projects but is not normally considered good practice (see JP page 90).*
+
+
+***Using interrupts: 5 examples are given.	See JP chapter 7 p109 for a general introduction to interrupts.	3A does some calculations and prints out the results when sw2 is pressed. A HW timer running in the background interrupts this process every 100mS. The micro jumps to the ISR (interrupt service routine) and updates the display.	A key press interrupt is also shown enabling users to to manipulate the display manually.	We see that the interrupt enables 2 processes to run at once.
+
+Look at the 100mS_clock_tick() subroutine.	The timer is configured as a counter which counts from 0 to 12500.	TCCR1B sets a timer clock to 125KHz so it takes 100ms to complete counting, raise an interrupt and start again.	Open up the data sheet section 16.11 to see the registers. We leave most of them alone but set TCCR1B, TCNT1, OCR1A and TIMSK1.
+
+
+3B Target practice looks at interrupts generated by pressing one of the user switches.	PCI stands for pin change interrupt.	Look at the header file for definitions of the macros.	See the data sheet sections 13.2.4 and 1 for details of the PCI registers.
+
+3C Reaction time tester:Nothing new here, just included for a bit if extra practice.	Press SW2 and release immediately that the leds line up to get the display to flash.
+
+3D Multi display:This includes PCI and timer interrupts as well as the one wire comms interrupt.	Multiple interrupts can easily cause trouble. To avoid this the PCI also resets the micro. Before doing so it writes to the EEPROM. After the reset it reads the EEPROM so that it knows which switch was pressed.	EEPROM is a special area of memory that survives power down and reset, which both usually result in all registers being reset to zero.
+
+3E Is an interrupt driven key press logger that also drives the display.	Projects 3D and E include the volatile declaration. This is because variables are being changed by an ISR.  Unlike for a subroutine the compiler cannot anticipate that the ISR will be called. The variables are therefore declared to be volatile as a warning to the compiler.*
+
+***Additional projects include	Building a clock/stop watch	Entering data from the user switches	A brief look at some of the C library functions	A bit on floating point numbers	But the commentary stops here because nothing really new is introduced.	And of course JP also introduces some interesting projects in his book for anyone wishing to modify a PCB111000 slightly.*
+
+
+
+
