@@ -206,7 +206,7 @@ return 1;}
 	page_write();
 	}UCSR0B &= (~(1<<RXCIE0));cli();
 	clear_read_block();															//Subroutine provided in assembly file  (Not required for mode 't'??)
-	LED_2_off;}
+	LEDs_off;}
 		
 		
 		/*********************************************************************************************************/
