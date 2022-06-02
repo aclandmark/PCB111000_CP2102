@@ -206,7 +206,6 @@ return 1;}
 	page_write();
 	}UCSR0B &= (~(1<<RXCIE0));cli();
 	clear_read_block();															//Subroutine provided in assembly file  (Not required for mode 't'??)
-	//eeprom_write_byte((uint8_t*)0x3F4,0x40);									//Reset string pointer
 	LED_2_off;}
 		
 		
@@ -268,9 +267,6 @@ return 1;}
 		if(orphan) {write_page_SUB(page_address + PageSZ);}cli();
 
 		clear_read_block();													//Subroutine provided in assembly file
-
-		//eeprom_write_byte((uint8_t*)0x3FB, prog_counter >> 8);			//Save "prog_counter"		Commands counted by the programmer
-		//eeprom_write_byte((uint8_t*)0x3FA, prog_counter);
 
 		eeprom_write_byte((uint8_t*)0x3F9, cmd_counter >> 8);				//Save "cmd_counter"		Commands counted by the ISR
 		eeprom_write_byte((uint8_t*)0x3F8, cmd_counter);}
