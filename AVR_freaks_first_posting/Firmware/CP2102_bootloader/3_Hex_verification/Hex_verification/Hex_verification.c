@@ -16,10 +16,7 @@ Rx/Tx work at 57.6k
 
 
 int main (void){
-	
-	//EEROM used to pass values from bootloader
-	//prog_counter = ((eeprom_read_byte((uint8_t*)0x3FB)) << 8) + eeprom_read_byte((uint8_t*)0x3FA);	
-	
+		
 	cmd_counter = ((eeprom_read_byte((uint8_t*)0x3F9)) << 8) +
 	eeprom_read_byte((uint8_t*)0x3F8);
 
@@ -31,8 +28,7 @@ int main (void){
 		newline();
 		sendString("Hex_file_size:	0x");								//Confirm file sizes are all identical
 		Hex_to_PC(cmd_counter); sendString("  d'loaded:  0x");
-		//Hex_to_PC(prog_counter); 
-		//sendString(" in:  0x");
+		
 	Hex_to_PC(read_ops); sendString(" out\r\n");}
 
 	sendString("UNO Fuses E, H, L and lock:\t");						//Print out device configuration bytes
