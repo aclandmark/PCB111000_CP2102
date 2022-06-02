@@ -216,7 +216,7 @@ return 1;}
 
 		PageSZ = 0x40; PAmask = 0x3FC0;										//Define flash memory parameters
 
-		prog_led_control = 0;  record_length_old=0; //prog_counter = 0;		//Initialise variables
+		prog_led_control = 0;  record_length_old=0;							//Initialise variables
 		Flash_flag = 0;  HW_address = 0;  section_break = 0; orphan = 0;
 		w_pointer = 0; r_pointer = 0; short_record=0;  cmd_counter = 0;
 
