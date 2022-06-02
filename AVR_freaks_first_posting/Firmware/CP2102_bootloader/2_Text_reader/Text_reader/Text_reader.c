@@ -21,7 +21,7 @@ Rx/Tx work at 57.6k
 */
 
 
-#define num_pages	7																//Set when commentary is complete
+#define num_pages	15																//Set when commentary is complete
 
 #include "Text_verification.h"
 
@@ -51,7 +51,7 @@ int main (void){
 	sendString("\r\n");
 	start_address =	0x5FFF;															//start address of text
 	
-	sendString("Page number 1 - 7?\r\n\r\n\r\n\r\n");								//set last page number so that it equals num_pages
+	sendString("Page number 1 - 15?\r\n\r\n\r\n\r\n");								//set last page number so that it equals num_pages
 	
 	keypress = waitforkeypress();													//User enters page number
 	Page_num_string[0] = keypress - '0';
