@@ -97,10 +97,18 @@ The second uses a power series to compute log/antilog functions so that any posi
 
 It should be noted that although the Arduino library is excellent, it is not the standard C library for transferring scientific numbers over the USART interface.  Arduino excels at what I believe it was intended to do:  To provide a straight forward and friendly interface for introducing AVR micro-controllers programmed using C.  For more complex applications I suggest the effort involved in getting going with Studio 7 will probably be found worth while.*
 
+***The 8 digit display and IO:
+Arduino does not provide library functions to drive the display, so it is necessary to revert to DIY programming.	The purpose of the first 2 programs is to demonstrate how numbers are constructed from the display segments.	Program 3 defines each digit in terms of a string as has previously been done with messages.	The user enters a digit at the PC.	The appropriate string is selected.	Segments defined by the string are are illuminated.
 
+In the remaining projects the complexity of driving the display is handled by the mini-OS that resides on the Attiny1606.	Two of these are used to enter data from the PC keyboard and two from the user switches.* 
 
+***Timers	In the final projects a selection of timers/clocks are developed.	Accuracy is provided by a watch crystal that beats 32768 times a second.	Register TCCR2B (see section 18.1.2) is used to reduce the crystal frequency to 1024 beets per second which are counted by timer/counter T2.	The counter advances by 102 in 99.61mS (~100mS) after which an interrupt is raised.	It advances by 918 in 896.5mS (~900mS).	To ensure accuracy over a 1 second interval the counter must advance by a further 106 (103.5) before the 1 second interrupt is raised.*
 
-***Additional projects include	Building a clock/stop watch	Entering data from the user switches	A brief look at some of the C library functions	A bit on floating point numbers	But the commentary stops here because nothing really new is introduced.	And of course JP also introduces some interesting projects in his book for anyone wishing to modify a PCB111000 slightly.*
+***Reset options
+User programs recognise two main sources of reset:	POR power on reset	Watch dog timeout WDTout:	The timer must be initiated and can then be reset at regular intervals to ensure that it only times out if the code crashes.	The watch dog timer can be configured in either of thee ways:	Having been initiated it is never reset and times outs to generate a SW_reset. 	Alternatively it is configured to generates an interrupt before timing out and is reset at regular intervals.	The ISR writes to the EEPROM and then issues a SW reset.	A SW_reset can also be preceded by a write to the EPROM.
+
+At reset the code reads the EEPROM to see whether the reset was due to:	POR	A SW_reset (i.e. a required reset)	Recovery from a crash.	It can then respond appropriately to these conditions.	See projects 4_1, 4_2, 5e and 8A.*
+
 
 
 
