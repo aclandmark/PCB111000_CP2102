@@ -100,14 +100,20 @@ It should be noted that although the Arduino library is excellent, it is not the
 ***The 8 digit display and IO:
 Arduino does not provide library functions to drive the display, so it is necessary to revert to DIY programming.	The purpose of the first 2 programs is to demonstrate how numbers are constructed from the display segments.	Program 3 defines each digit in terms of a string as has previously been done with messages.	The user enters a digit at the PC.	The appropriate string is selected.	Segments defined by the string are are illuminated.
 
-In the remaining projects the complexity of driving the display is handled by the mini-OS that resides on the Attiny1606.	Two of these are used to enter data from the PC keyboard and two from the user switches.* 
+In the remaining projects the complexity of driving the display is handled by the mini-OS that resides on the Attiny1606.	Two of these are used to enter data from the PC keyboard and two from the user switches.*
 
-***Timers	In the final projects a selection of timers/clocks are developed.	Accuracy is provided by a watch crystal that beats 32768 times a second.	Register TCCR2B (see section 18.1.2) is used to reduce the crystal frequency to 1024 beets per second which are counted by timer/counter T2.	The counter advances by 102 in 99.61mS (~100mS) after which an interrupt is raised.	It advances by 918 in 896.5mS (~900mS).	To ensure accuracy over a 1 second interval the counter must advance by a further 106 (103.5) before the 1 second interrupt is raised.*
+***Timers    In the final projects a selection of timers/clocks are developed.	Accuracy is provided by a watch crystal that beats 32768 times a second.	Register TCCR2B (see section 18.1.2) is used to reduce the crystal frequency to 1024 beets per second which are counted by timer/counter T2.	The counter advances by 102 in 99.61mS (~100mS) after which an interrupt is raised.	It advances by 918 in 896.5mS (~900mS).	To ensure accuracy over a 1 second interval the counter must advance by a further 106 (103.5) before the 1 second interrupt is raised.
+
+In the first example time is simply recoded as a string, and in the second a counter is set up that records elapsed time in seconds. In the third example much of the time keeping burden is transferred to the mini-OS.	Two more examples are included,  one is a stand-a-lone clock, in which time is entered and adjusted using the user switches and the other is a stop watch.*
 
 ***Reset options
-User programs recognise two main sources of reset:	POR power on reset	Watch dog timeout WDTout:	The timer must be initiated and can then be reset at regular intervals to ensure that it only times out if the code crashes.	The watch dog timer can be configured in either of thee ways:	Having been initiated it is never reset and times outs to generate a SW_reset. 	Alternatively it is configured to generates an interrupt before timing out and is reset at regular intervals.	The ISR writes to the EEPROM and then issues a SW reset.	A SW_reset can also be preceded by a write to the EPROM.
+The HW includes a timer k/a the watch dog timer (WDT).  This counts from zero to a user defined value after which it issues a reset pulse.   Provided that it is reset frequently enough there need be no reset.  
 
-At reset the code reads the EEPROM to see whether the reset was due to:	POR	A SW_reset (i.e. a required reset)	Recovery from a crash.	It can then respond appropriately to these conditions.	See projects 4_1, 4_2, 5e and 8A.*
+Here two modes of using the WDT are implemented.	A SW_reset which is planned and is a convenient way of restarting the program.	The WDT is started and allowed to time out. This can be preceded by a write to EEPROM	Interrupt mode in which program control jumps to an ISR before timing out.  The ISR can also include a write to EEPROM.	This is suitable for unplanned resets, due to a system crash for example.	
+
+At each reset the code reads the EEPROM to determine the source of the reset which can be:	POR/exit programming mode.	SW_reset	System crash.	It can then respond appropriately to these conditions.	See projects 4_1, 4_2, 5e and 8A.
+
+In example 8A*
 
 
 
