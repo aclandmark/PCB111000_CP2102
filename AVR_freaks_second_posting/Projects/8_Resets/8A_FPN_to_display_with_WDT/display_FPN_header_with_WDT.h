@@ -67,9 +67,23 @@ PORTD = 0xFF;
 
 
 /************************************************************************************************************************************/
-#define set_up_PCI_on_sw2                   PCICR |= (1 << PCIE2);
-#define enable_pci_on_sw2                   PCMSK2 |= (1 << PCINT21);
-#define switch_2_up                         (PIND & 0x20)
+/************************************************************************************************************************************/
+#define set_up_PCI                  PCICR |= (1 << PCIE2);
+#define pause_PCI                   PCICR &= (~(1 << PCIE2));
+#define reinstate_PCI               PCICR |= (1 << PCIE2);
+#define clear_PCI                   PCIFR |= (1<< PCIF2);
+#define enable_PCI_on_sw1_and_sw2   PCMSK2 |= (1 << PCINT18) | (1 << PCINT21);
+#define enable_PCI_on_sw3           PCMSK2 |= (1 << PCINT23);
+
+#define disable_PCI_on_sw3          PCMSK2 &= (~(1 << PCINT23));
+#define disable_PCI_on_sw1_and_sw2  PCMSK2 &= (~((1 << PCINT18) | (1 << PCINT21)));
+
+#define switch_1_up               (PIND & 0x04)
+#define switch_2_up               (PIND & 0x20)
+#define switch_3_up               (PIND & 0x80)
+#define switch_1_down             (PIND & 0x04)^0x04
+#define switch_2_down             (PIND & 0x20)^0x20
+#define switch_3_down             (PIND & 0x80)^0x80
 
 #define newline                               Serial.write("\r\n");
 
@@ -83,6 +97,12 @@ User_response = Serial.read();\
 if((User_response == 'R') || (User_response == 'r'))break;} Serial.write("\r\n");
 
 
+/************************************************************************************************************************************/
+#define waitforkeypress_with_WDT \
+while(1){\
+if (isCharavailable_with_WDT(8)){\
+Serial.read();\
+break;}}
 
 
 /************************************************************************************************************************************/
