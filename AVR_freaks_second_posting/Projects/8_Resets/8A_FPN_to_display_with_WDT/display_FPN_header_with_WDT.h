@@ -3,9 +3,9 @@
 #include <avr/wdt.h>
 
 char User_response;
+char WDT_out_status;
 
-
-
+#define T1_delay_250ms 5,0xF85F
 
 /**********************************************************************************/
 #define  OSC_CAL \
@@ -15,9 +15,15 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 
 //If the internal clock has been calibrated, a calibration byte will be found in EEPROM locations 0x3FF/E
 
+/**********************************************************************************/
+#define POR_detected                      eeprom_read_byte ((uint8_t*)0x3FC) == 0xFF
+#define WDTout_with_interrupt_detected    !(eeprom_read_byte ((uint8_t*)0x3F5))
+#define Signal_WDTout_with_interrupt      eeprom_write_byte((uint8_t*)0x3F5, 0);
+#define Reset_WDT_out_register            eeprom_write_byte((uint8_t*)0x3F5, 0xFF);
 
 /************************************************************************************************************************************/
-#define setup_328_HW_Arduino \
+
+#define setup_328_HW_Arduino_plus \
 \
 setup_watchdog;\
 ADMUX |= (1 << REFS0);\
@@ -26,8 +32,17 @@ OSC_CAL;\
 \
 comms_cal;\
 set_up_pin_change_interrupt_on_PC5;\
+\
 setup_one_wire_comms;\
 set_up_activity_leds;\
+\
+if (POR_detected)\
+Reset_WDT_out_register;\
+if(WDTout_with_interrupt_detected)\
+WDT_out_status = 2;\
+else\
+{WDT_out_status = 1;}\
+Reset_WDT_out_register;\
 sei();\
 Serial.begin(115200);\
 while (!Serial);
@@ -74,9 +89,11 @@ PORTD = 0xFF;
 #define clear_PCI                   PCIFR |= (1<< PCIF2);
 #define enable_PCI_on_sw1_and_sw2   PCMSK2 |= (1 << PCINT18) | (1 << PCINT21);
 #define enable_PCI_on_sw3           PCMSK2 |= (1 << PCINT23);
+#define enable_PCI_on_sw1           PCMSK2 |= (1 << PCINT18);
 
 #define disable_PCI_on_sw3          PCMSK2 &= (~(1 << PCINT23));
 #define disable_PCI_on_sw1_and_sw2  PCMSK2 &= (~((1 << PCINT18) | (1 << PCINT21)));
+#define disable_PCI_on_sw1          PCMSK2 &= (~(1 << PCINT18));
 
 #define switch_1_up               (PIND & 0x04)
 #define switch_2_up               (PIND & 0x20)
@@ -85,7 +102,7 @@ PORTD = 0xFF;
 #define switch_2_down             (PIND & 0x20)^0x20
 #define switch_3_down             (PIND & 0x80)^0x80
 
-#define newline                               Serial.write("\r\n");
+#define newline                   Serial.write("\r\n");
 
 
 
@@ -107,7 +124,7 @@ break;}}
 
 /************************************************************************************************************************************/
 #include "Resources_display_fpn_with_WDT\One_wire_header.h"
-#include "Resources_display_fpn_with_WDT\One_wire_transactions.c"
+#include "Resources_display_fpn_with_WDT\One_wire_transactions_WDT.c"
 #include "Resources_display_fpn_with_WDT\Arduino_IO_and_Timer_WDT.c"
 #include "Resources_display_fpn_with_WDT\Arduino_Rx_Tx.c"
 #include "Resources_display_fpn_with_WDT\display_driver_subroutines_KBD_WDT.c"
