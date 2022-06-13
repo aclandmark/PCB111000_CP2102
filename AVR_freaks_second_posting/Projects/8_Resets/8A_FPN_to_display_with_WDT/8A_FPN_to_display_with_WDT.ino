@@ -48,9 +48,8 @@ enable_PCI_on_sw1;
 Serial.write("\r\nEnter scientific number \
 & terminate with Return key.\r\n");
 
-//Num_1 = Float_KBD_to_display(digits);                     //Data from keyboard
-eeprom_write_byte((uint8_t*)(0x5),Float_KBD_to_display(digits));
-
+Num_1 = Float_KBD_to_display(digits);                     //Data from keyboard
+float_to_EEPROM(Num_1, 0x5);
 
 while(1){if((switch_2_down) || (switch_3_down))break; else wdr();}}
 
@@ -74,9 +73,9 @@ if(m == num_time_slots/2) m = -num_time_slots/2;
 wdr();}}
 
 while(1)wdr();}
-                                                        //Generates reset if result of arithmetic is too large or smallSW_reset;}
+                                                       
 
-
+/*******************************************************************************************************************/
 ISR(PCINT2_vect){
   int data;
   if (switch_1_up)return;
@@ -95,15 +94,11 @@ if((switch_3_down) && (switch_2_up)){ data = PCI_triggers_data_from_PC(digits);
  eeprom_write_byte((uint8_t*)(0x4), (data >> 8));}
 
 if((switch_2_down) && (switch_3_down)){             //FAILS after a SW_reset
- //Num_2 = pow(Num_1, 1.2);
-Num_2 = pow(eeprom_read_byte((uint8_t*)(0x5)), 1.2);
-
+Num_1 = float_from_EEPROM(0x5);
+ Num_2 = pow(Num_1, 1.2);
 
 float_num_to_display_local(Num_2);
-//Sc_Num_to_PC(Num_2, 3, 3, '\r');
-//Num_1 = Num_2; 
-
-eeprom_write_byte((uint8_t*)(0x5),Num_2);
+float_to_EEPROM (Num_2, 0x5);
 
 Timer_T1_sub_with_interrupt(T1_delay_250ms);
 return;}
@@ -113,7 +108,7 @@ SW_reset;}
   
 
 
-
+/*******************************************************************************************************************/
 int PCI_triggers_data_from_PC(char * num_as_string)
 {char strln;
 strln = Serial.readBytesUntil('\r',num_as_string, 20);
@@ -121,16 +116,19 @@ num_as_string[strln] = 0;
 return atoi(num_as_string);}
 
 
+
+/*******************************************************************************************************************/
 void Timer_T1_sub_with_interrupt(char Counter_speed, unsigned int Start_point){ 
 TIMSK1 |= (1 << TOIE1);
 TCNT1H = (Start_point >> 8);
 TCNT1L = Start_point & 0x00FF;
 TCCR1B = Counter_speed;}
 
+ISR(TIMER1_OVF_vect) {TIMSK1 &= (~(1 << TOIE1)); enable_PCI_on_sw1;}
 
-ISR(TIMER1_OVF_vect) {TIMSK1 &= (~(1 << TOIE1)); enable_PCI_on_sw1;Serial.write('A');}
 
 
+/*******************************************************************************************************************/
 void float_num_to_display_local(float FP_num){
 char * Char_ptr;
 
@@ -148,100 +146,32 @@ reinstate_pin_change_interrupt_on_PC5;}
 
 
 
+/*******************************************************************************************************************/
+void float_to_EEPROM(float num, int address){
+char * Char_ptr_local;
+
+Char_ptr_local = (char*)&num;
+for (int m = 0; m <= 3; m++){
+eeprom_write_byte((uint8_t*)(address++), *(Char_ptr_local++));
+//Char_ptr_local += 1;
+}}
 
 
 
-/*ISR(PCINT2_vect){sei();
-disable_PCI_on_sw1_and_sw2;
-if(switch_1_down){
-Sc_Num_to_PC(Num_1,1,5 ,'\r');
-Num_1 = pow(Num_1, 1.2);                                  //Do some arithmetic
-float_num_to_display(Num_1);                              //Sends result to the display
-} 
-if(switch_2_down){while(1);}
-while(switch_3_up)wdr();
-enable_PCI_on_sw1_and_sw2;}                              //Generates reset if result of arithmetic is too large or small
-*/
+/*******************************************************************************************************************/
+float float_from_EEPROM(int address){
+float num;
+float * Flt_ptr_local;
+char * Char_ptr_local;
 
+Flt_ptr_local = &num;
+Char_ptr_local = (char*)&num;
 
-
-/*
-//{print_spaces = 200 + (10 * (int)((for(int p = 1; p < 10; p++) sin(pi*float(p)) * (float)m/100.0;)));
-//for (int n = 0; n < print_spaces; n++){Serial.write(' ');} 
  
- */
-
-/*for(int m = 1; m <= 400; m++){amplitude = sin(pi * (float)m/100.0); 
-for(int p = 2; p < 80; p++) {if (p%2) amplitude += sin(pi*(float)p * (float)m/100.0)/(float) p; 
-else  amplitude -= sin(pi*(float)p * (float)m/100.0)/(float) p;}
-
-
-for(int p = 1; p < 80; p++) {if (p%2) amplitude -= sin(pi*(float)p * (float)(m+10)/100.0)/(float) p; 
-else  amplitude += sin(pi*(float)p * (float)(m+10)/100.0)/(float) p;}
-
-print_spaces = 200 + (int)(100.0 * amplitude);
-for (int n = 0; n < print_spaces; n++){Serial.write(' ');}
-Serial.write('|');
-//_delay_ms(10);
-newline;}*/
-
-/*duty_cycle = 0.1 * 1.5;
-while(1){
-for(int m = -25; m < 25; m++){amplitude = sin(duty_cycle ) * (cos(pi * (float)m/50.0));
-for(int p = 3; p < 40; p+=2) {amplitude += sin(duty_cycle * (float)p) * cos(pi*(float)p * (float)m/50.0)/(float) p;}
-print_spaces = 200 + (int)(100.0 * amplitude);
-for (int n = 0; n < print_spaces; n++){Serial.write(' ');}
-Serial.write('|');//_delay_ms(10);
-newline;}
-if(Serial.available()){duty_cycle = (float)(Serial.read()- '0')/10.0 * 1.5;}}
-*/
-
-/**********Square wave***********************/
-/*for(int m = 1; m <= 400; m++){amplitude = sin(pi * (float)m/100.0); 
-for(int p = 3; p < 80; p+=2) {amplitude += sin(pi*(float)p * (float)m/100.0)/(float) p;}
-print_spaces = 200 + (int)(100.0 * amplitude);
-for (int n = 0; n < print_spaces; n++){Serial.write(' ');}
-Serial.write('|');_delay_ms(10);newline;}*/
-
-/**********Saw tooth***********************/
-/*for(int m = 1; m <= 400; m++){amplitude = sin(pi * (float)m/100.0); 
-for(int p = 2; p < 80; p++) {if (p%2) amplitude += sin(pi*(float)p * (float)m/100.0)/(float) p; 
-else  
-amplitude -= sin(pi*(float)p * (float)m/100.0)/(float) p;}
-
-print_spaces = 200 + (int)(100.0 * amplitude);
-for (int n = 0; n < print_spaces; n++){Serial.write(' ');}
-Serial.write('|');_delay_ms(10);newline;}*/
-
-
-
-/*
-for(int m = 1; m <= 200; m++){
-print_spaces = 200 + (int)(10.0 * (sin(pi*(float)m/100.0) + sin(2.0 * pi*(float)m/100.0) + sin(3.0 * pi*(float)m/100.0) + sin(4.0 * pi*(float)m/100.0) + sin(5.0 * pi*(float)m/100.0) + sin(6.0 * pi*(float)m/100.0) + sin(7.0 * pi*(float)m/100.0) + sin(8.0 * pi*(float)m/100.0)));  
-
-for (int n = 0; n < print_spaces; n++){Serial.write(' ');}
-Serial.write('|');_delay_ms(10);newline;
-//Unsigned_Int_to_PC(print_spaces, digits, '\r');
-}*/
-
-/*for(int m = 1; m <= 100; m++){amplitude = sin(pi * (float)m/100.0); 
-for(int p = 2; p < 20; p++) amplitude += sin(pi*(float)p * (float)m/100.0);  
-print_spaces = 200 + (int)(10.0 * amplitude);
-for (int n = 0; n < print_spaces; n++){Serial.write(' ');}
-Serial.write('|');_delay_ms(10);newline;}*/
-
-
-
-/************Pulse wave*********************/
-/*duty_cycle = 0.1 * 1.5;
-while(1){
-for(int m = -num_time_slots/2; m < num_time_slots/2; m++)
-//for(int m = 1; m <= num_time_slots; m++)
-{amplitude = sin(duty_cycle ) * (cos(pi * (float)m/(float)num_time_slots));
-for(int p = 3; p < num_harmonics; p+=2) 
-{amplitude += sin(duty_cycle * (float)p) * cos(pi*(float)p * (float)m/(float)num_time_slots)/(float) p;}
-print_spaces = 200 + (int)(100.0 * amplitude);
-for (int n = 0; n < print_spaces; n++){Serial.write(' ');}
-Serial.write('|');_delay_ms(10);
-newline;}
-if(Serial.available()){duty_cycle = (float)(Serial.read()- '0')/10.0 * 1.5;}}*/
+for (int m = 0; m <= 3; m++){
+*(Char_ptr_local++) = eeprom_read_byte((uint8_t*)(address++));
+//Char_ptr_local += 1;
+}
+num =  * Flt_ptr_local;
+return num;
+}
