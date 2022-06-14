@@ -31,6 +31,10 @@ int num_harmonics;             //60 30
 setup_328_HW_Arduino_plus;
 set_up_PCI;
 
+
+if(!(eeprom_read_byte((uint8_t*)(0x9)))){eeprom_write_byte((uint8_t*)(0x9),0xFF);
+Serial.write("\r\n\r\nRecovery from system crash");}
+
 //One_25ms_WDT_with_interrupt;
 //wdt_enable(WDTO_120MS);
 
@@ -106,8 +110,8 @@ return;}
 Signal_WDTout_with_interrupt; 
 
 
-while(1);
-//SW_reset;
+//while(1);
+setup_watchdog; SW_reset;
 
 }
   
@@ -182,6 +186,6 @@ return num;
 }
 
 
-ISR (WDT_vect){
+ISR (WDT_vect){eeprom_write_byte((uint8_t*)(0x9),0x0);
 //SW_reset;
 }
