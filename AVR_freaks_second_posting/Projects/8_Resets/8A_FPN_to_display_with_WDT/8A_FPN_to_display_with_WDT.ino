@@ -31,7 +31,8 @@ int num_harmonics;             //60 30
 setup_328_HW_Arduino_plus;
 set_up_PCI;
 
-wdt_enable(WDTO_120MS); //120
+//One_25ms_WDT_with_interrupt;
+//wdt_enable(WDTO_120MS);
 
 if(WDT_out_status == 2){Timer_T1_sub_with_interrupt(T1_delay_250ms);
 for(int p = 0; p <10; p++)newline;}
@@ -64,13 +65,12 @@ while(1)
 {for(int m = 1; m; m++)
 {amplitude = sin(duty_cycle ) * (cos(pi * (float)m/(float)num_time_slots));
 for(int p = 3; p < num_harmonics; p+=2) 
-{amplitude += sin(duty_cycle * (float)p) * cos(pi*(float)p * (float)m/(float)num_time_slots)/(float) p;}
+{amplitude += sin(duty_cycle * (float)p) * cos(pi*(float)p * (float)m/(float)num_time_slots)/(float) p;wdr();}
 print_spaces = 50 + (int)(100.0 * amplitude);
 for (int n = 0; n < print_spaces; n++){Serial.write(' ');}
 Serial.write('|');_delay_ms(20);
 newline;
-if(m == num_time_slots/2) m = -num_time_slots/2;
-wdr();}}
+if(m == num_time_slots/2) m = -num_time_slots/2;}}
 
 while(1)wdr();}
                                                        
@@ -104,7 +104,12 @@ Timer_T1_sub_with_interrupt(T1_delay_250ms);
 return;}
 
 Signal_WDTout_with_interrupt; 
-SW_reset;}
+
+
+while(1);
+//SW_reset;
+
+}
   
 
 
@@ -174,4 +179,9 @@ for (int m = 0; m <= 3; m++){
 }
 num =  * Flt_ptr_local;
 return num;
+}
+
+
+ISR (WDT_vect){
+//SW_reset;
 }
