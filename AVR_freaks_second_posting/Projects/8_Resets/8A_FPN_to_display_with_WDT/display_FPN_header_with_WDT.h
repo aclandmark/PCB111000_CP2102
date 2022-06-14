@@ -25,7 +25,7 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 
 #define setup_328_HW_Arduino_plus \
 \
-setup_watchdog;\
+One_25ms_WDT_with_interrupt;\
 ADMUX |= (1 << REFS0);\
 initialise_IO;\
 OSC_CAL;\
@@ -64,6 +64,10 @@ WDTCSR = 0;
 #define SW_reset {wdt_enable(WDTO_30MS);while(1);}
 
 
+#define One_25ms_WDT_with_interrupt \
+wdr();\
+WDTCSR |= (1 <<WDCE) | (1<< WDE);\
+WDTCSR = (1<< WDE) | (1 << WDIE) |  (1 << WDP0)  |  (1 << WDP1);
 
 
 /************************************************************************************************************************************/
