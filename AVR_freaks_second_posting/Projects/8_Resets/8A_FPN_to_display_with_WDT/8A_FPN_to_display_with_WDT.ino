@@ -160,9 +160,7 @@ return num;}
 
 
 ISR (WDT_vect){
-  Signal_WDTout_with_interrupt;
-  //eeprom_write_byte((uint8_t*)(0x9),0x0);
-  }
+  Signal_WDTout_with_interrupt;}
 
 
 
