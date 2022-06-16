@@ -1,15 +1,3 @@
-
-/**************Proj_5D_Acquire_and process_Data_from_the _KBD********************/
-
-/*
-Here we leave the mini_OS (the Attiny1606) to deal with all the details of displaying a number.
-We can use one_wire_comms to send it a string or binary number.
-If we send it a string then it will return the number in binary form.
-
-Obviouly Arduino do not supply library functions to drive the display and therefore a
-bit of DIY programming is required.
-*/
-
 volatile char next_duty_cycle = 1;
 char digits[12];
 
