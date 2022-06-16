@@ -89,7 +89,7 @@ int main(void){
 	temp2display_buffer;										//Reverse string prior to display	
 	break;
 			
-	case 'D': 													//Convert float from UNO to string
+	/*case 'D': 													//Convert float from UNO to string
 	Float_Num_from_UNO  = *float_ptr;
 	ftoaL(Float_Num_from_UNO);
 	Combine_dp;		 
@@ -98,7 +98,20 @@ int main(void){
 	temp2display_buffer;										//Reverse string prior to display
 	if (expt){Left_justify_number;
 	Add_exponent ();}
-	break;
+	break;*/
+		
+	case 'D': 													//Convert float from UNO to string
+	Float_Num_from_UNO  = *float_ptr;
+	if (ftoaL(Float_Num_from_UNO)){
+	Combine_dp;		 
+	Insert_sign;
+	Remove_lagging_zeros;
+	temp2display_buffer;										//Reverse string prior to display
+	if (expt){Left_justify_number;
+	Add_exponent ();}}
+	break;	
+		
+		
 		
 	case 'E':													//Return binary number (long or float) to UNO
 	for(int m = 0; m <= 7; m++)
@@ -225,6 +238,7 @@ int main(void){
 	case '8': eight; break;
 	case '9': nine; break;
 	case '-': minus; break;
+	case '_': underscore; break;
 			
 	case 'E': case 'e': exponent; break;
 	case ('0' | 0x80): zero_point; break;
