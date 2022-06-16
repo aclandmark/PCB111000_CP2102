@@ -21,7 +21,7 @@ set_up_PCI;
 
 
 if(!(eeprom_read_byte((uint8_t*)(0x9)))){eeprom_write_byte((uint8_t*)(0x9),0xFF);
-Serial.write("\r\n\r\nRecovery from system crash");}
+Serial.write("\r\n\r\nNumerical result too large for a 32 bit number.\r\n");}
 
 if(WDT_out_status == 2){Timer_T1_sub_with_interrupt(T1_delay_250ms);
 for(int p = 0; p <10; p++)newline;}
