@@ -66,7 +66,7 @@ PORTC.OUT |= (seg_f | seg_g);
 #define zero		PORTA.OUT &= (~(seg_b  | seg_e));			PORTB.OUT &= (~(seg_a | seg_c | seg_d ));				PORTC.OUT &= (~( seg_f));
 #define minus																											PORTC.OUT &= (~(seg_g));
 #define exponent	PORTA.OUT &= ~(seg_e);						PORTB.OUT &= (~(seg_a | seg_d));						PORTC.OUT &= (~(seg_f | seg_g ));
-
+#define underscore												PORTB.OUT &= (~(seg_d));
 
 
 #define zero_point		zero;	PORTB.OUT &= ~DP;
