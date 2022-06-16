@@ -87,7 +87,8 @@ if((switch_3_down) && (switch_2_up)){ data = PCI_triggers_data_from_PC(digits);
 
 if((switch_2_down) && (switch_3_down)){             //FAILS after a SW_reset
 Num_1 = float_from_EEPROM(0x5);
- Num_2 = pow(Num_1, 1.2);
+Num_2 = pow(Num_1, 1.2);
+if(Num_2 == Num_1)while(1);
 
 float_num_to_display_local(Num_2);
 float_to_EEPROM (Num_2, 0x5);
