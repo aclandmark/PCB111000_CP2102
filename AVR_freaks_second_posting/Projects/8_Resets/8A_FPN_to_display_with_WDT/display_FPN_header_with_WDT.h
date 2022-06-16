@@ -16,13 +16,17 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 //If the internal clock has been calibrated, a calibration byte will be found in EEPROM locations 0x3FF/E
 
 /**********************************************************************************/
-#define POR_detected                      eeprom_read_byte ((uint8_t*)0x3FC) == 0xFF
-#define WDTout_with_interrupt_detected    !(eeprom_read_byte ((uint8_t*)0x3F5))
-#define Signal_WDTout_with_interrupt      eeprom_write_byte((uint8_t*)0x3F5, 0);
-#define Reset_WDT_out_register            eeprom_write_byte((uint8_t*)0x3F5, 0xFF);
+#define start_reset_detected              eeprom_read_byte ((uint8_t*)0x3FC) == ~0
+#define flaggged__WDTout_detected         (eeprom_read_byte ((uint8_t*)0x3F5) == (byte)~2)
+#define Signal_flaggged__WDTout           eeprom_write_byte((uint8_t*)0x3F5, ~2);
+#define Reset_WDT_out_register            eeprom_write_byte((uint8_t*)0x3F5, ~0);
+
+#define WDTout_with_interrupt_detected    (eeprom_read_byte((uint8_t*)0x3F5) == (byte)~4)
+#define Signal_WDTout_with_interrupt      eeprom_write_byte((uint8_t*)0x3F5, ~4);
+
+
 
 /************************************************************************************************************************************/
-
 #define setup_328_HW_Arduino_plus \
 \
 One_25ms_WDT_with_interrupt;\
@@ -36,16 +40,18 @@ set_up_pin_change_interrupt_on_PC5;\
 setup_one_wire_comms;\
 set_up_activity_leds;\
 \
-if (POR_detected)\
-Reset_WDT_out_register;\
-if(WDTout_with_interrupt_detected)\
-WDT_out_status = 2;\
+if (start_reset_detected);\
+\
 else\
-{WDT_out_status = 1;}\
+{if(flaggged__WDTout_detected)\
+WDT_out_status = 1;\
+else if (WDTout_with_interrupt_detected)WDT_out_status = 2; \
+else {WDT_out_status = 3;}}\
 Reset_WDT_out_register;\
 sei();\
 Serial.begin(115200);\
 while (!Serial);
+
 
 //The reset control switch is connected to PC5
 
