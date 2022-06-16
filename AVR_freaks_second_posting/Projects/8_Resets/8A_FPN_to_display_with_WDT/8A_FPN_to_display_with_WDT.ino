@@ -23,9 +23,6 @@ set_up_PCI;
 if(!(eeprom_read_byte((uint8_t*)(0x9)))){eeprom_write_byte((uint8_t*)(0x9),0xFF);
 Serial.write("\r\n\r\nRecovery from system crash");}
 
-//One_25ms_WDT_with_interrupt;
-//wdt_enable(WDTO_120MS);
-
 if(WDT_out_status == 2){Timer_T1_sub_with_interrupt(T1_delay_250ms);
 for(int p = 0; p <10; p++)newline;}
 
@@ -85,7 +82,7 @@ if((switch_3_down) && (switch_2_up)){ data = PCI_triggers_data_from_PC(digits);
  eeprom_write_byte((uint8_t*)(0x3),data);
  eeprom_write_byte((uint8_t*)(0x4), (data >> 8));}
 
-if((switch_2_down) && (switch_3_down)){             //FAILS after a SW_reset
+if((switch_2_down) && (switch_3_down)){  
 Num_1 = float_from_EEPROM(0x5);
 Num_2 = pow(Num_1, 1.2);
 if(Num_2 == Num_1)while(1);
@@ -97,12 +94,7 @@ Timer_T1_sub_with_interrupt(T1_delay_250ms);
 return;}
 
 Signal_WDTout_with_interrupt; 
-
-
-//while(1);
-setup_watchdog; SW_reset;
-
-}
+setup_watchdog; SW_reset;}
   
 
 
@@ -150,9 +142,7 @@ char * Char_ptr_local;
 
 Char_ptr_local = (char*)&num;
 for (int m = 0; m <= 3; m++){
-eeprom_write_byte((uint8_t*)(address++), *(Char_ptr_local++));
-//Char_ptr_local += 1;
-}}
+eeprom_write_byte((uint8_t*)(address++), *(Char_ptr_local++));}}
 
 
 
@@ -164,17 +154,18 @@ char * Char_ptr_local;
 
 Flt_ptr_local = &num;
 Char_ptr_local = (char*)&num;
-
  
 for (int m = 0; m <= 3; m++){
-*(Char_ptr_local++) = eeprom_read_byte((uint8_t*)(address++));
-//Char_ptr_local += 1;
-}
+*(Char_ptr_local++) = eeprom_read_byte((uint8_t*)(address++));}
 num =  * Flt_ptr_local;
-return num;
-}
+return num;}
 
 
-ISR (WDT_vect){eeprom_write_byte((uint8_t*)(0x9),0x0);
-//SW_reset;
-}
+ISR (WDT_vect){eeprom_write_byte((uint8_t*)(0x9),0x0);}
+
+
+
+
+
+
+/*******************************************************************************************************************/
