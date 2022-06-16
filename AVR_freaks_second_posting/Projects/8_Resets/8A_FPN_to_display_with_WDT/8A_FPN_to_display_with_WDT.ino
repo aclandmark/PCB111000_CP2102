@@ -19,16 +19,13 @@ int num_harmonics;             //60 30
 setup_328_HW_Arduino_plus;
 set_up_PCI;
 
+switch (WDT_out_status)
+{case 1: Timer_T1_sub_with_interrupt(T1_delay_250ms);
+for(int p = 0; p <10; p++)newline; break;
 
-if(!(eeprom_read_byte((uint8_t*)(0x9)))){eeprom_write_byte((uint8_t*)(0x9),0xFF);
-Serial.write("\r\n\r\nNumerical result too large for a 32 bit number.\r\n");}
+case 2:Serial.write("\r\n\r\nNumerical result too large for a 32 bit number.\r\n");
 
-if(WDT_out_status == 2){Timer_T1_sub_with_interrupt(T1_delay_250ms);
-for(int p = 0; p <10; p++)newline;}
-
-
-if(WDT_out_status == 1){
-enable_PCI_on_sw1;
+case 3: enable_PCI_on_sw1;
  eeprom_write_byte((uint8_t*)(0x0),'1');
  eeprom_write_byte((uint8_t*)(0x1),45); 
  eeprom_write_byte((uint8_t*)(0x2),0); 
@@ -41,7 +38,8 @@ Serial.write("\r\nEnter scientific number \
 Num_1 = Float_KBD_to_display(digits);                     //Data from keyboard
 float_to_EEPROM(Num_1, 0x5);
 
-while(1){if((switch_2_down) || (switch_3_down))break; else wdr();}}
+while(1){if((switch_2_down) || (switch_3_down))break; else wdr();}break;}
+
 
 duty_cycle = (float)(eeprom_read_byte((uint8_t*)(0x0))- '0')/10.0 * 1.5;
 num_time_slots = (eeprom_read_byte((uint8_t*)(0x2)) << 8) + eeprom_read_byte((uint8_t*)(0x1));
@@ -93,7 +91,7 @@ float_to_EEPROM (Num_2, 0x5);
 Timer_T1_sub_with_interrupt(T1_delay_250ms);
 return;}
 
-Signal_WDTout_with_interrupt; 
+Signal_flaggged__WDTout; 
 setup_watchdog; SW_reset;}
   
 
@@ -161,7 +159,10 @@ num =  * Flt_ptr_local;
 return num;}
 
 
-ISR (WDT_vect){eeprom_write_byte((uint8_t*)(0x9),0x0);}
+ISR (WDT_vect){
+  Signal_WDTout_with_interrupt;
+  //eeprom_write_byte((uint8_t*)(0x9),0x0);
+  }
 
 
 
