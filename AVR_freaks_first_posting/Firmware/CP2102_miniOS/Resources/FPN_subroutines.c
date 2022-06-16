@@ -1,16 +1,19 @@
 
-void ftoaL(float);
+char ftoaL(float);
 long longToStr(long, char*, int);
 void reverse(char *, int);
 float Local_Round_function(float, char);
 void Add_exponent (void);
-
+char Check_num_for_too_big_or_small(float);
 
 
 /***************************************************************************************************************************************/
-void ftoaL(float Fnum){
+char ftoaL(float Fnum){
 	int afterpoint = 0;
 	long ipart, Fnum_int;
+	
+	if(Check_num_for_too_big_or_small(Fnum))
+	{for (int m = 0; m <= 7; m++)display_buffer[m] = '_'; return 0;}
 	
 	
 	sign = '+';
@@ -47,7 +50,7 @@ void ftoaL(float Fnum){
 			fpart = fpart * pow(10,afterpoint);
 			
 			longToStr((long)fpart, temp_buffer + i + 1, afterpoint);}
-			}
+			return 1;}
 
 
 
@@ -114,3 +117,16 @@ void Add_exponent (void)
 		display_buffer[1] = (((expt*(-1))/10)%10) + '0';
 		display_buffer[2] = '-';display_buffer[3] = 'E';
 		break;}}
+		
+		
+		
+		
+	/****************************************************************************************************/
+	char Check_num_for_too_big_or_small(float num)
+	{unsigned long * long_ptr;
+	long_ptr = (unsigned long *)&num;
+	if ((*long_ptr == 0x7F800000) ||
+	 (*long_ptr == 0xFF800000)  ||
+	 (*long_ptr == 0X0)		  ||
+	 (*long_ptr == 0X80000000))return 1;
+	else return 0;}
