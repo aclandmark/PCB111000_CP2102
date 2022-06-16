@@ -85,7 +85,7 @@ Num_1 = float_from_EEPROM(0x5);
 Num_2 = pow(Num_1, 1.2);
 if(Num_2 == Num_1)while(1);
 
-float_num_to_display_local(Num_2);
+float_num_to_display_WDT(Num_2);
 float_to_EEPROM (Num_2, 0x5);
 
 Timer_T1_sub_with_interrupt(T1_delay_250ms);
@@ -117,7 +117,7 @@ ISR(TIMER1_OVF_vect) {TIMSK1 &= (~(1 << TOIE1)); enable_PCI_on_sw1;}
 
 
 /*******************************************************************************************************************/
-void float_num_to_display_local(float FP_num){
+void float_num_to_display_WDT(float FP_num){
 char * Char_ptr;
 
 pause_pin_change_interrupt_on_PC5;
