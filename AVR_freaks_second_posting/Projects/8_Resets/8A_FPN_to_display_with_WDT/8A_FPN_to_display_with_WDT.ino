@@ -1,4 +1,4 @@
-volatile char next_duty_cycle = 1;
+//volatile char next_duty_cycle = 1;
 char digits[12];
 
 
@@ -48,7 +48,9 @@ num_harmonics = (eeprom_read_byte((uint8_t*)(0x4)) << 8) + eeprom_read_byte((uin
 for(int n = 0; n <= 100; n++){if (n<40)Serial.write (' '); else Serial.write('_');}
 newline;
 
-while(1)
+
+{int counter = 0;
+while(counter < 25)
 {for(int m = 1; m; m++)
 {amplitude = sin(duty_cycle ) * (cos(pi * (float)m/(float)num_time_slots));
 for(int p = 3; p < num_harmonics; p+=2) 
@@ -56,10 +58,11 @@ for(int p = 3; p < num_harmonics; p+=2)
 print_spaces = 50 + (int)(100.0 * amplitude);
 for (int n = 0; n < print_spaces; n++){Serial.write(' ');}
 Serial.write('|');_delay_ms(20);
-newline;
-if(m == num_time_slots/2) m = -num_time_slots/2;}}
+newline;wdr();
+if(m == num_time_slots/2) m = -num_time_slots/2;} counter += 1;}}
 
-while(1)wdr();}
+Serial.write("\r\nTimed out: Reset initiated\r\n");
+setup_watchdog; SW_reset;}
 
 
                                                        
