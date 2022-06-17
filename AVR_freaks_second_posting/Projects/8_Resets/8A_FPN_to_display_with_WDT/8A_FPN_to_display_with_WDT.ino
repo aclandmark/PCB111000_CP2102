@@ -1,10 +1,11 @@
-//volatile char next_duty_cycle = 1;
-char digits[12];
+
+
 
 
 #include "display_FPN_header_with_WDT.h"
-float Num_1, Num_2;
 
+float Num_1, Num_2;
+char digits[12];
 
 int main (void){
 
@@ -35,7 +36,7 @@ case 3: enable_PCI_on_sw1;
 Serial.write("\r\nEnter scientific number \
 & terminate with Return key.\r\n");
 
-Num_1 = Float_KBD_to_display(digits);                     //Data from keyboard
+Num_1 = Float_KBD_to_display(digits); 
 float_to_EEPROM(Num_1, 0x5);
 
 while(1){if((switch_2_down) || (switch_3_down))break; else wdr();}break;}
