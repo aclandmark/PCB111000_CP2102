@@ -15,6 +15,7 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 
 //If the internal clock has been calibrated, a calibration byte will be found in EEPROM locations 0x3FF/E
 
+
 /**********************************************************************************/
 #define start_reset_detected              eeprom_read_byte ((uint8_t*)0x3FC) == ~0
 #define flaggged__WDTout_detected         (eeprom_read_byte ((uint8_t*)0x3F5) == (byte)~2)
@@ -76,6 +77,7 @@ WDTCSR |= (1 <<WDCE) | (1<< WDE);\
 WDTCSR = (1<< WDE) | (1 << WDIE) |  (1 << WDP0)  |  (1 << WDP1);
 
 
+
 /************************************************************************************************************************************/
 #define initialise_IO \
 MCUCR &= (~(1 << PUD));\
@@ -92,17 +94,9 @@ PORTD = 0xFF;
 
 
 /************************************************************************************************************************************/
-/************************************************************************************************************************************/
 #define set_up_PCI                  PCICR |= (1 << PCIE2);
-#define pause_PCI                   PCICR &= (~(1 << PCIE2));
 #define reinstate_PCI               PCICR |= (1 << PCIE2);
-#define clear_PCI                   PCIFR |= (1<< PCIF2);
-#define enable_PCI_on_sw1_and_sw2   PCMSK2 |= (1 << PCINT18) | (1 << PCINT21);
-#define enable_PCI_on_sw3           PCMSK2 |= (1 << PCINT23);
 #define enable_PCI_on_sw1           PCMSK2 |= (1 << PCINT18);
-
-#define disable_PCI_on_sw3          PCMSK2 &= (~(1 << PCINT23));
-#define disable_PCI_on_sw1_and_sw2  PCMSK2 &= (~((1 << PCINT18) | (1 << PCINT21)));
 #define disable_PCI_on_sw1          PCMSK2 &= (~(1 << PCINT18));
 
 #define switch_1_up               (PIND & 0x04)
@@ -116,13 +110,6 @@ PORTD = 0xFF;
 
 
 
-/************************************************************************************************************************************/
-#define User_prompt \
-while(1){\
-do{Serial.write("R?    ");}   while((isCharavailable(75) == 0));\
-User_response = Serial.read();\
-if((User_response == 'R') || (User_response == 'r'))break;} Serial.write("\r\n");
-
 
 /************************************************************************************************************************************/
 #define waitforkeypress_with_WDT \
@@ -130,6 +117,7 @@ while(1){\
 if (isCharavailable_with_WDT(8)){\
 Serial.read();\
 break;}}
+
 
 
 /************************************************************************************************************************************/
