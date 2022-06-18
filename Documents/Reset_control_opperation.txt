@@ -1,0 +1,45 @@
+All resets cause program control tojump to the bootloader
+Note: logic is inverted. This means that
+	Clearing a register reaves it containing 0xFF
+	Clearing a bit leaves it as a 1
+	Setting a bit leaves it as a 0
+
+Apply power with Reset control switch left in the up (default) position
+
+Program control jumps to the bootloader which: 
+	Reads MCUSR (indicates POR). 
+	Sets MCUSR to zero
+	Executes "clear_reset_control_reg" (EEPROM 0x3FC)
+	Passes control to a user application
+
+User presses Reset control switch for 350mS and the user app:
+	Executes "setRunBL_bit" (EEPROM 0x3FC bit 1)
+	Triggers a WTDout
+
+Program control jumps to the bootloader which:
+	Reads MCUSR (indicates WDTout).
+	Executes "setWD_RF_bit" (EEPROM 0x3FC bit 0)
+	Prints the "p/r/t/D......." prompt
+
+User presses "p" for programming:
+	This terminates with a WDTout
+	Restores the "p/r/t/D......." prompt
+
+User presses "r" to run the program. Bootloader executes:
+	"clear_RunBL_bit" (EEPROM 0x3FC bit 1)
+	eeprom_write_byte((uint8_t*)0x3F5, 0xFF);
+
+
+The user program:
+
+	Reads 0x3FC: If it equals 0xFF the reset is a POR
+	Reads 0x3F5: If it equals 0xFF the program is running for the first time	
+	Clears bit 0 of the reset control register (0x3FC) after a WDTout
+	Clears bit 2 of the reset control register (0x3FC) after a POR.
+
+	Sets bit 0 of 0x3F5 when it runs for the first time
+	Sets bit 1 0f 0x3F5 for a flagged WDTout after which it clears it.
+	Sets bit 2 0f 0x3F5 for a WDTout with ISR after which it clears it.
+	
+	
+	
