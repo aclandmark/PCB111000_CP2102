@@ -27,17 +27,18 @@ User presses "p" for programming:
 
 User presses "r" to run the program. Bootloader executes:
 	"clear_RunBL_bit" (EEPROM 0x3FC bit 1)
-	eeprom_write_byte((uint8_t*)0x3F5, 0xFF);
+	eeprom_write_byte((uint8_t*)0x3F5, 0xFF);	(clears user_prog_reset_ctl_reg)
 
 
 The user program:
 
 	Reads 0x3FC: If it equals 0xFF the reset is a POR
-	Reads 0x3F5: If it equals 0xFF the program is running for the first time	
+	Reads 0x3F5: If it equals 0xFF the program is triggered by the "p/r/t/D......." prompt	
 	Clears bit 0 of the reset control register (0x3FC) after a WDTout
 	Clears bit 2 of the reset control register (0x3FC) after a POR.
 
 	Sets bit 0 of 0x3F5 when it runs for the first time
+	Sets bit 2 of 0x3FC when it runs following a POR
 	Sets bit 1 0f 0x3F5 for a flagged WDTout after which it clears it.
 	Sets bit 2 0f 0x3F5 for a WDTout with ISR after which it clears it.
 	
