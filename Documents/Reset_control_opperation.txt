@@ -1,9 +1,35 @@
+
+
+
 All resets cause program control tojump to the bootloader
 Note: logic is inverted. This means that
 	Clearing a register reaves it containing 0xFF
 	Clearing a bit leaves it as a 1
 	Setting a bit leaves it as a 0
 
+
+The new regime
+reset_ctl_reg
+bit 0	POR_bit
+bit 1	WDTout_bit
+bit 2	Run_BL_bit
+bit 3	prtD
+bit 4	Flagged WDTout
+bit 5	WDTout with ISR 
+
+Apply Power 	reset_ctl_reg = ~1
+Jump to User app
+	Clear reset_ctl_reg to 0xFF
+	Set Run_BL_bit
+	SW_reset	set_WDTout_bit
+
+	Jumps to prtD... prompt
+
+
+
+
+
+The Old regime
 Apply power with Reset control switch left in the up (default) position
 
 Program control jumps to the bootloader which: 
