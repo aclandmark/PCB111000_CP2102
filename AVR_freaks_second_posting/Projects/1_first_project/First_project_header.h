@@ -11,8 +11,8 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 == eeprom_read_byte((uint8_t*)0x3FE))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
 
 //If the internal clock has been calibrated, a calibration byte will be found in EEPROM locations 0x3FF/E
-
-
+#define reset_ctl_reg        0x3FC
+#define clear_reset_ctl_reg   eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0)
 
 
 /************************************************************************************************************************************/
@@ -30,8 +30,8 @@ setup_one_wire_comms;\
 set_up_activity_leds;\
 sei();\
 setup_PC_comms(0,16);\
-_delay_ms(10);
-
+_delay_ms(10);\
+clear_reset_ctl_reg;
 
 //The reset control switch is connected to PC5
 
