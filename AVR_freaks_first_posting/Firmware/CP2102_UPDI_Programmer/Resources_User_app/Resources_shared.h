@@ -10,6 +10,9 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 == eeprom_read_byte((uint8_t*)0x3FE))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
 
 
+#define reset_ctl_reg        0x3FC
+#define clear_reset_ctl_reg   eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0)
+
 
 /************************************************************************************************************************************/
 #define setup_328_HW \
@@ -21,8 +24,8 @@ OSC_CAL;\
 Set_LED_ports;\
 LEDs_off;\
 \
-USART_init(0,68);
-
+USART_init(0,68);\
+clear_reset_ctl_reg;
 
 
 /************************************************************************************************************************************/
