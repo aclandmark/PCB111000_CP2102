@@ -42,25 +42,39 @@ EEPROM locations
 #include "Hex_txt_bootloader.h"
 #define Version "Hex_txt_bootloader_V1 "
 
-#define setWD_RF_bit				eeprom_write_byte((uint8_t*)0x3FC, (eeprom_read_byte((uint8_t*)(0x3FC)) & (~1)));
+/*#define setWD_RF_bit				eeprom_write_byte((uint8_t*)0x3FC, (eeprom_read_byte((uint8_t*)(0x3FC)) & (~1)));
 #define setRunBL_bit				eeprom_write_byte((uint8_t*)0x3FC, (eeprom_read_byte((uint8_t*)(0x3FC)) & (~2)));
 #define clear_reset_control_reg		eeprom_write_byte((uint8_t*)0x3FC, 0xFF);
 #define WD_RF_bit_set				(!(eeprom_read_byte ((uint8_t*)0x3FC) & 0x01))
 #define RunBL_bit_clear				(eeprom_read_byte ((uint8_t*)0x3FC) & 0x02)			
-#define clear_RunBL_bit				eeprom_write_byte((uint8_t*)0x3FC, (eeprom_read_byte((uint8_t*)(0x3FC)) | 2));	
+#define clear_RunBL_bit				eeprom_write_byte((uint8_t*)0x3FC, (eeprom_read_byte((uint8_t*)(0x3FC)) | 2));*/	
 #define switch_up					(PINC & 0x20)
+
+
+#define boot_reset_ctl_reg			0x3FC
+#define set_POR_bit					eeprom_write_byte((uint8_t*)boot_reset_ctl_reg, ~1)
+#define set_WDTout_bit				eeprom_write_byte((uint8_t*)boot_reset_ctl_reg, ~2)
+#define	set_Run_BL_bit				eeprom_write_byte((uint8_t*)boot_reset_ctl_reg, ~4)
+#define set_prtD_bit				eeprom_write_byte((uint8_t*)boot_reset_ctl_reg, ~8)
+
+#define WDTout_bit_set				!(eeprom_read_byte((uint8_t*)boot_reset_ctl_reg) & 2)
+#define Run_BL_bit_clear			(eeprom_read_byte((uint8_t*)boot_reset_ctl_reg) & 4)
+#define clear_Run_BL_bit			eeprom_write_byte((uint8_t*)boot_reset_ctl_reg, (eeprom_read_byte((uint8_t*)boot_reset_ctl_reg) | 4))		
+
 
 char mode;																	//'h' for hex file, 't' for text file
 
 int main (void){ 															//Loaded at address 0x7000, the start of the boot loader section
 char keypress, eep_offset;
 
-	if(MCUSR & (1<<WDRF))setWD_RF_bit;										//Record presence of a watch dog time out
+	if(MCUSR & (1<<WDRF))set_WDTout_bit;									//Record presence of a watch dog time out
+	//setWD_RF_bit;
 	setup_HW;																//Resets watch dog timer
 
 if (MCUSR & (1 << PORF))													//POR detected
 {MCUSR = 0;																	//Clear reset flags
-	clear_reset_control_reg;												
+	//clear_reset_control_reg;												
+	set_POR_bit;////////////////
 	if  (switch_up)															//No user switch activity	
 	{MCUCR = (1<<IVCE);MCUCR = 0x0;											//select interrupt vector table starting at 0x0000
 	Prog_mem_address_H = 0;
@@ -68,9 +82,14 @@ if (MCUSR & (1 << PORF))													//POR detected
 	read_flash ();															//Check for the presence of a user application
 	if (Flash_readout == 0xFF)asm("jmp 0x6000");							//Run the default application (does not use interrupts)
 	else asm("jmp 0x0000");}												//Run the user application
-	setRunBL_bit;}															//User switch pressed at POR.	Run bootloader
+	//setRunBL_bit;															//User switch pressed at POR.	Run bootloader
+	set_Run_BL_bit;}
 
-if((WD_RF_bit_set)&& (RunBL_bit_clear)){									//Reset caused by user or default application
+
+//if((WD_RF_bit_set)&& (RunBL_bit_clear)){									//Reset caused by user or default application
+if((WDTout_bit_set) && (Run_BL_bit_clear)){									//Reset caused by user or default application
+
+
 Prog_mem_address_H = 0;
 Prog_mem_address_L = 0;
 read_flash ();
@@ -107,7 +126,8 @@ MCUCR = (1<<IVSEL);
 		keypress = 'r'; break;
 		
 	case 'r':																//Run user/default application
-		clear_RunBL_bit;
+		clear_Run_BL_bit;
+		//clear_RunBL_bit;
 		eeprom_write_byte((uint8_t*)0x3F5, 0xFF);							//NEW LINE	Tells user app that r has just been pressed at p/r/t/D prompt
 		wdt_enable(WDTO_15MS);while(1);
 	
