@@ -51,15 +51,15 @@ EEPROM locations
 #define switch_up					(PINC & 0x20)
 
 
-#define boot_reset_ctl_reg			0x3FC
-#define set_POR_bit					eeprom_write_byte((uint8_t*)boot_reset_ctl_reg, ~1)
-#define set_WDTout_bit				eeprom_write_byte((uint8_t*)boot_reset_ctl_reg, ~2)
-#define	set_Run_BL_bit				eeprom_write_byte((uint8_t*)boot_reset_ctl_reg, ~4)
-#define set_prtD_bit				eeprom_write_byte((uint8_t*)boot_reset_ctl_reg, ~8)
+#define reset_ctl_reg				0x3FC
+#define set_POR_bit					eeprom_write_byte((uint8_t*)reset_ctl_reg, ~1)
+#define set_WDTout_bit				eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~2))
+#define	set_Run_BL_bit				eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~4))
+#define set_prtD_bit				eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~8))
 
-#define WDTout_bit_set				!(eeprom_read_byte((uint8_t*)boot_reset_ctl_reg) & 2)
-#define Run_BL_bit_clear			(eeprom_read_byte((uint8_t*)boot_reset_ctl_reg) & 4)
-#define clear_Run_BL_bit			eeprom_write_byte((uint8_t*)boot_reset_ctl_reg, (eeprom_read_byte((uint8_t*)boot_reset_ctl_reg) | 4))		
+#define WDTout_bit_set				!(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 2)
+#define Run_BL_bit_clear			(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 4)
+#define clear_Run_BL_bit			eeprom_write_byte((uint8_t*)reset_ctl_reg, (eeprom_read_byte((uint8_t*)reset_ctl_reg) | 4))		
 
 
 char mode;																	//'h' for hex file, 't' for text file
