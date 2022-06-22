@@ -9,19 +9,20 @@ Note: logic is inverted. This means that
 
 
 The new regime
-reset_ctl_reg
-bit 0	POR_bit
-bit 1	WDTout_bit
-bit 2	Run_BL_bit
-bit 3	prtD
-bit 4	Flagged WDTout
-bit 5	WDTout with ISR 
+reset_ctl_reg (0x3FC)
+bit 0	POR_bit				At POR set reg to ~1		
+bit 1	WDTout_bit			Read-modify-write
+bit 2	Run_BL_bit			Read-modify-write
+bit 3	prtD				???????
+bit 4	Flagged WDTout			Read-modify-write
+bit 5	WDTout with ISR 		Read-modify-write
+
 
 Apply Power 	reset_ctl_reg = ~1
 Jump to User app
-	Clear reset_ctl_reg to 0xFF
+	Clear reset_ctl_reg to ~0
 	Set Run_BL_bit
-	SW_reset	set_WDTout_bit
+	SW_reset	set_WDTout_bit	0x3FC &= ~2
 
 	Jumps to prtD... prompt
 
