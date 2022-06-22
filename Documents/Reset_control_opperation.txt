@@ -13,18 +13,37 @@ reset_ctl_reg (0x3FC)
 bit 0	POR_bit				At POR set reg to ~1		
 bit 1	WDTout_bit			Read-modify-write
 bit 2	Run_BL_bit			Read-modify-write
-bit 3	prtD				???????
+bit 3	prtD				At "r" set reg to ~8
 bit 4	Flagged WDTout			Read-modify-write
 bit 5	WDTout with ISR 		Read-modify-write
 
 
-Apply Power 	reset_ctl_reg = ~1
-Jump to User app
-	Clear reset_ctl_reg to ~0
-	Set Run_BL_bit
-	SW_reset	set_WDTout_bit	0x3FC &= ~2
+Apply Power 	
+Prog control jumps to 0x7000
+	set_POR_bit;		0x3FC = ~1	(0b1111 1110)
+Prog control jumps to User app
+	Clear reset_ctl_reg	0x3FC = ~0	(0b1111 1111)
+Pulse Reset CTL switch	
+	Set Run_BL_bit		0x3FC &= ~4	(0b1111 1011)
+	SW_reset 
+Prog control jumps to 0x7000
+	set_WDTout_bit		0x3FC &= ~2	(0b1111 1001)
+Test bits 1 and 2
+  If 10 (Run_BL_bit_clear & WDTout_bit set) Jump to user app
+  else
+prtD.. prompt generated
+Press p to program	SW_reset generated when done
+prtD.. prompt repeated
+Press r to run user app.
+	Set prtD bit		0x3FC = ~8	(0b1111 0111)
+		(clears Run_BL_bit)
+	SW_reset
+	set_WDTout_bit		0x3FC &= ~2	(0b1111 0101)
+Test bits 1 and 2 and 
+Prog control jumps to User app
 
-	Jumps to prtD... prompt
+
+Jumps to prtD... prompt
 
 
 
