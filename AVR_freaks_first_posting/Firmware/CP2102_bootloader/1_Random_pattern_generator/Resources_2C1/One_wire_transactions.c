@@ -51,7 +51,7 @@ void rst_cntr(void){ 										//Interrogates vertical switch presses
 	if(PINC5_up)return;
 	_delay_ms(475);
 	if(PINC5_up)
-	{setRunBL_bit;}
+	{set_Run_BL_bit;}
 	else{
 		LED_1_on; LED_2_on;
 		_delay_ms(500);
