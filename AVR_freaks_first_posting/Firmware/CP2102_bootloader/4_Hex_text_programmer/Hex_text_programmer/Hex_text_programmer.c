@@ -55,7 +55,7 @@ EEPROM locations
 #define set_POR_bit					eeprom_write_byte((uint8_t*)reset_ctl_reg, ~1)
 #define set_WDTout_bit				eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~2))
 #define	set_Run_BL_bit				eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~4))
-#define set_prtD_bit				eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~8))
+#define set_prtD_bit				eeprom_write_byte((uint8_t*)reset_ctl_reg, ~8)
 
 #define WDTout_bit_set				!(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 2)
 #define Run_BL_bit_clear			(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 4)
@@ -126,9 +126,10 @@ MCUCR = (1<<IVSEL);
 		keypress = 'r'; break;
 		
 	case 'r':																//Run user/default application
-		clear_Run_BL_bit;
+		//clear_Run_BL_bit;
 		//clear_RunBL_bit;
-		eeprom_write_byte((uint8_t*)0x3F5, 0xFF);							//NEW LINE	Tells user app that r has just been pressed at p/r/t/D prompt
+		//eeprom_write_byte((uint8_t*)0x3F5, 0xFF);							//NEW LINE	Tells user app that r has just been pressed at p/r/t/D prompt
+		set_prtD_bit;
 		wdt_enable(WDTO_15MS);while(1);
 	
 	
