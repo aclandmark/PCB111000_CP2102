@@ -20,73 +20,44 @@ bit 5	WDTout with ISR 		Read-modify-write
 
 Apply Power 	
 Prog control jumps to 0x7000
-	set_POR_bit;		0x3FC = ~1	(0b1111 1110)
-Prog control jumps to User app
-	Clear reset_ctl_reg	0x3FC = ~0	(0b1111 1111)
-Pulse Reset CTL switch	
-	Set Run_BL_bit		0x3FC &= ~4	(0b1111 1011)
-	SW_reset 
+	POR_bit is set		0x3FC = ~1	(0b1111 1110)
+
+Prog control jumps to User app which
+	reads reset_ctl_reg
+	and clears it	 	0x3FC = ~0	(0b1111 1111)
+	and when Reset CTL 
+	switch is pulsed	
+	Sets Run_BL_bit		0x3FC &= ~4	(0b1111 1011)
+	Does a SW_reset 
+
 Prog control jumps to 0x7000
-	set_WDTout_bit		0x3FC &= ~2	(0b1111 1001)
-Test bits 1 and 2
-  If 10 (Run_BL_bit_clear & WDTout_bit set) Jump to user app
-  else
-prtD.. prompt generated
+	WDTout_bit is set	0x3FC &= ~2	(0b1111 1001)
+Test Run_BL_bit
+  If it is set the prtD.. prompt is generated
 Press p to program	SW_reset generated when done
 prtD.. prompt repeated
-Press r to run user app.
-	Set prtD bit		0x3FC = ~8	(0b1111 0111)
-		(clears Run_BL_bit)
-	SW_reset
-	set_WDTout_bit		0x3FC &= ~2	(0b1111 0101)
-Test bits 1 and 2 and 
-Prog control jumps to User app
+	Press r 
+	prtD bit is set 
+	Run_BL_bit is cleared	0x3FC = ~8	(0b1111 0111)
+	SW_reset executed
+	WDTout_bit is set	0x3FC &= ~2	(0b1111 0101)
+prtD_bit is tested as set and therefore 
+Prog control jumps to User app which 
+	reads reset_ctl_reg
+	and clears it	 	0x3FC = ~0	(0b1111 1111)
+	and then runs
+
+When Reset CTL switch is pulsed
+	Run_BL_bit is set
+	SW_reset is executed
+Prog control jumps to 0x7000
+prtD... prompt is generated because
+	Run_BL_bit and WDTout_bit_bit are both set
+
+If user app includes a SW_reset
+	Prog control jumps to 0x7000
+	WDTout_bit is set	0x3FC &= ~2	(0b1111 1101)
+	Run_BL_bit is tested
+	It is clear and therefore control passes back to the user app.
 
 
-Jumps to prtD... prompt
-
-
-
-
-
-The Old regime
-Apply power with Reset control switch left in the up (default) position
-
-Program control jumps to the bootloader which: 
-	Reads MCUSR (indicates POR). 
-	Sets MCUSR to zero
-	Executes "clear_reset_control_reg" (EEPROM 0x3FC)
-	Passes control to a user application
-
-User presses Reset control switch for 350mS and the user app:
-	Executes "setRunBL_bit" (EEPROM 0x3FC bit 1)
-	Triggers a WTDout
-
-Program control jumps to the bootloader which:
-	Reads MCUSR (indicates WDTout).
-	Executes "setWD_RF_bit" (EEPROM 0x3FC bit 0)
-	Prints the "p/r/t/D......." prompt
-
-User presses "p" for programming:
-	This terminates with a WDTout
-	Restores the "p/r/t/D......." prompt
-
-User presses "r" to run the program. Bootloader executes:
-	"clear_RunBL_bit" (EEPROM 0x3FC bit 1)
-	eeprom_write_byte((uint8_t*)0x3F5, 0xFF);	(clears user_prog_reset_ctl_reg)
-
-
-The user program:
-
-	Reads 0x3FC: If it equals 0xFF the reset is a POR
-	Reads 0x3F5: If it equals 0xFF the program is triggered by the "p/r/t/D......." prompt	
-	Clears bit 0 of the reset control register (0x3FC) after a WDTout
-	Clears bit 2 of the reset control register (0x3FC) after a POR.
-
-	Sets bit 0 of 0x3F5 when it runs for the first time
-	Sets bit 2 of 0x3FC when it runs following a POR
-	Sets bit 1 0f 0x3F5 for a flagged WDTout after which it clears it.
-	Sets bit 2 0f 0x3F5 for a WDTout with ISR after which it clears it.
-	
-	
-	
