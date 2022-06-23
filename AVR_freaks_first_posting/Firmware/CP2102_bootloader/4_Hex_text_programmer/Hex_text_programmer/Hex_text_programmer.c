@@ -71,17 +71,13 @@ char keypress, eep_offset;
 
 	if((MCUSR & (1<<WDRF)) &&
 	(prtD_bit_clear))set_WDTout_bit;										//Record presence of a watch dog time out
-	//setWD_RF_bit;
-	
-	//if(MCUSR & (1<<WDRF))set_WDTout_bit;
-	
-	
+		
 	setup_HW;																//Resets watch dog timer
 
 if (MCUSR & (1 << PORF))													//POR detected
 {MCUSR = 0;																	//Clear reset flags
 	//clear_reset_control_reg;												
-	set_POR_bit;////////////////
+	set_POR_bit;
 	if  (switch_up)															//No user switch activity	
 	{MCUCR = (1<<IVCE);MCUCR = 0x0;											//select interrupt vector table starting at 0x0000
 	Prog_mem_address_H = 0;
