@@ -57,7 +57,7 @@ EEPROM locations
 #define	set_Run_BL_bit				eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~4))
 #define set_prtD_bit				eeprom_write_byte((uint8_t*)reset_ctl_reg, ~8)
 #define prtD_bit_clear				(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 8)			
-
+#define prtD_bit_set				!(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 8)
 
 #define WDTout_bit_set				!(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 2)
 #define Run_BL_bit_clear			(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 4)
@@ -72,6 +72,10 @@ char keypress, eep_offset;
 	if((MCUSR & (1<<WDRF)) &&
 	(prtD_bit_clear))set_WDTout_bit;										//Record presence of a watch dog time out
 	//setWD_RF_bit;
+	
+	//if(MCUSR & (1<<WDRF))set_WDTout_bit;
+	
+	
 	setup_HW;																//Resets watch dog timer
 
 if (MCUSR & (1 << PORF))													//POR detected
@@ -89,9 +93,15 @@ if (MCUSR & (1 << PORF))													//POR detected
 	set_Run_BL_bit;}
 
 
-//if((WD_RF_bit_set)&& (RunBL_bit_clear)){									//Reset caused by user or default application
-if((WDTout_bit_set) && (Run_BL_bit_clear)){									//Reset caused by user or default application
+																			//Reset caused by user or default application
+//if(((WDTout_bit_set) && (Run_BL_bit_clear)) ||
+//(prtD_bit_set)){	
+																			//Reset caused by user or default application
+//if((WDTout_bit_set) && (Run_BL_bit_clear)){
 
+//if ((Run_BL_bit_clear) || (prtD_bit_set)){
+
+if (Run_BL_bit_clear){
 
 Prog_mem_address_H = 0;
 Prog_mem_address_L = 0;
@@ -132,7 +142,7 @@ MCUCR = (1<<IVSEL);
 		//clear_Run_BL_bit;
 		//clear_RunBL_bit;
 		//eeprom_write_byte((uint8_t*)0x3F5, 0xFF);							//NEW LINE	Tells user app that r has just been pressed at p/r/t/D prompt
-		set_prtD_bit;
+		set_prtD_bit;														//Clears RunBL_bit
 		wdt_enable(WDTO_15MS);while(1);
 	
 	
