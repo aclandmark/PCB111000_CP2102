@@ -88,15 +88,6 @@ if (MCUSR & (1 << PORF))													//POR detected
 	//setRunBL_bit;															//User switch pressed at POR.	Run bootloader
 	set_Run_BL_bit;}
 
-
-																			//Reset caused by user or default application
-//if(((WDTout_bit_set) && (Run_BL_bit_clear)) ||
-//(prtD_bit_set)){	
-																			//Reset caused by user or default application
-//if((WDTout_bit_set) && (Run_BL_bit_clear)){
-
-//if ((Run_BL_bit_clear) || (prtD_bit_set)){
-
 if (Run_BL_bit_clear){
 
 Prog_mem_address_H = 0;
@@ -135,9 +126,6 @@ MCUCR = (1<<IVSEL);
 		keypress = 'r'; break;
 		
 	case 'r':																//Run user/default application
-		//clear_Run_BL_bit;
-		//clear_RunBL_bit;
-		//eeprom_write_byte((uint8_t*)0x3F5, 0xFF);							//NEW LINE	Tells user app that r has just been pressed at p/r/t/D prompt
 		set_prtD_bit;														//Clears RunBL_bit
 		wdt_enable(WDTO_15MS);while(1);
 	
