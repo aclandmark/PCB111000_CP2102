@@ -90,9 +90,6 @@ PORTD = 0xFF;
 #define Start_clock		    	OCR0A = 0; TCNT0 = 0;  TCCR0B = (1 << CS01);
 
 
-//#define setRunBL_bit		eeprom_write_byte((uint8_t*)0x3FC, (eeprom_read_byte((uint8_t*)(0x3FC)) & (~2)));
-
-
 #define PINB4_down			((PINB & 0x10)^0x10)
 #define PINC5_down			((PINC & 0x20)^0x20)
 #define PINC5_up			(PINC & 0x20)
