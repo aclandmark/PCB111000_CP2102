@@ -69,34 +69,32 @@ char mode;																	//'h' for hex file, 't' for text file
 int main (void){ 															//Loaded at address 0x7000, the start of the boot loader section
 char keypress, eep_offset;
 
-	if((MCUSR & (1<<WDRF)) &&
-	(prtD_bit_clear))set_WDTout_bit;										//Record presence of a watch dog time out
+	if((MCUSR & (1<<WDRF)) &&												//If a WDTout has occurred record its presence provided that 
+	(prtD_bit_clear))set_WDTout_bit;										//it is not due to 'r' being pressed at the prtD... prompt 
 		
 	setup_HW;																//Resets watch dog timer
 
 if (MCUSR & (1 << PORF))													//POR detected
-{MCUSR = 0;																	//Clear reset flags
-	//clear_reset_control_reg;												
-	set_POR_bit;
-	if  (switch_up)															//No user switch activity	
+{MCUSR = 0;	
+	set_POR_bit;															//Clear all other bits in the "reset_ctl_reg"
+	if  (switch_up)															//No "reset control switch" activity
 	{MCUCR = (1<<IVCE);MCUCR = 0x0;											//select interrupt vector table starting at 0x0000
 	Prog_mem_address_H = 0;
 	Prog_mem_address_L = 0;
 	read_flash ();															//Check for the presence of a user application
 	if (Flash_readout == 0xFF)asm("jmp 0x6000");							//Run the default application (does not use interrupts)
 	else asm("jmp 0x0000");}												//Run the user application
-	//setRunBL_bit;															//User switch pressed at POR.	Run bootloader
-	set_Run_BL_bit;}
 
-if (Run_BL_bit_clear){
+	set_Run_BL_bit;}														//Prepare to jump to the prtD... prompt if "reset control switch" was pressed
 
+if (Run_BL_bit_clear){														//User app contains a SW_reset (Run_BL_bit will be clear)
 Prog_mem_address_H = 0;
 Prog_mem_address_L = 0;
 read_flash ();
 if (Flash_readout == 0xFF)asm("jmp 0x6000");								//Reset default application
 else asm("jmp 0x0000");}													//Reset user application
 
-cal_device;																	//Otherwise initiate the bootloader by checking the calibration status
+cal_device;																	//Prepare to display the prtD prompt
 
 MCUCR = (1<<IVCE);  														//Select the interrupt vector table starting at start of boot section
 MCUCR = (1<<IVSEL);
@@ -108,7 +106,7 @@ MCUCR = (1<<IVSEL);
 	else _delay_ms(100);
 	
 	switch(keypress){
-	case 'p':																//Program user application starting at address 09x0000
+	case 'p':																//Program user application starting at address 0x0000
 		mode = 'h';															//Hex programming mode
 		hex_programmer();													//Run programmer subroutine
 		asm("jmp 0x6880");													//Run hex verification routine
@@ -126,8 +124,8 @@ MCUCR = (1<<IVSEL);
 		keypress = 'r'; break;
 		
 	case 'r':																//Run user/default application
-		set_prtD_bit;														//Clears RunBL_bit
-		wdt_enable(WDTO_15MS);while(1);
+		set_prtD_bit;														//Clears all other "reset_ctl_reg" bits
+		wdt_enable(WDTO_15MS);while(1);										//Prog control jumps to 0x7000
 	
 	
 	case 'T':																//Program text document starting at address	0x5BFF									
