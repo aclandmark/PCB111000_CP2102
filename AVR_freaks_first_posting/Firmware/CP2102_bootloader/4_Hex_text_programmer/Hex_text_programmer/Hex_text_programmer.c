@@ -56,6 +56,8 @@ EEPROM locations
 #define set_WDTout_bit				eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~2))
 #define	set_Run_BL_bit				eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~4))
 #define set_prtD_bit				eeprom_write_byte((uint8_t*)reset_ctl_reg, ~8)
+#define prtD_bit_clear				(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 8)			
+
 
 #define WDTout_bit_set				!(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 2)
 #define Run_BL_bit_clear			(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 4)
@@ -67,7 +69,8 @@ char mode;																	//'h' for hex file, 't' for text file
 int main (void){ 															//Loaded at address 0x7000, the start of the boot loader section
 char keypress, eep_offset;
 
-	if(MCUSR & (1<<WDRF))set_WDTout_bit;									//Record presence of a watch dog time out
+	if((MCUSR & (1<<WDRF)) &&
+	(prtD_bit_clear))set_WDTout_bit;										//Record presence of a watch dog time out
 	//setWD_RF_bit;
 	setup_HW;																//Resets watch dog timer
 
