@@ -29,6 +29,13 @@ if (((signed char)eeprom_read_byte((uint8_t*)0x3F6) > -50)\
 &&  ((signed char)eeprom_read_byte((uint8_t*)0x3F6) < 50) && ((signed char)eeprom_read_byte((uint8_t*)0x3F6)\
 == (signed char)eeprom_read_byte((uint8_t*)0x3F7)))\
 {Comms_clock = 200 + (signed char) eeprom_read_byte((uint8_t*)0x3F6);}
+	
+	
+
+/**********************************************************************************/
+#define		reset_ctl_reg			0x3FC
+#define 	set_Run_BL_bit			eeprom_write_byte((uint8_t*)reset_ctl_reg, (eeprom_read_byte((uint8_t*)(reset_ctl_reg)) & (~4)));
+#define		clear_reset_ctl_reg		eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0)
 
 
 
@@ -42,7 +49,8 @@ OSC_CAL;\
 comms_cal;\
 set_up_pin_change_interrupt;\
 setup_one_wire_comms;\
-set_up_activity_leds;
+set_up_activity_leds;\
+clear_reset_ctl_reg;
 
 
 /************************************************************************************************************************************/
@@ -81,9 +89,10 @@ PORTD = 0xFF;
 /************************************************************************************************************************************/
 #define Start_clock		    	OCR0A = 0; TCNT0 = 0;  TCCR0B = (1 << CS01);
 
-#define boot_reset_ctl_reg			0x3FC
-#define 	set_Run_BL_bit			eeprom_write_byte((uint8_t*)boot_reset_ctl_reg, (eeprom_read_byte((uint8_t*)(0x3FC)) & (~4)));
-#define setRunBL_bit		eeprom_write_byte((uint8_t*)0x3FC, (eeprom_read_byte((uint8_t*)(0x3FC)) & (~2)));
+
+//#define setRunBL_bit		eeprom_write_byte((uint8_t*)0x3FC, (eeprom_read_byte((uint8_t*)(0x3FC)) & (~2)));
+
+
 #define PINB4_down			((PINB & 0x10)^0x10)
 #define PINC5_down			((PINC & 0x20)^0x20)
 #define PINC5_up			(PINC & 0x20)
