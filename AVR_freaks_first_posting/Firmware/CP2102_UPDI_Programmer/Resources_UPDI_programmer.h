@@ -13,14 +13,6 @@
 #define Prog_DD_Reg		DDRB
 
 
-/*
-//Prog port for FP display
-#define Prog_Port     PORTC
-#define Prog_pin    PINC4
-#define Prog_DD_bit   DDC4
-#define Prog_IO_Port  PINC
-#define Prog_DD_Reg   DDRC
-*/
 
 #define input_h                (Prog_IO_Port & (1 << Prog_pin))
 #define input_l        			(!(Prog_IO_Port & (1 << Prog_pin)))
