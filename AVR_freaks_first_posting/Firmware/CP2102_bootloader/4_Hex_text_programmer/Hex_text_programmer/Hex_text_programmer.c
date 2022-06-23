@@ -42,14 +42,7 @@ EEPROM locations
 #include "Hex_txt_bootloader.h"
 #define Version "Hex_txt_bootloader_V1 "
 
-/*#define setWD_RF_bit				eeprom_write_byte((uint8_t*)0x3FC, (eeprom_read_byte((uint8_t*)(0x3FC)) & (~1)));
-#define setRunBL_bit				eeprom_write_byte((uint8_t*)0x3FC, (eeprom_read_byte((uint8_t*)(0x3FC)) & (~2)));
-#define clear_reset_control_reg		eeprom_write_byte((uint8_t*)0x3FC, 0xFF);
-#define WD_RF_bit_set				(!(eeprom_read_byte ((uint8_t*)0x3FC) & 0x01))
-#define RunBL_bit_clear				(eeprom_read_byte ((uint8_t*)0x3FC) & 0x02)			
-#define clear_RunBL_bit				eeprom_write_byte((uint8_t*)0x3FC, (eeprom_read_byte((uint8_t*)(0x3FC)) | 2));*/	
-#define switch_up					(PINC & 0x20)
-
+#define Reset_control_switch_up		(PINC & 0x20)
 
 #define reset_ctl_reg				0x3FC
 #define set_POR_bit					eeprom_write_byte((uint8_t*)reset_ctl_reg, ~1)
@@ -77,7 +70,7 @@ char keypress, eep_offset;
 if (MCUSR & (1 << PORF))													//POR detected
 {MCUSR = 0;	
 	set_POR_bit;															//Clear all other bits in the "reset_ctl_reg"
-	if  (switch_up)															//No "reset control switch" activity
+	if  (Reset_control_switch_up)															//No "reset control switch" activity
 	{MCUCR = (1<<IVCE);MCUCR = 0x0;											//select interrupt vector table starting at 0x0000
 	Prog_mem_address_H = 0;
 	Prog_mem_address_L = 0;
