@@ -1,14 +1,13 @@
 
 
 
-All resets cause program control tojump to the bootloader
+All resets cause program control to jump to the bootloader
 Note: logic is inverted. This means that
 	Clearing a register reaves it containing 0xFF
 	Clearing a bit leaves it as a 1
 	Setting a bit leaves it as a 0
 
 
-The new regime
 reset_ctl_reg (0x3FC)
 bit 0	POR_bit				At POR set reg to ~1		
 bit 1	WDTout_bit			Read-modify-write
