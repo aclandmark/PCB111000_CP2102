@@ -3,7 +3,7 @@
 #define T0_delay_5ms 	5,178
 
 
-void USART_init (unsigned char, unsigned char);
+void setup_PC_comms (unsigned char, unsigned char);
 void Timer_T0_sub(char, unsigned char);
 char isCharavailable (int);
 char waitforkeypress(void);
@@ -14,7 +14,7 @@ char receiveChar(void);
 
 
 /**********************************************************************************************/
-void USART_init (unsigned char UBRROH_N, unsigned char UBRR0L_N ){
+void setup_PC_comms (unsigned char UBRROH_N, unsigned char UBRR0L_N ){
 UCSR0B = 0;
 UBRR0H = UBRROH_N; 
 UBRR0L = UBRR0L_N;  
