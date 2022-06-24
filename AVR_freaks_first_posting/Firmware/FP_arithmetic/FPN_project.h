@@ -9,18 +9,20 @@ signed char expt;
 /************************************************************************************************************************************/
 #define setup_328_HW \
 \
-\
+setup_watchdog;\
 ADMUX |= (1 << REFS0);\
 initialise_IO;\
 OSC_CAL;\
 \
 comms_cal;\
 set_up_pin_change_interrupt;\
-USART_init(0,16);\
+\
 setup_one_wire_comms;\
 set_up_activity_leds;\
-\
-sei();
+sei();\
+setup_PC_comms(0,16);\
+_delay_ms(10);\
+clear_reset_ctl_reg;
 
 /************************************************************************************************************************************/
 #define wdr()  __asm__ __volatile__("wdr")
@@ -52,6 +54,9 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 &&  (eeprom_read_byte((uint8_t*)0x3FF) < 0xF0) && (eeprom_read_byte((uint8_t*)0x3FF)\
 == eeprom_read_byte((uint8_t*)0x3FE))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
 
+
+#define reset_ctl_reg        0x3FC
+#define clear_reset_ctl_reg   eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0)
 
 
 
