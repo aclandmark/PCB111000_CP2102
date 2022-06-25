@@ -3,7 +3,7 @@
 #include <avr/wdt.h>
 
 char User_response;
-char WDT_out_status;
+char reset_status;
 
 #define T1_delay_250ms 5,0xF85F
 
@@ -17,20 +17,28 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 
 
 /**********************************************************************************/
-#define start_reset_detected              eeprom_read_byte ((uint8_t*)0x3FC) == ~0
-#define flaggged__WDTout_detected         (eeprom_read_byte ((uint8_t*)0x3F5) == (byte)~2)
-#define Signal_flaggged__WDTout           eeprom_write_byte((uint8_t*)0x3F5, ~2);
-#define Reset_WDT_out_register            eeprom_write_byte((uint8_t*)0x3F5, ~0);
+//#define start_reset_detected              eeprom_read_byte ((uint8_t*)0x3FC) == ~0
+//#define flaggged__WDTout_detected         (eeprom_read_byte ((uint8_t*)0x3F5) == (byte)~2)
+//#define Signal_flaggged__WDTout           eeprom_write_byte((uint8_t*)0x3F5, ~2);
+//#define Reset_WDT_out_register            eeprom_write_byte((uint8_t*)0x3F5, ~0);
 
-#define WDTout_with_interrupt_detected    (eeprom_read_byte((uint8_t*)0x3F5) == (byte)~4)
-#define Signal_WDTout_with_interrupt      eeprom_write_byte((uint8_t*)0x3F5, ~4);
+/*************************************************************************************/
+#define Reset_control_switch_up    (PINC & 0x20)
+
+#define reset_ctl_reg                         0x3FC
+#define Signal_flagged_WDTout                 eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x10)
+#define Signal_WDTout_with_interrupt          eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x20)
+
+
+//#define WDTout_with_interrupt_detected    (eeprom_read_byte((uint8_t*)0x3F5) == (byte)~4)
+//#define Signal_WDTout_with_interrupt      eeprom_write_byte((uint8_t*)0x3F5, ~4);
 
 
 
 /************************************************************************************************************************************/
-#define setup_328_HW_Arduino_plus \
+#define setup_328_HW_Arduino \
 \
-One_25ms_WDT_with_interrupt;\
+setup_watchdog;\
 ADMUX |= (1 << REFS0);\
 initialise_IO;\
 OSC_CAL;\
@@ -40,15 +48,6 @@ set_up_pin_change_interrupt_on_PC5;\
 \
 setup_one_wire_comms;\
 set_up_activity_leds;\
-\
-if (start_reset_detected);\
-\
-else\
-{if(flaggged__WDTout_detected)\
-WDT_out_status = 1;\
-else if (WDTout_with_interrupt_detected)WDT_out_status = 2; \
-else {WDT_out_status = 3;}}\
-Reset_WDT_out_register;\
 sei();\
 Serial.begin(115200);\
 while (!Serial);
@@ -89,6 +88,24 @@ PORTC = 0xFF;\
 PORTD = 0xFF;
 
 //All ports are initialised to weak pull up (WPU)
+
+
+
+
+/**********************************************************************************/
+#define reset_ctl_reg        0x3FC
+#define clear_reset_ctl_reg   eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0)
+
+
+#define determine_reset_source \
+switch (eeprom_read_byte((uint8_t*)reset_ctl_reg))\
+{case ((byte)~1): reset_status = 1; break;\
+case ((byte)~2): reset_status = 2; break;\
+case ((byte)~8): reset_status = 3; break;\
+case ((byte) ~0x12):  reset_status = 4; break;\
+case ((byte) ~0x22):  reset_status = 5; break;}\
+clear_reset_ctl_reg;
+
 
 
 
