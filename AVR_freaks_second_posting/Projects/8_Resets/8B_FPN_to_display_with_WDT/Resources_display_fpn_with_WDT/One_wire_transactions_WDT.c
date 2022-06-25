@@ -75,7 +75,7 @@ _delay_ms(25); wdr();
 if(PINC5_up)return;
 for(int m = 0; m < 5; m++){_delay_ms(45); wdr();}			//_delay_ms(225);										//Switch bounce delay
 if(PINC5_up)
-{setRunBL_bit; }
+{set_Run_BL_bit; }
 else{
 LED_1_on; LED_2_on;
 for(int m = 0; m < 5; m++){_delay_ms(45); wdr();}			//_delay_ms(250);
