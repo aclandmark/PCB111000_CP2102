@@ -17,16 +17,19 @@ float duty_cycle;
 int num_time_slots;            //50 45
 int num_harmonics;             //60 30
 
-setup_328_HW_Arduino_plus;
+setup_328_HW_Arduino;
+determine_reset_source;
+One_25ms_WDT_with_interrupt;
+
 set_up_PCI;
 
-switch (WDT_out_status)
-{case 1: Timer_T1_sub_with_interrupt(T1_delay_250ms);
+switch (reset_status)
+{case 4: Timer_T1_sub_with_interrupt(T1_delay_250ms);                                   //Flagged WDTout
 for(int p = 0; p <10; p++)newline; break;
 
-case 2:Serial.write("\r\n\r\nNumerical result too large for a 32 bit number.\r\n");
-
-case 3: enable_PCI_on_sw1;
+case 5:Serial.write("\r\n\r\nNumerical result too large for a 32 bit number.\r\n");     //WDTout with interrupt
+case 2:                                                                                   //WDTout
+case 3: enable_PCI_on_sw1;                                                                //Post prtD
  eeprom_write_byte((uint8_t*)(0x0),'1');
  eeprom_write_byte((uint8_t*)(0x1),45); 
  eeprom_write_byte((uint8_t*)(0x2),0); 
@@ -97,7 +100,7 @@ float_to_EEPROM (Num_2, 0x5);
 Timer_T1_sub_with_interrupt(T1_delay_250ms);
 return;}
 
-Signal_flaggged__WDTout; 
+Signal_flagged_WDTout; 
 setup_watchdog; SW_reset;}
   
 
