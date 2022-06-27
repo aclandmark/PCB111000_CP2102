@@ -52,9 +52,9 @@ EEPROM locations
 #define prtD_bit_clear				(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 8)			
 #define prtD_bit_set				!(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 8)
 
-#define WDTout_bit_set				!(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 2)
+//#define WDTout_bit_set				((!(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 2)) || (!(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 40)))
 #define Run_BL_bit_clear			(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 4)
-#define clear_Run_BL_bit			eeprom_write_byte((uint8_t*)reset_ctl_reg, (eeprom_read_byte((uint8_t*)reset_ctl_reg) | 4))		
+//#define clear_Run_BL_bit			eeprom_write_byte((uint8_t*)reset_ctl_reg, (eeprom_read_byte((uint8_t*)reset_ctl_reg) | 4))		
 
 
 char mode;																	//'h' for hex file, 't' for text file
