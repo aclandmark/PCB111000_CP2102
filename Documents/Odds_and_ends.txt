@@ -1,0 +1,3 @@
+
+Path for WDT header file
+Atmel > Studio > 7.0 > toolchain > avr8 > avr8-gnu-toolchain > avr > include > avr
