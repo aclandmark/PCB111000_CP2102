@@ -81,7 +81,7 @@ LED_1_on; LED_2_on;
 for(int m = 0; m < 5; m++){_delay_ms(45); wdr();}			//_delay_ms(250);
 if(PINC5_down)												//Wait for switch to be released
 {sei();One_wire_Tx_char = 'G'; UART_Tx_1_wire(); }}
-SW_reset;}}
+WDTout;}}
 
 
 
