@@ -2,9 +2,16 @@
 
 
 #include <avr/wdt.h>
+char reset_status;
+
+#define Signal_WDTout_with_interrupt          eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x20)
+#define Signal_SW_reset                       eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x40)
+#define clear_display                         One_wire_Tx_char = 'c';  UART_Tx_1_wire();
+#define clear_reset_ctl_reg                   eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0)
 
 
-/**********************************************************************************/
+
+/************************************************************************************************************************************/
 #define  OSC_CAL \
 if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 &&  (eeprom_read_byte((uint8_t*)0x3FF) < 0xF0) && (eeprom_read_byte((uint8_t*)0x3FF)\
@@ -13,6 +20,7 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 //If the internal clock has been calibrated, a calibration byte will be found in EEPROM locations 0x3FF/E
 #define reset_ctl_reg        0x3FC
 #define clear_reset_ctl_reg   eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0)
+
 
 
 /************************************************************************************************************************************/
@@ -31,7 +39,10 @@ set_up_activity_leds;\
 sei();\
 setup_PC_comms(0,16);\
 _delay_ms(10);\
-clear_reset_ctl_reg;
+determine_reset_source;\
+One_25ms_WDT_with_interrupt;\
+diagnostics;
+
 
 //The reset control switch is connected to PC5
 
@@ -47,8 +58,17 @@ MCUSR &= ~(1<<WDRF);\
 WDTCSR |= (1 <<WDCE) | (1<< WDE);\
 WDTCSR = 0;
 
-#define SW_reset {wdt_enable(WDTO_30MS);while(1);}
 
+#define SW_reset {Signal_SW_reset;wdt_enable(WDTO_30MS);while(1);}
+#define WDTout {wdt_enable(WDTO_30MS);while(1);}
+
+
+#define One_25ms_WDT_with_interrupt \
+wdr();\
+WDTCSR |= (1 <<WDCE) | (1<< WDE);\
+WDTCSR = (1<< WDE) | (1 << WDIE) |  (1 << WDP0)  |  (1 << WDP1);
+
+//WDTCSR = (1<< WDE) | (1 << WDIE) |  (1 << WDP0)  |  (1 << WDP1)  |  (1 << WDP2);
 
 
 
@@ -64,12 +84,48 @@ PORTD = 0xFF;
 
 //All ports are initialised to weak pull up (WPU)
 
-#define clear_display   One_wire_Tx_char = 'c';  UART_Tx_1_wire();
+
+
+
+
+/************************************************************************************************************************************/
+#define determine_reset_source \
+switch (eeprom_read_byte((uint8_t*)reset_ctl_reg))\
+{case ((byte)~1): reset_status = 1; break;\
+case ((byte)~0x42): reset_status = 2; break;\
+case ((byte)~8): reset_status = 3; break;\
+case ((byte) ~0x12):  reset_status = 4; break;\
+case ((byte) ~0x22):  reset_status = 5; break;\
+case ((byte) ~0x2):  reset_status = 6; break;}\
+clear_reset_ctl_reg;
+
+/*
+reset_status:
+1 POR                 bit 0 of reset control register
+2 SW_reset            bits 6 and 1 
+3 prtD                bit 3
+4 Flaged WDTout       bit 4
+5 WDTout with ISR     bit 5
+6 WDTout              bit 1
+*/
+
+#define diagnostics \
+if(reset_status == 5)\
+{Serial.write("\r\nProgram halted\r\n");while(1)wdr();}\
+if(reset_status == 6)\
+{Serial.write("\r\nWDTout\r\n");while(1)wdr();}
+
+
+
+
+/************************************************************************************************************************************/
+
+
 
 
 
 /************************************************************************************************************************************/
 #include "Resources_first_project\One_wire_header.h"
-#include "Resources_first_project\One_wire_transactions.c"
+#include "Resources_first_project\One_wire_transactions_WDT.c"
 #include "Resources_first_project\Basic_IO_and_Timer.c"
 #include "Resources_first_project\First_project_subroutines.c"
