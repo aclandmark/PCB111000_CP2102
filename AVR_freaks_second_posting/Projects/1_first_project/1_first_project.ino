@@ -17,6 +17,36 @@
 
 #include "First_project_header.h"
 
+ 
+int main (void)                          //Example 11
+  { unsigned int PORT_1;
+
+  setup_328_HW;
+    
+  PORT_1 = 1; 
+  
+  for (int m = 0; m <= 15; m++)
+  {One_wire_Tx_2_integers(PORT_1, PORT_1);
+    _delay_ms(30); 
+    PORT_1 = PORT_1 << 1;
+    wdr();
+  }
+  
+  //while(1);
+  SW_reset;
+  return 1;
+  }
+
+ISR (WDT_vect){Signal_WDTout_with_interrupt;WDTout;}
+  
+
+/**************************************************************************************************
+
+  Use this area for saving the examples when they have been got working and finished with
+  Use the space above for the active program (the one eing worked on)
+
+
+***************Example 1: One bar sweep right to left*********************************************
 int main (void)                          //Example 1
   { unsigned int PORT_1;
 
@@ -30,36 +60,6 @@ int main (void)                          //Example 1
   SW_reset;
   return 1;
   }
-
-
-
-
- /*
-int main (void)                          //Example 10
-{ unsigned int PRN;
-  unsigned char PRN_counter;
-
-  setup_328_HW;
-  PRN_counter = 0;
-  PRN = PRN_16bit_GEN (0, &PRN_counter);
-  while (1)
-  { PRN = PRN_16bit_GEN (PRN, &PRN_counter);
-    One_wire_Tx_2_integers(PRN, (PRN << ((PRN % 2) + 1)));
-    Timer_T2_10mS_delay_x_m(10);
-  }
-}*/
-  
-
-
-
-/**************************************************************************************************
-
-  Use this area for saving the examples when they have been got working and finished with
-  Use the space above for the active program (the one eing worked on)
-
-
-***************Example 1: One bar sweep right to left*********************************************
-
   
 
 
@@ -265,6 +265,18 @@ int main (void)                          //Example 8
 
 
 *****************Example 10: Another Random number display*****************************************
+int main (void)                          //Example 10
+{ unsigned int PRN;
+  unsigned char PRN_counter;
 
+  setup_328_HW;
+  PRN_counter = 0;
+  PRN = PRN_16bit_GEN (0, &PRN_counter);
+  while (1)
+  { PRN = PRN_16bit_GEN (PRN, &PRN_counter);
+    One_wire_Tx_2_integers(PRN, (PRN << ((PRN % 2) + 1)));
+    Timer_T2_10mS_delay_x_m(10);
+  }
+}
 
 **************************************************************************************************/
