@@ -15,7 +15,7 @@ bit 2	Run_BL_bit			Read-modify-write
 bit 3	prtD				At "r" set reg to ~8
 bit 4	Flagged WDTout			Set reg to ~0x10
 bit 5	WDTout with ISR 		Set reg to ~0x20
-bit 6	planned SW_reset		Set reg to ~0x40
+bit 6	SW_reset			Set reg to ~0x40
 
 
 Apply Power 	
