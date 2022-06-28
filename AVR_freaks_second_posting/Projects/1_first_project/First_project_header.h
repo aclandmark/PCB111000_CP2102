@@ -2,12 +2,11 @@
 
 
 #include <avr/wdt.h>
+
+char User_response;
 char reset_status;
 
-#define Signal_WDTout_with_interrupt          eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x20)
-#define Signal_SW_reset                       eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x40)
-#define clear_display                         One_wire_Tx_char = 'c';  UART_Tx_1_wire();
-#define clear_reset_ctl_reg                   eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0)
+
 
 
 
@@ -24,7 +23,29 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 
 
 /************************************************************************************************************************************/
-#define setup_328_HW \
+#define setup_328_HW_Arduino_IO \
+\
+setup_watchdog;\
+ADMUX |= (1 << REFS0);\
+initialise_IO;\
+OSC_CAL;\
+\
+comms_cal;\
+set_up_pin_change_interrupt_on_PC5;\
+\
+setup_one_wire_comms;\
+set_up_activity_leds;\
+sei();\
+Serial.begin(115200);\
+while (!Serial);\
+determine_reset_source;\
+One_25ms_WDT_with_interrupt;\
+diagnostics;
+
+
+
+/************************************************************************************************************************************/
+#define setup_328_HW_Basic_IO \
 \
 setup_watchdog;\
 ADMUX |= (1 << REFS0);\
@@ -42,9 +63,6 @@ _delay_ms(10);\
 determine_reset_source;\
 One_25ms_WDT_with_interrupt;\
 diagnostics;
-
-
-//The reset control switch is connected to PC5
 
 
 
@@ -68,8 +86,6 @@ wdr();\
 WDTCSR |= (1 <<WDCE) | (1<< WDE);\
 WDTCSR = (1<< WDE) | (1 << WDIE) |  (1 << WDP0)  |  (1 << WDP1);
 
-//WDTCSR = (1<< WDE) | (1 << WDIE) |  (1 << WDP0)  |  (1 << WDP1)  |  (1 << WDP2);
-
 
 
 /************************************************************************************************************************************/
@@ -85,6 +101,11 @@ PORTD = 0xFF;
 //All ports are initialised to weak pull up (WPU)
 
 
+
+/************************************************************************************************************************************/
+#define Signal_WDTout_with_interrupt          eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x20)
+#define Signal_SW_reset                       eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~0x40))
+#define clear_reset_ctl_reg                   eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0)
 
 
 
@@ -109,6 +130,8 @@ reset_status:
 6 WDTout              bit 1
 */
 
+
+/************************************************************************************************************************************/
 #define diagnostics \
 if(reset_status == 5)\
 {Serial.write("\r\nProgram halted\r\n");while(1)wdr();}\
@@ -119,7 +142,11 @@ if(reset_status == 6)\
 
 
 /************************************************************************************************************************************/
-
+#define User_prompt_Arduino \
+{while(1){\
+do{Serial.write("R?    ");}   while((isCharavailable_with_WDT(35) == 0));\
+User_response = Serial.read();\
+if((User_response == 'R') || (User_response == 'r'))break;} Serial.write("\r\n");}
 
 
 
