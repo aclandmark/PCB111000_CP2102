@@ -22,7 +22,7 @@ int main (void)                          //Example 11
   { unsigned int PORT_1;
 
   setup_328_HW_Arduino_IO;
-    //if(reset_status == 1)User_prompt_Arduino;       //Line included for test purposes only
+    if(reset_status == 1)User_prompt_Arduino;       //Line included for test purposes only
   PORT_1 = 1; 
   
   for (int m = 0; m <= 15; m++)
