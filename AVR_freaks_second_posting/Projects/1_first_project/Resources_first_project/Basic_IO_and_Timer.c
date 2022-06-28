@@ -23,6 +23,7 @@ void setup_PC_comms (unsigned char, unsigned char);
 void Timer_T2_10mS_delay_x_m(int);
 void Timer_T2_sub(char, unsigned char);
 char isCharavailable (int);
+char isCharavailable_with_WDT (int);
 char Char_from_PC(void);
 char waitforkeypress(void);
 void String_to_PC(const char*);
@@ -58,9 +59,20 @@ TIFR2 |= (1<<TOV2); TCCR2B = 0;}
 
 /**********************************************************************************************/
 char isCharavailable (int m){int n = 0;		
-while (!(UCSR0A & (1 << RXC0))){n++;
+while (!(Serial.available())){n++;
 if (n>8000) {m--;n = 0;}if (m == 0)return 0;}
 return 1;}
+
+
+char isCharavailable_with_WDT (int m){int n = 0;
+while (!(Serial.available())){n++;	wdr();									//Increments "n" from zero to 8000
+if (n>8000) {m--;n = 0;}if (m == 0)return 0;}						//Checks the receiver at each increment
+return 1;}																//Returns a 1 as soon as a character is received
+																		//If no character is sent it pauses a while (10m mS)
+																		//and eventually returns zero.
+																		//Note: this subroutine enables us to reset the WDT (wdr();)
+																		//in a way that is not possible with "waitforkeypress()"
+
 
 
 
