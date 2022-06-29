@@ -16,10 +16,11 @@ EEPROM locations
 0x3FE	User cal
 0x3FD	Default cal
 0x3FC	Controls reset and program flow						
-	Bit 0	WD_RF	If set:	Reset was due to a WDTout			Use setWD_RF and clearWD_RF	
-	Bit 1	RunBL	if set:	Running bootloader					Use set_RunBL and clear_RunBL
-	Clear this register if POR is detected  (i.e. set to 0xFF)	Use clear_reset_control_reg
-	Note: There is no external reset facility. User control is enabled using a switch on PINC3.
+	bit 0	POR_bit	
+	bit 1	WDTout_bit
+	bit 2	Run_BL_bit
+	bit 3	prtD_bit
+	Note: There is no external reset facility. User control is enabled using a switch on PINC5.
 
 0x3FB	prog_counter high byte				No longer used
 0x3FA	prog_counter low byte				No longer used
@@ -27,7 +28,7 @@ EEPROM locations
 0x3F8	cmd_counter low byte
 0x3F7	One_wire_cal
 0x3F6	One wire cal
-0x3F5	Watch dog timeout					Set to zero just before SW_reset, set to 0xFF at reset
+0x3F5	Watch dog timeout					No longer used
 0x3F4	Used to control text print out  	No longer needed
 0x3F3	Used by PRN generators
 0x3F2	Used by PRN generators
@@ -50,11 +51,7 @@ EEPROM locations
 #define	set_Run_BL_bit				eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~4))
 #define set_prtD_bit				eeprom_write_byte((uint8_t*)reset_ctl_reg, ~8)
 #define prtD_bit_clear				(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 8)			
-#define prtD_bit_set				!(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 8)
-
-//#define WDTout_bit_set				((!(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 2)) || (!(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 40)))
 #define Run_BL_bit_clear			(eeprom_read_byte((uint8_t*)reset_ctl_reg) & 4)
-//#define clear_Run_BL_bit			eeprom_write_byte((uint8_t*)reset_ctl_reg, (eeprom_read_byte((uint8_t*)reset_ctl_reg) | 4))		
 
 
 char mode;																	//'h' for hex file, 't' for text file
