@@ -101,7 +101,15 @@ PORTD = 0xFF;
 
 
 /************************************************************************************************************************************/
+#define User_prompt_Arduino \
+{while(1){\
+do{Serial.write("R?    ");}   while((isCharavailable_with_WDT(35) == 0));\
+User_response = Serial.read();\
+if((User_response == 'R') || (User_response == 'r'))break;} Serial.write("\r\n");}
 
+
+
+/************************************************************************************************************************************/
 #define reset_ctl_reg        0x3FC
 #define Signal_WDTout_with_interrupt          eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x20)
 #define Signal_SW_reset                       eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~0x40))
@@ -137,16 +145,6 @@ if(reset_status == 5)\
 {Serial.write("\r\nProgram halted\r\n");while(1)wdr();}\
 if(reset_status == 6)\
 {Serial.write("\r\nWDTout\r\n");while(1)wdr();}
-
-
-
-/************************************************************************************************************************************/
-#define User_prompt_Arduino \
-{while(1){\
-do{Serial.write("R?    ");}   while((isCharavailable_with_WDT(35) == 0));\
-User_response = Serial.read();\
-if((User_response == 'R') || (User_response == 'r'))break;} Serial.write("\r\n");}
-
 
 
 
