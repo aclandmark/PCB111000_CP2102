@@ -125,7 +125,8 @@ case ((byte)~0x42): reset_status = 2; break;\
 case ((byte)~8): reset_status = 3; break;\
 case ((byte) ~0x12):  reset_status = 4; break;\
 case ((byte) ~0x22):  reset_status = 5; break;\
-case ((byte) ~0x2):  reset_status = 6; break;}\
+case ((byte) ~0x2):  reset_status = 6; break;\
+case ((byte) ~0):  reset_status = 7; break;}\
 clear_reset_ctl_reg;
 
 /*
@@ -141,8 +142,8 @@ reset_status:
 
 /************************************************************************************************************************************/
 #define diagnostics \
-if(reset_status == 5)\
-{Serial.write("\r\nProgram halted\r\n");while(1)wdr();}\
+if(reset_status == 7)\
+{Serial.write("\r\nProgram restarted.");}\
 if(reset_status == 6)\
 {Serial.write("\r\nWDTout\r\n");while(1)wdr();}
 
