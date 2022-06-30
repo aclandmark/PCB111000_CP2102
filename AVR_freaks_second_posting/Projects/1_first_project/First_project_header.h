@@ -110,7 +110,7 @@ if((User_response == 'R') || (User_response == 'r'))break;} Serial.write("\r\n")
 
 
 /************************************************************************************************************************************/
-#define reset_ctl_reg        0x3FC
+#define reset_ctl_reg                         0x3FC
 #define Signal_WDTout_with_interrupt          eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x20)
 #define Signal_SW_reset                       eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~0x40))
 #define clear_reset_ctl_reg                   eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0)
@@ -123,7 +123,7 @@ switch (eeprom_read_byte((uint8_t*)reset_ctl_reg))\
 {case ((byte)~1): reset_status = 1; break;\
 case ((byte)~0x42): reset_status = 2; break;\
 case ((byte)~8): reset_status = 3; break;\
-case ((byte) ~0x12):  reset_status = 4; break;\
+case ((byte) ~0x52):  reset_status = 4; break;\
 case ((byte) ~0x22):  reset_status = 5; break;\
 case ((byte) ~0x2):  reset_status = 6; break;\
 case ((byte) ~0):  reset_status = 7; break;}\
@@ -131,12 +131,15 @@ clear_reset_ctl_reg;
 
 /*
 reset_status:
-1 POR                 bit 0 of reset control register
-2 SW_reset            bits 6 and 1 
-3 prtD                bit 3
-4 Flaged WDTout       bit 4
-5 WDTout with ISR     bit 5
-6 WDTout              bit 1
+1 POR                     bit 0 of reset control register
+2 SW_reset                bits 6 and 1 
+3 prtD                    bit 3
+4 Flaged WDTout           bit 6,4 and 1
+5 WDTout with ISR         bit 5 and 1
+6 WDTout                  bit 1
+7 As 5 but ISR missing    No bits
+
+Note : Set bit 2 to generate the prtD... prompt 
 */
 
 
@@ -155,3 +158,8 @@ if(reset_status == 6)\
 #include "Resources_first_project\One_wire_transactions_WDT.c"
 #include "Resources_first_project\Basic_IO_and_Timer.c"
 #include "Resources_first_project\First_project_subroutines.c"
+
+
+
+
+/************************************************************************************************************************************/
