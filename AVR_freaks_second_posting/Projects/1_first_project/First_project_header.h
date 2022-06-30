@@ -38,7 +38,7 @@ Serial.begin(115200);\
 while (!Serial);\
 determine_reset_source;\
 One_25ms_WDT_with_interrupt;\
-diagnostics;
+failsafe;
 
 
 
@@ -60,7 +60,7 @@ setup_PC_comms(0,16);\
 _delay_ms(10);\
 determine_reset_source;\
 One_25ms_WDT_with_interrupt;\
-diagnostics;
+failsafe;
 
 
 
@@ -141,7 +141,7 @@ reset_status:
 
 
 /************************************************************************************************************************************/
-#define diagnostics \
+#define failsafe \
 if(reset_status == 7)\
 {Serial.write("\r\nProgram restarted.");}\
 if(reset_status == 6)\
