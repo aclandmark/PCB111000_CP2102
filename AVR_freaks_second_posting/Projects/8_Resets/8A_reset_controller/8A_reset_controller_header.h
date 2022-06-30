@@ -4,6 +4,7 @@
 
 char User_response;
 char reset_status;
+char copy_of_reset_ctl_reg;
 
 
 
@@ -14,9 +15,6 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 == eeprom_read_byte((uint8_t*)0x3FE))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
 
 //If the internal clock has been calibrated, a calibration byte will be found in EEPROM locations 0x3FF/E
-
-
-
 
 
 
@@ -37,9 +35,7 @@ sei();\
 Serial.begin(115200);\
 while (!Serial);\
 determine_reset_source;\
-One_25ms_WDT_with_interrupt;\
-diagnostics;
-
+One_25ms_WDT_with_interrupt;
 
 //The reset control switch is connected to PC5
 
@@ -62,8 +58,7 @@ sei();\
 setup_PC_comms(0,16);\
 _delay_ms(10);\
 determine_reset_source;\
-One_25ms_WDT_with_interrupt;\
-diagnostics;
+One_25ms_WDT_with_interrupt;
 
 
 /************************************************************************************************************************************/
@@ -100,6 +95,7 @@ PORTD = 0xFF;
 //All ports are initialised to weak pull up (WPU)
 
 
+
 /************************************************************************************************************************************/
 #define User_prompt_Arduino \
 {while(1){\
@@ -108,11 +104,16 @@ User_response = Serial.read();\
 if((User_response == 'R') || (User_response == 'r'))break;} Serial.write("\r\n");}
 
 
+
 /**********************************************************************************/
-#define reset_ctl_reg        0x3FC
+#define reset_ctl_reg                         0x3FC
+#define Signal_flagged_WDTout                 eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x10)
 #define Signal_WDTout_with_interrupt          eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x20)
 #define Signal_SW_reset                       eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~0x40))
 #define clear_reset_ctl_reg                   eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0)
+
+#define Reset_control_switch_up               (PINC & 0x20)
+
 
 
 
@@ -125,7 +126,8 @@ case ((byte)~0x42): reset_status = 2; break;\
 case ((byte)~8): reset_status = 3; break;\
 case ((byte) ~0x52):  reset_status = 4; break;\
 case ((byte) ~0x22):  reset_status = 5; break;\
-case ((byte) ~0x2):  reset_status = 6; break;}\
+case ((byte) ~0x2):  reset_status = 6; break;\
+case ((byte) ~0): reset_status = 7; break;}\
 copy_of_reset_ctl_reg = eeprom_read_byte((uint8_t*)reset_ctl_reg);\
 clear_reset_ctl_reg;
 
@@ -141,7 +143,7 @@ reset_status:
 
 
 /************************************************************************************************************************************/
-#define diagnostics \
+#define fail_safe \
 if(reset_status == 5)\
 {Serial.write("\r\nProgram halted (WDTout with ISR)\r\n");\
 Char_to_PC_as_binary((byte)copy_of_reset_ctl_reg);\
