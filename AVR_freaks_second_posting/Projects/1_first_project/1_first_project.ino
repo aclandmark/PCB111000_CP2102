@@ -22,23 +22,20 @@ int main (void)                          //Example 11
   { unsigned int PORT_1;
 
   setup_328_HW_Arduino_IO;
-    if(reset_status == 1)User_prompt_Arduino;       //Line included for test purposes only
+    
   PORT_1 = 1; 
   
   for (int m = 0; m <= 15; m++)
   {One_wire_Tx_2_integers(PORT_1, PORT_1);
     _delay_ms(30); 
     PORT_1 = PORT_1 << 1;
-    wdr();
-  }
+    wdr();}
 
-  //cli();                                          //Three lines included for test purposes
+                                           //Three lines included for test purposes
   //while(1);
-  //SW_reset;
+  SW_reset;
   return 1;
   }
-
-ISR (WDT_vect){Signal_WDTout_with_interrupt;WDTout;}
   
 
 /**************************************************************************************************
