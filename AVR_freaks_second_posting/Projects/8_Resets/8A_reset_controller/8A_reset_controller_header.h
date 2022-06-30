@@ -133,12 +133,15 @@ clear_reset_ctl_reg;
 
 /*
 reset_status:
-1 POR                 bit 0 of reset control register
-2 SW_reset            bits 6 and 1 
-3 prtD                bit 3
-4 Flaged WDTout       bit 6,4 and 1
-5 WDTout with ISR     bit 5 and 1
-6 WDTout              bit 1
+1 POR                     bit 0 of reset control register
+2 SW_reset                bits 6 and 1 
+3 prtD                    bit 3
+4 Flaged WDTout           bit 6,4 and 1
+5 WDTout with ISR         bit 5 and 1
+6 WDTout                  bit 1
+7 As 5 but ISR missing    No bits
+
+Note : Set bit 2 to generate the prtD... prompt
 */
 
 
