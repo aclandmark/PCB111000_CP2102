@@ -103,7 +103,7 @@ else return 1;}
 
 
 /***************************************************************************************************************/
-char wait_for_return_key(void){                  							//Detects \r\n, \r or \n
+char wait_for_return_key_A(void){                  							//Detects \r\n, \r or \n
 char keypress,temp;
 while(1){
 if (isCharavailable_A(8)){
