@@ -75,7 +75,7 @@ if (keypress == '.')display_buffer[0] = '0' | 0x80;
 
 Send_float_num_string_with_WDT;                                        //Update display with the first key press
 while(1){
-if ((keypress = wait_for_return_key())  =='\r')break;           //Detect return key press (i.e \r or\r\n)
+if ((keypress = wait_for_return_key_A())  =='\r')break;           //Detect return key press (i.e \r or\r\n)
 
 if ((decimal_digit(keypress)) || (keypress == '.')
 || (keypress == '\b')|| (keypress == '-')
