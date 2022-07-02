@@ -155,7 +155,7 @@ if(reset_status == 6)\
 
 /************************************************************************************************************************************/
 #include "Resources_first_project\One_wire_header.h"
-#include "Resources_first_project\One_wire_transactions_WDT.c"
+#include "Resources_first_project\One_wire_transactions.c"
 #include "Resources_first_project\Basic_IO_and_Timer.c"
 #include "Resources_first_project\First_project_subroutines.c"
 
