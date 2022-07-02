@@ -71,17 +71,17 @@ Rx_complete = 1;}}}
 /*************************************************************************************************************/
 ISR(PCINT1_vect){ 									//Interogates vertical switch presses
 if(PINC5_down){
-_delay_ms(25);
+_delay_ms(25); wdr();
 if(PINC5_up)return;
-_delay_ms(225);										//Switch bounce delay
+for(int m = 0; m < 5; m++){_delay_ms(45); wdr();}			//_delay_ms(225);										//Switch bounce delay
 if(PINC5_up)
 {set_Run_BL_bit; }
 else{
 LED_1_on; LED_2_on;
-_delay_ms(250);
-if(PINC5_down)										//Wait for switch to be released
+for(int m = 0; m < 5; m++){_delay_ms(45); wdr();}			//_delay_ms(250);
+if(PINC5_down)												//Wait for switch to be released
 {sei();One_wire_Tx_char = 'G'; UART_Tx_1_wire(); }}
-WDTout;}}
+SW_reset;}}
 
 
 
