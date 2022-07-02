@@ -17,7 +17,7 @@ float duty_cycle;
 int num_time_slots;            //50 45
 int num_harmonics;             //60 30
 
-setup_328_HW_Arduino;
+setup_328_HW_Arduino_IO;
 determine_reset_source;
 One_25ms_WDT_with_interrupt;
 
