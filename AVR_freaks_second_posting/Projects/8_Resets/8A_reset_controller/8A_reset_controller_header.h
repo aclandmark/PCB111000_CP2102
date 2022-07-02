@@ -99,7 +99,7 @@ PORTD = 0xFF;
 /************************************************************************************************************************************/
 #define User_prompt_Arduino \
 {while(1){\
-do{Serial.write("R?    ");}   while((isCharavailable_with_WDT(35) == 0));\
+do{Serial.write("R?    ");}   while((isCharavailable_A(35) == 0));\
 User_response = Serial.read();\
 if((User_response == 'R') || (User_response == 'r'))break;} Serial.write("\r\n");}
 
@@ -177,7 +177,7 @@ if(reset_status == 6)\
 /************************************************************************************************************************************/
 #include "Resources_reset_controller\One_wire_header.h"
 #include "Resources_reset_controller\One_wire_transactions.c"
-#include "Resources_reset_controller\Arduino_IO_and_Timer.c"
+#include "Resources_reset_controller\Basic_IO_and_Timer.c"
 #include "Resources_reset_controller\display_driver_subroutines_KBD.c"
 #include "Resources_reset_controller\Reset_project_subroutines.c"
 
