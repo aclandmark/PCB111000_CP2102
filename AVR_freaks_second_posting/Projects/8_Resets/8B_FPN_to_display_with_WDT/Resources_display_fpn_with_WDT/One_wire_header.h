@@ -68,9 +68,9 @@ OCR0A =  Comms_clock/2;\
 while (!(TIFR0 & (1 << OCF0A)));\
 TIFR0 = 0xFF;  
 
+#define boot_reset_ctl_reg			0x3FC
+#define 	set_Run_BL_bit			eeprom_write_byte((uint8_t*)boot_reset_ctl_reg, (eeprom_read_byte((uint8_t*)(0x3FC)) & (~4)));
 
-#define 	reset_ctl_reg			0x3FC
-#define 	set_Run_BL_bit			eeprom_write_byte((uint8_t*)reset_ctl_reg, (eeprom_read_byte((uint8_t*)(reset_ctl_reg)) & (~4)));
 
 //if the hex_text_programmer reads bit 1 of EPPPROM loation 0x3FC as zero it will run the bootloader
 
