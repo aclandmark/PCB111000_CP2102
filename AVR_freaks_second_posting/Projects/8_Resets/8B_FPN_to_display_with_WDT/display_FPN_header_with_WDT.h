@@ -109,12 +109,13 @@ if((User_response == 'R') || (User_response == 'r'))break;} Serial.write("\r\n")
 
 
 /*************************************************************************************/
-#define Reset_control_switch_up               (PINC & 0x20)
+//#define Reset_control_switch_up               (PINC & 0x20)
 
 #define reset_ctl_reg                         0x3FC
 #define Signal_flagged_WDTout                 eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x10)
 #define Signal_WDTout_with_interrupt          eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x20)
-#define clear_reset_ctl_reg   eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0)
+#define clear_reset_ctl_reg                   eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0)
+#define Signal_SW_reset                       eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~0x40))
 
 
 
