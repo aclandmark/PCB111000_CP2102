@@ -18,24 +18,7 @@
 #include "First_project_header.h"
 
  
-int main (void)                          //Example 11
-  { unsigned int PORT_1;
 
-  setup_328_HW_Arduino_IO;
-    
-  PORT_1 = 1; 
-  
-  for (int m = 0; m <= 15; m++)
-  {One_wire_Tx_2_integers(PORT_1, PORT_1);
-    _delay_ms(30); 
-    PORT_1 = PORT_1 << 1;
-    wdr();}
-
-                                           //Three lines included for test purposes
-  //while(1);
-  SW_reset;
-  return 1;
-  }
   
 
 /**************************************************************************************************
@@ -277,4 +260,28 @@ int main (void)                          //Example 10
   }
 }
 
-**************************************************************************************************/
+
+
+**************************************************************************************************
+int main (void)                          //Example 11 Test purposes for "failsafe" macro
+  { unsigned int PORT_1;
+
+  setup_328_HW_Arduino_IO;
+    
+  PORT_1 = 1; 
+  
+  for (int m = 0; m <= 15; m++)
+  {One_wire_Tx_2_integers(PORT_1, PORT_1);
+    _delay_ms(30); 
+    PORT_1 = PORT_1 << 1;
+    wdr();}
+
+   //cli();                              //Two lines included for test purposes
+  //while(1);
+  SW_reset;
+  return 1;
+  }
+
+
+  
+ **************************************************************************************************/
