@@ -176,9 +176,9 @@ if(reset_status == 6)\
 
 /************************************************************************************************************************************/
 #include "Resources_reset_controller\One_wire_header.h"
-#include "Resources_reset_controller\One_wire_transactions_WDT.c"
-#include "Resources_reset_controller\Arduino_IO_and_Timer_WDT.c"
-#include "Resources_reset_controller\display_driver_subroutines_KBD_WDT.c"
+#include "Resources_reset_controller\One_wire_transactions.c"
+#include "Resources_reset_controller\Arduino_IO_and_Timer.c"
+#include "Resources_reset_controller\display_driver_subroutines_KBD.c"
 #include "Resources_reset_controller\Reset_project_subroutines.c"
 
 
