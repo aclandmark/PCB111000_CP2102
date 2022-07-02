@@ -30,11 +30,12 @@
     PORT_1 = PORT_1 << 1;
     wdr();}
 
-   //cli();                              //Two lines included for test purposes
-  //while(1);
+                                 
+  //while(1);                        //Line included for test purposes
   SW_reset;
   return 1;
   }
+
 
 
 
@@ -57,7 +58,7 @@ int main (void)                          //Example 1
   { One_wire_Tx_2_integers(PORT_1, PORT_1);
     _delay_ms(30);
     PORT_1 = PORT_1 << 1;
-  }
+  wdr();}
   SW_reset;
   return 1;
   }
@@ -77,7 +78,7 @@ int main (void)                          //Example 2
     if (m == 16)n = 1;
     if (n == 1)m -= 1;
     if (m == 0)n = 0;
-  }
+  wdr();}
   return 1;
   }  
 
@@ -97,7 +98,7 @@ int main (void)                          //Example 2
       _delay_ms(30);
       PORT_1 = PORT_1 << 1;
       PORT_2 = PORT_2 >> 1;
-    }
+    wdr();}
   }
   return 1;
   } 
@@ -117,11 +118,10 @@ int main (void)                          //Example 2
       _delay_ms(30);
       PORT_1 = PORT_1 << 1;
       PORT_2 = PORT_2 >> 1;
-    }
+    wdr();}
   }
   return 1;
   }
-
 
 
 *****************Example 5: Four half bars execute two ellipses************************************
@@ -138,7 +138,7 @@ int main (void)                          //Example 2
       _delay_ms(30);
       PORT_1 = PORT_1 << 1;
       PORT_2 = PORT_2 >> 1;
-    }
+    wdr();}
   }
   return 1;
   } 
@@ -162,9 +162,10 @@ int main (void)                          //Example 2
     if (m == 16)n = 1;
     if (n == 1)m -= 1;
     if (m == 0)n = 0;
-  }
+  wdr();}
   return 1;
   } 
+
 
 
 
@@ -177,12 +178,15 @@ int main (void)                          //Example 7
   setup_328_HW_Arduino_IO;
   while (1)
   { One_wire_Tx_2_integers(PORT_1, ~PORT_1);
-    _delay_ms(60);
+    
+    _delay_ms(30);wdr();
+    _delay_ms(30);wdr();
+    
     if (m <= 5)
     {
       PORT_1 |= (PORT_1 << 1);
       m += 1;
-    }
+    wdr();}
     else PORT_1 = PORT_1 << 1;
     if (overflow)PORT_1 |= 1;
     if (PORT_1 & 0x8000) overflow = 1;
@@ -251,7 +255,8 @@ int main (void)                          //Example 8
     }
     direction ^= 1;
     seg_counter = 0;
-    _delay_ms(500);
+    //_delay_ms(500);
+    for(int m = 0; m <= 9; m++){_delay_ms(50);wdr();}
   }
   SW_reset;
   return 1;
@@ -261,7 +266,6 @@ int main (void)                          //Example 8
   { display_bkp[segment - 'a'] =
     display_bkp[segment - 'a'] ^ (1 << digit_num);
   }
-
 
 
 
