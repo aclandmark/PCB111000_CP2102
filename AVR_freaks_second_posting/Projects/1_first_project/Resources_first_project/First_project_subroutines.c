@@ -64,7 +64,7 @@ void print_eep_address (unsigned int eep_address)
 {char num_string[10];
 eep_address -= eeprom_read_byte((uint8_t*)(0x3ED));
 itoa (eep_address, num_string, 16 );
-{int m = 0; while (num_string[m])Char_to_PC(num_string[m++]);}}
+{int m = 0; while (num_string[m])Char_to_PC_Basic(num_string[m++]);}}
 
 
 
