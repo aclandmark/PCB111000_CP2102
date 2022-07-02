@@ -18,8 +18,6 @@ int num_time_slots;            //50 45
 int num_harmonics;             //60 30
 
 setup_328_HW_Arduino_IO;
-determine_reset_source;
-One_25ms_WDT_with_interrupt;
 
 set_up_PCI;
 
@@ -28,7 +26,7 @@ switch (reset_status)
 for(int p = 0; p <10; p++)newline; break;
 
 case 5:Serial.write("\r\n\r\nNumerical result too large for a 32 bit number.\r\n");     //WDTout with interrupt
-case 2:                                                                                   //WDTout
+case 2:                                                                                   //SW_reset
 case 3: enable_PCI_on_sw1;                                                                //Post prtD
  eeprom_write_byte((uint8_t*)(0x0),'1');
  eeprom_write_byte((uint8_t*)(0x1),45); 
