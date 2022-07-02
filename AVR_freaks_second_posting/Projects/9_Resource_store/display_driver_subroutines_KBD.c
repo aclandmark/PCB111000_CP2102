@@ -59,7 +59,7 @@ for(int n = 0; n<=7; n++) display_buffer[n] = 0;              //Clear the buffer
 while(1){
 
 while(1){
-if (isCharavailable_with_WDT(8)){
+if (isCharavailable_A(8)){
 keypress = Serial.read();
 break;}}
 
@@ -75,7 +75,7 @@ if (keypress == '.')display_buffer[0] = '0' | 0x80;
 
 Send_float_num_string_with_WDT;                                        //Update display with the first key press
 while(1){
-if ((keypress = wait_for_return_key_with_WDT())  =='\r')break;           //Detect return key press (i.e \r or\r\n)
+if ((keypress = wait_for_return_key())  =='\r')break;           //Detect return key press (i.e \r or\r\n)
 
 if ((decimal_digit(keypress)) || (keypress == '.')
 || (keypress == '\b')|| (keypress == '-')
