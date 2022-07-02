@@ -15,7 +15,7 @@ void String_to_PC_Basic(const char*);
 void Char_to_PC_Basic(char);
 
 char decimal_digit (char);
-char wait_for_return_key(void);
+char wait_for_return_key_A(void);
 
 
 
