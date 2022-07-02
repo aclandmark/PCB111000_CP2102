@@ -184,9 +184,9 @@ break;}}
 
 /************************************************************************************************************************************/
 #include "Resources_display_fpn_with_WDT\One_wire_header.h"
-#include "Resources_display_fpn_with_WDT\One_wire_transactions_WDT.c"
-#include "Resources_display_fpn_with_WDT\Arduino_IO_and_Timer_WDT.c"
-#include "Resources_display_fpn_with_WDT\display_driver_subroutines_KBD_WDT.c"
+#include "Resources_display_fpn_with_WDT\One_wire_transactions.c"
+#include "Resources_display_fpn_with_WDT\Basic_IO_and_Timer.c"
+#include "Resources_display_fpn_with_WDT\display_driver_subroutines_KBD.c"
 #include "Resources_display_fpn_with_WDT\Reset_project_subroutines.c"
 
 
