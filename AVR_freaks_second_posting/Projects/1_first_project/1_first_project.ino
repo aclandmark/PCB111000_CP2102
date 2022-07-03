@@ -17,21 +17,16 @@
 
 #include "First_project_header.h"
 
- int main (void)                          //Example 11 Test purposes for "failsafe" macro
+ int main (void)                          //Example 1
   { unsigned int PORT_1;
 
   setup_328_HW_Arduino_IO;
-    
-  PORT_1 = 1; 
-  
+  PORT_1 = 1;
   for (int m = 0; m <= 15; m++)
-  {One_wire_Tx_2_integers(PORT_1, PORT_1);
-    _delay_ms(30); 
+  { One_wire_Tx_2_integers(PORT_1, PORT_1);
+    _delay_ms(30);
     PORT_1 = PORT_1 << 1;
-    wdr();}
-
-
-  //while(1);                        //Line included for test purposes
+  wdr();}
   SW_reset;
   return 1;
   }
