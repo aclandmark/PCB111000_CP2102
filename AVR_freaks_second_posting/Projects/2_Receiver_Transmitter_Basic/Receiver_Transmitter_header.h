@@ -7,7 +7,7 @@
 char User_response;
 char reset_status;
 
-#define newline String_to_PC("\r\n")
+#define newline String_to_PC_Basic("\r\n")
 
 
 /**********************************************************************************/
@@ -35,7 +35,7 @@ set_up_pin_change_interrupt_on_PC5;\
 setup_one_wire_comms;\
 set_up_activity_leds;\
 sei();\
-setup_PC_comms(0,16);\
+setup_PC_comms_Basic(0,16);\
 _delay_ms(10);\
 determine_reset_source;\
 One_25ms_WDT_with_interrupt;\
