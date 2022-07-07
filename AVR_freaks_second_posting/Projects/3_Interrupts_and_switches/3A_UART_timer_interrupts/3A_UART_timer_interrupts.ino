@@ -21,7 +21,7 @@ int main (void)
 { unsigned long counter = 1;
   unsigned long counter_squared;
 
-  setup_328_HW;
+  setup_328_HW_Basic_IO;
   reset_display;
   
   UCSR0B |= (1 << RXCIE0);
@@ -35,7 +35,7 @@ int main (void)
 
 
 ISR(TIMER1_COMPA_vect)
-{ UCSR0B &= (~(1 << RXCIE0));
+{ UCSR0B &= (~(1 << RXCIE0));wdr();
   TCNT1 = 0;
   if (m < num_leds)
   { PORT_2 = (PORT_2 << 1) | 1;
@@ -64,7 +64,7 @@ OCR1A = 12500;
 
 
 ISR(USART_RX_vect)
-{ switch (Char_from_PC())
+{ switch (Char_from_PC_Basic())
   { case '2':   num_leds = 2; break;
     case '4':   num_leds = 4; break;
     case '6':   num_leds = 6; break;
