@@ -1,16 +1,17 @@
 
-void Num_to_PC (long number)
+void Num_to_PC_Basic (long number)
 { int i = 0;
   char s[12];
- 
+  
   do
   { s[i++] = number % 10 + '0';
   }
   while ((number = number / 10) > 0);
   s[i] = '\0';
-  for (int m = i; m > 0; m--)Char_to_PC(s[m - 1]);
-  Char_to_PC(' ');
+  for (int m = i; m > 0; m--)Char_to_PC_Basic(s[m - 1]);
+  Char_to_PC_Basic(' ');
 }
+
 
 
 
@@ -19,8 +20,7 @@ pause_pin_change_interrupt_on_PC5;										//Reset control not allowed during t
 One_wire_Tx_char = 'a';  UART_Tx_1_wire();								//Transaction type is 'a'
 One_wire_Tx_char = NUM_1;  UART_Tx_1_wire(); 							//Send lower 8 bits
 One_wire_Tx_char = NUM_2;  UART_Tx_1_wire(); 
-
+wdr();
 One_wire_Tx_char = NUM_1 >> 8;  UART_Tx_1_wire();						//Send upper 8 bits 
 One_wire_Tx_char = NUM_2 >> 8;  UART_Tx_1_wire(); 
 reinstate_pin_change_interrupt_on_PC5;}
-
