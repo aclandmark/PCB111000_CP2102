@@ -18,7 +18,7 @@ char switch_control;
 volatile unsigned int mask;
 
 int main (void)
-{ setup_328_HW;
+{ setup_328_HW_Basic_IO;
   set_up_PCI_on_sw2;
   enable_pci_on_sw2;
 
