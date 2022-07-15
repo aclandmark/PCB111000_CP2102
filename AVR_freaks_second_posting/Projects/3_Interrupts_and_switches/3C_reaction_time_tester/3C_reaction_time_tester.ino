@@ -10,15 +10,15 @@ int main (void)
 { unsigned int Random_num;
   unsigned int PORT_1, PORT_2;
 
-  setup_328_HW;
-  while (switch_2_up);
+ setup_328_HW_Basic_IO;
+  while (switch_2_up)wdr();
 
   PORT_1 = 1;
   PORT_2 = 0x8000;
   while (1)
   { while (1)
     { Timer_T2_10mS_delay_x_m(1);
-      while (switch_2_up);
+      while (switch_2_up)wdr();
 
       shift_PORT_1;
       shift_PORT_2;
@@ -27,7 +27,7 @@ int main (void)
       if (PORT_1 == PORT_2)
       { Timer_T2_10mS_delay_x_m(35);
         if (switch_2_up)break;
-        else while (switch_2_down);
+        else while (switch_2_down)wdr();
       }
 
       if (PORT_1 != PORT_2)
