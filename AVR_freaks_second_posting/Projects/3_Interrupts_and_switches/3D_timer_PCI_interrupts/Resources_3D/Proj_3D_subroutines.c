@@ -10,7 +10,7 @@ pause_timer;
 One_wire_Tx_char = 'a';  UART_Tx_1_wire();								//Transaction type is 'a'
 One_wire_Tx_char = NUM_1;  UART_Tx_1_wire(); 							//Send lower 8 bits
 One_wire_Tx_char = NUM_2;  UART_Tx_1_wire(); 
-
+wdr();
 One_wire_Tx_char = NUM_1 >> 8;  UART_Tx_1_wire();						//Send upper 8 bits 
 One_wire_Tx_char = NUM_2 >> 8;  UART_Tx_1_wire();
 reinstate_pin_change_interrupt_on_PC5;
