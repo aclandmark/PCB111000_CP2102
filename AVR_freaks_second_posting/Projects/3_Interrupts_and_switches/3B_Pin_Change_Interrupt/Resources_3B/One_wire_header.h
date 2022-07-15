@@ -11,6 +11,7 @@ int Comms_clock;
 
 
 
+
 /**********************************************************************************/
 #define  comms_cal \
 if (((signed char)eeprom_read_byte((uint8_t*)0x3F6) > -50)\
@@ -20,6 +21,9 @@ if (((signed char)eeprom_read_byte((uint8_t*)0x3F6) > -50)\
 
 //A calibration byte for the one wire comms clock is stored in EEPROM loactons 0x3F6/7
 //For zero calibration the clock which runs at 1MHz generates a baud rate of 200uS
+
+
+
 
 /************************************************************************************************************************************/
 #define setup_one_wire_comms \
@@ -43,6 +47,9 @@ One_wire_Tx_char = 'F'; UART_Tx_1_wire();
 
 //Mini_OS responds to  "Transaction type 'c' by initialising a watch dog time out
 
+
+
+
 /************************************************************************************************************************************/
 #define Start_clock		    	TCNT0 = 0;  OCR0A = 0; TCCR0B = (1 << CS01);
 
@@ -61,8 +68,9 @@ OCR0A =  Comms_clock/2;\
 while (!(TIFR0 & (1 << OCF0A)));\
 TIFR0 = 0xFF;  
 
+#define boot_reset_ctl_reg			0x3FC
+#define 	set_Run_BL_bit			eeprom_write_byte((uint8_t*)boot_reset_ctl_reg, (eeprom_read_byte((uint8_t*)(0x3FC)) & (~4)));
 
-#define setRunBL_bit				eeprom_write_byte((uint8_t*)0x3FC, (eeprom_read_byte((uint8_t*)(0x3FC)) & (~2)));
 
 //if the hex_text_programmer reads bit 1 of EPPPROM loation 0x3FC as zero it will run the bootloader
 
@@ -70,14 +78,22 @@ TIFR0 = 0xFF;
 #define PINC5_down	((PINC & 0x20)^0x20)
 #define PINC5_up	(PINC & 0x20)
 
+
+
+
 /************************************************************************************************************************************/
 #define  set_up_activity_leds \
 DDRB |= (1 << DDB0) | (1 << DDB1);\
 LED_1_off;\
 LED_2_off;
 
-#define LED_1_off	 PORTB &= (~(1 << PB1));
-#define LED_1_on	 PORTB |= (1 << PB1);
+#define LED_1_off	 	PORTB &= (~(1 << PB1));
+#define LED_1_on	 	PORTB |= (1 << PB1);
 
-#define LED_2_off	 PORTB &= (~(1 << PB0));
-#define LED_2_on	 PORTB |= (1 << PB0);
+#define LED_2_off	 	PORTB &= (~(1 << PB0));
+#define LED_2_on	 	PORTB |= (1 << PB0);
+
+#define Toggle_LED_1 \
+if (PORTB & (1 << PB1)){LED_1_off;}\
+else {PORTB |= (1 << PB1);}
+
