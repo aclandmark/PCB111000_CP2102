@@ -24,7 +24,7 @@ char mode = 1;
 
 /************************************************************************/
 int main (void)
-{ setup_328_HW;
+{ setup_328_HW_Basic_IO;
   mode = eeprom_read_byte((uint8_t*)0);
   switch (mode)
   { case 0: case 1: case 2: break;
@@ -45,7 +45,7 @@ int main (void)
 
 /************************************************************************/
 ISR(TIMER1_COMPA_vect)
-{
+{ 
   OCR1A += 0x30D4;
   T1_COMP = 1;
 }
