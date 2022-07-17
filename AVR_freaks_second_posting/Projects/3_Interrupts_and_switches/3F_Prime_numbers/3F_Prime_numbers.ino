@@ -26,7 +26,7 @@ int j = 0;
 int array_size = 200;
 unsigned int array[200], mask;  
                                                                                                                                     
-setup_328_HW;
+setup_328_HW_Basic_IO;
 
 set_up_PCI_on_sw2;
 enable_pci_on_sw2;
@@ -42,8 +42,8 @@ prime_no_generator(I,array_size,array);                           //Sets all non
 j = 0;
 while(j<array_size){if (array[j] != 0)                            //Scan the array displaying the prime numbers
 {
-if (counter){if (counter == 10)String_to_PC("\r\n");
-Num_to_PC(array[j]); Char_to_PC(' ');counter -= 1;}
+if (counter){if (counter == 10)String_to_PC_Basic("\r\n");
+Num_to_PC_Basic(array[j]); Char_to_PC_Basic(' ');counter -= 1;}
 mask = 0;
 {int m = 15; while (!(array [j] & (1 << m)))
 {mask |= (1 << m); m -= 1;}}
@@ -62,6 +62,7 @@ void prime_no_generator(int I,int n,  unsigned int reg[]){
 int i, m;
 i=2; 
 while (i*i < n*(I+1)){
+wdr();
 m=0;
 while(i*(i+m) <= n*I)m++; 
 while(i*(i+m) <= n*(1+I)){reg[i*(i+m) -1 - n*I] = 0; m++; }  
@@ -70,7 +71,7 @@ i++;}}
 
 
 /***************************************************************************************************************************/
-void Num_to_PC (long number)
+void Num_to_PC_Basic (long number)
 { int i = 0;
   char s[12];
    do
@@ -78,8 +79,8 @@ void Num_to_PC (long number)
   }
   while ((number = number / 10) > 0);
   s[i] = '\0';
-  for (int m = i; m > 0; m--)Char_to_PC(s[m - 1]);
-  Char_to_PC(' ');
+  for (int m = i; m > 0; m--)Char_to_PC_Basic(s[m - 1]);
+  Char_to_PC_Basic(' ');
 }
 
 
