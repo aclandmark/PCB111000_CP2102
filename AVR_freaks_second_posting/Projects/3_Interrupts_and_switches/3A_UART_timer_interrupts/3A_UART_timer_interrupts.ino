@@ -29,6 +29,7 @@ int main (void)
   while (1)
   {
     do_some_arithmetic;
+    _delay_us(50);
   }
 }
 
