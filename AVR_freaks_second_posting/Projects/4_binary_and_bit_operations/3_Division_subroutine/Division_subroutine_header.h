@@ -10,10 +10,6 @@ char reset_status;
 
 
 
-
-
-
-
 /**********************************************************************************/
 #define  OSC_CAL \
 if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
@@ -90,12 +86,21 @@ PORTD = 0xFF;
 
 //All ports are initialised to weak pull up (WPU)
 
-#define clear_display             One_wire_Tx_char = 'c';  UART_Tx_1_wire();
-#define switch_2_up               (PIND & 0x20)
 
 
 
 /************************************************************************************************************************************/
+#define Int_num_string_to_display \
+One_wire_Tx_char = 'A'; UART_Tx_1_wire();\
+for(int m = 0; m <= 7; m++){One_wire_Tx_char = digits[m]; UART_Tx_1_wire();wdr();}\
+One_wire_Tx_char = 1;  UART_Tx_1_wire();
+
+
+
+/************************************************************************************************************************************/
+#define clear_display                        One_wire_Tx_char = 'c';  UART_Tx_1_wire();
+#define switch_2_up                          (PIND & 0x20)
+
 #define reset_ctl_reg                         0x3FC
 #define Signal_WDTout_with_interrupt          eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x20)
 #define Signal_SW_reset                       eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~0x40))
@@ -138,20 +143,7 @@ if(reset_status == 6)\
 {String_to_PC_Basic("\r\nWDTout\r\n");while(1)wdr();}
 
 
-#define message_1 \
-"\r\nMore on bitwise ops\r\n\
-Press r or R at the user prompt\r\n\
-and x or X to escape\r\n\
-giving 4 modes of operation\r\n"
 
-#define User_instructions \
-String_to_PC (message_1);
-
-
-#define Int_num_string_to_display \
-One_wire_Tx_char = 'A'; UART_Tx_1_wire();\
-for(int m = 0; m <= 7; m++){One_wire_Tx_char = digits[m]; UART_Tx_1_wire();wdr();}\
-One_wire_Tx_char = 1;  UART_Tx_1_wire();
 
 
 /************************************************************************************************************************************/
