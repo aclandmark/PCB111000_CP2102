@@ -46,7 +46,7 @@ TIFR2 |= (1<<TOV2); TCCR2B = 0;}
 
 
 /**********************************************************************************************/
-char isCharavailable_Basic (char m){int n = 0;
+char isCharavailable_Basic (int m){int n = 0;
 while (!(UCSR0A & (1 << RXC0))){n++; wdr();	
 if (n>8000) {m--;n = 0;}if (m == 0)return 0;}	
 return 1;}
