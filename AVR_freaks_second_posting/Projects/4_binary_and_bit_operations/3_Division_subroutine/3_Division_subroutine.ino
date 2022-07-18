@@ -1,44 +1,37 @@
 
 
 
-#define Send_int_num_string \
-One_wire_Tx_char = 'A'; UART_Tx_1_wire();\
-for(int m = 0; m <= 7; m++){One_wire_Tx_char = digits[m]; UART_Tx_1_wire();}\
-One_wire_Tx_char = 1;  UART_Tx_1_wire();
-
-
-
-
-
 #include "Division_subroutine_header.h"
-void Num_string_from_KBD(char *);
-long Askii_to_binary(char *);
-void fraction_to_decimal_string_Local(long, long, char*);
+
+//void Num_string_from_KBD(char *);
+//long Askii_to_binary(char *);
+//void fraction_to_decimal_string_Local(long, long, char*);
+
 
 int main (void){
 long Num_1, Num_2;
 char digits[8];
 
-setup_328_HW;
+setup_328_HW_Basic_IO;
    
 while(1){
-String_to_PC("Num_1?  ");
+String_to_PC_Basic("\r\nNum_1? (>0)\t");
 
-Num_string_from_KBD(digits);
+ Num_string_from_KBD_Basic_with_Echo(digits);
 Num_1 = Askii_to_binary(digits);
 
-String_to_PC("Num_2?  ");
-Num_string_from_KBD(digits);
+String_to_PC_Basic("\r\nNum_2? (>Num_1)\t");
+ Num_string_from_KBD_Basic_with_Echo(digits);
 Num_2 = Askii_to_binary(digits);
 
 clear_display;
 for(int m = 0; m <= 7; m++)digits[m] = 0;
 
-String_to_PC("Answer =   ");
+String_to_PC_Basic("\r\nAnswer =   ");
 
 if (Num_1 > Num_2)fraction_to_decimal_string_Local(Num_2, Num_1, digits); 
 else fraction_to_decimal_string_Local(Num_1, Num_2, digits); 
-String_to_PC("\r\n");}SW_reset;}
+String_to_PC_Basic("\r\n");}SW_reset;}
 
 
 
@@ -49,16 +42,17 @@ int m=7;
 clear_display;
 digits[7]= '0' | 0x80;
 //digits[6] = '_';
-String_to_PC("0.");
+String_to_PC_Basic("0.");
 
 while(switch_2_up){
 digit = divide_A_by_B(product_AB(remainder,10),denominator);    //uses local routine for divide function
 remainder = A_modulo_B(product_AB(remainder,10),denominator);   //uses local function to provide the remainder
-Char_to_PC(digit+'0');
+Char_to_PC_Basic(digit+'0');
 if(m){digits[m-1] = (digit+'0');m--;
-Send_int_num_string(digits);
+Int_num_string_to_display;
 Timer_T2_10mS_delay_x_m(12);}
-Timer_T2_10mS_delay_x_m(6);}}
+Timer_T2_10mS_delay_x_m(6);}
+}
 
 
 
@@ -87,11 +81,12 @@ return (A - product_AB(divide_A_by_B(A,B),B));}
 
 
 /*******************************************************************************************************/
-void Num_string_from_KBD(char * array_ptr)
+void Num_string_from_KBD_Basic_with_Echo(char * array_ptr)
 { char keypress;
-  while ((keypress = waitforkeypress()) != '\r')
+  while ((keypress = waitforkeypress_Basic()) != '\r')
   { *array_ptr = keypress;
     array_ptr += 1;
+    Char_to_PC_Basic(keypress);
   }
   *array_ptr = '\0';
 }
