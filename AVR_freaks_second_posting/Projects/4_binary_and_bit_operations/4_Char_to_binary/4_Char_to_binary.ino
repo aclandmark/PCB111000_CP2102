@@ -11,7 +11,7 @@ char digit=1, op, mode, mode_mem;
 int main (void){
 
 mode = 0;                          //mode: signed or unsigned
-setup_328_HW;
+setup_328_HW_Basic_IO;
 
 clear_display;
 
