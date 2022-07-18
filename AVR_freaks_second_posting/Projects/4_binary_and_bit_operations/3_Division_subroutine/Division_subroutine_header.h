@@ -154,12 +154,6 @@ PORTD = 0xFF;
 #define clear_display             One_wire_Tx_char = 'c';  UART_Tx_1_wire();
 #define switch_2_up               (PIND & 0x20)
 
-#define User_prompt \
-while(1){\
-do{String_to_PC("r    ");}   while((isCharavailable(40) == 0));\
-User_response = Char_from_PC();\
-if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
-
 
 
 
@@ -168,14 +162,9 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 
 #include "Resources_Division_subroutine/One_wire_header.h"
 #include "Resources_Division_subroutine/Basic_IO_and_Timer.c"
-//#include "Resources_Division_subroutine/Bit_ops_2_subroutines.c"
 #include "Resources_Division_subroutine/One_wire_transactions.c"
 
 
 
 
-
-
-
-//char logical_op(char, char, char, char);
-//char binary_char_from_KBD_Local(void);
+/************************************************************************************************************************************/
