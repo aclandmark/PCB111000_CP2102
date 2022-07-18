@@ -2,6 +2,16 @@
 
 
 /*************************************************************************************************************/
+void Int_num_to_display(long num){
+One_wire_Tx_char = 'C'; 								//Command 'C' indicates the a long number will be sent
+UART_Tx_1_wire();
+for(int m = 0; m <= 3; m++){
+One_wire_Tx_char = num >> (8 * (3 - m)); 	//Split the number into 4 chars
+UART_Tx_1_wire();}}										//and send them individually
+
+
+
+/*************************************************************************************************************/
 void UART_Tx_1_wire(void){
 Tx_complete = 0;
 One_wire_mode = 1;									//Tx mode
