@@ -6,6 +6,7 @@ void One_wire_comms_3_bytes(char *  Char_array){
   pause_pin_change_interrupt_on_PC5; 
 One_wire_Tx_char = 'H';  UART_Tx_1_wire(); 
 One_wire_Tx_char = Char_array[0];  UART_Tx_1_wire(); 
+wdr();
 One_wire_Tx_char = Char_array[1];  UART_Tx_1_wire(); 
 One_wire_Tx_char = Char_array[2];  UART_Tx_1_wire(); 
 reinstate_pin_change_interrupt_on_PC5;}
