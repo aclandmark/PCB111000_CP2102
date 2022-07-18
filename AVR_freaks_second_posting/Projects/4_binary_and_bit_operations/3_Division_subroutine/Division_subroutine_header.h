@@ -98,7 +98,6 @@ One_wire_Tx_char = 1;  UART_Tx_1_wire();
 
 
 /************************************************************************************************************************************/
-#define clear_display                        One_wire_Tx_char = 'c';  UART_Tx_1_wire();
 #define switch_2_up                          (PIND & 0x20)
 
 #define reset_ctl_reg                         0x3FC
