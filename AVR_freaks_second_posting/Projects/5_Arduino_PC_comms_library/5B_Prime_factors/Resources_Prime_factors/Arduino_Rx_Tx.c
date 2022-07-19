@@ -116,7 +116,3 @@ return atof(num_as_string);}
 
 
 
-
-
-
-
