@@ -25,7 +25,7 @@ char numLength;
 float pie;
 unsigned long r_mem;
 
-setup_328_HW_Arduino;
+setup_328_HW_Arduino_IO;
 Reset_ATtiny1606;
 
 
@@ -33,14 +33,14 @@ Serial.write("\r\nEstimate value for PIE. Enter radius (65500 max)\r\n");
 
 R = Unsigned_Int_from_PC(Num_string, 0);                        //DIY subroutine uses Arduino functions
 
-do{
-r_mem = R;
+//do{
+//r_mem = R;
 
 Unsigned_Int_to_PC(R, Num_string, '\t');                             //DIY subroutine uses Arduino functions
 Y = 1;
 Area = 0;
 
-for(unsigned int m = 1; m <= R; m++){                           //Count number of squares contained in the circle
+for(unsigned int m = 1; m <= R; m++){wdr();                           //Count number of squares contained in the circle
 X = R - m;  
 while (Y*Y <= ((R*R) - (X*X))) Y += 1; Y -= 1;
 Area += Y;}
@@ -53,13 +53,14 @@ else {Serial.print (pie,6);                                     //Arduino conver
 display_float_num(pie);                                         //Project subroutine
 Serial.write("\r\n");}
 
-while(switch_2_up);
-_delay_ms(100);
+//while(switch_2_up)wdr();
+//_delay_ms(50);wdr();_delay_ms(50);wdr();
 
-}while ((R = r_mem *10/9) <= 65500);
+//}while (1);//((R = (unsigned int)pow((float)r_mem,1.1)) >= r_mem);
+
 Serial.write("\r\nAK to repeat.\r\n");
 
-waitforkeypress();
+waitforkeypress_A();
 SW_reset;
 return 1; }
 
