@@ -18,16 +18,16 @@
 
 int main (void)  
   { 
-    char num_string[12], User_response;
+    char num_string[12];
     long  number;
     long factor;
     char factor_counter;
  
- setup_328_HW_Arduino;
+ setup_328_HW_Arduino_IO;
     
-   User_prompt;
+   if (reset_status == 1) User_prompt;
  
-   Serial.write("Integer number\t");
+   Serial.write("\r\nInteger number\t");
 number = Int_Num_from_PC(num_string, '\r');
 factor_counter = 0;
 {int  n = 0; int m=0;
@@ -70,7 +70,7 @@ i=2;
 while (i*i < n*(L+1)){
 m=0;
 while(i*(i+m) <= n*L)m++; 
-while(i*(i+m) <= n*(1+L)){reg[i*(i+m) -1 - n*L] = 0; m++; }  
+while(i*(i+m) <= n*(1+L)){reg[i*(i+m) -1 - n*L] = 0; m++; wdr();}  
 i++;}}
 
 
@@ -79,28 +79,4 @@ i++;}}
 
 
 
-
-
-
-
-
-
-
 /******************************************************************************************/
-/*long Int_Num_from_PC(char * num_as_string,char next_char)
-{char strln;
-
-Serial.flush();   
-strln = Serial.readBytesUntil('\r',num_as_string, 20);
-num_as_string[strln] = 0;
-Serial.write(num_as_string);
-Serial.write(next_char);
-//if(atol(num_as_string) > 0x7FFF){Serial.write("Number is too large"); SW_reset;}
-return atol(num_as_string);}*/
-
-/*
-void Int_Num_to_PC(long Int_num, char * num_as_string, char next_char)
-{
-ltoa(Int_num, num_as_string, 10);
-Serial.print(num_as_string);Serial.print(next_char);
-}*/
