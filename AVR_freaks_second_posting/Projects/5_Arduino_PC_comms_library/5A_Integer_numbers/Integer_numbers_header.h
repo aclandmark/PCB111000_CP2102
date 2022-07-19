@@ -8,6 +8,7 @@ char reset_status;
 #define newline   Serial.write("\r\n");
 
 
+
 /**********************************************************************************/
 #define  OSC_CAL \
 if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
@@ -15,7 +16,6 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 == eeprom_read_byte((uint8_t*)0x3FE))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
 
 //If the internal clock has been calibrated, a calibration byte will be found in EEPROM locations 0x3FF/E
-
 
 
 
@@ -81,11 +81,15 @@ PORTD = 0xFF;
 //All ports are initialised to weak pull up (WPU)
 
 
+
+
+
 /************************************************************************************************************************************/
 #define reset_ctl_reg                         0x3FC
 #define Signal_WDTout_with_interrupt          eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x20)
 #define Signal_SW_reset                       eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~0x40))
 #define clear_reset_ctl_reg                   eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0)
+#define Signal_flagged_WDTout                 eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x10)
 
 
 
@@ -115,6 +119,7 @@ Note : Set bit 2 to generate the prtD... prompt
 */
 
 
+
 /************************************************************************************************************************************/
 #define failsafe \
 if(reset_status == 7)\
@@ -125,13 +130,13 @@ if(reset_status == 6)\
 
 
 
-
 /**********************************************************************************/
 #define User_prompt \
-while(1){\
+{while(1){\
 do{Serial.write("R?    ");}   while((isCharavailable_A(75) == 0));\
 User_response = Serial.read();\
-if((User_response == 'R') || (User_response == 'r'))break;} newline;
+if((User_response == 'R') || (User_response == 'r'))break;} newline;}
+
 
 
 
