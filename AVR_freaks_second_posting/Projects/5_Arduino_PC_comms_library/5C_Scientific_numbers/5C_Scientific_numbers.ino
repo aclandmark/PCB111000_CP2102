@@ -16,22 +16,28 @@ Here we use this facility and extend it to include scientific numbers i.e 1.25E8
 
 int main (void)  
   { 
-    char num_string[12], User_response;
+    char num_string[12];
     float  num;
+    float index;
  
- setup_328_HW_Arduino;
+ setup_328_HW_Arduino_IO;
     
-   User_prompt;
+   if (reset_status == 1) User_prompt;
  
-   Serial.write("Scientific number\t");
+   Serial.write("\r\nScientific number\r\n");
+   
 num = Sc_Num_from_PC(num_string, '\r');
 
-while(1){
-num = pow (num,1.5);
-Sc_Num_to_PC(num, 2, 4, '\r');
+if (num < 0.0) index = 3;
+else index = 1.5;
 
-while(!(Serial.available()));
-Serial.read();}
+while(1){
+  while(!(Serial.available()))wdr();
+Serial.read();
+num = pow (num,index);
+Sc_Num_to_PC(num, 2, 4, '\r');
+}
+
  SW_reset;
   return 1;
   }
@@ -78,9 +84,16 @@ if (*long_ptr == 0X80000000){Serial.write("-ve Num too small\r\n");SW_reset;}}
 float Sc_Num_from_PC(char * num_as_string,char next_char)
 {char strln;
 
+pause_WDT;
 Serial.flush();   
 strln = Serial.readBytesUntil('\r',num_as_string, 20);
+resume_WDT;
 num_as_string[strln] = 0;
 Serial.write(num_as_string);
 Serial.write(next_char);
 return atof(num_as_string);}
+
+
+
+
+/******************************************************************************************/
