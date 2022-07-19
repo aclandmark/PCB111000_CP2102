@@ -29,22 +29,24 @@
 
 int main (void)  
   { 
-    char num_string[12], User_response;
+    char num_string[12];
     long  num;
     int m = 1;
  
  setup_328_HW_Arduino_IO;
     
-   User_prompt;
+   if (reset_status == 1) User_prompt;
  
-   Serial.write("Integer number\t");
+   Serial.write("\r\nInteger number\t");
 num = Int_Num_from_PC(num_string, '\r');
 
 do{
 if(!(num%m)){Int_Num_to_PC(m, num_string, '\t');}
 m += 1; wdr();}while(m < num);
+
 SW_reset;
- return 1;}
+return 1; 
+ }
 
 
 
@@ -62,7 +64,7 @@ num_as_string[strln] = 0;
 Serial.write(num_as_string);
 Serial.write(next_char);
 if(atol(num_as_string) > 0x7FFFF)
-{Serial.write("Number is too large"); SW_reset;}
+{Serial.write("\r\nNumber is too large\r\n"); SW_reset;}
 return atol(num_as_string);}
 
 
