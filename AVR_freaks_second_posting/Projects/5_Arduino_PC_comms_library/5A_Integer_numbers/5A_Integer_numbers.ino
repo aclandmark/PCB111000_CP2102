@@ -30,10 +30,10 @@
 int main (void)  
   { 
     char num_string[12], User_response;
-    int  num;
+    long  num;
     int m = 1;
  
- setup_328_HW_Arduino;
+ setup_328_HW_Arduino_IO;
     
    User_prompt;
  
@@ -42,7 +42,7 @@ num = Int_Num_from_PC(num_string, '\r');
 
 do{
 if(!(num%m)){Int_Num_to_PC(m, num_string, '\t');}
-m += 1;}while(m < num);
+m += 1; wdr();}while(m < num);
 SW_reset;
  return 1;}
 
@@ -51,17 +51,20 @@ SW_reset;
 
 
 /******************************************************************************************/
-int Int_Num_from_PC(char * num_as_string,char next_char)
+long Int_Num_from_PC(char * num_as_string,char next_char)
 {char strln;
 
+pause_WDT;
 Serial.flush();   
 strln = Serial.readBytesUntil('\r',num_as_string, 20);
+resume_WDT;
 num_as_string[strln] = 0;
 Serial.write(num_as_string);
 Serial.write(next_char);
-if(atol(num_as_string) > 0x7FFF)
+if(atol(num_as_string) > 0x7FFFF)
 {Serial.write("Number is too large"); SW_reset;}
-return atoi(num_as_string);}
+return atol(num_as_string);}
+
 
 
 
@@ -72,3 +75,10 @@ ltoa(Int_num, num_as_string, 10);
 Serial.print(num_as_string);
 Serial.print(next_char);
 }
+
+
+
+
+
+
+/******************************************************************************************/
