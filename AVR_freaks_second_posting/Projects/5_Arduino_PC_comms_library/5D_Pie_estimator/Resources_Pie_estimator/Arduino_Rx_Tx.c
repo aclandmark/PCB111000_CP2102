@@ -9,8 +9,10 @@ unsigned long Unsigned_Int_from_PC(char * num_as_string,char next_char)
 {char strln;
 int num;
 
+pause_WDT;
 Serial.flush();   
 strln = Serial.readBytesUntil('\r',num_as_string, 20);
+resume_WDT;
 num_as_string[strln] = 0;
 
 if(next_char){
@@ -26,8 +28,10 @@ return (unsigned int )num;}
 long Int_Num_from_PC(char * num_as_string,char next_char)
 {char strln;
 
+pause_WDT;
 Serial.flush();   
 strln = Serial.readBytesUntil('\r',num_as_string, 20);
+resume_WDT;
 num_as_string[strln] = 0;
 Serial.write(num_as_string);
 Serial.write(next_char);
@@ -99,8 +103,10 @@ if (*long_ptr == 0X80000000){Serial.write("-ve Num too small\r\n");SW_reset;}}
 float Sc_Num_from_PC(char * num_as_string,char next_char)
 {char strln;
 
+pause_WDT;
 Serial.flush();   
 strln = Serial.readBytesUntil('\r',num_as_string, 20);
+resume_WDT;
 num_as_string[strln] = 0;
 Serial.write(num_as_string);
 Serial.write(next_char);
