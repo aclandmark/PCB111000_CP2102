@@ -19,22 +19,21 @@ int main (void)
 unsigned long R;               //The radius of the circle
 unsigned long X;               //The x coordinate of a column of squares
 unsigned long Y;               //The y coordinate at which the column intersects the circle
-char no_decimal_places = 6;
 char Num_string[12];
 char numLength;
 float pie;
 unsigned long r_mem;
 
 setup_328_HW_Arduino_IO;
-Reset_ATtiny1606;
+//Reset_ATtiny1606;
 
 
-Serial.write("\r\nEstimate value for PIE. Enter radius (65500 max)\r\n");
+if (reset_status == 3) {Reset_ATtiny1606;
+Serial.write("\r\nEstimate value for PIE. Enter radius (65500 max)\r\n?\t");}
+else Serial.write("?\t");
+
 
 R = Unsigned_Int_from_PC(Num_string, 0);                        //DIY subroutine uses Arduino functions
-
-//do{
-//r_mem = R;
 
 Unsigned_Int_to_PC(R, Num_string, '\t');                             //DIY subroutine uses Arduino functions
 Y = 1;
@@ -53,14 +52,6 @@ else {Serial.print (pie,6);                                     //Arduino conver
 display_float_num(pie);                                         //Project subroutine
 Serial.write("\r\n");}
 
-//while(switch_2_up)wdr();
-//_delay_ms(50);wdr();_delay_ms(50);wdr();
-
-//}while (1);//((R = (unsigned int)pow((float)r_mem,1.1)) >= r_mem);
-
-Serial.write("\r\nAK to repeat.\r\n");
-
-waitforkeypress_A();
 SW_reset;
 return 1; }
 
