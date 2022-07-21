@@ -19,7 +19,7 @@ for the power series deffinitions
  
 #include "e_power_series_header.h"
 
-#define message_1 "\r\nPower function: Scientific number\r\n"
+#define message_1 "\r\nPower function: Enter +ve scientific number\r\n"
 #define message_2 "\r\n\r\nTime_out: Number too large or small. Try again!\r\n"
 
 
@@ -36,11 +36,11 @@ float logN;                                       //The log of Num
 float Log_result;                                 
 float Result;
 
-setup_328_HW_Arduino_plus;
+setup_328_HW_Arduino_IO;
 
-
-if(WDT_out_status == 1)Serial.write(message_1);
-if(WDT_out_status == 2)Serial.write(message_2);
+if(reset_status == 2)Serial.write("?\r\n");
+if(reset_status == 3)Serial.write(message_1);
+if(reset_status == 5)Serial.write(message_2);
 
 Num = Sc_Num_from_PC(Num_string, '\t');           //User enters the scientific number
 
@@ -79,8 +79,11 @@ Sc_Num_to_PC(Result,1,5,'\r');
 Serial.write("Library result\t");
 Sc_Num_to_PC((pow(Num_bkp,Pow)),1,5,'\r');
 
+while(1);//////////////////////
+
 SW_reset;
-return 1; }
+return 1; 
+}
 
 
 
@@ -118,7 +121,7 @@ else return 1.0/ans;
 
 
 /**************************************************************************************************************************/
-ISR (WDT_vect){Signal_WDTout_with_interrupt; SW_reset;}
+ISR (WDT_vect){Signal_WDTout_with_interrupt; wdt_enable(WDTO_30MS);while(1);}
 
 
 
