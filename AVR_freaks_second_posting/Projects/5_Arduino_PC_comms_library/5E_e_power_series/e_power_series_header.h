@@ -5,7 +5,7 @@
 
 char User_response;
 char reset_status;
-char WDT_out_status;
+//char WDT_out_status;
 
 
 #define newline   Serial.write("\r\n");
@@ -82,6 +82,11 @@ WDTCSR |= (1 <<WDCE) | (1<< WDE);\
 WDTCSR = (1<< WDE) | (1 << WDIE) |  (1 << WDP2);
 
 
+#define One_Sec_WDT_with_interrupt \
+wdr();\
+WDTCSR |= (1 <<WDCE) | (1<< WDE);\
+WDTCSR = (1<< WDE) | (1 << WDIE) |  (1 << WDP2)  |  (1 << WDP1);
+
 
 /************************************************************************************************************************************/
 #define initialise_IO \
@@ -143,7 +148,7 @@ if(reset_status == 6)\
 /************************************************************************************************************************************/
 #include "Resources_e_power_series\One_wire_header.h"
 #include "Resources_e_power_series\One_wire_transactions.c"
-#include "Resources_e_power_series\Arduino_IO_and_Timer.c"
+#include "Resources_e_power_series\Basic_IO_and_Timer.c"
 #include "Resources_e_power_series\Arduino_Rx_Tx.c"
 
 
