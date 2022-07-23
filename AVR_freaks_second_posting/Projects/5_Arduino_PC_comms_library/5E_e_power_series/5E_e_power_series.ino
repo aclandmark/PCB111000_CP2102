@@ -79,8 +79,6 @@ Sc_Num_to_PC(Result,1,5,'\r');
 Serial.write("Library result\t");
 Sc_Num_to_PC((pow(Num_bkp,Pow)),1,5,'\r');
 
-while(1);//////////////////////
-
 SW_reset;
 return 1; 
 }
