@@ -67,10 +67,10 @@ if (decimal_digit(keypress))                                        //Ignore non
 display_buffer[n] = display_buffer[n-1];
 display_buffer[0] = keypress;  }                                    //Add new keypress           
 
-Send_int_num_string;}}                                              //Update display includes "cr_keypress"                                                 
+Int_num_string_to_display;}}                                              //Update display includes "cr_keypress"                                                 
 
 cr_keypress = 1;                                                    //End of string; return key press detected
-Send_int_num_string;                                                //Send cr keypress
+Int_num_string_to_display;                                                //Send cr keypress
 cr_keypress = 0;
 Int_from_mini_OS;
 return Long_Num_from_mini_OS;}
