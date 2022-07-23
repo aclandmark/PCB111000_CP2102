@@ -29,9 +29,9 @@ Long_Num_from_mini_OS |= num_byte[m];}
 #define f_number_from_mini_OS \
 One_wire_Tx_char = 'E'; UART_Tx_1_wire();\
 for(int m = 0; m <= 3; m++){wdr();\
-UART_Rx_1_wire(); *Char_ptr = One_wire_Rx_char;\
-Char_ptr += 1;}\
-f_number = *Flt_ptr;
+UART_Rx_1_wire(); *Char_ptr_local = One_wire_Rx_char;\
+Char_ptr_local += 1;}\
+Float_from_mini_OS = *Flt_ptr_local;
 
 
 
@@ -110,13 +110,15 @@ cr_keypress = 1;                                            	//End of string; re
 Int_num_string_to_display;
 cr_keypress = 0;
 
-One_wire_Tx_char = 'E'; UART_Tx_1_wire();						//Command ATtiny1606:  Waiting to receive number in binary form							
+Int_from_mini_OS;
+
+/*One_wire_Tx_char = 'E'; UART_Tx_1_wire();						//Command ATtiny1606:  Waiting to receive number in binary form							
 for(int m = 0; m <= 3; m++){
 UART_Rx_1_wire(); num_byte[m] = One_wire_Rx_char;}
 
 for(int m = 0; m <= 3; m++){									//Recover number as 4 bytes and re-assemble them
 Long_Num_from_mini_OS = Long_Num_from_mini_OS << 8;
-Long_Num_from_mini_OS |= num_byte[m];}
+Long_Num_from_mini_OS |= num_byte[m];}*/
 
 return Long_Num_from_mini_OS;}
 
@@ -127,7 +129,7 @@ return Long_Num_from_mini_OS;}
 float Float_KBD_to_display(char display_buffer[]){              //Acquires an integer string from the keyboard and returns the binary equivalent
 char keypress;
 char cr_keypress;
-float Float_Num_from_UNO = 0;
+float Float_from_mini_OS = 0;
 float * Flt_ptr_local;
 char * Char_ptr_local;
 char SREG_BKP;
@@ -135,8 +137,8 @@ char SREG_BKP;
 SREG_BKP = SREG;
 sei();
 
-Flt_ptr_local = &Float_Num_from_UNO;
-Char_ptr_local = (char*)&Float_Num_from_UNO;
+Flt_ptr_local = &Float_from_mini_OS;
+Char_ptr_local = (char*)&Float_from_mini_OS;
 
 cr_keypress = 0;                                                //Set to one when carriage return keypress terminates the string
 for(int n = 0; n<=7; n++) display_buffer[n] = 0;              //Clear the buffer used to the string
@@ -176,16 +178,27 @@ cr_keypress = 1;                                              	//End of string; 
 Float_num_string_to_display;
 cr_keypress = 0;
 
-One_wire_Tx_char = 'E'; UART_Tx_1_wire();
+f_number_from_mini_OS;
+
+/*One_wire_Tx_char = 'E'; UART_Tx_1_wire();
 for(int m = 0; m <= 3; m++){
 UART_Rx_1_wire(); *Char_ptr_local = One_wire_Rx_char;
 Char_ptr_local += 1;}
 
-Float_Num_from_UNO = *Flt_ptr_local;
+Float_from_mini_OS = *Flt_ptr_local;*/
 
 SREG = SREG_BKP;
-return Float_Num_from_UNO;}
+return Float_from_mini_OS;}
 
+
+/*
+#define f_number_from_mini_OS \
+One_wire_Tx_char = 'E'; UART_Tx_1_wire();\
+for(int m = 0; m <= 3; m++){wdr();\
+UART_Rx_1_wire(); *Char_ptr = One_wire_Rx_char;\
+Char_ptr_local += 1;}\
+Float_from_mini_OS = *Flt_ptr_local;
+*/
 
 
 
