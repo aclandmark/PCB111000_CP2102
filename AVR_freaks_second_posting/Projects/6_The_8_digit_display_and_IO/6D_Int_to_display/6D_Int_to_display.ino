@@ -31,7 +31,7 @@ do{
 Serial.print(++counter); Serial.write('\t');
 Serial.print(Num_1); newline; 
 int_num_to_display(Num_1);                                                    //Sends number to the display
-waitforkeypress();
+waitforkeypress_A();
 Num_1 = (Num_1 / 2) *3;} while (Num_1 < 66666666);                            //Do some arithmetic
 
 Num_1 = (Num_1 / 3) *2; 
@@ -40,7 +40,7 @@ do{Num_1 = (Num_1 / 3) *2;                                                   //D
 Serial.print(--counter); Serial.write('\t');Serial.print(Num_1); 
 newline;                                             
 int_num_to_display(Num_1);
-waitforkeypress();}while (counter-1);
+waitforkeypress_A();}while (counter-1);
 SW_reset;}
 
 
@@ -59,7 +59,7 @@ cr_keypress = 0;                                                    //Set to one
 for(int n = 0; n<=8; n++) display_buffer[n] = 0;                    //Clear the buffer used for the string
 
 while(1){
-if ((keypress = wait_for_return_key()) == '\r')break;               //Detect return key press (i.e \r or\r\n)
+if ((keypress = wait_for_return_key_A()) == '\r')break;               //Detect return key press (i.e \r or\r\n)
 
 if (decimal_digit(keypress))                                        //Ignore non decimal keypresses excepr cr.
 {
