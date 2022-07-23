@@ -84,7 +84,7 @@ cr_keypress = 0;                                            	//Set to one when c
 for(int n = 0; n<=8; n++) display_buffer[n] = 0;           		//Clear the buffer used for the string
 
 while(1){
-keypress = waitforkeypress();
+keypress = waitforkeypress_A();
 if ((!(decimal_digit(keypress)))
 && (keypress != '-'))continue;                            		//Ignore keypress if it is not OK
 display_buffer[0] = keypress;
@@ -92,7 +92,7 @@ break;}
  
 Send_int_num_string;
 while(1){
-if ((keypress = wait_for_return_key())  =='\r')break;        	//Detect return key press (i.e \r or\r\n)
+if ((keypress = wait_for_return_key_A())  =='\r')break;        	//Detect return key press (i.e \r or\r\n)
 if ((decimal_digit(keypress)) || (keypress == '\b')\
  || (keypress == '-'))
 
@@ -142,7 +142,7 @@ cr_keypress = 0;                                                //Set to one whe
 for(int n = 0; n<=7; n++) display_buffer[n] = 0;              //Clear the buffer used to the string
 
 while(1){
-keypress = waitforkeypress();
+keypress = waitforkeypress_A();
 if ((!(decimal_digit(keypress)))
 && (keypress != '-')
 && (keypress != '.'))continue;                                //Ignore keypress if it is not OK
@@ -154,7 +154,7 @@ if (keypress == '.')display_buffer[0] = '0' | 0x80;
 
 Send_float_num_string;                                        //Update display with the first key press
 while(1){
-if ((keypress = wait_for_return_key())  =='\r')break;           //Detect return key press (i.e \r or\r\n)
+if ((keypress = wait_for_return_key_A())  =='\r')break;           //Detect return key press (i.e \r or\r\n)
 
 if ((decimal_digit(keypress)) || (keypress == '.')
 || (keypress == '\b')|| (keypress == '-')
