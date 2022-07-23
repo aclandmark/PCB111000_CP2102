@@ -76,8 +76,8 @@ Result = expE_power_series(Log_result);           //Returns the antilog
 
 display_float_num(Result);
 Sc_Num_to_PC(Result,1,5,'\r');
-Serial.write("Library result\t");
-Sc_Num_to_PC((pow(Num_bkp,Pow)),1,5,'\r');
+Serial.write("Library result\t");                   //remove to save overwriting commentary
+Sc_Num_to_PC((pow(Num_bkp,Pow)),1,5,'\r');          //remove to save overwriting commentary
 
 SW_reset;
 return 1; 
