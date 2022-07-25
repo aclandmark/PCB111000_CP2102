@@ -22,13 +22,13 @@ int main (void){
 
 char letter = 0, digit_num;            
 
-setup_328_HW_Arduino_plus;
+setup_328_HW_Arduino_IO;
 set_up_PCI_on_sw2;
   enable_pci_on_sw2;
 
 
-if(WDT_out_status == 1)Serial.write(message_1);
-if(WDT_out_status == 2)Serial.write(message_2);
+if(reset_status == 3)Serial.write(message_1);
+if(reset_status == 5)Serial.write(message_2);
 
 
 while(1){digit_num=0;
