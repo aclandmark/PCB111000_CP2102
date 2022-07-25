@@ -26,7 +26,7 @@ long Long_num;
 int twos_exp;
 float FPN_1_num;
 
-setup_328_HW;
+setup_328_HW_Arduino_IO;
 
 Data_Entry_complete=0;
 clear_display;                    
