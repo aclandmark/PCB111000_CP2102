@@ -27,7 +27,7 @@ float FPN_1_num;
 long ipart, Fnum_int;
 int twos_exp;
 
-setup_328_HW;
+setup_328_HW_Arduino_IO;
 
 Data_Entry_complete=0;
 clear_display;                       
