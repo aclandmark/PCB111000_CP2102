@@ -58,14 +58,13 @@ reinstate_pin_change_interrupt_on_PC5;}
 
 
 /******************************************************************************************************************************************/
-void int_num_to_display(long Int_num){
+void Int_num_to_display(long Int_num){
 pause_pin_change_interrupt_on_PC5;
-
 One_wire_Tx_char = 'C';                                 		//Command 'C' indicates the a long number will be sent
 UART_Tx_1_wire();
 for(int m = 0; m <= 3; m++){                            		//Split the number into 4 chars
 One_wire_Tx_char = Int_num >> ((3-m) * 8);              		//and send them individually
-UART_Tx_1_wire(); 
+UART_Tx_1_wire(); wdr();
 }
 reinstate_pin_change_interrupt_on_PC5;}
 
