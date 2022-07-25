@@ -51,7 +51,8 @@ UART_Tx_1_wire();
 for(int m = 0; m <= 3; m++){									//Split the number into 4 chars
 One_wire_Tx_char = *Char_ptr;									//and send them individually
 UART_Tx_1_wire();	
-Char_ptr += 1;}
+Char_ptr += 1;
+wdr();}
 reinstate_pin_change_interrupt_on_PC5;}
 
 
