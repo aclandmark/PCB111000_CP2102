@@ -17,11 +17,12 @@ bit of DIY programming is required.
 
 int main (void){
 float Num_1;
+float power;
 char digits[12];
 
 
 
-setup_328_HW_Arduino;
+setup_328_HW_Arduino_IO;
 
 
 Serial.write("\r\nEnter scientific number \
@@ -29,11 +30,14 @@ Serial.write("\r\nEnter scientific number \
 
 
 Num_1 = Float_KBD_to_display(digits);                     //Data from keyboard
+
+if(Num_1 > 0.0)power = 1.5; else power = 3.0;
+
 while (1){
  
 Sc_Num_to_PC(Num_1,1,5 ,'\r');                            //Send number to PC
-waitforkeypress();
-Num_1 = pow(Num_1, 1.2);                                  //Do some arithmetic
+waitforkeypress_A();
+Num_1 = pow(Num_1, power);                                  //Do some arithmetic
 float_num_to_display(Num_1);                              //Sends result to the display
 }                                                         //Generates reset if result of arithmetic is too large or small
 
