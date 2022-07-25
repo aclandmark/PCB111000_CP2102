@@ -31,7 +31,7 @@ int main (void){
 char   digit;
 int digit_num=0;                                                     //defines number of next digit on display           
 const char* string_ptr = 0;                                         //pointer: will be loaded with the address of a segment string 
-setup_328_HW_Arduino;                                                       //(i.e. the address of string "zero", "one", "two" etc....) 
+setup_328_HW_Arduino_IO;                                                       //(i.e. the address of string "zero", "one", "two" etc....) 
 
 
 Serial.write("\r\nSend digits?");
@@ -43,7 +43,7 @@ while(1){
 digit_num = 0;                                                      //First digit on display
 
 do{                                                                 //start of "do{}while();" loop
-while(!(Serial.available())); digit = Serial.read();                //user enters digit (0 to 9) at the PC keyboard
+while(!(Serial.available()))wdr(); digit = Serial.read();                //user enters digit (0 to 9) at the PC keyboard
 
 
 switch(digit){                                                      //The appropriate address is loaded into location "string_pointer"
@@ -63,7 +63,7 @@ default: continue; break;}                                          //Illegal ke
 display_num_string(string_ptr, digit_num);digit_num++;} 
 while (digit_num < 8);                                              //return to the top of the "do" loop until all digits have been illuminated
 
-while(!(Serial.available())); Serial.read();
+while(!(Serial.available()))wdr(); Serial.read();
 clear_display;}}                                                    //clear display and repeat
 
 
