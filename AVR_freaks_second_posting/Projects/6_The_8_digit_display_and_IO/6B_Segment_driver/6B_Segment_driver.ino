@@ -15,14 +15,14 @@ int main (void){
 
 char keypress = 0, digit_num=0;            
 
-setup_328_HW_Arduino_plus;
+setup_328_HW_Arduino_IO;
 
-if(WDT_out_status == 1)Serial.write(message_1);
-if(WDT_out_status == 2)Serial.write(message_2);
+if(reset_status == 3)Serial.write(message_1);
+if(reset_status == 2)Serial.write(message_2);
 
 while(1){                                                               //Keep inputting data until x is received
 
-while(!(Serial.available())); keypress = Serial.read();            
+while(!(Serial.available()))wdr(); keypress = Serial.read();            
   
 switch(keypress){                                                       //Test keypress
 case '0': case '1': case '2': 
@@ -33,7 +33,7 @@ case 'a': case 'b': case 'c':                                           //If a l
 case 'd': case 'e': case 'f': 
 case 'g': One_wire_comms_any_segment(keypress, digit_num); break;
 
-case 'x': {Signal_WDTout_with_interrupt;
+case 'x': {
 clear_display;SW_reset;} break;                                          //if any other key (AOK) execute a SW_reset.
 
 defaut: break;
