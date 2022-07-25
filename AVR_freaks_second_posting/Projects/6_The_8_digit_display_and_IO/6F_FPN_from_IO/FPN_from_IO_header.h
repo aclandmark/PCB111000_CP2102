@@ -37,7 +37,7 @@ set_up_pin_change_interrupt_on_PC5;\
 setup_one_wire_comms;\
 set_up_activity_leds;\
 sei();\
-setup_PC_comms(0,16);\
+setup_PC_comms_Basic(0,16);\
 _delay_ms(10);
 
 
@@ -105,7 +105,7 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 
 /************************************************************************************************************************************/
 #include "Resources_FPN_from_IO/One_wire_header.h"
-#include "Resources_FPN_from_IO/Basic_IO_and_Timer_extra.c"
+#include "Resources_FPN_from_IO/Basic_IO_and_Timer.c"
 #include "Resources_FPN_from_IO/One_wire_transactions.c"
 #include "Resources_FPN_from_IO/display_driver_subroutines_IO.c"
 #include "Resources_FPN_from_IO/IO_data_entry_subroutines.c"
