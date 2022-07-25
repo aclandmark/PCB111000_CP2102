@@ -28,7 +28,7 @@ set_up_PCI_on_sw2;
 
 
 if(reset_status == 3)Serial.write(message_1);
-if(reset_status == 5)Serial.write(message_2);
+if(reset_status == 2)Serial.write(message_2);
 
 
 while(1){digit_num=0;
@@ -45,13 +45,14 @@ case 'f': case 'F':
 case 'g': case 'G': 
 One_wire_comms_any_segment(letter, digit_num); break;
 case 'x': case 'X': digit_num += 1;break;
-default: break;}}}}}
+default: break;}}
+wdr();
+}}}
 
 
 /***************************************************************************************************************/
 ISR(PCINT2_vect)
 { if (switch_2_up)return;
-Signal_WDTout_with_interrupt;
   sei(); clear_display;
   SW_reset;
 }
