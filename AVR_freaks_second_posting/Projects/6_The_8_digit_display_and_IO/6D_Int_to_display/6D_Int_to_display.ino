@@ -20,7 +20,7 @@ long Num_1;
 char digits[8];
 int counter = 0;
 
-setup_328_HW_Arduino;
+setup_328_HW_Arduino_IO;
 
 
 Serial.write("\r\nEnter positive number \
@@ -30,8 +30,11 @@ Num_1 = Int_KBD_to_display(digits);                                         //Ac
 do{
 Serial.print(++counter); Serial.write('\t');
 Serial.print(Num_1); newline; 
-int_num_to_display(Num_1);                                                    //Sends number to the display
+
+Int_num_to_display(Num_1);                                                    //Sends number to the display
+
 waitforkeypress_A();
+
 Num_1 = (Num_1 / 2) *3;} while (Num_1 < 66666666);                            //Do some arithmetic
 
 Num_1 = (Num_1 / 3) *2; 
@@ -39,7 +42,7 @@ Num_1 = (Num_1 / 3) *2;
 do{Num_1 = (Num_1 / 3) *2;                                                   //Do the arithmetic in reverse
 Serial.print(--counter); Serial.write('\t');Serial.print(Num_1); 
 newline;                                             
-int_num_to_display(Num_1);
+Int_num_to_display(Num_1);
 waitforkeypress_A();}while (counter-1);
 SW_reset;}
 
