@@ -48,7 +48,7 @@ while(1){
 while(switch_1_up)wdr();
 float_num_to_display(FPN_1_num);
 while(switch_3_up)wdr();
-int_num_to_display(twos_exp);
+Int_num_to_display(twos_exp);
 while(switch_1_up)wdr();
 float_num_to_display(pow(2, twos_exp) * FPN_1_num);
 while(switch_3_up)wdr();
