@@ -33,9 +33,10 @@ clear_display;
 Long_num = Int_number_from_IO();
 
 FPN_1_num = (float)Long_num;
-
 if(FPN_1_num < 0){
-_delay_ms(250);
+
+for(int m = 0; m < 5; m++){_delay_ms(50); wdr();}
+
 FPN_1_num *= -1.0; 
 float_num_to_display(FPN_1_num);}
 
@@ -44,13 +45,13 @@ if (FPN_1_num >= 1.0)
 {FPN_1_num = FPN_1_num/2.0; twos_exp += 1;}} 
 
 while(1){
-while(switch_1_up);
+while(switch_1_up)wdr();
 float_num_to_display(FPN_1_num);
-while(switch_3_up);
+while(switch_3_up)wdr();
 int_num_to_display(twos_exp);
-while(switch_1_up);
+while(switch_1_up)wdr();
 float_num_to_display(pow(2, twos_exp) * FPN_1_num);
-while(switch_3_up);
+while(switch_3_up)wdr();
 if(switch_2_down){SW_reset;}}} 
 
 
@@ -65,7 +66,7 @@ if((switch_1_up) && (switch_2_up) && (switch_3_up))return;
 
 if(switch_3_down){ 
 if (switch_2_down){sei();clear_display;cli();
-while ((switch_3_down) || (switch_2_down));
+while ((switch_3_down) || (switch_2_down))wdr();
 initialise_display;
 return; }
 
@@ -80,7 +81,7 @@ while(switch_1_down)
 {scroll_int_display_zero(); 
 Timer_T2_10mS_delay_x_m(10);}
 
-while(switch_3_down);enable_PCI_on_sw3;  
+while(switch_3_down)wdr();enable_PCI_on_sw3;  
 if(switch_2_down)shift_int_display_left();  
 Timer_T2_10mS_delay_x_m(10);
 clear_PCI;}       
@@ -102,7 +103,7 @@ initialise_display;
 
 do{      
 while
-((!(Data_Entry_complete)) && (!(digit_entry)));            
+((!(Data_Entry_complete)) && (!(digit_entry)))wdr();            
 enable_PCI_on_sw3;
 
 digit_entry = 0;
