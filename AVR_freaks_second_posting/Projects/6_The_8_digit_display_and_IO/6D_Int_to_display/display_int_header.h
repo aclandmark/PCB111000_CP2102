@@ -135,10 +135,11 @@ if((User_response == 'R') || (User_response == 'r'))break;} Serial.write("\r\n")
 
 /************************************************************************************************************************************/
 #include "Resources_display_int\One_wire_header.h"
+#include "Resources_display_int\display_comms_header.h"
 #include "Resources_display_int\One_wire_transactions.c"
 #include "Resources_display_int\Basic_IO_and_Timer.c"
 #include "Resources_display_int\display_driver_subroutines_KBD.c"
-
+#include "Resources_display_int\display_comms.c"
 
 
 /*************************************************************************************************************************************/
