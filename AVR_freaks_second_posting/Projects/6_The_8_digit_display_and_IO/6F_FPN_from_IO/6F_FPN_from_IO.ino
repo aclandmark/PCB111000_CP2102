@@ -48,13 +48,13 @@ if (FPN_1_num < 1.0)
 {FPN_1_num = FPN_1_num*2.0; twos_exp -= 1;}}
 
 while(1){
-while(switch_1_up);
+while(switch_1_up)wdr();
 float_num_to_display(FPN_1_num);
-while(switch_3_up);
-int_num_to_display(twos_exp);
-while(switch_1_up);
+while(switch_3_up)wdr();
+Int_num_to_display(twos_exp);
+while(switch_1_up)wdr();
 float_num_to_display(pow(2, twos_exp) * FPN_1_num);
-while(switch_3_up);
+while(switch_3_up)wdr();
 if(switch_2_down){SW_reset;}}} 
 
 
@@ -65,12 +65,12 @@ if(switch_2_down){SW_reset;}}}
 float FPN_number_from_IO(void){
 
 char keypress = 0;
-float f_number;
+float Float_from_mini_OS;
 float * Flt_ptr;
 char * Char_ptr;
 
-Flt_ptr = &f_number;
-Char_ptr = (char*)&f_number;
+Flt_ptr = &Float_from_mini_OS;
+Char_ptr = (char*)&Float_from_mini_OS;
 
 set_up_PCI;
 enable_PCI_on_sw1_and_sw2;
@@ -79,7 +79,7 @@ initialise_display;
 
 do{                                                               //Repeat untill FPN string entry is complete
 while
-((!(Data_Entry_complete)) && (!(digit_entry)));                   //Wait here for input from IO 
+((!(Data_Entry_complete)) && (!(digit_entry)))wdr();             //Wait here for input from IO 
 enable_PCI_on_sw3;
 digit_entry = 0;
 }while(!(Data_Entry_complete));
@@ -94,7 +94,7 @@ f_number_from_mini_OS;
 disable_PCI_on_sw1_and_sw2;
 disable_PCI_on_sw3;
 
-return f_number;}
+return Float_from_mini_OS;}
 
 
 
