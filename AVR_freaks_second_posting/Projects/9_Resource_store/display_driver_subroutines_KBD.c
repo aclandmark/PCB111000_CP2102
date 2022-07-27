@@ -1,5 +1,5 @@
 
-
+/*
 
 #define Int_num_string_to_display \
 One_wire_Tx_char = 'A'; UART_Tx_1_wire();\
@@ -36,11 +36,11 @@ Float_from_mini_OS = *Flt_ptr_local;
 
 
 void Check_num_for_to_big_or_small(float);
-
+*/
 
 
 /******************************************************************************************************************************************/
-void float_num_to_display(float FP_num){
+/*void float_num_to_display(float FP_num){
 char * Char_ptr;
 
 pause_pin_change_interrupt_on_PC5;
@@ -48,26 +48,26 @@ Check_num_for_to_big_or_small(FP_num);
 Char_ptr = (char*)&FP_num;
 One_wire_Tx_char = 'D'; 										//Command 'D' indicates the a floating point number will be sent
 UART_Tx_1_wire();
-for(int m = 0; m <= 3; m++){									//Split the number into 4 chars
+for(int m = 0; m <= 3; m++){wdr();									//Split the number into 4 chars
 One_wire_Tx_char = *Char_ptr;									//and send them individually
 UART_Tx_1_wire();	
 Char_ptr += 1;
 wdr();}
-reinstate_pin_change_interrupt_on_PC5;}
+reinstate_pin_change_interrupt_on_PC5;}*/
 
 
 
 
 /******************************************************************************************************************************************/
-void Int_num_to_display(long Int_num){
+/*void Int_num_to_display(long Int_num){
 pause_pin_change_interrupt_on_PC5;
 One_wire_Tx_char = 'C';                                 		//Command 'C' indicates the a long number will be sent
 UART_Tx_1_wire();
-for(int m = 0; m <= 3; m++){                            		//Split the number into 4 chars
+for(int m = 0; m <= 3; m++){wdr();                            		//Split the number into 4 chars
 One_wire_Tx_char = Int_num >> ((3-m) * 8);              		//and send them individually
 UART_Tx_1_wire(); wdr();
 }
-reinstate_pin_change_interrupt_on_PC5;}
+reinstate_pin_change_interrupt_on_PC5;}*/
 
 
 
@@ -130,15 +130,15 @@ float Float_KBD_to_display(char display_buffer[]){              //Acquires an in
 char keypress;
 char cr_keypress;
 float Float_from_mini_OS = 0;
-float * Flt_ptr_local;
-char * Char_ptr_local;
+float * Flt_ptr;
+char * Char_ptr;
 char SREG_BKP;
 
 SREG_BKP = SREG;
 sei();
 
-Flt_ptr_local = &Float_from_mini_OS;
-Char_ptr_local = (char*)&Float_from_mini_OS;
+Flt_ptr = &Float_from_mini_OS;
+Char_ptr = (char*)&Float_from_mini_OS;
 
 cr_keypress = 0;                                                //Set to one when carriage return keypress terminates the string
 for(int n = 0; n<=7; n++) display_buffer[n] = 0;              //Clear the buffer used to the string
