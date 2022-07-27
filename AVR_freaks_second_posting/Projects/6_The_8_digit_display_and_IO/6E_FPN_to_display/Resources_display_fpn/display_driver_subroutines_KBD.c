@@ -130,15 +130,15 @@ float Float_KBD_to_display(char display_buffer[]){              //Acquires an in
 char keypress;
 char cr_keypress;
 float Float_from_mini_OS = 0;
-float * Flt_ptr_local;
-char * Char_ptr_local;
+float * Flt_ptr;
+char * Char_ptr;
 char SREG_BKP;
 
 SREG_BKP = SREG;
 sei();
 
-Flt_ptr_local = &Float_from_mini_OS;
-Char_ptr_local = (char*)&Float_from_mini_OS;
+Flt_ptr = &Float_from_mini_OS;
+Char_ptr = (char*)&Float_from_mini_OS;
 
 cr_keypress = 0;                                                //Set to one when carriage return keypress terminates the string
 for(int n = 0; n<=7; n++) display_buffer[n] = 0;              //Clear the buffer used to the string
