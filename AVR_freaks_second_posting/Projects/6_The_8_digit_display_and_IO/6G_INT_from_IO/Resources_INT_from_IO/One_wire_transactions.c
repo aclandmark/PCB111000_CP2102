@@ -7,8 +7,8 @@ One_wire_Tx_char = 'C'; 								//Command 'C' indicates the a long number will b
 UART_Tx_1_wire();
 for(int m = 0; m <= 3; m++){
 One_wire_Tx_char = num >> (8 * (3 - m)); 	//Split the number into 4 chars
-UART_Tx_1_wire();}}										//and send them individually
-*/
+UART_Tx_1_wire();}}	*/									//and send them individually
+
 
 
 /*************************************************************************************************************/
