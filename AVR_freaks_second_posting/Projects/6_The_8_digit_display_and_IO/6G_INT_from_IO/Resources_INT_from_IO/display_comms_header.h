@@ -40,9 +40,9 @@ Long_Num_from_mini_OS |= num_byte[m];}
 #define f_number_from_mini_OS \
 One_wire_Tx_char = 'E'; UART_Tx_1_wire();\
 for(int m = 0; m <= 3; m++){wdr();\
-UART_Rx_1_wire(); *Char_ptr_local = One_wire_Rx_char;\
-Char_ptr_local += 1;}\
-Float_from_mini_OS = *Flt_ptr_local;
+UART_Rx_1_wire(); *Char_ptr = One_wire_Rx_char;\
+Char_ptr += 1;}\
+Float_from_mini_OS = *Flt_ptr;
 
 
 void Check_num_for_to_big_or_small(float);
