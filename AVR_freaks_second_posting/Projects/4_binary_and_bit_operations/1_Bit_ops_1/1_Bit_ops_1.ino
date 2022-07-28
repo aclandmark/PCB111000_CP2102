@@ -45,3 +45,19 @@ case '^': result = A ^ B; break;
 case '&': result = A & B; break;}
 if (comp == 1) result = ~result;
 return result;}
+
+
+
+/*****************************************************************/
+unsigned char PRN_8bit_GEN(unsigned char lfsr){
+unsigned int bit;
+
+bit = (( lfsr >> 0) ^ (lfsr >> 2) ^ (lfsr >> 3) ^ (lfsr >> 4)) & 1;
+lfsr = (lfsr >> 1) | (bit << 7);
+return lfsr;}
+
+
+
+
+
+/******************************************************************/
