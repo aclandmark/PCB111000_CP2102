@@ -167,4 +167,4 @@ if(reset_status == 6)\
 #include "Resources_3C\One_wire_header.h"
 #include "Resources_3C\One_wire_transactions.c"
 #include "Resources_3C\Basic_IO_and_Timer.c"
-#include "Resources_3C\Proj_3C_subroutines.c"
+#include "Resources_3C\display_comms.c"
