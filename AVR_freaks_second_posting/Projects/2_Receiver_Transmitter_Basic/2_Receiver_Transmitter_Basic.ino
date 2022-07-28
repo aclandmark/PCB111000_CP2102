@@ -14,38 +14,16 @@ the steps involved and introduce the Atmega328 data sheet.
 
 #include "Receiver_Transmitter_header.h"
  
-int main (void)                          //Example 9
-  { char keyboard_input;
-  char Num_string[12];
-  long Num, A = 55; long B = 7; long Div; long mod;
-  int no_decimal_places;
-
-    setup_328_HW_Basic_IO;
-  String_to_PC_Basic("?\r\n");
-  
-  for(int m = 0; m <=2; m++)
-  {Num_string_from_KBD_Basic(Num_string);
-  Num = Askii_to_binary(Num_string);
-  switch (m)
-  { case 0: A = Num; Char_to_PC_Basic('?');break;
-  case 1: B = Num; String_to_PC_Basic("?\r\n");break;
-  case 2: no_decimal_places = Num; break;}}
-
-  divide(A, B, &Div, &mod, no_decimal_places);
-  Num_to_PC_Basic(Div);
-  String_to_PC_Basic(". ");
-    while (no_decimal_places) {
-  no_decimal_places =    divide(mod*10, B, &Div, &mod, no_decimal_places);
-  Num_to_PC_Basic(Div);}
-  String_to_PC_Basic("\r\n");
-   SW_reset;
-  return 1; }
-
-  long divide(long A, long B, long *Div, long *mod, int no_decimal_places)
-  {*Div = A/B;
-  *mod = A%B;
-  no_decimal_places -= 1;
-  return no_decimal_places; } 
+int main (void)                          //Example 1
+  { setup_328_HW_Basic_IO;
+  Char_to_PC_Basic('?');
+  newline;
+  while (1)
+  { Char_to_PC_Local
+    (waitforkeypress_Basic());
+  }
+  return 1;
+  }
 
 
 /************************************************************************************************************
@@ -297,3 +275,37 @@ void Char_to_PC_Local(char data)
 { while (!(UCSR0A & (1 << UDRE0)));
   UDR0 = data;
 }
+
+
+
+
+/********************************************************************************************************/
+void Num_to_PC_Basic (long number)
+{ int i = 0;
+  char s[12];
+  
+  do
+  { s[i++] = number % 10 + '0';
+  }
+  while ((number = number / 10) > 0);
+  s[i] = '\0';
+  for (int m = i; m > 0; m--)Char_to_PC_Basic(s[m - 1]);
+  Char_to_PC_Basic(' ');
+}
+
+
+
+/********************************************************************************************************/
+unsigned int PRN_16bit_GEN(unsigned int start){              //Pseuo random numbrer generation: Google  LFSR for details
+unsigned int bit, lfsr;
+
+if(!(start)) lfsr = (eeprom_read_byte((uint8_t*)(0x3F3)) << 8) 
++ eeprom_read_byte((uint8_t*)(0x3F2));
+else lfsr = start;
+bit = (( lfsr >> 0) ^ (lfsr >> 2) ^ (lfsr >> 3) ^ (lfsr >> 5)) & 1;
+lfsr = (lfsr >> 1) | (bit << 15);
+if(!(start)){
+eeprom_write_byte((uint8_t*)(0x3F3),(lfsr>>8));
+eeprom_write_byte((uint8_t*)(0x3F2),lfsr);}
+
+return lfsr;}
