@@ -85,6 +85,17 @@ PORTD = 0xFF;
 #define clear_reset_ctl_reg                   eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0)
 
 
+#define pause_timer             TCCR1B = 0
+#define resume_timer            TCCR1B = 0x03
+
+#define set_up_PCI               PCICR |= (1 << PCIE2);
+#define enable_PCI               PCMSK2 |= (1 << PCINT18) | (1 << PCINT21) | (1 << PCINT23);
+#define dissable_PCI            PCMSK2 &= (~((1 << PCINT18) | (1 << PCINT21) | (1 << PCINT23)));
+#define pause_PCI               PCICR &= (~(1 << PCIE2));
+#define reinstate_PCI           PCICR |= (1 << PCIE2);
+
+
+
 
 /************************************************************************************************************************************/
 #define User_prompt_proj_1A1 \
@@ -94,15 +105,6 @@ User_response = receiveChar();\
 if(User_response == 'r') break;} sendString("\r\n");
 
 
-/************************************************************************************************************************************/
-#define set_up_PCI               PCICR |= (1 << PCIE2);
-#define enable_PCI               PCMSK2 |= (1 << PCINT18) | (1 << PCINT21) | (1 << PCINT23);
-#define dissable_PCI            PCMSK2 &= (~((1 << PCINT18) | (1 << PCINT21) | (1 << PCINT23)));
-#define pause_PCI               PCICR &= (~(1 << PCIE2));
-#define reinstate_PCI           PCICR |= (1 << PCIE2);
-
-#define pause_timer             TCCR1B = 0
-#define resume_timer            TCCR1B = 0x03
 
 
 #define switch_1_up               (PIND & 0x04)
