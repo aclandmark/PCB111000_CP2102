@@ -159,8 +159,8 @@ if(reset_status == 6)\
 /************************************************************************************************************************************/
 #include "Resources\One_wire_header.h"
 #include "Resources\One_wire_transactions.c"
-#include "Resources\Basic_IO_and_Timer_with_UART_ISR.c"
-#include "Resources\Proj_3E_subroutines.c"
+#include "Resources\Basic_IO_and_Timer.c"
+#include "Resources\display_comms.c"
 
 
 
