@@ -141,7 +141,7 @@ if(reset_status == 6)\
 #include "Resources_3B\One_wire_header.h"
 #include "Resources_3B\One_wire_transactions.c"
 #include "Resources_3B\Basic_IO_and_Timer.c"
-#include "Resources_3B\Proj_3B_subroutines.c"
+#include "Resources_3B\display_comms.c"
 
 
 
