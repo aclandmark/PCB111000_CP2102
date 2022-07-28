@@ -144,7 +144,6 @@ if(reset_status == 6)\
 
 
 
-
 /************************************************************************************************************************************/
 #include "Resources_Division_subroutine/One_wire_header.h"
 #include "Resources_Division_subroutine/Basic_IO_and_Timer.c"
