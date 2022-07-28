@@ -42,3 +42,19 @@ int main (void)
     }
   }
 }
+
+
+
+/*****************************************************************/
+unsigned int PRN_16bit_GEN(unsigned int start){
+unsigned int bit, lfsr;
+
+if(!(start)) lfsr = (eeprom_read_byte((uint8_t*)(0x1FF)) << 8) + eeprom_read_byte((uint8_t*)(0x1FE));
+else lfsr = start;
+bit = (( lfsr >> 0) ^ (lfsr >> 2) ^ (lfsr >> 3) ^ (lfsr >> 5)) & 1;
+lfsr = (lfsr >> 1) | (bit << 15);
+if(!(start)){
+eeprom_write_byte((uint8_t*)(0x1FF),(lfsr>>8));
+eeprom_write_byte((uint8_t*)(0x1FE),lfsr);}
+
+return lfsr;}
