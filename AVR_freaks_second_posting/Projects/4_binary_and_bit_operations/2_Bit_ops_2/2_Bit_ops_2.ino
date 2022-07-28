@@ -44,7 +44,7 @@ int main (void) {
 
         digits[2] = digits[0];
         One_wire_comms_3_bytes(digits);
-        while(1){if (waitforkeypress_Basic() == 'x')String_to_PC_Basic("AOK\r\n"); else break;}
+        while(1){if (waitforkeypress_Basic() == 'x')String_to_PC_Basic("AOK then x\r\n"); else break;}
         
       }
 
