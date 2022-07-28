@@ -144,4 +144,8 @@ if(reset_status == 6)\
 #include "Resources_Prime_numbers\One_wire_header.h"
 #include "Resources_Prime_numbers\One_wire_transactions.c"
 #include "Resources_Prime_numbers\Basic_IO_and_Timer.c"
-#include "Resources_Prime_numbers\Proj_3F_subroutines.c"
+#include "Resources_Prime_numbers\display_comms.c"
+
+
+
+/*************************************************************************************************************************************/
