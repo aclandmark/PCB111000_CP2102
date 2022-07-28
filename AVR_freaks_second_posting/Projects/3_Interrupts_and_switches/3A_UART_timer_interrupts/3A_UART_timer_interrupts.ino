@@ -77,3 +77,25 @@ ISR(USART_RX_vect)
   }
   reset_display;
 }
+
+
+
+
+
+void Num_to_PC_Basic (long number)
+{ int i = 0;
+  char s[12];
+  
+  do
+  { s[i++] = number % 10 + '0';
+  }
+  while ((number = number / 10) > 0);
+  s[i] = '\0';
+  for (int m = i; m > 0; m--)Char_to_PC_Basic(s[m - 1]);
+  Char_to_PC_Basic(' ');
+}
+
+
+
+
+/***************************************************************************************************/
