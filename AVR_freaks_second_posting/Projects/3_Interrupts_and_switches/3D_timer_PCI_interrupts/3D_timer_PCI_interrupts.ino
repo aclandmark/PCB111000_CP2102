@@ -83,7 +83,7 @@ void initialise_display()
     case 1:  n_max = 17; break;
     case 2: n_max = 16; break;
   }
-  One_wire_Tx_2_integers(PORT_1, PORT_2);
+  One_wire_Tx_2_integers_with_timer_control(PORT_1, PORT_2);
 }
 
 
@@ -113,7 +113,7 @@ void Inc_Display()
         PORT_2 = PORT_2 >> 1;
       } break;
   }
-  One_wire_Tx_2_integers(PORT_1, PORT_2);
+  One_wire_Tx_2_integers_with_timer_control(PORT_1, PORT_2);
   n += 1;
   if (n == n_max)
   {
