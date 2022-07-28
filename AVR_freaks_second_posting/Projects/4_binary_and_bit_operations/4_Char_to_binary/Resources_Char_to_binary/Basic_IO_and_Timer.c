@@ -1,5 +1,15 @@
 #define T2_delay_10ms 	7,178
 
+#define T1_delay_10ms	2,0xD8EF
+#define T1_delay_50ms 5,0xFE78
+#define T1_delay_100ms 5,0xFCF2
+#define T1_delay_250ms 5,0xF85F
+#define T1_delay_500ms 5,0xF0BE
+
+#define T1_delay_1sec 5,0xE17D
+#define T1_delay_2sec 5,0xC2FB
+#define T1_delay_4sec 5,0x85F7
+
 
 void setup_PC_comms_Basic (unsigned char, unsigned char);
 void Timer_T2_10mS_delay_x_m(int);
@@ -28,6 +38,22 @@ UBRR0L = UBRR0L_N;
 UCSR0A = (1 << U2X0);
 UCSR0B = (1 << RXEN0) | (1<< TXEN0);
 UCSR0C =  (1 << UCSZ00)| (1 << UCSZ01);} 
+
+
+
+
+/**********************************************************************************************/
+void Timer_T1_sub(char Counter_speed, unsigned int Start_point){ 
+TCNT1H = (Start_point >> 8);
+TCNT1L = Start_point & 0x00FF;
+TIFR1 = 0xFF;
+TCCR1B = Counter_speed;
+while(!(TIFR1 && (1<<TOV1)));
+TIFR1 |= (1<<TOV1); 
+TCCR1B = 0;}
+
+
+
 
 
 
