@@ -151,7 +151,7 @@ if(reset_status == 6)\
 #include "Resources_3D\One_wire_header.h"
 #include "Resources_3D\One_wire_transactions.c"
 #include "Resources_3D\Basic_IO_and_Timer.c"
-#include "Resources_3D\Proj_3D_subroutines.c"
+#include "Resources_3D\display_comms.c"
 
 
 
