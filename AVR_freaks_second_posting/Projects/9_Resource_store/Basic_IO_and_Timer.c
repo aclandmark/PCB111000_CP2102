@@ -118,7 +118,7 @@ else return 1;}
 
 /****************Do not use when including an ISR(USART_RX_vect) subroutine*************************************/
 	
-/*char isCharavailable_A (int m){int n = 0;
+char isCharavailable_A (int m){int n = 0;
 while (!(Serial.available())){n++;	wdr();			
 if (n>8000) {m--;n = 0;}if (m == 0)return 0;}	
 return 1;}	
@@ -141,7 +141,7 @@ if((keypress == '\r') || (keypress == '\n')){
 if (isCharavailable_A(1)){temp = Serial.read();}
 keypress = '\r';}
 return keypress;}
-*/
+
 
 
 
