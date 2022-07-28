@@ -76,22 +76,11 @@ char isCharavailable_Basic (int m){int n = 0;
 while (!(UCSR0A & (1 << RXC0))){n++; wdr();	
 if (n>8000) {m--;n = 0;}if (m == 0)return 0;}	
 return 1;}
-	
-char isCharavailable_A (int m){int n = 0;
-while (!(Serial.available())){n++;	wdr();			
-if (n>8000) {m--;n = 0;}if (m == 0)return 0;}	
-return 1;}	
 
 
 char waitforkeypress_Basic (void){
 while (!(UCSR0A & (1 << RXC0)))wdr();	
 return UDR0;}	
-
-
-char waitforkeypress_A (void){
-while (!(Serial.available()))wdr();	
-return Serial.read(); }
-
 
 
 
@@ -127,8 +116,21 @@ else return 1;}
 
 
 
+/****************Do not use when including an ISR(USART_RX_vect) subroutine*************************************/
+	
+/*char isCharavailable_A (int m){int n = 0;
+while (!(Serial.available())){n++;	wdr();			
+if (n>8000) {m--;n = 0;}if (m == 0)return 0;}	
+return 1;}	
 
-/***************************************************************************************************************/
+
+
+char waitforkeypress_A (void){
+while (!(Serial.available()))wdr();	
+return Serial.read(); }
+
+
+
 char wait_for_return_key_A(void){                  							//Detects \r\n, \r or \n
 char keypress,temp;
 while(1){
@@ -139,5 +141,7 @@ if((keypress == '\r') || (keypress == '\n')){
 if (isCharavailable_A(1)){temp = Serial.read();}
 keypress = '\r';}
 return keypress;}
+*/
+
 
 
