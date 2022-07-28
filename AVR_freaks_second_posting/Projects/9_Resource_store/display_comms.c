@@ -1,5 +1,21 @@
 
 
+void Check_num_for_to_big_or_small(float);
+
+
+/******************************************************************************************************************************************/
+void One_wire_comms_3_bytes(char *  Char_array){
+  pause_pin_change_interrupt_on_PC5; 
+One_wire_Tx_char = 'H';  UART_Tx_1_wire(); 
+One_wire_Tx_char = Char_array[0];  UART_Tx_1_wire(); 
+wdr();
+One_wire_Tx_char = Char_array[1];  UART_Tx_1_wire(); 
+One_wire_Tx_char = Char_array[2];  UART_Tx_1_wire(); 
+reinstate_pin_change_interrupt_on_PC5;}
+
+
+
+
 /******************************************************************************************************************************************/
 void float_num_to_display(float FP_num){
 char * Char_ptr;
@@ -34,3 +50,12 @@ reinstate_pin_change_interrupt_on_PC5;}
 
 
 /******************************************************************************************************************************************/
+void Check_num_for_to_big_or_small(float num)
+{unsigned long * long_ptr;
+long_ptr = (unsigned long *)&num;
+if (*long_ptr == 0x7F800000){Serial.write("+ve Num too large\r\n");SW_reset;}
+if (*long_ptr == 0xFF800000){Serial.write("-ve Num too large\r\n");SW_reset;}
+if (*long_ptr == 0X0){Serial.write("+ve Num too small\r\n");SW_reset;}
+if (*long_ptr == 0X80000000){Serial.write("-ve Num too small\r\n");SW_reset;}}
+
+
