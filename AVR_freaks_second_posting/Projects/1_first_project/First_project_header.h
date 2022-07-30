@@ -154,11 +154,13 @@ if(reset_status == 6)\
 
 
 /************************************************************************************************************************************/
-#include "Resources_first_project\One_wire_header.h"
-#include "Resources_first_project\One_wire_transactions.c"
-#include "Resources_first_project\Basic_IO_and_Timer.c"
-#include "Resources_first_project\First_project_subroutines.c"
+#include "Resources_first_project\Chip2chip_comms\One_wire_header.h"
+#include "Resources_first_project\Chip2chip_comms\Display_driver_header.h"
+#include "Resources_first_project\Chip2chip_comms\One_wire_transactions.c"
+#include "Resources_first_project\Chip2chip_comms\Display_driver.c"
 
+#include "Resources_first_project\PC_comms\Basic_Rx_Tx_and_Timer.c"
+#include "Resources_first_project\First_project_subroutines.c"
 
 
 
