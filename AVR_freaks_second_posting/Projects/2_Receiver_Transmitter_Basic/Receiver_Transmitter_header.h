@@ -125,7 +125,21 @@ if(reset_status == 6)\
 
 
 /************************************************************************************************************************************/
-#include "Resources_Receiver_transmitter\One_wire_header.h"
+/*#include "Resources_Receiver_transmitter\One_wire_header.h"
 #include "Resources_Receiver_transmitter\One_wire_transactions.c"
 #include "Resources_Receiver_transmitter\Basic_IO_and_Timer.c"
 #include "Resources_Receiver_transmitter\display_comms.c"
+*/
+#include "Resources_Receiver_transmitter\Chip2chip_comms\One_wire_header.h"
+#include "Resources_Receiver_transmitter\Chip2chip_comms\Display_driver_header.h"
+#include "Resources_Receiver_transmitter\Chip2chip_comms\One_wire_transactions.c"
+#include "Resources_Receiver_transmitter\Chip2chip_comms\Display_driver.c"
+
+#include "Resources_Receiver_transmitter\PC_comms\Basic_Rx_Tx_and_Timer.c"
+
+
+
+
+
+
+/************************************************************************************************************************************/
