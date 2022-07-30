@@ -40,7 +40,7 @@
 /**************************************************************************************************
 
   Use this area for saving the examples when they have been got working and finished with
-  Use the space above for the active program (the one eing worked on)
+  Use the space above for the active program (the one being worked on)
 
 
 ***************Example 1: One bar sweep right to left*********************************************
