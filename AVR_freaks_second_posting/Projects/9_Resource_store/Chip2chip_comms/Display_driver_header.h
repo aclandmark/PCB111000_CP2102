@@ -45,7 +45,7 @@ Char_ptr += 1;}\
 Float_from_mini_OS = *Flt_ptr;
 
 
-void Check_num_for_to_big_or_small(float);
+//void Check_num_for_to_big_or_small(float);
 
 
 
