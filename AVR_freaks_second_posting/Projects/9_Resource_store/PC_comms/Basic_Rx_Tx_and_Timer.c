@@ -116,7 +116,7 @@ else return 1;}
 
 
 
-/****************Do not use when including an ISR(USART_RX_vect) subroutine*************************************/
+/****************Comment out when including an ISR(USART_RX_vect) subroutine*************************************/
 	
 char isCharavailable_A (int m){int n = 0;
 while (!(Serial.available())){n++;	wdr();			
