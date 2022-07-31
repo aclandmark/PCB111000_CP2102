@@ -140,12 +140,16 @@ if(reset_status == 6)\
 
 
 /************************************************************************************************************************************/
+#include "Resources_Bit_ops_2\Chip2chip_comms\One_wire_header.h"
+#include "Resources_Bit_ops_2\Chip2chip_comms\One_wire_transactions.c"
+#include "Resources_Bit_ops_2\Chip2chip_comms\Display_driver.c"
+#include "Resources_Bit_ops_2\PC_comms\Basic_Rx_Tx_and_Timer.c"
 
 
-#include "Resources_Bit_ops_2/One_wire_header.h"
+/*#include "Resources_Bit_ops_2/One_wire_header.h"
 #include "Resources_Bit_ops_2/Basic_IO_and_Timer.c"
 #include "Resources_Bit_ops_2/Display_comms.c"
-#include "Resources_Bit_ops_2/One_wire_transactions.c"
+#include "Resources_Bit_ops_2/One_wire_transactions.c"*/
 
 #define Rotate_Right_cyclical  while (n < X) {num = Y & 0b10000000; num = num >> 7; Y = Y <<1; Y = Y | num; n++;}
 #define Rotate_left_cyclical  while (n < X) {num = Y & 0b00000001; num = num << 7; Y = Y >>1; Y = Y | num; n++;}
