@@ -141,10 +141,10 @@ if(reset_status == 6)\
 
 
 /************************************************************************************************************************************/
-#include "Resources_Prime_numbers\One_wire_header.h"
-#include "Resources_Prime_numbers\One_wire_transactions.c"
-#include "Resources_Prime_numbers\Basic_IO_and_Timer.c"
-#include "Resources_Prime_numbers\display_comms.c"
+#include "Resources_Prime_numbers\Chip2chip_comms\One_wire_header.h"
+#include "Resources_Prime_numbers\Chip2chip_comms\One_wire_transactions.c"
+#include "Resources_Prime_numbers\PC_comms\Basic_Rx_Tx_and_Timer.c"
+#include "Resources_Prime_numbers\Chip2chip_comms\Display_driver.c"
 
 
 
