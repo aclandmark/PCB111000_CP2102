@@ -164,7 +164,12 @@ if(reset_status == 6)\
 
 
 /************************************************************************************************************************************/
-#include "Resources_3C\One_wire_header.h"
-#include "Resources_3C\One_wire_transactions.c"
-#include "Resources_3C\Basic_IO_and_Timer.c"
-#include "Resources_3C\display_comms.c"
+#include "Resources_3C\Chip2chip_comms\One_wire_header.h"
+#include "Resources_3C\Chip2chip_comms\One_wire_transactions.c"
+#include "Resources_3C\PC_comms\Basic_Rx_Tx_and_Timer.c"
+#include "Resources_3C\Chip2chip_comms\Display_driver.c"
+
+
+
+
+/************************************************************************************************************************************/
