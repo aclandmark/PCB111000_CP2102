@@ -142,9 +142,9 @@ if(reset_status == 6)\
 
 
 /************************************************************************************************************************************/
-#include "Resources_Char_to_binary/One_wire_header.h"
-#include "Resources_Char_to_binary/Basic_IO_and_Timer.c"
-#include "Resources_Char_to_binary/One_wire_transactions.c"
+#include "Resources_Char_to_binary/Chip2chip_comms/One_wire_header.h"
+#include "Resources_Char_to_binary/PC_comms/Basic_Rx_Tx_and_Timer.c"
+#include "Resources_Char_to_binary/Chip2chip_comms/One_wire_transactions.c"
 
 
 
