@@ -157,10 +157,10 @@ if(reset_status == 6)\
 
 
 /************************************************************************************************************************************/
-#include "Resources\One_wire_header.h"
-#include "Resources\One_wire_transactions.c"
-#include "Resources\Basic_IO_and_Timer.c"
-#include "Resources\display_comms.c"
+#include "Resources_3E\Chip2chip_comms\One_wire_header.h"
+#include "Resources_3E\Chip2chip_comms\One_wire_transactions.c"
+#include "Resources_3E\PC_comms\Basic_Rx_Tx_and_Timer.c"
+#include "Resources_3E\Chip2chip_comms\Display_driver.c"
 
 
 
