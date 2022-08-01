@@ -148,11 +148,10 @@ if((User_response == 'R') || (User_response == 'r'))break;} Serial.write("\r\n")
 
 
 /************************************************************************************************************************************/
-#include "Resources_numerical_enty\One_wire_header.h"
-#include "Resources_numerical_enty\One_wire_transactions.c"
-#include "Resources_numerical_enty\Basic_IO_and_Timer.c"
-#include "Resources_numerical_enty\numerical_entry_subroutines.c"
-
+#include "Resources_numerical_enty\Chip2chip_comms\One_wire_header.h"
+#include "Resources_numerical_enty\Chip2chip_comms\One_wire_transactions.c"
+#include "Resources_numerical_enty\Chip2chip_comms\Display_driver.c"
+#include "Resources_numerical_enty\PC_comms\Basic_Rx_Tx_and_Timer.c"
 
 
 /************************************************************************************************************************************/
