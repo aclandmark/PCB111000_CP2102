@@ -140,9 +140,9 @@ if((User_response == 'R') || (User_response == 'r'))break;} newline;}
 
 
 /**********************************************************************************/
-#include "Resources_Integer_numbers\One_wire_header.h"
-#include "Resources_Integer_numbers\One_wire_transactions.c"
-#include "Resources_Integer_numbers\Basic_IO_and_Timer.c"
+#include "Resources_Integer_numbers\Chip2chip_comms\One_wire_header.h"
+#include "Resources_Integer_numbers\Chip2chip_comms\One_wire_transactions.c"
+#include "Resources_Integer_numbers\PC_comms\Basic_Rx_Tx_and_Timer.c"
 
 
 
