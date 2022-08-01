@@ -136,7 +136,7 @@ if(reset_status == 6)\
 
 
 /************************************************************************************************************************************/
-#include "Resources_Pie_estimator\One_wire_header.h"
-#include "Resources_Pie_estimator\One_wire_transactions.c"
-#include "Resources_Pie_estimator\Basic_IO_and_Timer.c"
-#include "Resources_Pie_estimator\Arduino_Rx_Tx.c"
+#include "Resources_Pie_estimator\Chip2chip_comms\One_wire_header.h"
+#include "Resources_Pie_estimator\Chip2chip_comms\One_wire_transactions.c"
+#include "Resources_Pie_estimator\PC_comms\Basic_Rx_Tx_and_Timer.c"
+#include "Resources_Pie_estimator\PC_comms\Arduino_Rx_Tx.c"
