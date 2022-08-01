@@ -158,8 +158,8 @@ if((User_response == 'R') || (User_response == 'r'))break;} Serial.write("\r\n")
 /************************************************************************************************************************************/
 #include "Resources_segment_driver\Chip2chip_comms\One_wire_header.h"
 #include "Resources_segment_driver\Chip2chip_comms\One_wire_transactions.c"
+#include "Resources_segment_driver\Chip2chip_comms\Display_driver.c"
 #include "Resources_segment_driver\PC_comms\Basic_Rx_Tx_and_Timer.c"
-#include "Resources_segment_driver\Segment_driver_subroutines.c"
 
 
 
