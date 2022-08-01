@@ -168,13 +168,14 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 
 
 /************************************************************************************************************************************/
-#include "Resources_INT_from_IO/One_wire_header.h"
-#include "Resources_INT_from_IO/display_comms_header.h"
-#include "Resources_INT_from_IO/Basic_IO_and_Timer.c"
-#include "Resources_INT_from_IO/Arduino_Rx_Tx.c"
-#include "Resources_INT_from_IO/One_wire_transactions.c"
-#include "Resources_INT_from_IO/display_comms.c"
-#include "Resources_INT_from_IO/IO_data_entry_subroutines.c"
+#include "Resources_INT_from_IO\Chip2chip_comms\One_wire_header.h"
+#include "Resources_INT_from_IO\Chip2chip_comms\Display_driver_header.h"
+#include "Resources_INT_from_IO\Chip2chip_comms\One_wire_transactions.c"
+#include "Resources_INT_from_IO\Chip2chip_comms\Display_driver.c"
+#include "Resources_INT_from_IO\PC_comms\Basic_Rx_Tx_and_Timer.c"
+#include "Resources_INT_from_IO\PC_comms\Arduino_Rx_Tx.c"
+#include "Resources_INT_from_IO/IO_data_entry.c"
+
 
 
 
