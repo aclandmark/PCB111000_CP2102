@@ -141,10 +141,10 @@ if((User_response == 'R') || (User_response == 'r'))break;} newline;}
 
 
 /************************************************************************************************************************************/
-#include "Resources_Prime_factors\One_wire_header.h"
-#include "Resources_Prime_factors\One_wire_transactions.c"
-#include "Resources_Prime_factors\Basic_IO_and_Timer.c"
-#include "Resources_Prime_factors\Arduino_Rx_Tx.c"
+#include "Resources_Prime_factors\Chip2chip_comms\One_wire_header.h"
+#include "Resources_Prime_factors\Chip2chip_comms\One_wire_transactions.c"
+#include "Resources_Prime_factors\PC_comms\Basic_Rx_Tx_and_Timer.c"
+#include "Resources_Prime_factors\PC_comms\Arduino_Rx_Tx.c"
 
 
 
