@@ -143,5 +143,19 @@ keypress = '\r';}
 return keypress;}
 
 
+/******************************************************************************************************************************************/
+void Check_num_for_to_big_or_small(float num)
+{unsigned long * long_ptr;
+long_ptr = (unsigned long *)&num;
+if (*long_ptr == 0x7F800000){Serial.write("+ve Num too large\r\n");SW_reset;}
+if (*long_ptr == 0xFF800000){Serial.write("-ve Num too large\r\n");SW_reset;}
+if (*long_ptr == 0X0){Serial.write("+ve Num too small\r\n");SW_reset;}
+if (*long_ptr == 0X80000000){Serial.write("-ve Num too small\r\n");SW_reset;}}
+
+
+
+
+
+
 
 
