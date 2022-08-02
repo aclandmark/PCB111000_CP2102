@@ -24,7 +24,7 @@ long deci_sec_counter;
 
 int main (void){
 char User_response;
-setup_328_HW;
+setup_328_HW_Basic_IO;
 initialise_T2();
 
 clear_display;
