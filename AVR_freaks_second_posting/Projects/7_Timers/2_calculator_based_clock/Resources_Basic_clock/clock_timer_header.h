@@ -16,15 +16,15 @@
 
 
 #define Display_time \
-{One_wire_Tx_char = 'J'; UART_Tx_1_wire();\
+{One_wire_Tx_char = 'J'; UART_Tx_1_wire();wdr();\
 for(int p = 0; p <= 7; p++){\
 switch (p){\
   case 2:\
   case 4:\
-  case 6: One_wire_Tx_char = digits[p] | 0x80; UART_Tx_1_wire(); break;\
-  default: One_wire_Tx_char = digits[p]; UART_Tx_1_wire(); break;}}}
+  case 6: One_wire_Tx_char = digits[p] | 0x80; UART_Tx_1_wire(); wdr(); break;\
+  default: One_wire_Tx_char = digits[p]; UART_Tx_1_wire(); wdr(); break;}}}
 
 
 #define Inc_OS_time \
-{One_wire_Tx_char = 'K'; UART_Tx_1_wire();}
+{One_wire_Tx_char = 'K'; UART_Tx_1_wire(); wr();}
 
