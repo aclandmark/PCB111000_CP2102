@@ -26,5 +26,5 @@ switch (p){\
 
 
 #define Inc_OS_time \
-{One_wire_Tx_char = 'K'; UART_Tx_1_wire(); wr();}
+{One_wire_Tx_char = 'K'; UART_Tx_1_wire(); wdr();}
 
