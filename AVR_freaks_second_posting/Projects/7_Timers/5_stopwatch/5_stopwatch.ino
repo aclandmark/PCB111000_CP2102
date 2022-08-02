@@ -15,11 +15,11 @@
 
 int main (void){
 
-setup_328_HW;
+setup_328_HW_Basic_IO;
 initialise_T2();
 
 Reset_ATtiny1606;
-while(switch_2_up);
+while(switch_3_up)wdr();
 
 stop_watch_mode = 0;
 centi_sec_counter = 0;
@@ -28,11 +28,13 @@ set_up_PCI;
 enable_PCI;
 
 while(1)
-{while(clock_tick < 20); clock_tick = 0; 
+{while(clock_tick < 20)wdr(); clock_tick = 0; 
 
 switch(stop_watch_mode){
-  case 0: {Inc_OS_time;}break;
-  case 1: centi_Seconds_to_display(stop_watch_time);stop_watch_mode = 0; {Inc_OS_time;}break;}
+ case 0:  {Inc_OS_time;}break;
+ case 1: centi_Seconds_to_display(stop_watch_time);stop_watch_mode = 0; {Inc_OS_time;}break;
+  case 2:stop_watch_mode = 0;{Inc_OS_time;}One_wire_Tx_char = 'O'; UART_Tx_1_wire();break;}
+ 
 }}
 
 
@@ -50,13 +52,13 @@ ISR(PCINT2_vect) {
   enable_pci_on_sw1;}
   
   if(switch_1_down){
-    disable_pci_on_sw1;  
-  One_wire_Tx_char = 'O';    
-sei();UART_Tx_1_wire();
-enable_pci_on_sw2;}
+    disable_pci_on_sw1; 
+    stop_watch_mode = 2; 
+ enable_pci_on_sw2;}
 
-if(switch_3_down){
-sei();One_wire_Tx_char = 'G'; UART_Tx_1_wire();}}
+//if(switch_3_down){
+//sei();One_wire_Tx_char = 'G'; UART_Tx_1_wire();}
+}
   
   
   
@@ -89,10 +91,10 @@ centi_sec_counter += 1;
   
   
 /****************************************************************************************************************/
-void centi_Seconds_to_display(long num){
+void centi_Seconds_to_display(long num){          //Pauses display
 One_wire_Tx_char = 'N';                           //Command 'C' indicates the a long number will be sent
 UART_Tx_1_wire();
-for(int m = 0; m <= 3; m++){
+for(int m = 0; m <= 3; m++){wdr();
 One_wire_Tx_char = num >> (8 * (3 - m));        //Split the number into 4 chars
 UART_Tx_1_wire();}}                             //and send them individually
 
