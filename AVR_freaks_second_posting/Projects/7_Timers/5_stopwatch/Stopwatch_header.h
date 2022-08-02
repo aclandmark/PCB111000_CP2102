@@ -38,7 +38,7 @@ set_up_pin_change_interrupt_on_PC5;\
 setup_one_wire_comms;\
 set_up_activity_leds;\
 sei();\
-setup_PC_comms(0,16);\
+setup_PC_comms_Basic(0,16);\
 _delay_ms(10);
 
 
@@ -81,7 +81,7 @@ PORTD = 0xFF;
 #define User_prompt \
 while(1){\
 do{String_to_PC("r    ");}   while((isCharavailable(40) == 0));\
-User_response = Char_from_PC();\
+User_response = Char_from_PC_Basic();\
 if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 
 
@@ -109,10 +109,10 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 
 
 /************************************************************************************************************************************/
-#include "Resources_Stopwatch/One_wire_header.h"
+#include "Resources_Stopwatch/Chip2chip_comms/One_wire_header.h"
 #include "Resources_Stopwatch/clock_timer_header.h"
-#include "Resources_Stopwatch/One_wire_transactions_special.c"
-#include "Resources_Stopwatch/Basic_IO_and_Timer_extra.c"
+#include "Resources_Stopwatch/PC_comms/Basic_Rx_Tx_and_Timer.c"
+#include "Resources_Stopwatch/Chip2chip_comms/One_wire_transactions_Stop_watch.c"
 
 
 
