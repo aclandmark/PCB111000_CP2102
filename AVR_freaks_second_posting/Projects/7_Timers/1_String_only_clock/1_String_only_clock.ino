@@ -23,7 +23,7 @@ char User_response;
 setup_328_HW;
 initialise_T2();
 
-String_to_PC("Press 'R' to enter time or 'r' to start at time zero  ");
+String_to_PC_Basic("Press 'R' to enter time or 'r' to start at time zero  ");
 User_prompt;
 
 if(User_response == 'R')
@@ -33,8 +33,8 @@ Display_time;
 clock_tick = 0;
 
 
-String_to_PC("AK to start\r\n");
-waitforkeypress();
+String_to_PC_Basic("AK to start\r\n");
+waitforkeypress_Basic();
 
 start_clock();
 while(1){while(clock_tick <= 1);clock_tick = 0; Inc_time();Inc_time();Display_time;}}
@@ -62,18 +62,18 @@ void Inc_time(void){
 void set_time(void){
 
 for(int m = 0; m <= 7; m++)digits[m] = 0;
-String_to_PC("Enter start time Hours, Minutes and Seconds\
+String_to_PC_Basic("Enter start time Hours, Minutes and Seconds\
 \r\n(12 hour clock with no spaces). Terminate with cr\r\n");
 
-while(isCharavailable(50) == 0){String_to_PC("T?  ");}
+while(isCharavailable_Basic(50) == 0){String_to_PC_Basic("T?  ");}
 
-digits[7] = Char_from_PC();Display_time;
-for (int m = 0; m<=4; m++){while(isCharavailable(5) == 0);
-if(m == 4){digits[2] = Char_from_PC();deci_SecsH = '0'; deci_SecsL = '0';}
-else digits[6 - m] = Char_from_PC(); 
+digits[7] = Char_from_PC_Basic();Display_time;
+for (int m = 0; m<=4; m++){while(isCharavailable_Basic(5) == 0);
+if(m == 4){digits[2] = Char_from_PC_Basic();deci_SecsH = '0'; deci_SecsL = '0';}
+else digits[6 - m] = Char_from_PC_Basic(); 
 Display_time;}
 
-waitforkeypress();
+waitforkeypress_Basic();
 clear_display;
 _delay_ms(50);}
 
