@@ -20,7 +20,7 @@ volatile char tick_counter;
 int main (void){
 char User_response;
 
-setup_328_HW;
+setup_328_HW_Basic_IO;
 initialise_T2();
 
 String_to_PC_Basic("Press 'R' to enter time or 'r' to start at time zero  ");
