@@ -16,13 +16,13 @@ volatile char Data_Entry_complete=0;
 int main (void){
 
 long deci_sec_counter = 0;
-setup_328_HW;
+setup_328_HW_Basic_IO;
 initialise_T2();
 
 clear_display;                       
 time_from_IO();
 
-while(switch_2_up);
+while(switch_2_up)wdr();
 
 start_clock();
 while(1)
@@ -40,8 +40,8 @@ while((switch_1_down) || (switch_3_down)){
 if(switch_1_down)deci_sec_counter += 10;
 else deci_sec_counter -= 10;
 deci_Seconds_to_display(deci_sec_counter); 
-_delay_ms(25); }
-while(switch_2_up);
+_delay_ms(25);wdr(); }
+while(switch_2_up)wdr();
 TIMSK2 |= (1 << OCIE2A);}
 }} 
 
@@ -53,7 +53,7 @@ set_up_PCI;
 enable_PCI;
 disable_pci_on_sw2;
 for(int m = 0; m<= 7; m++)digits[m] = 0;
-while(!(Data_Entry_complete));                          //Line A. wait here for pci interrupts used to enter data
+while(!(Data_Entry_complete))wdr();                          //Line A. wait here for pci interrupts used to enter data
 Data_Entry_complete = 0;
 disable_pci_on_sw1_and_sw3;}
 
@@ -119,7 +119,7 @@ digits[1] = '0';
 digits[0] = '0';
 Data_Entry_complete = 1;
 disable_pci_on_sw1_and_sw3;
-while(switch_3_down);}}
+while(switch_3_down)wdr();}}
 
 
 disable_pci_on_sw1_and_sw3;
