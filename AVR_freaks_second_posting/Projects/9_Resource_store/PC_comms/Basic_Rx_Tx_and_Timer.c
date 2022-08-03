@@ -33,11 +33,11 @@ char wait_for_return_key_A(void);
 /**********************************************************************************************/
 void setup_PC_comms_Basic (unsigned char UBRROH_N, unsigned char UBRR0L_N ){
 UCSR0B = 0;
-UBRR0H = UBRROH_N; 
+UBRR0H = UBRROH_N; 													//Set the USART Baud Rate Register
 UBRR0L = UBRR0L_N;  
-UCSR0A = (1 << U2X0);
-UCSR0B = (1 << RXEN0) | (1<< TXEN0);
-UCSR0C =  (1 << UCSZ00)| (1 << UCSZ01);} 
+UCSR0A = (1 << U2X0);												//Double speed operation
+UCSR0B = (1 << RXEN0) | (1<< TXEN0);								//Enable Receive and transmitter units 
+UCSR0C =  (1 << UCSZ00)| (1 << UCSZ01);} 							//8 bit asynchronous operation, no parity
 
 
 
