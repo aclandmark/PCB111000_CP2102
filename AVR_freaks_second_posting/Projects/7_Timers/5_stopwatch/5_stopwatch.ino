@@ -75,7 +75,7 @@ OCR2B = 0;}
 void start_clock(void){
 tick_counter = 0;
 TCNT2 = 0;
-OCR2A = 41; 
+OCR2A = 41;
 TIMSK2 |= (1 << OCIE2A);}
 
 
