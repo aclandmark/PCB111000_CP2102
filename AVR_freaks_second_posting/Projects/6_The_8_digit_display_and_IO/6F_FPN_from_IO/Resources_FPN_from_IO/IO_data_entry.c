@@ -15,7 +15,7 @@ void shift_float_display_left(void){
 
 if((byte)display_buffer[0] & 0x80)dp_control = 1;                       //No more decimal points allowed
 if (display_buffer[0] == 'e')
-{exp_control = 1; neg_sign = 0;}                                       //Negative exponent allowed
+{exp_control = 1; neg_sign = 0;}                                       	//Negative exponent allowed
 else neg_sign = 1;                                                      //FP number can have one negative sign 
 
 scroll_control = (exp_control << 2) | (dp_control << 1) | neg_sign;   
