@@ -39,7 +39,7 @@ FPN_1_num *= -1.0;
 float_num_to_display(FPN_1_num);}
 
 
-if (FPN_1_num >= 1.0)                                           //Multiply or divide number by 2 untill it
+if (FPN_1_num >= 1.0)                                           //Multiply or divide number by 2 until it
 {twos_exp = 0; while (FPN_1_num >= 2.0)                         //is between 1 and 2 and adjust its twos_exp 
 {FPN_1_num = FPN_1_num/2.0; twos_exp += 1;}}                    //so that its value remains unchanged 
 
@@ -61,7 +61,7 @@ if(switch_2_down){SW_reset;}}}
 
 
 
-/********************************************************************************************************/  
+/******************************************************************************************************************************/  
 float FPN_number_from_IO(void){
 
 char keypress = 0;
@@ -70,26 +70,26 @@ float * Flt_ptr;
 char * Char_ptr;
 
 Flt_ptr = &Float_from_mini_OS;
-Char_ptr = (char*)&Float_from_mini_OS;
+Char_ptr = (char*)&Float_from_mini_OS;                            //Addresses FPN as four 8 bit character numbers
 
 set_up_PCI;
-enable_PCI_on_sw1_and_sw2;
+enable_PCI_on_sw1_and_sw2;                                        //Required to scroll through the digits and shift the display left
 
 initialise_display;
 
 do{                                                               //Repeat untill FPN string entry is complete
 while
-((!(Data_Entry_complete)) && (!(digit_entry)))wdr();             //Wait here for input from IO 
-enable_PCI_on_sw3;
-digit_entry = 0;
-}while(!(Data_Entry_complete));
+((!(Data_Entry_complete)) && (!(digit_entry)))wdr();             //Wait here for entry of each digit (SW2 pressed)
+//enable_PCI_on_sw3;                                               //Probbly redundant (dupliated in ISR(PCINT2_vect))
+digit_entry = 0;                                                  //SW2 sets this to one
+}while(!(Data_Entry_complete));                                   //Remain in do-loop until data entry has been terminated
 Data_Entry_complete = 0;
 
 cr_keypress = 1;                                                  //Entry of FP string complete 
-pause_PCI_and_Send_float_num_string;                              //Acquire FP number from display driver
+pause_PCI_and_Send_float_num_string;
 cr_keypress = 0;
 
-f_number_from_mini_OS;
+f_number_from_mini_OS;                                            //Mini-OS responds by displaying number and returning it in binary form
 
 disable_PCI_on_sw1_and_sw2;
 disable_PCI_on_sw3;
@@ -98,31 +98,34 @@ return Float_from_mini_OS;}
 
 
 
-/********************************************************************************************************/
+/****************************************************************************************************************************/
 ISR(PCINT2_vect){
 char disp_bkp[8];
 
 if((switch_1_up) && (switch_2_up) && (switch_3_up))return;
 
-if(switch_3_down){                                              //End of data entry
-if (switch_2_down){sei();clear_display;cli();
+/****Program control jumps to here when data entry is complete****************************************************************/
+if(switch_3_down){                                              //Normally SW3 is used to terminate data entry
+if (switch_2_down){sei();clear_display;cli();					          //SW3 combined with SW2 is used to clear the display
 while ((switch_3_down) || (switch_2_down));
 initialise_display;
 return; }
 
 digit_entry = 1;
-Data_Entry_complete=1;
-pause_PCI_and_Send_float_num_string;
-while(switch_3_down);                                           //Pause update of display
+Data_Entry_complete=1;											                    //Signals to "FPN_number_from_IO()" that data entry is complete
+pause_PCI_and_Send_float_num_string;							              //Update display
+while(switch_3_down)wdr();                                      //Wait here for SW3 to be released
 return;}
 
-
+/*******Program control jumps to here during data entry**********************************************************************/
 while(switch_1_down)
-{scroll_float_display_zero();                                    //Hold SW1 down to scroll throuh the availble chars (0-9, E and -)
+{scroll_float_display_zero();                                    //Dissables IPC due to SW3 and scrolls throuh the availble chars (0-9, E and -)
 Timer_T2_10mS_delay_x_m(10);}
 
-while(switch_3_down);enable_PCI_on_sw3;                         //Wait for SW3 to be released (may have been pressed to select dp)
-if(switch_2_down)shift_float_display_left();                    //Press SW2 to accept the next char and shift the display
+while(switch_3_down)wdr();                                       //Wait for SW3 to be released (may have been pressed to select dp)
+enable_PCI_on_sw3;                                              //May be required later on to terminate data entry              
+
+if(switch_2_down)shift_float_display_left();                    //Press SW2 to accept the latest char and shift the display
 Timer_T2_10mS_delay_x_m(10);
 clear_PCI;} 
 
