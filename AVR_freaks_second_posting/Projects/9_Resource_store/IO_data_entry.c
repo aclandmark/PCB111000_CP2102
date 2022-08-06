@@ -1,6 +1,12 @@
 
 
 
+/*
+Subroutines required by projects FPN/INT_from IO to read the user switch presses
+*/
+
+
+
 #define pause_PCI_and_Send_int_num_string \
 S_reg_bkp = SREG; sei(); pause_PCI; Int_num_string_to_display; SREG = S_reg_bkp; reinstate_PCI;
 
@@ -15,7 +21,7 @@ void shift_float_display_left(void){
 
 if((byte)display_buffer[0] & 0x80)dp_control = 1;                       //No more decimal points allowed
 if (display_buffer[0] == 'e')
-{exp_control = 1; neg_sign = 0;}                                       //Negative exponent allowed
+{exp_control = 1; neg_sign = 0;}                                       	//Negative exponent allowed
 else neg_sign = 1;                                                      //FP number can have one negative sign 
 
 scroll_control = (exp_control << 2) | (dp_control << 1) | neg_sign;   
@@ -40,7 +46,7 @@ digit_entry = 1;}
 
 
 
-/******************************************************************************************************************************************/
+/********************************************************************************************************/
 void scroll_float_display_zero(void){
 unsigned char data_zero;
 
@@ -86,7 +92,7 @@ pause_PCI_and_Send_float_num_string;}
 
 
 
-/******************************************************************************************************************************************/
+/********************************************************************************************************/
 void scroll_int_display_zero(void){	
 unsigned char data_zero;
 
