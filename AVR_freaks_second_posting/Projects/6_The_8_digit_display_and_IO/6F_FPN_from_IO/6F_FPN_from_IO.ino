@@ -44,18 +44,17 @@ if (FPN_1_num >= 1.0)                                           //Multiply or di
 {FPN_1_num = FPN_1_num/2.0; twos_exp += 1;}}                    //so that its value remains unchanged 
 
 if (FPN_1_num < 1.0)
-{twos_exp = 0; while (FPN_1_num < 1.0)
+{twos_exp = 0; while (FPN_1_num < 1.0)                          //Negative numbers not allowed
 {FPN_1_num = FPN_1_num*2.0; twos_exp -= 1;}}
 
-while(1){
-while(switch_1_up)wdr();
+while(1){                                                       //Simple arithmetic
+while(switch_1_up)wdr();                                        //Use reset control switch to exit
 float_num_to_display(FPN_1_num);
 while(switch_3_up)wdr();
 Int_num_to_display(twos_exp);
 while(switch_1_up)wdr();
 float_num_to_display(pow(2, twos_exp) * FPN_1_num);
-while(switch_3_up)wdr();
-if(switch_2_down){SW_reset;}}} 
+while(switch_3_up)wdr();}} 
 
 
 
@@ -77,15 +76,13 @@ enable_PCI_on_sw1_and_sw2;                                        //Required to 
 
 initialise_display;
 
-do{                                                               //Repeat untill FPN string entry is complete
-while
-((!(Data_Entry_complete)) && (!(digit_entry)))wdr();             //Wait here for entry of each digit (SW2 pressed)
-//enable_PCI_on_sw3;                                               //Probbly redundant (dupliated in ISR(PCINT2_vect))
+do{
+while (!(digit_entry))wdr();                                       //Wait for user to select the next digit
 digit_entry = 0;                                                  //SW2 sets this to one
 }while(!(Data_Entry_complete));                                   //Remain in do-loop until data entry has been terminated
 Data_Entry_complete = 0;
 
-cr_keypress = 1;                                                  //Entry of FP string complete 
+cr_keypress = 1;                                                  //Carraige return keypress: entry of FP string complete 
 pause_PCI_and_Send_float_num_string;
 cr_keypress = 0;
 
@@ -102,16 +99,14 @@ return Float_from_mini_OS;}
 ISR(PCINT2_vect){
 char disp_bkp[8];
 
-if((switch_1_up) && (switch_2_up) && (switch_3_up))return;
+if((switch_1_up) && (switch_2_up) && (switch_3_up))return;       //Take no action on switch release  
+if ((switch_2_down) && (switch_3_down))
+{while((switch_2_down) || (switch_3_down))wdr(); return;}        //Unwanted switch presses
+
 
 /****Program control jumps to here when data entry is complete****************************************************************/
-if(switch_3_down){                                              //Normally SW3 is used to terminate data entry
-if (switch_2_down){sei();clear_display;cli();					          //SW3 combined with SW2 is used to clear the display
-while ((switch_3_down) || (switch_2_down));
-initialise_display;
-return; }
-
-digit_entry = 1;
+if(switch_3_down){                                              //SW3 is used to terminate data entry
+digit_entry = 1;                                                //It is also used to generate decimal point
 Data_Entry_complete=1;											                    //Signals to "FPN_number_from_IO()" that data entry is complete
 pause_PCI_and_Send_float_num_string;							              //Update display
 while(switch_3_down)wdr();                                      //Wait here for SW3 to be released
