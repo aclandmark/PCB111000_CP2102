@@ -51,8 +51,7 @@ while(switch_3_up)wdr();
 Int_num_to_display(twos_exp);
 while(switch_1_up)wdr();
 float_num_to_display(pow(2, twos_exp) * FPN_1_num);
-while(switch_3_up)wdr();
-if(switch_2_down){SW_reset;}}} 
+while(switch_3_up)wdr();}} 
 
 
 
@@ -63,17 +62,15 @@ ISR(PCINT2_vect){
 char disp_bkp[8];
 
 if((switch_1_up) && (switch_2_up) && (switch_3_up))return;
+if ((switch_2_down) && (switch_3_down))
+{while((switch_2_down) || (switch_3_down))wdr(); return;}        //Unwanted switch presses
 
-if(switch_3_down){ 
-if (switch_2_down){sei();clear_display;cli();
-while ((switch_3_down) || (switch_2_down))wdr();
-initialise_display;
-return; }
 
-digit_entry = 1;
-Data_Entry_complete=1;
-pause_PCI_and_Send_int_num_string;
-while(switch_3_down);
+if(switch_3_down){                                              //SW3 is used to terminate data entry
+digit_entry = 1;                                                //It is also used to generate decimal point
+Data_Entry_complete=1;                                          //Signals to "FPN_number_from_IO()" that data entry is complete
+pause_PCI_and_Send_int_num_string;                              //Update display
+while(switch_3_down)wdr();                                      //Wait here for SW3 to be released
 return;}
 
 
@@ -81,7 +78,9 @@ while(switch_1_down)
 {scroll_int_display_zero(); 
 Timer_T2_10mS_delay_x_m(10);}
 
-while(switch_3_down)wdr();enable_PCI_on_sw3;  
+while(switch_3_down)wdr();
+enable_PCI_on_sw3;  
+
 if(switch_2_down)shift_int_display_left();  
 Timer_T2_10mS_delay_x_m(10);
 clear_PCI;}       
@@ -101,22 +100,24 @@ set_up_PCI;
 enable_PCI_on_sw1_and_sw2;
 initialise_display;
 
-do{      
-while
-((!(Data_Entry_complete)) && (!(digit_entry)))wdr();            
-enable_PCI_on_sw3;
-
-digit_entry = 0;
-}while(!(Data_Entry_complete));
+do{
+while (!(digit_entry))wdr();                                       //Wait for user to select the next digit
+digit_entry = 0;                                                  //SW2 sets this to one
+}while(!(Data_Entry_complete));                                   //Remain in do-loop until data entry has been terminated
 Data_Entry_complete = 0;
 
 cr_keypress = 1;  
 pause_PCI_and_Send_int_num_string;
 cr_keypress = 0;
+
 Int_from_mini_OS;
 
 disable_PCI_on_sw1_and_sw2;
 disable_PCI_on_sw3;
+
 return Long_Num_from_mini_OS;}
+
+
+
 
 /************************************************************************************************************/
