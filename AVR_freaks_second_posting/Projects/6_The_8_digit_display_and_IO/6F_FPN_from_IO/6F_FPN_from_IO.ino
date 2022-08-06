@@ -118,7 +118,7 @@ while(switch_1_down)
 Timer_T2_10mS_delay_x_m(10);}
 
 while(switch_3_down)wdr();                                       //Wait for SW3 to be released (may have been pressed to select dp)
-enable_PCI_on_sw3;                                              //May be required later on to terminate data entry              
+enable_PCI_on_sw3;                                              //Will be required later on to terminate data entry              
 
 if(switch_2_down)shift_float_display_left();                    //Press SW2 to accept the latest char and shift the display
 Timer_T2_10mS_delay_x_m(10);
