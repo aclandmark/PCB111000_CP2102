@@ -43,29 +43,6 @@ failsafe;
 
 
 /************************************************************************************************************************************/
-#define setup_328_HW_Basic_IO \
-\
-setup_watchdog;\
-ADMUX |= (1 << REFS0);\
-initialise_IO;\
-OSC_CAL;\
-\
-comms_cal;\
-set_up_pin_change_interrupt_on_PC5;\
-\
-setup_one_wire_comms;\
-set_up_activity_leds;\
-sei();\
-setup_PC_comms(0,16);\
-_delay_ms(10);\
-determine_reset_source;\
-One_25ms_WDT_with_interrupt;\
-failsafe;
-
-
-
-
-/************************************************************************************************************************************/
 #define wdr()  __asm__ __volatile__("wdr")
 
 #define setup_watchdog \
@@ -98,14 +75,6 @@ PORTD = 0xFF;
 
 //All ports are initialised to weak pull up (WPU)
 
-
-
-/************************************************************************************************************************************/
-#define User_prompt_Arduino \
-{while(1){\
-do{Serial.write("R?    ");}   while((isCharavailable_with_WDT(35) == 0));\
-User_response = Serial.read();\
-if((User_response == 'R') || (User_response == 'r'))break;} Serial.write("\r\n");}
 
 
 
