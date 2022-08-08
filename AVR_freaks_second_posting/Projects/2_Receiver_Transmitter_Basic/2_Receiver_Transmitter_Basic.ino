@@ -1,13 +1,18 @@
 
 
-/*NOTE ARDUINO automatically configures the UART for 115200 Baud
-This translates to 57600 for PCB111000_PCB2102
-The PCB111000 bootloader includes a subroutine to initiate the UART
-so this does not have to be done by the user projects.
+/*
+In this project the "setup_328_HW_Arduino_IO" code segment has been replaced by "setup_328_HW_Basic_IO".
 
 Arduino provides a comprehensive library for sending data to and from a PC.
 However simple DIY (do it yourself) functions are used here to illustate
 the steps involved and introduce the Atmega328 data sheet.
+ 
+ASKII coding is introduced.  Every character on the PC keyboard is assigned a number from 32 to 127.
+For example 63 is used to send a question mark '?' to the PC.
+Decimal 125 is sent as 3 eight bit numbers 49, 50 and 53. 
+48 is used to represent zero.
+digits 1, 2 and 5 can therfore by extracted by subtracting 48 from 49, 50 and 53.  
+5 is then added to 2 times 10 and 1 times 100 to obtain 125 in binary form. 
 */
 
 
