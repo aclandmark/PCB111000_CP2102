@@ -8,8 +8,8 @@
  It introduces
  one_wire subroutines which send data to the mini_OS that resides on the ATtiny1606
  and drives the display
- A PRN generator that produces pseudo random noise
- The setup_328_HW macro: This sets up the IO, the watch dog timer, calibrates the 8MHz clock etc...
+ A PRN generator that produces pseudo random numbers
+ The setup_328_HW_Arduino_IO: This sets up the IO, the watch dog timer, calibrates the 8MHz clock etc...
  The SW_reset macro: This enables the Atmega328 to be reset at any time.
  */
 
