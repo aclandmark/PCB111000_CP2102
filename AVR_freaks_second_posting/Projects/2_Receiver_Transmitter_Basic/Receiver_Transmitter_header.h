@@ -78,6 +78,8 @@ PORTD = 0xFF;
 
 //All ports are initialised to weak pull up (WPU)
 
+
+
 /************************************************************************************************************************************/
 #define reset_ctl_reg                         0x3FC
 #define Signal_WDTout_with_interrupt          eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x20)
@@ -121,15 +123,7 @@ if(reset_status == 6)\
 
 
 
-
-
-
 /************************************************************************************************************************************/
-/*#include "Resources_Receiver_transmitter\One_wire_header.h"
-#include "Resources_Receiver_transmitter\One_wire_transactions.c"
-#include "Resources_Receiver_transmitter\Basic_IO_and_Timer.c"
-#include "Resources_Receiver_transmitter\display_comms.c"
-*/
 #include "Resources_Receiver_transmitter\Chip2chip_comms\One_wire_header.h"
 #include "Resources_Receiver_transmitter\Chip2chip_comms\Display_driver_header.h"
 #include "Resources_Receiver_transmitter\Chip2chip_comms\One_wire_transactions.c"
