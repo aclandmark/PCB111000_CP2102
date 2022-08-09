@@ -1,5 +1,6 @@
 
 
+
 #include <avr/wdt.h>
 
 char User_response;
@@ -7,9 +8,6 @@ char reset_status;
 
 #define newline String_to_PC_Basic("\r\n")
 
-
-//void One_wire_Tx_2_integers(unsigned int, unsigned int);
-//char User_response;
 
 
 /**********************************************************************************/
@@ -19,6 +17,7 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 == eeprom_read_byte((uint8_t*)0x3FE))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
 
 //If the internal clock has been calibrated, a calibration byte will be found in EEPROM locations 0x3FF/E
+
 
 
 /************************************************************************************************************************************/
@@ -65,6 +64,7 @@ WDTCSR |= (1 <<WDCE) | (1<< WDE);\
 WDTCSR = (1<< WDE) | (1 << WDIE) |  (1 << WDP2);
 
 
+
 /************************************************************************************************************************************/
 #define initialise_IO \
 MCUCR &= (~(1 << PUD));\
@@ -76,6 +76,7 @@ PORTC = 0xFF;\
 PORTD = 0xFF;
 
 //All ports are initialised to weak pull up (WPU)
+
 
 
 /************************************************************************************************************************************/
@@ -96,14 +97,12 @@ PORTD = 0xFF;
 
 
 
-
 /************************************************************************************************************************************/
 #define User_prompt_proj_1A1 \
 while(1){\
 do{sendString("r    ");}	 while((isCharavailable(40) == 0));\
 User_response = receiveChar();\
 if(User_response == 'r') break;} sendString("\r\n");
-
 
 
 
@@ -141,12 +140,15 @@ reset_status:
 Note : Set bit 2 to generate the prtD... prompt 
 */
 
+
+
 /************************************************************************************************************************************/
 #define failsafe \
 if(reset_status == 7)\
 {String_to_PC_Basic("\r\nProgram restarted.");}\
 if(reset_status == 6)\
 {String_to_PC_Basic("\r\nWDTout\r\n");while(1)wdr();}
+
 
 
 /************************************************************************************************************************************/
