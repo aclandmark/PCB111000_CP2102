@@ -5,7 +5,7 @@
  
  Note SW2 is connected to a pin on the Atmega328 that is configured as input.
  When SW2 is pressed the voltage level on the pin changes from 5V to zero volts.
- A Pin Change Interrrupt (PCI) is generated.
+ A Pin Change Interrupt (PCI) is generated.
  */
 
 
@@ -53,3 +53,9 @@ ISR(PCINT2_vect)
   }
   switch_control = 1;
 }
+
+
+
+
+
+/***********************************************************************************************************/
