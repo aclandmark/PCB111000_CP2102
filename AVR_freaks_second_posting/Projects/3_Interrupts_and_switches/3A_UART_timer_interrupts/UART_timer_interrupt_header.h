@@ -37,12 +37,12 @@ sei();\
 setup_PC_comms_Basic(0,16);\
 _delay_ms(10);\
 determine_reset_source;\
-One_25ms_WDT_with_interrupt;\
+Two_50ms_WDT_with_interrupt;\
 failsafe;
 
 //The reset control switch is connected to PC5
-
-
+//setup_one_wire_comms;
+//Two_50ms_WDT_with_interrupt;
 
 /************************************************************************************************************************************/
 #define wdr()  __asm__ __volatile__("wdr")
@@ -62,6 +62,11 @@ WDTCSR = 0;
 wdr();\
 WDTCSR |= (1 <<WDCE) | (1<< WDE);\
 WDTCSR = (1<< WDE) | (1 << WDIE) |  (1 << WDP0)  |  (1 << WDP1);
+
+#define Two_50ms_WDT_with_interrupt \
+wdr();\
+WDTCSR |= (1 <<WDCE) | (1<< WDE);\
+WDTCSR = (1<< WDE) | (1 << WDIE) |  (1 << WDP2);
 
 
 
@@ -88,8 +93,8 @@ PORTD = 0xFF;
 
 
 /************************************************************************************************************************************/
-#define set_up_PCI_on_sw2         PCICR |= (1 << PCIE2);
-#define enable_pci_on_sw2         PCMSK2 |= (1 << PCINT21);
+//#define set_up_PCI_on_sw2         PCICR |= (1 << PCIE2);
+//#define enable_pci_on_sw2         PCMSK2 |= (1 << PCINT21);
 #define switch_2_up               (PIND & 0x20)
 #define switch_2_down             (PIND & 0x20)^0x20
 
@@ -105,11 +110,10 @@ PORTD = 0xFF;
 
 /************************************************************************************************************************************/
 #define do_some_arithmetic \
-counter_squared = counter*counter;\
-if((!(counter%33))&& (switch_2_down)){\
-Num_to_PC_Basic(counter); Char_to_PC_Basic('\t');\
-Num_to_PC_Basic(counter*counter); newline;\
- }counter = (counter + 1)%0x8000;
+if((!(counter2%33))&& (switch_2_down)){\
+Num_to_PC_Basic(counter2); Char_to_PC_Basic('\t');\
+Num_to_PC_Basic(counter2 * counter2); newline;\
+ }counter2 = (counter2 + 1)%0x8000;
 
 
 
