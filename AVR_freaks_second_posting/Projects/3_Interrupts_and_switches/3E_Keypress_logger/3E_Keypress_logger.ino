@@ -1,6 +1,6 @@
 
 /*
- A simple keypresss logger which also drives the display. 
+ A simple keypress logger which also drives the display. 
  At reset press r to record keypresses or R to replay them 
  */
 
@@ -92,3 +92,8 @@ int Keypress_to_EEPROM(char keypress, int eep_address)
   else String_to_PC_Basic("\r\n");
   return --eep_address;
 }
+
+
+
+
+/************************************************************************************************************/
