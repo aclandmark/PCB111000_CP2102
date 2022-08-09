@@ -1,10 +1,13 @@
 
+
+
 #include <avr/wdt.h>
 
 char User_response;
 char reset_status;
 
 #define newline String_to_PC_Basic("\r\n")
+
 
 
 /**********************************************************************************/
@@ -14,7 +17,6 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 == eeprom_read_byte((uint8_t*)0x3FE))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
 
 //If the internal clock has been calibrated, a calibration byte will be found in EEPROM locations 0x3FF/E
-
 
 
 
@@ -42,7 +44,6 @@ failsafe;
 
 
 
-
 /************************************************************************************************************************************/
 #define wdr()  __asm__ __volatile__("wdr")
 
@@ -64,8 +65,6 @@ WDTCSR = (1<< WDE) | (1 << WDIE) |  (1 << WDP0)  |  (1 << WDP1);
 
 
 
-
-
 /************************************************************************************************************************************/
 #define initialise_IO \
 MCUCR &= (~(1 << PUD));\
@@ -80,7 +79,6 @@ PORTD = 0xFF;
 
 
 
-
 /************************************************************************************************************************************/
 #define reset_ctl_reg                         0x3FC
 #define Signal_WDTout_with_interrupt          eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x20)
@@ -88,17 +86,16 @@ PORTD = 0xFF;
 #define clear_reset_ctl_reg                   eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0)
 
 
-
-
-
-
 #define clear_display   One_wire_Tx_char = 'c';  UART_Tx_1_wire();
+
 
 #define set_up_PCI_on_sw2         PCICR |= (1 << PCIE2);
 #define enable_pci_on_sw2         PCMSK2 |= (1 << PCINT21);
 #define pause_pci_on_sw2          PCICR &= (~(1 << PCIE2));
 #define resume_PCI_on_sw2         PCICR |= (1 << PCIE2);
 #define switch_2_up               (PIND & 0x20)
+
+
 
 /************************************************************************************************************************************/
 #define determine_reset_source \
@@ -136,15 +133,13 @@ if(reset_status == 6)\
 
 
 
-
-
-
-
 /************************************************************************************************************************************/
 #include "Resources_Prime_numbers\Chip2chip_comms\One_wire_header.h"
 #include "Resources_Prime_numbers\Chip2chip_comms\One_wire_transactions.c"
 #include "Resources_Prime_numbers\PC_comms\Basic_Rx_Tx_and_Timer.c"
 #include "Resources_Prime_numbers\Chip2chip_comms\Display_driver.c"
+
+
 
 
 
