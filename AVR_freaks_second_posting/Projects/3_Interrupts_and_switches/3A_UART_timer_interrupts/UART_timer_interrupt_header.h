@@ -9,6 +9,7 @@ char reset_status;
 #define newline String_to_PC_Basic("\r\n")
 
 
+
 /**********************************************************************************/
 #define  OSC_CAL \
 if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
@@ -16,7 +17,6 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 == eeprom_read_byte((uint8_t*)0x3FE))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
 
 //If the internal clock has been calibrated, a calibration byte will be found in EEPROM locations 0x3FF/E
-
 
 
 
@@ -44,7 +44,6 @@ failsafe;
 
 
 
-
 /************************************************************************************************************************************/
 #define wdr()  __asm__ __volatile__("wdr")
 
@@ -63,6 +62,7 @@ WDTCSR = 0;
 wdr();\
 WDTCSR |= (1 <<WDCE) | (1<< WDE);\
 WDTCSR = (1<< WDE) | (1 << WDIE) |  (1 << WDP0)  |  (1 << WDP1);
+
 
 
 /************************************************************************************************************************************/
@@ -84,7 +84,6 @@ PORTD = 0xFF;
 #define Signal_WDTout_with_interrupt          eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x20)
 #define Signal_SW_reset                       eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~0x40))
 #define clear_reset_ctl_reg                   eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0)
-
 
 
 
@@ -111,7 +110,6 @@ if((!(counter%33))&& (switch_2_down)){\
 Num_to_PC_Basic(counter); Char_to_PC_Basic('\t');\
 Num_to_PC_Basic(counter*counter); newline;\
  }counter = (counter + 1)%0x8000;
-
 
 
 
@@ -148,7 +146,6 @@ if(reset_status == 7)\
 {String_to_PC_Basic("\r\nProgram restarted.");}\
 if(reset_status == 6)\
 {String_to_PC_Basic("\r\nWDTout\r\n");while(1)wdr();}
-
 
 
 
