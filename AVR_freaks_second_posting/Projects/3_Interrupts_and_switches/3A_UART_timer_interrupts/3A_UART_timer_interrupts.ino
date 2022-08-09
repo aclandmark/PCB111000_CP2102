@@ -2,12 +2,16 @@
 /*
 Interrupts enable several process to run at the same time.
 Here the main task is to do some simple arithmetic and send the results to the PC
-However a timer interrup that occcurs every 100ms is used to drive the LED display.
+However a timer interrupt that occurs every 100ms is used to drive the LED display.
 Code to setup a keypress interrupt is also given.  This enables the user to adjust 
 the display.
 
-When an interrupt occurs program coontrol jumps to the Interrupt Serice Routine (ISR)
+When an interrupt occurs program control jumps to the Interrupt Service Routine (ISR)
 
+
+Note: Arduino reserves the ISR(USART_RX_vect) subroutine which is therefore not easily available
+to the user.  For these examples "setup_328_HW_Basic_IO" is used and all subroutines using 
+the Arduino Serial library are commented out.
 */
 
 
