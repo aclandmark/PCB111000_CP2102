@@ -9,9 +9,6 @@ char reset_status;
 #define newline String_to_PC_Basic("\r\n")
 
 
-//void One_wire_Tx_2_integers(unsigned int, unsigned int);
-//char User_response;
-
 
 /**********************************************************************************/
 #define  OSC_CAL \
@@ -20,6 +17,7 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 == eeprom_read_byte((uint8_t*)0x3FE))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
 
 //If the internal clock has been calibrated, a calibration byte will be found in EEPROM locations 0x3FF/E
+
 
 
 /************************************************************************************************************************************/
@@ -43,8 +41,6 @@ One_25ms_WDT_with_interrupt;\
 failsafe;
 
 //The reset control switch is connected to PC5
-
-
 
 
 
@@ -81,6 +77,8 @@ PORTD = 0xFF;
 
 //All ports are initialised to weak pull up (WPU)
 
+
+
 /************************************************************************************************************************************/
 #define reset_ctl_reg                         0x3FC
 #define Signal_WDTout_with_interrupt          eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x20)
@@ -97,11 +95,13 @@ User_response = receiveChar();\
 if(User_response == 'r') break;} sendString("\r\n");
 
 
+
 /************************************************************************************************************************************/
 #define set_up_PCI_on_sw2         PCICR |= (1 << PCIE2);
 #define enable_pci_on_sw2         PCMSK2 |= (1 << PCINT21);
 #define switch_2_up               (PIND & 0x20)
 #define switch_2_down            (PIND & 0x20)^0x20
+
 
 
 /************************************************************************************************************************************/
@@ -113,11 +113,14 @@ PORT_1 = 1;\
 else PORT_1 = PORT_1 << 1;}    
 
 
+
 /************************************************************************************************************************************/
 #define shift_PORT_2 \
 if (PORT_2 == 0x8000)\
 PORT_2 = 1;\
 else PORT_2 = PORT_2 << 1;
+
+
 
 /************************************************************************************************************************************/
 #define flash_display \
@@ -161,6 +164,7 @@ if(reset_status == 7)\
 {String_to_PC_Basic("\r\nProgram restarted.");}\
 if(reset_status == 6)\
 {String_to_PC_Basic("\r\nWDTout\r\n");while(1)wdr();}
+
 
 
 /************************************************************************************************************************************/
