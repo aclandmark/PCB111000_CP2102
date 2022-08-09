@@ -9,6 +9,7 @@ char reset_status;
 #define newline String_to_PC_Basic("\r\n")
 
 
+
 /**********************************************************************************/
 #define  OSC_CAL \
 if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
@@ -16,7 +17,6 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 == eeprom_read_byte((uint8_t*)0x3FE))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
 
 //If the internal clock has been calibrated, a calibration byte will be found in EEPROM locations 0x3FF/E
-
 
 
 
@@ -41,7 +41,6 @@ One_25ms_WDT_with_interrupt;\
 failsafe;
 
 //The reset control switch is connected to PC5  USART_init(0,16);
-
 
 
 
@@ -98,6 +97,7 @@ eeprom_write_byte((uint8_t*)(0x3EA), eep_address);
 
 
 
+/*************************************************************************************************************************************/
 #define User_prompt \
 while(1){\
 do{String_to_PC_Basic("R?    ");}   while((isCharavailable_Basic(100) == 0));\
@@ -105,10 +105,13 @@ User_response = Char_from_PC_Basic();\
 if((User_response == 'R') || (User_response == 'r'))break;} String_to_PC_Basic("\r\n");
 
 
+
 #define Initialise_display \
 PORT_1 = 0b0000000000000001;\
 PORT_2 = 0b1000000000000000;\
 One_wire_Tx_2_integers(PORT_1, PORT_2);
+
+
 
 #define inc_display \
 *PORT_1 = *PORT_1 << 1;\
@@ -117,6 +120,7 @@ One_wire_Tx_2_integers(*PORT_1, *PORT_2);\
 if (*PORT_2 == 1)\
 {*PORT_1 = 0b0000000000000001;\
 *PORT_2 = 0b1000000000000000;}
+
 
 
 /************************************************************************************************************************************/
@@ -155,12 +159,12 @@ if(reset_status == 6)\
 
 
 
-
 /************************************************************************************************************************************/
 #include "Resources_3E\Chip2chip_comms\One_wire_header.h"
 #include "Resources_3E\Chip2chip_comms\One_wire_transactions.c"
 #include "Resources_3E\PC_comms\Basic_Rx_Tx_and_Timer.c"
 #include "Resources_3E\Chip2chip_comms\Display_driver.c"
+
 
 
 
