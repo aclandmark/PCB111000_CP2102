@@ -22,18 +22,33 @@ int m, num_leds = 8;
 unsigned int PORT_1, PORT_2;
 
 int main (void)
-{ unsigned long counter = 1;
-  unsigned long counter_squared;
+{ unsigned long counter;
+  //unsigned long counter_squared;
 
   setup_328_HW_Basic_IO;
   reset_display;
   
   UCSR0B |= (1 << RXCIE0);
   T1_100ms_clock_tick();
+  counter = 1;
+  newline;
+  while(switch_2_up)wdr();
   while (1)
-  {
-    do_some_arithmetic;
+  { 
+    if((!(counter%33)) && (switch_2_down)){
+Num_to_PC_Basic(counter); Char_to_PC_Basic('\t');
+Num_to_PC_Basic((counter * counter)); newline;
+//_delay_ms(1);
+ }
+ counter = (counter + 1)%(unsigned long)0x8000;
+   
+    
+    
+    
+    //do_some_arithmetic;
     _delay_us(50);
+    //_delay_ms(5);
+    wdr();
   }
 }
 
@@ -86,7 +101,7 @@ ISR(USART_RX_vect)
 
 
 
-void Num_to_PC_Basic (long number)
+void Num_to_PC_Basic (unsigned long number)
 { int i = 0;
   char s[12];
   
