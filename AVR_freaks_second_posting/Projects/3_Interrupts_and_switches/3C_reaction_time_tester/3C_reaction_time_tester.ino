@@ -1,6 +1,6 @@
 
 /*
- Vey similar to Proj 3B.  
+ Very similar to Project 3B.  
  Press sw2 when the led bars line up to make the display flash
  */
 
@@ -58,3 +58,8 @@ eeprom_write_byte((uint8_t*)(0x1FF),(lfsr>>8));
 eeprom_write_byte((uint8_t*)(0x1FE),lfsr);}
 
 return lfsr;}
+
+
+
+
+/******************************************************************/
