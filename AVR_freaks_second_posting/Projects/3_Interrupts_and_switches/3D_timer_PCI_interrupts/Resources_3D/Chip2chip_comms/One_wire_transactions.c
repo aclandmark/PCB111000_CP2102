@@ -1,13 +1,11 @@
 
 
+/*
+Subroutines that provide firm ware one wire comms with the mini-OS.
+The mini-OS uses similar FW routines to initiate and control the communication.
+*/
 
-/*************************************************************************************************************/
-/*void Int_num_to_display(long num){
-One_wire_Tx_char = 'C'; 								//Command 'C' indicates the a long number will be sent
-UART_Tx_1_wire();
-for(int m = 0; m <= 3; m++){
-One_wire_Tx_char = num >> (8 * (3 - m)); 	//Split the number into 4 chars
-UART_Tx_1_wire();}}	*/									//and send them individually
+
 
 
 
@@ -17,7 +15,7 @@ Tx_complete = 0;
 One_wire_mode = 1;									//Tx mode
   
 PCMSK0 |= 1 << PCINT4;				       			//set up Interrupt on pin change (IPC)
-while(!(Tx_complete));}								//Wait here untill transmisson is complete 
+while(!(Tx_complete));}								//Wait here until transmission is complete 
 
 
 
@@ -79,11 +77,11 @@ Rx_complete = 1;}}}
 	
 	
 /*************************************************************************************************************/
-ISR(PCINT1_vect){ 									//Interogates vertical switch presses
+ISR(PCINT1_vect){ 											//Interrogates reset control switch presses
 if(PINC5_down){
 _delay_ms(25); wdr();
 if(PINC5_up)return;
-for(int m = 0; m < 5; m++){_delay_ms(45); wdr();}			//_delay_ms(225);										//Switch bounce delay
+for(int m = 0; m < 5; m++){_delay_ms(45); wdr();}			//Switch bounce delay
 if(PINC5_up)
 {set_Run_BL_bit; }
 else{
