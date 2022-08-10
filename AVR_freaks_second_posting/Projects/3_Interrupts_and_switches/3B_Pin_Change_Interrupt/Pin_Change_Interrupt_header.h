@@ -90,6 +90,7 @@ PORTD = 0xFF;
 /************************************************************************************************************************************/
 #define set_up_PCI_on_sw2         PCICR |= (1 << PCIE2);
 #define enable_pci_on_sw2         PCMSK2 |= (1 << PCINT21);
+#define disable_pci_on_sw2        PCMSK2 &= (~(1 << PCINT21));
 #define switch_2_up               (PIND & 0x20)
 #define switch_2_down             (PIND & 0x20)^0x20
 
