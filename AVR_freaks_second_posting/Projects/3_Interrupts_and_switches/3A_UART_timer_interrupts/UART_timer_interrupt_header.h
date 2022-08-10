@@ -109,15 +109,6 @@ PORTD = 0xFF;
 
 
 /************************************************************************************************************************************/
-#define do_some_arithmetic \
-if((!(counter2%33))&& (switch_2_down)){\
-Num_to_PC_Basic(counter2); Char_to_PC_Basic('\t');\
-Num_to_PC_Basic(counter2 * counter2); newline;\
- }counter2 = (counter2 + 1)%0x8000;
-
-
-
-/************************************************************************************************************************************/
 #define determine_reset_source \
 switch (eeprom_read_byte((uint8_t*)reset_ctl_reg))\
 {case ((byte)~1): reset_status = 1; break;\
