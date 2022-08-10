@@ -52,6 +52,8 @@ Num_to_PC_Basic(array[j]);
 Char_to_PC_Basic(' ');
 counter -= 1;}                                 //When end of array reached process the next one
 
+
+
 /***************************Control display*********************************************************************************/
 mask = 0;
 {int m = 15; while (!(array [j] & (1 << m)))
@@ -63,9 +65,12 @@ resume_PCI_on_sw2;
 }j++;} 
 
 
+
 if (I <= 99)I += 1; else I-=100;}             //Process next array of 200 numbers
 
 }
+
+
 
 
 /***************************************************************************************************************************/
@@ -82,6 +87,7 @@ while(i*(i+m) <= n*I)m++;                       //Go to start of the new array f
 while(i*(i+m) <= n*(1+I))                       //2*101, 2*102, 2*103,... etc   3*67,3*68, 3*69,...etc    5*41, 5*42,...etc
 {reg[i*(i+m) -1 - n*I] = 0; m++;}               //set appropriate registers to zero (Note the offset of 1 place).
 i++;}}
+
 
 
 
@@ -108,6 +114,7 @@ unsigned int reverse(unsigned int num)
     if(num & (1 << m))num_reversed |= 1 << (15 - m);
   }
 return num_reversed;}
+
 
 
 
