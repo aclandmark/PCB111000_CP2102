@@ -45,9 +45,9 @@ Num_to_PC_Basic((counter * counter)); newline;
 
 
 
-ISR(TIMER1_COMPA_vect)
-{ UCSR0B &= (~(1 << RXCIE0));wdr();
-  TCNT1 = 0;
+ISR(TIMER1_COMPA_vect)                                            //Routine called every 100 mS
+{ UCSR0B &= (~(1 << RXCIE0));wdr();                               //Disable Serial interrupt 
+  TCNT1 = 0;                                                      //Update display
   if (m < num_leds)
   { PORT_2 = (PORT_2 << 1) | 1;
     PORT_1 = PORT_1 & (~(1 << m));
@@ -65,7 +65,7 @@ ISR(TIMER1_COMPA_vect)
 }
 
 
-void T1_100ms_clock_tick(void)
+void T1_100ms_clock_tick(void)                                      //Start the T1 clock
 { TCNT1 = 0;
 OCR1A = 12500;
   TIMSK1 |= (1 <<  OCIE1A);
