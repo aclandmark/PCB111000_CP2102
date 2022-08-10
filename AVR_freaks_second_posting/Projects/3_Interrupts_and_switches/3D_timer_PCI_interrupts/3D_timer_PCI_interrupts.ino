@@ -1,7 +1,7 @@
 
 /*
- Timer interrupts drive the display with any one of thee patterns
- User switch SW1, 2 or 3 are used to select the pattern.
+ Timer interrupts drive the display with any one of three patterns
+ User switch SW1, 2 or 3 are used to select which one.
  
  Three interrupts are active:
  the timer, the one wire comms and PCI
