@@ -27,7 +27,8 @@ int main (void)
   mask = 0xFFFF;                                        //No leds shot down yet
   
   while (mask)                                          //Mask is zero when last led has been shot down
-  { Timer_T2_10mS_delay_x_m(5);                         //Pause at start of each scan
+  { switch_control = 1;                                 //Disable switch and 
+    Timer_T2_10mS_delay_x_m(20);                         //pause at start of each scan
     scan = 1;                                           //Enable scan
     PORT_1 = 1;                                         //Illuminate RH leds at start of new scan
     while (scan)
@@ -53,7 +54,7 @@ ISR(PCINT2_vect)
   { mask &= ~PORT_1;                                  //Update mask to record which one
     scan = 0;                                         //Led shot down: Pause scan
   }
-  switch_control = 1;                                 //Switch pressed: Disable switch
+  switch_control = 1;                                //Switch pressed: Disable switch
 }
 
 
