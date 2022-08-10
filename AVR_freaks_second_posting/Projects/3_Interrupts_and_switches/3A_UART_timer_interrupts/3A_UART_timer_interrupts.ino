@@ -8,7 +8,6 @@ the display.
 
 When an interrupt occurs program control jumps to the Interrupt Service Routine (ISR)
 
-
 Note: Arduino reserves the ISR(USART_RX_vect) subroutine which is therefore not easily available
 to the user.  For these examples "setup_328_HW_Basic_IO" is used and all subroutines using 
 the Arduino Serial library are commented out.
@@ -23,8 +22,7 @@ unsigned int PORT_1, PORT_2;
 
 int main (void)
 { unsigned long counter;
-  //unsigned long counter_squared;
-
+  
   setup_328_HW_Basic_IO;
   reset_display;
   
@@ -38,17 +36,10 @@ int main (void)
     if((!(counter%33)) && (switch_2_down)){
 Num_to_PC_Basic(counter); Char_to_PC_Basic('\t');
 Num_to_PC_Basic((counter * counter)); newline;
-//_delay_ms(1);
  }
  counter = (counter + 1)%(unsigned long)0x8000;
-   
-    
-    
-    
-    //do_some_arithmetic;
     _delay_us(50);
-    //_delay_ms(5);
-    wdr();
+     wdr();
   }
 }
 
