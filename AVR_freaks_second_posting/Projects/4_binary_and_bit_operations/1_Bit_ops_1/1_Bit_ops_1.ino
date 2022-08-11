@@ -33,7 +33,7 @@ digits[1] = PRN_8bit_GEN(digits[0]);                                        //Se
 digits[2] =  Op(digits[0] , digits[1], comp, BWop);                         //Process the numbers
 lfsr = digits[1];
 One_wire_comms_3_bytes(digits);}
-while (waitforkeypress_Basic() !='x');                                      //Press 'x' to ecscape               
+while (waitforkeypress_Basic() !='x');                                      //Press 'x' to escape               
 SW_reset;}
 
 
