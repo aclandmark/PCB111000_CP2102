@@ -9,7 +9,6 @@ char reset_status;
 
 
 
-
 /**********************************************************************************/
 #define  OSC_CAL \
 if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
@@ -17,7 +16,6 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 == eeprom_read_byte((uint8_t*)0x3FE))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
 
 //If the internal clock has been calibrated, a calibration byte will be found in EEPROM locations 0x3FF/E
-
 
 
 
@@ -41,10 +39,7 @@ determine_reset_source;\
 One_25ms_WDT_with_interrupt;\
 failsafe;
 
-
-
 //The reset control switch is connected to PC5
-
 
 
 
@@ -69,7 +64,6 @@ WDTCSR = (1<< WDE) | (1 << WDIE) |  (1 << WDP0)  |  (1 << WDP1);
 
 
 
-
 /************************************************************************************************************************************/
 #define initialise_IO \
 MCUCR &= (~(1 << PUD));\
@@ -85,11 +79,14 @@ PORTD = 0xFF;
 #define clear_display   One_wire_Tx_char = 'c';  UART_Tx_1_wire();
 
 
+
 /************************************************************************************************************************************/
 #define reset_ctl_reg                         0x3FC
 #define Signal_WDTout_with_interrupt          eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x20)
 #define Signal_SW_reset                       eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~0x40))
 #define clear_reset_ctl_reg                   eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0)
+
+
 
 /************************************************************************************************************************************/
 #define determine_reset_source \
@@ -124,7 +121,6 @@ if(reset_status == 7)\
 {String_to_PC_Basic("\r\nProgram restarted.");}\
 if(reset_status == 6)\
 {String_to_PC_Basic("\r\nWDTout\r\n");while(1)wdr();}
-
 
 
 
