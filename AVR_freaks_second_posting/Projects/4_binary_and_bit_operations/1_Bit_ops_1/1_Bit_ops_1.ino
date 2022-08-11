@@ -1,4 +1,8 @@
 
+/*
+ Explore the operation of the OR, AND, Exclusive OR and NOT bitwise operations (|, & ^ and ~)
+*/
+
 
 #include "Bit_ops_1_header.h"
 
