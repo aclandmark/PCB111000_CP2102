@@ -1,6 +1,5 @@
 
 
-
 #include <avr/wdt.h>
 
 char User_response;
@@ -17,7 +16,6 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 == eeprom_read_byte((uint8_t*)0x3FE))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
 
 //If the internal clock has been calibrated, a calibration byte will be found in EEPROM locations 0x3FF/E
-
 
 
 
@@ -41,9 +39,7 @@ determine_reset_source;\
 Two_50ms_WDT_with_interrupt;\
 failsafe;
 
-
 //The reset control switch is connected to PC5
-
 
 
 
@@ -85,7 +81,6 @@ PORTC = 0xFF;\
 PORTD = 0xFF;
 
 //All ports are initialised to weak pull up (WPU)
-
 
 
 
@@ -140,7 +135,6 @@ if(reset_status == 7)\
 {String_to_PC_Basic("\r\nProgram restarted.");}\
 if(reset_status == 6)\
 {String_to_PC_Basic("\r\nWDTout\r\n");while(1)wdr();}
-
 
 
 
