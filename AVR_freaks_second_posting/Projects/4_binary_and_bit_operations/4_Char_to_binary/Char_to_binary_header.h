@@ -39,8 +39,6 @@ determine_reset_source;\
 Two_50ms_WDT_with_interrupt;\
 failsafe;
 
-
-
 //The reset control switch is connected to PC5
 
 
