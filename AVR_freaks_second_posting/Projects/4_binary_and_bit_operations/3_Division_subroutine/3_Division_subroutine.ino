@@ -1,5 +1,9 @@
 
 
+/*
+Explores division when carried out using firmware rather than hardware.
+ */
+
 
 #include "Division_subroutine_header.h"
 
