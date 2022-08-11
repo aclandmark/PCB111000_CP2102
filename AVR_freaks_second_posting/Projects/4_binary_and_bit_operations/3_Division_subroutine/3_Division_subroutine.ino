@@ -3,10 +3,6 @@
 
 #include "Division_subroutine_header.h"
 
-//void Num_string_from_KBD(char *);
-//long Askii_to_binary(char *);
-//void fraction_to_decimal_string_Local(long, long, char*);
-
 
 int main (void){
 long Num_1, Num_2;
@@ -17,7 +13,7 @@ setup_328_HW_Basic_IO;
 while(1){
 String_to_PC_Basic("\r\nNum_1? (>0)\t");
 
- Num_string_from_KBD_Basic_with_Echo(digits);
+Num_string_from_KBD_Basic_with_Echo(digits);
 Num_1 = Askii_to_binary(digits);
 
 String_to_PC_Basic("\r\nNum_2? (>Num_1)\t");
@@ -41,11 +37,10 @@ long digit;
 int m=7;
 clear_display;
 digits[7]= '0' | 0x80;
-//digits[6] = '_';
 String_to_PC_Basic("0.");
 
 while(switch_2_up){
-digit = divide_A_by_B(product_AB(remainder,10),denominator);    //uses local routine for divide function
+digit = divide_A_by_B(product_AB(remainder,10),denominator);    //uses local function for divide function
 remainder = A_modulo_B(product_AB(remainder,10),denominator);   //uses local function to provide the remainder
 Char_to_PC_Basic(digit+'0');
 if(m){digits[m-1] = (digit+'0');m--;
@@ -57,15 +52,15 @@ Timer_T2_10mS_delay_x_m(6);}
 
 
 /**************************************************************************************************/
-long product_AB(long A, long B){                  //Product is simply multiple addition
+long product_AB(long A, long B){                                //Product is simply multiple addition
 long product = 0;
-while(B){product += A; B--;}                    //Check with paper and pencil   
+while(B){product += A; B--;}                                    //Check with paper and pencil   
 return product;}
 
 
 
 /**************************************************************************************************/
-long divide_A_by_B(long A, long B){                 //Division is multiple subtraction while result exceeds zero
+long divide_A_by_B(long A, long B){                           //Division is multiple subtraction while result exceeds zero
 long result = 0;
 while(A>0){A-=B;result++;}
 if(!(A))return result;
@@ -74,9 +69,8 @@ else return result-1;}
 
 
 /**************************************************************************************************/
-long A_modulo_B(long A, long B){                  //Check with paper and pencil 
+long A_modulo_B(long A, long B){                          //Check with paper and pencil 
 return (A - product_AB(divide_A_by_B(A,B),B));}
-
 
 
 
@@ -102,3 +96,7 @@ long Askii_to_binary(char * array_ptr) {
   }
   return num;
 }
+
+
+
+/********************************************************************************************************/
