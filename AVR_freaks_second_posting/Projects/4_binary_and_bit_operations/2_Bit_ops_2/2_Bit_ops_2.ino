@@ -1,6 +1,13 @@
 
 
 
+/*Combines the shift left/right operations with AND, OR, Exclusive-OR and NOT to set, clear and toggle
+individual bits of registers. Access to all hardware components (i.e. Timer, USART, WDT, IO) is via registers.
+Therefore these functions enable us to control and interrogate these components.
+ */
+
+
+
 #include "Bit_ops_2_header.h"
 
 
@@ -17,7 +24,8 @@ int main (void) {
   Reset_ATtiny1606;
   lfsr = PRN_8bit_GEN(0xF);
 
-  String_to_PC_Basic("\r\n\r\nSelect mode 1 to 6? Then AK to continue or x to exit (when allowed)\r\n");
+  String_to_PC_Basic
+  ("\r\n\r\nSelect mode 1 to 6? Then AK to continue or x to exit (when allowed)\r\n");
 
   while (1)
   { String_to_PC_Basic("Mode?\t");
