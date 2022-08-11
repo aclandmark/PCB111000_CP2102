@@ -9,7 +9,6 @@ char reset_status;
 
 
 
-
 /**********************************************************************************/
 #define  OSC_CAL \
 if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
@@ -17,7 +16,6 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 == eeprom_read_byte((uint8_t*)0x3FE))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
 
 //If the internal clock has been calibrated, a calibration byte will be found in EEPROM locations 0x3FF/E
-
 
 
 
@@ -41,10 +39,7 @@ determine_reset_source;\
 One_25ms_WDT_with_interrupt;\
 failsafe;
 
-
-
 //The reset control switch is connected to PC5
-
 
 
 
@@ -69,8 +64,6 @@ WDTCSR = (1<< WDE) | (1 << WDIE) |  (1 << WDP0)  |  (1 << WDP1);
 
 
 
-
-
 /************************************************************************************************************************************/
 #define initialise_IO \
 MCUCR &= (~(1 << PUD));\
@@ -85,12 +78,6 @@ PORTD = 0xFF;
 
 #define clear_display   One_wire_Tx_char = 'c';  UART_Tx_1_wire();
 
-
-#define User_prompt \
-while(1){\
-do{String_to_PC("r    ");}   while((isCharavailable(40) == 0));\
-User_response = Char_from_PC();\
-if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 
 
 /************************************************************************************************************************************/
@@ -137,8 +124,6 @@ if(reset_status == 6)\
 
 
 
-
-
 /************************************************************************************************************************************/
 #include "Resources_Bit_ops_2\Chip2chip_comms\One_wire_header.h"
 #include "Resources_Bit_ops_2\Chip2chip_comms\One_wire_transactions.c"
@@ -146,18 +131,23 @@ if(reset_status == 6)\
 #include "Resources_Bit_ops_2\PC_comms\Basic_Rx_Tx_and_Timer.c"
 
 
-/*#include "Resources_Bit_ops_2/One_wire_header.h"
-#include "Resources_Bit_ops_2/Basic_IO_and_Timer.c"
-#include "Resources_Bit_ops_2/Display_comms.c"
-#include "Resources_Bit_ops_2/One_wire_transactions.c"*/
 
+/************************************************************************************************************************************/
 #define Rotate_Right_cyclical  while (n < X) {num = Y & 0b10000000; num = num >> 7; Y = Y <<1; Y = Y | num; n++;}
 #define Rotate_left_cyclical  while (n < X) {num = Y & 0b00000001; num = num << 7; Y = Y >>1; Y = Y | num; n++;}
 
 
 
+/************************************************************************************************************************************/
+#define User_prompt \
+while(1){\
+do{String_to_PC("r    ");}   while((isCharavailable(40) == 0));\
+User_response = Char_from_PC();\
+if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
 
 
+
+/************************************************************************************************************************************/
 #define message_1 \
 "\r\nMore on bitwise ops\r\n\
 Press r or R at the user prompt\r\n\
@@ -170,10 +160,6 @@ String_to_PC (message_1);
 
 char logical_op(char, char, char, char);
 char binary_char_from_KBD_Local(void);
-
-
-
-
 
 
 
