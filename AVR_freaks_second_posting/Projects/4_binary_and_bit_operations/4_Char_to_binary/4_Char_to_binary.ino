@@ -1,12 +1,16 @@
 
 
+/*
+Uses the display to illustrate conversion between 8 bit binary and decimal numbers
+*/
+
+
+
 #include "Char_to_binary_header.h"
 
 
-
-
-
 char digit=1, op, mode, mode_mem;
+
 
 int main (void){
 
@@ -23,7 +27,7 @@ enable_PCI_on_user_switches;
 while(1){
 switch(mode){
   case 0: break;
-  case 1: One_wire_char_as_binary(++digit,'u'); break;             //_delay_ms(150)
+  case 1: One_wire_char_as_binary(++digit,'u'); break;
   case 2: One_wire_char_as_binary(++digit,'s'); break;
   case 3: One_wire_char_as_binary(--digit,'u'); break;
   case 4: One_wire_char_as_binary(--digit,'s'); break;
@@ -45,8 +49,6 @@ Timer_T2_10mS_delay_x_m(15);}}
 
 
 /**************************************************************************************************/
-
-
 ISR(PCINT2_vect) {
 
   if((switch_1_up) && (switch_2_up) && (switch_3_up))
@@ -64,12 +66,15 @@ ISR(PCINT2_vect) {
 
 
 
-
+/**************************************************************************************************/
 void One_wire_char_as_binary(char num, char mode){
 pause_pin_change_interrupt_on_PC5;                        //Reset control not allowed during transaction
 One_wire_Tx_char = 'I';  UART_Tx_1_wire();                //Transaction type is 'a'
-One_wire_Tx_char = num;  UART_Tx_1_wire();              //Send lower 8 bits
+One_wire_Tx_char = num;  UART_Tx_1_wire();                //Send lower 8 bits
 One_wire_Tx_char = mode;  UART_Tx_1_wire();
 reinstate_pin_change_interrupt_on_PC5;} 
   
-  
+
+
+
+/**************************************************************************************************/
