@@ -45,7 +45,6 @@ failsafe;
 
 
 
-
 /************************************************************************************************************************************/
 #define wdr()  __asm__ __volatile__("wdr")
 
@@ -68,7 +67,6 @@ WDTCSR = (1<< WDE) | (1 << WDIE) |  (1 << WDP0)  |  (1 << WDP1);
 
 
 
-
 /************************************************************************************************************************************/
 #define initialise_IO \
 MCUCR &= (~(1 << PUD));\
@@ -83,13 +81,11 @@ PORTD = 0xFF;
 
 
 
-
 /************************************************************************************************************************************/
 #define reset_ctl_reg                         0x3FC
 #define Signal_WDTout_with_interrupt          eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x20)
 #define Signal_SW_reset                       eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~0x40))
 #define clear_reset_ctl_reg                   eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0)
-
 
 
 
@@ -129,7 +125,6 @@ if(reset_status == 6)\
 
 
 
-
 /**********************************************************************************/
 #define User_prompt \
 {while(1){\
@@ -139,12 +134,12 @@ if((User_response == 'R') || (User_response == 'r'))break;} newline;}
 
 
 
-
 /************************************************************************************************************************************/
 #include "Resources_Prime_factors\Chip2chip_comms\One_wire_header.h"
 #include "Resources_Prime_factors\Chip2chip_comms\One_wire_transactions.c"
 #include "Resources_Prime_factors\PC_comms\Basic_Rx_Tx_and_Timer.c"
 #include "Resources_Prime_factors\PC_comms\Arduino_Rx_Tx.c"
+
 
 
 
