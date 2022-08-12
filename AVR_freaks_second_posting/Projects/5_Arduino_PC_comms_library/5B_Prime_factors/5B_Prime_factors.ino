@@ -51,7 +51,7 @@ int j=0;
 long n=200;
 long L=0;
 
-char test_array[12];
+//char test_array[12];
 
 while(1){
 for(long k =0; k < n; k++) 
