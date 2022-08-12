@@ -30,7 +30,7 @@ int main (void)
    Serial.write("\r\nInteger number\t");
    number = Int_Num_from_PC(num_string, '\r');
   factor_counter = 0;
-  {
+  
   do{
   factor = Product_search(number);                                 //Get lowest factor
   number = number/factor;                                          //Next number to factorise
@@ -38,7 +38,7 @@ int main (void)
   factor_counter += 1;} 
   while (number != 1);  
 
-  if(factor_counter == 1){Serial.write("Prime\r");}}
+  if(factor_counter == 1){Serial.write("Prime\r");}
   SW_reset;
   return 1;}
 
