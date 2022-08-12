@@ -1,5 +1,8 @@
 
 
+
+
+
 #include <avr/wdt.h>
 
 char User_response;
@@ -14,7 +17,6 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 == eeprom_read_byte((uint8_t*)0x3FE))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
 
 //If the internal clock has been calibrated, a calibration byte will be found in EEPROM locations 0x3FF/E
-
 
 
 
@@ -39,7 +41,6 @@ Two_50ms_WDT_with_interrupt;\
 failsafe;
 
 //The reset control switch is connected to PC5  USART_init(0,16);
-
 
 
 
@@ -70,8 +71,6 @@ WDTCSR = (1<< WDE) | (1 << WDIE) |  (1 << WDP2);
 
 
 
-
-
 /************************************************************************************************************************************/
 #define initialise_IO \
 MCUCR &= (~(1 << PUD));\
@@ -93,7 +92,6 @@ PORTD = 0xFF;
 #define Signal_WDTout_with_interrupt          eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x20)
 #define Signal_SW_reset                       eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~0x40))
 #define clear_reset_ctl_reg                   eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0)
-
 
 
 
@@ -140,3 +138,7 @@ if(reset_status == 6)\
 #include "Resources_Pie_estimator\Chip2chip_comms\One_wire_transactions.c"
 #include "Resources_Pie_estimator\PC_comms\Basic_Rx_Tx_and_Timer.c"
 #include "Resources_Pie_estimator\PC_comms\Arduino_Rx_Tx.c"
+
+
+
+/************************************************************************************************************************************/
