@@ -38,7 +38,7 @@ sei();\
 Serial.begin(115200);\
 while (!Serial);\
 determine_reset_source;\
-One_25ms_WDT_with_interrupt;\
+Two_50ms_WDT_with_interrupt;\
 failsafe;
 
 //The reset control switch is connected to PC5  USART_init(0,16);
@@ -64,6 +64,11 @@ WDTCSR = 0;
 wdr();\
 WDTCSR |= (1 <<WDCE) | (1<< WDE);\
 WDTCSR = (1<< WDE) | (1 << WDIE) |  (1 << WDP0)  |  (1 << WDP1);
+
+#define Two_50ms_WDT_with_interrupt \
+wdr();\
+WDTCSR |= (1 <<WDCE) | (1<< WDE);\
+WDTCSR = (1<< WDE) | (1 << WDIE) |  (1 << WDP2);
 
 
 
