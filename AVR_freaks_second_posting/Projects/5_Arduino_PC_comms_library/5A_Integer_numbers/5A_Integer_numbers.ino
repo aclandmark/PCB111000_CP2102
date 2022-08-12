@@ -1,6 +1,6 @@
 
 /*
- From this point on Arduino library functions are introduced where possible.
+ From this point on Arduino library functions are introduced and will generally be used.
  For example 
  Serial.begin(115200):    This initialsed the UART for 57600 Baud (assuming an 8MHz clock)
  Serial.write:            This sends text to the PC
@@ -13,7 +13,11 @@
  to a separate buffer "num_as_string" stoping only when a cairrage return (cr) is detected
  or 20 keypresses have been made.
  The keypresses contained in the buffer "num_as_string" are then converted to a number. 
- */
+ 
+
+ This project accepts an integer numer and prints out all the integer numbers by which it can be divided
+ giving an integer result.
+  */
 
 
 
