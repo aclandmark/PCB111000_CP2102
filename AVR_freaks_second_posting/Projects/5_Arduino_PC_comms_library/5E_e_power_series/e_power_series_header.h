@@ -5,10 +5,9 @@
 
 char User_response;
 char reset_status;
-//char WDT_out_status;
-
 
 #define newline   Serial.write("\r\n");
+
 
 
 /**********************************************************************************/
@@ -19,14 +18,6 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 
 //If the internal clock has been calibrated, a calibration byte will be found in EEPROM locations 0x3FF/E
 
-
-
-/**********************************************************************************/
-/*#define POR_detected                      eeprom_read_byte ((uint8_t*)0x3FC) == 0xFF
-#define WDTout_with_interrupt_detected    !(eeprom_read_byte ((uint8_t*)0x3F5))
-#define Signal_WDTout_with_interrupt      eeprom_write_byte((uint8_t*)0x3F5, 0);
-#define Reset_WDT_out_register            eeprom_write_byte((uint8_t*)0x3F5, 0xFF);
-#define switch_2_up                       (PIND & 0x20)*/
 
 
 /************************************************************************************************************************************/
@@ -49,10 +40,7 @@ determine_reset_source;\
 Two_50ms_WDT_with_interrupt;\
 failsafe;
 
-
-
 //The reset control switch is connected to PC5
-
 
 
 
@@ -100,12 +88,13 @@ PORTD = 0xFF;
 
 //All ports are initialised to weak pull up (WPU)
 
+
+
 /************************************************************************************************************************************/
 #define reset_ctl_reg                         0x3FC
 #define Signal_WDTout_with_interrupt          eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x20)
 #define Signal_SW_reset                       eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~0x40))
 #define clear_reset_ctl_reg                   eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0)
-
 
 
 
