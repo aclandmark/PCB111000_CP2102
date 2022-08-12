@@ -43,7 +43,6 @@ failsafe;
 
 
 
-
 /**********************************************************************************/
 #define wdr()  __asm__ __volatile__("wdr")
 
@@ -66,8 +65,6 @@ WDTCSR = (1<< WDE) | (1 << WDIE) |  (1 << WDP0)  |  (1 << WDP1);
 
 
 
-
-
 /**********************************************************************************/
 #define initialise_IO \
 MCUCR &= (~(1 << PUD));\
@@ -79,8 +76,6 @@ PORTC = 0xFF;\
 PORTD = 0xFF;
 
 //All ports are initialised to weak pull up (WPU)
-
-
 
 
 
@@ -128,7 +123,6 @@ if(reset_status == 6)\
 
 
 
-
 /**********************************************************************************/
 #define User_prompt \
 {while(1){\
@@ -138,11 +132,11 @@ if((User_response == 'R') || (User_response == 'r'))break;} newline;}
 
 
 
-
 /**********************************************************************************/
 #include "Resources_Integer_numbers\Chip2chip_comms\One_wire_header.h"
 #include "Resources_Integer_numbers\Chip2chip_comms\One_wire_transactions.c"
 #include "Resources_Integer_numbers\PC_comms\Basic_Rx_Tx_and_Timer.c"
+
 
 
 
