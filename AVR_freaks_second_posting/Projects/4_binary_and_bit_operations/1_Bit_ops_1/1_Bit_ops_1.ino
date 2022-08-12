@@ -11,7 +11,7 @@
 int main (void){
 
 char comp;
-unsigned char digits[3];
+char digits[3];
 unsigned char lfsr;
 char BWop;                                                                   //bit wise operation and complement (i.e. swap ones and zeros)
 
@@ -24,15 +24,13 @@ if (BWop == '~')
 if ((BWop != '|') && (BWop != '^') && (BWop != '&'))
 SW_reset;                                                                    //reset if duff char was sent 
 Reset_ATtiny1606;
-//wdr();
+_delay_ms(25);                                                               //Mini-OS needs pause following reset
 lfsr = PRN_8bit_GEN(0xF);                                                   //8 bit random number
 
 do{
 digits[0] = PRN_8bit_GEN(lfsr);
 digits[1] = PRN_8bit_GEN(digits[0]);                                        //Second random number
 digits[2] =  Op(digits[0] , digits[1], comp, BWop);                         //Process the numbers
-
-Char_to_PC_as_Binary(digits[0]);Char_to_PC_as_Binary(digits[1]);Char_to_PC_as_Binary(digits[2]);Char_to_PC_Basic ('\r');
 
 lfsr = digits[1];
 One_wire_comms_3_bytes(digits);}
@@ -67,10 +65,3 @@ return lfsr;}
 
 
 /******************************************************************/
-
-
-void Char_to_PC_as_Binary(unsigned char num){
-Char_to_PC_Basic ('\t');
-for(int m = 0; m <= 7; m++){
-  if (num & (0x80 >> m)) Char_to_PC_Basic ('1'); else Char_to_PC_Basic ('0');Char_to_PC_Basic (' ');}
-  }
