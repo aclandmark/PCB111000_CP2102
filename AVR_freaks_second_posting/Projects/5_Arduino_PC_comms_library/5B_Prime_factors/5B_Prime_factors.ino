@@ -34,7 +34,6 @@ factor_counter = 0;
 do{
 factor = Product_search(number);                                   //Get lowest factor
 number = number/factor;                                            //Next number to factorise
-//Int_Num_to_PC(number,num_string, '\t' );
 Int_Num_to_PC(factor,num_string, '\t' );n++;
 factor_counter += 1;} 
 while (number != 1);  
@@ -58,7 +57,9 @@ while(1){
 for(long k =0; k < n; k++) {search_array[k] = k+1+n*L;}
 prime_no_generator(L,n,search_array); 
 j=0; while(search_array[j] == 0)j += 1;
-while (j<=200){if ((search_array[j] >= 2) &&  (number%search_array[j] == 0)){return search_array[j];}j += 1;}
+while (j<=200)
+{if ((search_array[j] >= 2) &&  (number%search_array[j] == 0))
+{return search_array[j];}j += 1;}
 if(L*200 > number)return 0;
 L += 1;Serial.write('.');}}
 
