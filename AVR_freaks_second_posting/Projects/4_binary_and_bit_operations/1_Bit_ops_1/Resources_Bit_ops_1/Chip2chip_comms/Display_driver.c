@@ -26,14 +26,13 @@ reinstate_pin_change_interrupt_on_PC5;}
 
 
 /******************************************************************************************************************************************/
-void One_wire_comms_3_bytes(unsigned char *  Char_array){						//Similar to One_wire_Tx_2_integers()
+void One_wire_comms_3_bytes(char *  Char_array){						//Similar to One_wire_Tx_2_integers()
 pause_pin_change_interrupt_on_PC5; 
-_delay_ms(25);
 One_wire_Tx_char = 'H';  UART_Tx_1_wire(); 
 One_wire_Tx_char = Char_array[0];  UART_Tx_1_wire(); 
 wdr();
 One_wire_Tx_char = Char_array[1];  UART_Tx_1_wire(); 
-One_wire_Tx_char = Char_array[2];  UART_Tx_1_wire();
+One_wire_Tx_char = Char_array[2];  UART_Tx_1_wire(); 
 reinstate_pin_change_interrupt_on_PC5;}
 
 
