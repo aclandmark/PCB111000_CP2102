@@ -29,8 +29,8 @@ int main (void)
  
    Serial.write("\r\nInteger number\t");
    number = Int_Num_from_PC(num_string, '\r');
-  factor_counter = 0;
   
+  factor_counter = 0;
   do{
   factor = Product_search(number);                                 //Get lowest factor
   number = number/factor;                                          //Next number to factorise
@@ -79,7 +79,7 @@ wdr();
 m=0;
 while(i*(i+m) <= n*L)m++;                      //Go to start of the new array for example
 while(i*(i+m) <= n*(1+L))                      //2*101, 2*102, 2*103,... etc   3*67,3*68, 3*69,...etc    5*41, 5*42,...etc
-{reg[i*(i+m) -1 - n*L] = 0; m++; }              //set appropriate registers to zero (Note the offset of 1 place) 
+{reg[i*(i+m) -1 - n*L] = 0; m++;wdr(); }      //set appropriate registers to zero (Note the offset of 1 place) 
 i++;}}
 
 
