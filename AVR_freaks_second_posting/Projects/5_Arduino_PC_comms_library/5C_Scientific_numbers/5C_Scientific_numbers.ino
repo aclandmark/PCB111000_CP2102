@@ -5,13 +5,13 @@ In C the real number can have up to about 6 digits
 The exponent can be as any thing between +38 and -38 (at least).
 
 The Aduino library can acccept the full range of scientific numbers in string format and
-the -C- librarry function "atof" (askii to float) can generate the required floating point number.
+the -C- library function "atof" (askii to float) can generate the required floating point number.
 
 The Arduino function "Serial.print" accepts a floating point number and prints it out with the 
 decimal point in the required position.
 
 Here when printing a scientific number greater than about 10^7 we first repetitively divide it by 10 
-while at the same time incrementing the power.  We then use "Serial.print" to print the resulting 
+while at the same time incrementing the exponent.  We then use "Serial.print" to print the resulting 
 real number followed by the exponent.  
 */
 
@@ -35,16 +35,16 @@ int main (void)
  
    Serial.write("\r\nScientific number\r\n");
    
-num = Sc_Num_from_PC(num_string, '\r');
+num = Sc_Num_from_PC_local(num_string, '\r');
 
-if (num < 0.0) index = 3;                                   //Raise negative numbers to the power of 3
-else index = 1.5;                                           //Raise positive numbers to the power of 1.5
+if (num < 1.0) index = 3;                                   //Raise small numbers and negative ones to the power of 3
+else index = 1.5;                                           //Raise remaing numbers to the power of 1.5
 
 while(1){
   while(!(Serial.available()))wdr();
-Serial.read();
-num = pow (num,index);
-Sc_Num_to_PC(num, 2, 4, '\r');
+Serial.read();                                            //The equivalent of waitforkeypress()
+num = pow (num,index);                                    //-C- library function
+Sc_Num_to_PC_local(num, 2, 4, '\r');
 }
 
  SW_reset;
@@ -55,7 +55,7 @@ Sc_Num_to_PC(num, 2, 4, '\r');
 
 
 /*****************************************************************************************/
-void Sc_Num_to_PC(float num, char pre_dp, char post_dp, char next_char)
+void Sc_Num_to_PC_local(float num, char pre_dp, char post_dp, char next_char)
 {int A = 1;
 char keypresses[12];
 char sign = '+';
@@ -80,7 +80,7 @@ Serial.write(next_char);}
 
 
 /******************************************************************************************/
-float Sc_Num_from_PC(char * num_as_string,char next_char)
+float Sc_Num_from_PC_local(char * num_as_string,char next_char)
 {char strln;                                                          //Length of a string of characters
 
 pause_WDT;                                                            //Allow for time for number to be entered at the keyboard
