@@ -42,10 +42,10 @@ int main (void)
    if (reset_status == 1) User_prompt;
  
    Serial.write("\r\nInteger number\t");
-num = Int_Num_from_PC(num_string, '\r');
+num = Int_Num_from_PC_local(num_string, '\r');
 
 do{
-if(!(num%m)){Int_Num_to_PC(m, num_string, '\t');}
+if(!(num%m)){Int_Num_to_PC_local(m, num_string, '\t');}
 m += 1; wdr();}while(m < num);
 
 SW_reset;
@@ -57,7 +57,7 @@ return 1;
 
 
 /******************************************************************************************/
-long Int_Num_from_PC(char * num_as_string,char next_char)
+long Int_Num_from_PC_local(char * num_as_string,char next_char)
 {char strln;
 
 pause_WDT;
@@ -75,7 +75,7 @@ return atol(num_as_string);}
 
 
 /******************************************************************************************/
-void Int_Num_to_PC(long Int_num, char * num_as_string, char next_char)
+void Int_Num_to_PC_local(long Int_num, char * num_as_string, char next_char)
 {
 ltoa(Int_num, num_as_string, 10);
 Serial.print(num_as_string);
