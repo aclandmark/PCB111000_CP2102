@@ -1,4 +1,6 @@
 
+
+
 #include <avr/wdt.h>
 
 char User_response;
@@ -46,9 +48,7 @@ determine_reset_source;\
 Two_50ms_WDT_with_interrupt;\
 failsafe;
 
-
 //The reset control switch is connected to PC5  
-
 
 
 
@@ -91,17 +91,12 @@ PORTD = 0xFF;
 
 //All ports are initialised to weak pull up (WPU)
 
+
+
+/************************************************************************************************************************************/
 #define clear_display             One_wire_Tx_char = 'c';  UART_Tx_1_wire();
 #define clear_display_buffer      for(int m = 0; m <= 7; m++)display_buffer[m] = 0; display_buffer[0] = '0';
 
-
-#define User_prompt \
-while(1){\
-do{String_to_PC("r    ");}   while((isCharavailable(40) == 0));\
-User_response = Char_from_PC();\
-if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
-
-/************************************************************************************************************************************/
 #define reset_ctl_reg                         0x3FC
 #define Signal_WDTout_with_interrupt          eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x20)
 #define Signal_SW_reset                       eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~0x40))
@@ -144,7 +139,6 @@ if(reset_status == 6)\
 
 
 
-
 /************************************************************************************************************************************/
 #define set_up_PCI                  PCICR |= (1 << PCIE2);
 #define pause_PCI                   PCICR &= (~(1 << PCIE2));
@@ -162,6 +156,16 @@ if(reset_status == 6)\
 #define switch_1_down             (PIND & 0x04)^0x04
 #define switch_2_down             (PIND & 0x20)^0x20
 #define switch_3_down             (PIND & 0x80)^0x80
+
+
+
+/************************************************************************************************************************************/
+#define User_prompt \
+while(1){\
+do{String_to_PC("r    ");}   while((isCharavailable(40) == 0));\
+User_response = Char_from_PC();\
+if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC("\r\n");
+
 
 
 /************************************************************************************************************************************/
