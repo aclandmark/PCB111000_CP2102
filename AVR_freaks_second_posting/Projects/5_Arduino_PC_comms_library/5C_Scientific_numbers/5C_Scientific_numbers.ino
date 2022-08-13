@@ -61,13 +61,13 @@ char keypresses[12];
 char sign = '+';
 int Exp = 0;
 
-Check_num_for_to_big_or_small(num);
+Check_num_for_to_big_or_small(num);                       //SW_reset required to escape from infinity and zero      
 
 if (num < 0){sign = '-'; num = num * (-1);}
 
-while(--pre_dp){A = A*10;}
-while (num >= A){num = num/10.0; Exp += 1;}
-while (num <= A){num = num*10.0; Exp -= 1;}
+while(--pre_dp){A = A*10;} 
+while (num >= A){num = num/10.0; Exp += 1;}               //Repetitively divide large numbers by 10
+while (num <= A){num = num*10.0; Exp -= 1;}               //and multiply small ones by 10
 
 if(sign == '-')num = num * (-1);
 
@@ -76,21 +76,25 @@ if(Exp) {Serial.write ('E'); Serial.print(Exp);}
 Serial.write(next_char);}
 
 
+//Note Floating point numbers define zero (about 10^-38) and infinity (about 10^38).
+//Multiplying or dividing these numbes does not change them.
+//There will be no escapre from the loops given in this subroutine and the program will crash.
 
+ 
 
 
 /******************************************************************************************/
 float Sc_Num_from_PC_local(char * num_as_string,char next_char)
 {char strln;                                                          //Length of a string of characters
 
-pause_WDT;                                                            //Allow for time for number to be entered at the keyboard
+pause_WDT;                                                            //Allow time for number to be entered at the keyboard
 Serial.flush();                                                       //Clear the Arduino serial buffer   
 strln = Serial.readBytesUntil('\r',num_as_string, 20);                //Read upto 20 characters or until a -cr- is received 
 resume_WDT;
 num_as_string[strln] = 0;                                             //Terminate the string with the null character
 Serial.write(num_as_string);                                          //Print out the numerical string
 Serial.write(next_char);                                              //new-line, space, \t or other specified character
-return atof(num_as_string);}                                          //"askii to float" -c- library function
+return atof(num_as_string);}                                          //"askii to float" -C- library function
 
 
 
