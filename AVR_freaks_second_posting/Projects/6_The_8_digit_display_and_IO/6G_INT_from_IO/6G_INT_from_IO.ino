@@ -8,7 +8,7 @@ Press
   SW2 to shift the display left
   SW3 to enter the number
 
-Then press SW1 and SW3 to dsisplay A and N
+Then press SW1 and SW3 to display A and N
 
 Switch assignments:
     SW1 PORTD2 PCINT18 
