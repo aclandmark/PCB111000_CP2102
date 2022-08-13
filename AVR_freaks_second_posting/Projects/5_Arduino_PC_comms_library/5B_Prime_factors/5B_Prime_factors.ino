@@ -63,7 +63,7 @@ while (j<=200)
 {return search_array[j];}                              //and return it
 j += 1;} 
 if(L*200 > number)return 0;                            //No factors found at all: Return zero for prime number
-L += 1; Serial.write('.');}}                           //No factor found in array: increment L and populate new arrray
+L += 1; Serial.write('.');}}                           //No factor found in array: increment L and populate new array
 
 
 
