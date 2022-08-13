@@ -2,7 +2,7 @@
 /*
  From this point on Arduino library functions are introduced and will generally be used.
  For example 
- Serial.begin(115200):    This initialsed the UART for 57600 Baud (assuming an 8MHz clock)
+ Serial.begin(115200):    This initialises the UART for 57600 Baud (assuming an 8MHz clock)
  Serial.write:            This sends text to the PC
  Serial print:            This sends numbers to the PC as text
  atol/atoi:               This converts a text string to a long / integer number
@@ -10,12 +10,12 @@
 
  Note all characters received by the UART are saved to a buffer.
  Serial.readBytesUntil as implemented here reads these characters and transfers them
- to a separate buffer "num_as_string" stoping only when a cairrage return (cr) is detected
+ to a separate buffer "num_as_string" stopping only when a cartridge return (cr) is detected
  or 20 keypresses have been made.
  The keypresses contained in the buffer "num_as_string" are then converted to a number. 
  
 
- This project accepts an integer numer and prints out all the integer numbers by which it can be divided
+ This project accepts an integer number and prints out all the integer numbers by which it can be divided
  giving an integer result.
   */
 
