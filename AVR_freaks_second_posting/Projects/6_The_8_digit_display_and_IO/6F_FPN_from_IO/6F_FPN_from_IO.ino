@@ -15,6 +15,8 @@ Switch assignments:
     SW1 PORTD2 PCINT18 
     SW2 PORTD5 PCINT21
     SW3 PORTD7 PCINT23
+
+    Note: if number exceeeds FPN bounds it is save as either zero or infinity
 */
 
 
@@ -32,6 +34,8 @@ setup_328_HW_Arduino_IO;
 Data_Entry_complete=0;
 clear_display;                       
 FPN_1_num = FPN_number_from_IO();
+
+Check_num_for_to_big_or_small(FPN_1_num);
 
 if(FPN_1_num < 0){
 _delay_ms(250);
