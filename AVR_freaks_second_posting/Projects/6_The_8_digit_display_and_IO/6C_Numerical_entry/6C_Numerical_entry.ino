@@ -23,7 +23,8 @@
 #define eight "abcdefg"
 #define nine "abcfg"
 
-void display_num_string (const char*, int);
+
+
 
 
 int main (void){
@@ -31,7 +32,7 @@ int main (void){
 char   digit;
 int digit_num=0;                                                     //defines number of next digit on display           
 const char* string_ptr = 0;                                         //pointer: will be loaded with the address of a segment string 
-setup_328_HW_Arduino_IO;                                                       //(i.e. the address of string "zero", "one", "two" etc....) 
+setup_328_HW_Arduino_IO;                                            //(i.e. the address of string "zero", "one", "two" etc....) 
 
 
 Serial.write("\r\nSend digits?");
@@ -43,7 +44,7 @@ while(1){
 digit_num = 0;                                                      //First digit on display
 
 do{                                                                 //start of "do{}while();" loop
-while(!(Serial.available()))wdr(); digit = Serial.read();                //user enters digit (0 to 9) at the PC keyboard
+while(!(Serial.available()))wdr(); digit = Serial.read();           //user enters digit (0 to 9) at the PC keyboard
 
 
 switch(digit){                                                      //The appropriate address is loaded into location "string_pointer"
@@ -67,6 +68,9 @@ while(!(Serial.available()))wdr(); Serial.read();
 clear_display;}}                                                    //clear display and repeat
 
 
+
+
+/************************************************************************************************************************/
 void display_num_string (const char* s, int digit_num){             //Subroutine requires a pointer to the string   
 int char_ptr=0;                                                     //containing segments used to define a digit
 char letter;
@@ -88,4 +92,4 @@ default: break;}char_ptr++;}}                                       //incrementi
 
 
 
-                                                                    
+/************************************************************************************************************************/                                                                 
