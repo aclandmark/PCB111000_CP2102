@@ -1,5 +1,5 @@
 
-/**************Proj_5D_Acquire_and process_Data_from_the _KBD********************/
+/**************Proj_5D_Acquire_and process_Integer_Data_from_the _KBD********************/
 
 /*
 Here we leave the mini_OS (the Attiny1606) to deal with all the details of displaying a number.
