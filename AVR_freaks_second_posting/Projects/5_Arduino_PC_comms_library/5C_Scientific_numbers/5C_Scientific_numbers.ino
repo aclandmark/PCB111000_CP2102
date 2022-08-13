@@ -4,7 +4,7 @@ Here a number such as 1.25 is considered to be a real number and 1.25E8 a scient
 In C the real number can have up to about 6 digits
 The exponent can be as any thing between +38 and -38 (at least).
 
-The Aduino library can acccept the full range of scientific numbers in string format and
+The Arduino library can accept the full range of scientific numbers in string format and
 the -C- library function "atof" (askii to float) can generate the required floating point number.
 
 The Arduino function "Serial.print" accepts a floating point number and prints it out with the 
@@ -38,7 +38,7 @@ int main (void)
 num = Sc_Num_from_PC_local(num_string, '\r');
 
 if (num < 1.0) index = 3;                                   //Raise small numbers and negative ones to the power of 3
-else index = 1.5;                                           //Raise remaing numbers to the power of 1.5
+else index = 1.5;                                           //Raise remaining numbers to the power of 1.5
 
 while(1){
   while(!(Serial.available()))wdr();
@@ -77,8 +77,8 @@ Serial.write(next_char);}
 
 
 //Note Floating point numbers define zero (about 10^-38) and infinity (about 10^38).
-//Multiplying or dividing these numbes does not change them.
-//There will be no escapre from the loops given in this subroutine and the program will crash.
+//Multiplying or dividing these numbers does not change them.
+//There will be no escape from the loops given in this subroutine and the program will crash.
 
  
 
