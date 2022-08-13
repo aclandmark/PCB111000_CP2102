@@ -1,4 +1,6 @@
 
+
+
 #include <avr/wdt.h>
 
 char User_response;
@@ -15,6 +17,7 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 == eeprom_read_byte((uint8_t*)0x3FE))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
 
 //If the internal clock has been calibrated, a calibration byte will be found in EEPROM locations 0x3FF/E
+
 
 
 /************************************************************************************************************************************/
@@ -38,7 +41,6 @@ Two_50ms_WDT_with_interrupt;\
 failsafe;
 
 //The reset control switch is connected to PC5
-
 
 
 
@@ -67,6 +69,8 @@ wdr();\
 WDTCSR |= (1 <<WDCE) | (1<< WDE);\
 WDTCSR = (1<< WDE) | (1 << WDIE) |  (1 << WDP3);
 
+
+
 /************************************************************************************************************************************/
 #define initialise_IO \
 MCUCR &= (~(1 << PUD));\
@@ -85,6 +89,7 @@ PORTD = 0xFF;
 #define Signal_WDTout_with_interrupt          eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x20)
 #define Signal_SW_reset                       eeprom_write_byte((uint8_t*)reset_ctl_reg,(eeprom_read_byte((uint8_t*)reset_ctl_reg) & ~0x40))
 #define clear_reset_ctl_reg                   eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0)
+
 
 
 /************************************************************************************************************************************/
