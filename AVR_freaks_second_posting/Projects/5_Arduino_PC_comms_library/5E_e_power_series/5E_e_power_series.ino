@@ -74,7 +74,7 @@ Log_result = logN * Pow;                          //The Log of the result
 
 Result = expE_power_series(Log_result);           //Returns the antilog
 
-display_float_num(Result);
+display_float_num_local(Result);
 Sc_Num_to_PC(Result,1,5,'\r');
 Serial.write("Library result\t");                   //remove to save overwriting commentary
 Sc_Num_to_PC((pow(Num_bkp,Pow)),1,5,'\r');          //remove to save overwriting commentary
@@ -96,11 +96,9 @@ char sign = 0;
 
 One_Sec_WDT_with_interrupt;
 
-
-
 if (Num < 0){sign = 1; Num = Num * (-1);}
 
-  term = 1.0;
+term = 1.0;
 term_counter = 1;
 ans = 1.0;
 ans_old = 1.0;
@@ -116,10 +114,16 @@ if(!(sign))return ans;
 else return 1.0/ans;
 }
 
+//e^x = 1 + x + (x^2)/2 + (x^3)/6 + (x^4)/24.....etc.     //Every increment is related to the previous one (i.e *x/(inc_num)
+
+
 
 
 /**************************************************************************************************************************/
-ISR (WDT_vect){Signal_WDTout_with_interrupt; wdt_enable(WDTO_30MS);while(1);}
+ISR (WDT_vect)
+{Signal_WDTout_with_interrupt; 
+wdt_enable(WDTO_30MS);while(1);}
+
 
 
 
@@ -152,13 +156,13 @@ term = term * (float)m;
 if ((m += 1) > 5000)break; }}
 return logE;}
 
-
+//ln(1 + x) = x - (x^2)/2 + (x^3)/3....etc provided x is between 1 and 2.
 
 
 
 
 /**************************************************************************************************************************/
-void display_float_num(float FP_num){
+void display_float_num_local(float FP_num){
 char * Char_ptr;
 
 pause_pin_change_interrupt_on_PC5;
