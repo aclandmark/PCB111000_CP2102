@@ -20,14 +20,6 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 
 
 
-/**********************************************************************************/
-/*#define POR_detected                      eeprom_read_byte ((uint8_t*)0x3FC) == 0xFF
-#define WDTout_with_interrupt_detected    !(eeprom_read_byte ((uint8_t*)0x3F5))
-#define Signal_WDTout_with_interrupt      eeprom_write_byte((uint8_t*)0x3F5, 0);
-#define Reset_WDT_out_register            eeprom_write_byte((uint8_t*)0x3F5, 0xFF);*/
-
-
-
 /************************************************************************************************************************************/
 #define setup_328_HW_Arduino_IO \
 \
@@ -141,8 +133,6 @@ if(reset_status == 7)\
 {Serial.write("\r\nProgram restarted.");}\
 if(reset_status == 6)\
 {Serial.write("\r\nWDTout\r\n");while(1)wdr();}
-
-
 
 
 
