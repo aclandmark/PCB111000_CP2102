@@ -6,7 +6,7 @@
 
  Note:  The PCB111000 bootloader enables user programs to distinguish between
  SW_resets and other resets (i.e POR and first time run following programming).
- This facility is excercised here.
+ This facility is exercised here.
  */
 
 
