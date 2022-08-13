@@ -9,7 +9,7 @@ Press
   SW2 to shift the display left
   SW3 to enter the number
 
-Then press SW1 and SW3 to dsisplay A and N
+Then press SW1 and SW3 to display A and N
 
 Switch assignments:
     SW1 PORTD2 PCINT18 
@@ -82,7 +82,7 @@ digit_entry = 0;                                                  //SW2 sets thi
 }while(!(Data_Entry_complete));                                   //Remain in do-loop until data entry has been terminated
 Data_Entry_complete = 0;
 
-cr_keypress = 1;                                                  //Carraige return keypress: entry of FP string complete 
+cr_keypress = 1;                                                  //Carriage return keypress: entry of FP string complete 
 pause_PCI_and_Send_float_num_string;
 cr_keypress = 0;
 
@@ -114,10 +114,10 @@ return;}
 
 /*******Program control jumps to here during data entry**********************************************************************/
 while(switch_1_down)
-{scroll_float_display_zero();                                    //Dissables IPC due to SW3 and scrolls throuh the availble chars (0-9, E and -)
+{scroll_float_display_zero();                                    //Disables IPC due to SW3 and scrolls through the available chars (0-9, E and -)
 Timer_T2_10mS_delay_x_m(10);}
 
-while(switch_3_down)wdr();                                       //Wait for SW3 to be released (may have been pressed to select dp)
+while(switch_3_down)wdr();                                       //Wait for SW3 to be released (may have been pressed to select decimal point)
 enable_PCI_on_sw3;                                              //Will be required later on to terminate data entry              
 
 if(switch_2_down)shift_float_display_left();                    //Press SW2 to accept the latest char and shift the display
