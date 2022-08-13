@@ -6,7 +6,7 @@ Here we leave the mini_OS (the Attiny1606) to deal with all the details of displ
 We can use one_wire_comms to send it a string or binary number.
 If we send it a string then it will return the number in binary form.
 
-Obviouly Arduino do not supply library functions to drive the display and therefore a
+Obviously Arduino do not supply library functions to drive the display and therefore a
 bit of DIY programming is required.
 */
 
@@ -65,7 +65,7 @@ for(int n = 0; n<=8; n++) display_buffer[n] = 0;                    //Clear the 
 while(1){
 if ((keypress = wait_for_return_key_A()) == '\r')break;             //Detect return key press (i.e \r or\r\n)
 
-if (decimal_digit(keypress))                                        //Ignore non decimal keypresses excepr cr.
+if (decimal_digit(keypress))                                        //Ignore non decimal keypresses except -cr-.
 {
 {for(int n = 8; n>=1; n--)                                          //Shift display for each new keypress
 display_buffer[n] = display_buffer[n-1];
