@@ -11,11 +11,14 @@ TCCR2B |= (1 << CS20) | (1 << CS21);
 OCR2B = 0;}
 
 
+
 void start_clock(void){
 tick_counter = 0;
 TCNT2 = 0;
 OCR2A = 102; 
 TIMSK2 |= (1 << OCIE2A);}
+
+
 
 
 ISR (TIMER2_COMPA_vect){ char string[5];
@@ -38,18 +41,6 @@ UART_Tx_1_wire();}}                             //and send them individually
 
 
 
-
-/*
-#define deci_secs_from_mini_OS \
-{One_wire_Tx_char = 'E'; UART_Tx_1_wire();\
-for(int m = 0; m <= 3; m++)\
-{UART_Rx_1_wire();\
-if(!(m))deci_sec_counter = {One_wire_Rx_char;}\
-else\
-deci_sec_counter = (deci_sec_counter << 8) | {One_wire_Rx_char;}}}
-*/
-
-
 #define deci_secs_from_mini_OS \
 {deci_sec_counter = 0;\
 One_wire_Tx_char = 'M'; UART_Tx_1_wire();\
@@ -59,3 +50,5 @@ UART_Rx_1_wire(); deci_secs_byte[m] = One_wire_Rx_char;}\
 for(int m = 0; m <= 3; m++){wdr();\
 deci_sec_counter = deci_sec_counter << 8;\
 deci_sec_counter |= deci_secs_byte[m];}}
+
+
