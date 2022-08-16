@@ -1,4 +1,6 @@
 
+
+
 #include <avr/wdt.h>
 
 
@@ -9,7 +11,6 @@ char reset_status;
 
 
 
-
 /**********************************************************************************/
 #define  OSC_CAL \
 if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
@@ -17,7 +18,6 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 == eeprom_read_byte((uint8_t*)0x3FE))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
 
 //If the internal clock has been calibrated, a calibration byte will be found in EEPROM locations 0x3FF/E
-
 
 
 
@@ -41,9 +41,7 @@ determine_reset_source;\
 Two_50_mS_WDT_with_interrupt;\
 failsafe;
 
-
 //The reset control switch is connected to PC5  
-
 
 
 
@@ -68,7 +66,6 @@ WDTCSR = (1<< WDE) | (1 << WDIE)  |  (1 << WDP2);
 
 
 
-
 /************************************************************************************************************************************/
 #define initialise_IO \
 MCUCR &= (~(1 << PUD));\
@@ -81,6 +78,8 @@ PORTD = 0xFF;
 
 //All ports are initialised to weak pull up (WPU)
 
+
+
 /************************************************************************************************************************************/
 #define reset_ctl_reg                         0x3FC
 #define Signal_WDTout_with_interrupt          eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x20)
@@ -90,6 +89,7 @@ PORTD = 0xFF;
 
 #define clear_display             One_wire_Tx_char = 'c';  UART_Tx_1_wire();
 #define switch_2_up               (PIND & 0x20)
+
 
 
 /************************************************************************************************************************************/
@@ -118,6 +118,7 @@ Note : Set bit 2 to generate the prtD... prompt
 */
 
 
+
 /************************************************************************************************************************************/
 #define failsafe \
 if(reset_status == 7)\
@@ -127,16 +128,11 @@ if(reset_status == 6)\
 
 
 
-
-
-
 #define User_prompt \
 while(1){\
 do{String_to_PC_Basic("r    ");}   while((isCharavailable_Basic(40) == 0));\
 User_response = Char_from_PC_Basic();\
 if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC_Basic("\r\n");
-
-
 
 
 
