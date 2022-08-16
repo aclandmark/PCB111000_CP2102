@@ -1,6 +1,6 @@
 /****************************************************************************************************************
 Time reference
-Use 32768 watch crystal with /32 prescaler giving 1024 clock
+Use 32768 watch crystal with /32 prescaler giving 1024Hz clock
 Counts to 1024 in 1 second
 Counts to 102 in 100mS
 Counts to 204 in 200mS
