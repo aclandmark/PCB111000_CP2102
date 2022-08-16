@@ -53,14 +53,14 @@ set_up_PCI;
 enable_PCI;
 disable_pci_on_sw2;
 for(int m = 0; m<= 7; m++)digits[m] = 0;
-while(!(Data_Entry_complete))wdr();                          //Line A. wait here for pci interrupts used to enter data
+while(!(Data_Entry_complete))wdr();                 //Line A. wait here for pci interrupts used to enter data
 Data_Entry_complete = 0;
 disable_pci_on_sw1_and_sw3;}
 
 
 
 /***********************************************************************************************************************/
-ISR(PCINT2_vect) {                                    //input number: store keypresses in array -start_time
+ISR(PCINT2_vect) {                                  //input number: store keypresses in array -start_time
 if((switch_1_up) && (switch_3_up))return;
 
 if (switch_1_down){                                 //Switch_1: used to scroll through the permissible                    
@@ -105,13 +105,13 @@ case '3': case '4': digits[3]++; break;
 case '5': digits[3] = '0'; break;
 default:digits[3]='0';break;} break;
 
-case 2:                                         //Enter Digit 0 secondes 0 to 9
+case 2:                                             //Enter Digit 0 secondes 0 to 9
 switch (digits[2]){
 case '9': digits[2] = '0'; break;
 default:digits[2]++;break;} break;}}
 
 
-if (switch_3_down){                                             //Switch_3: Used to select a character and move onto the next digit
+if (switch_3_down){                                 //Switch_3: Used to select a character and move onto the next digit
 
 digit_num -=1;digits[digit_num] = '0'; 
 if (digit_num == 1){
