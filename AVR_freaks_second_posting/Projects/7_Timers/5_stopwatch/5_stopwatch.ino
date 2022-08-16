@@ -34,10 +34,7 @@ switch(stop_watch_mode){
  case 0:  {Inc_OS_time;}break;
  case 1: centi_Seconds_to_display(stop_watch_time);stop_watch_mode = 0; {Inc_OS_time;}break;
   case 2:stop_watch_mode = 0;{Inc_OS_time;}One_wire_Tx_char = 'O'; UART_Tx_1_wire();break;}
- 
-}}
-
-
+ }}
 
 
 
@@ -55,9 +52,6 @@ ISR(PCINT2_vect) {
     disable_pci_on_sw1; 
     stop_watch_mode = 2; 
  enable_pci_on_sw2;}
-
-//if(switch_3_down){
-//sei();One_wire_Tx_char = 'G'; UART_Tx_1_wire();}
 }
   
   
