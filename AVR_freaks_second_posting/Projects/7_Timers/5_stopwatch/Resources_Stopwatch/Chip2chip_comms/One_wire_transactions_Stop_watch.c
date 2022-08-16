@@ -1,11 +1,9 @@
 
 
-
-
-
-
-
-
+/*
+Subroutines that provide firm ware one wire comms with the mini-OS.
+The mini-OS uses similar FW routines to initiate and control the communication.
+*/
 
 
 
@@ -76,9 +74,7 @@ TCCR0B = 0;
 Rx_complete = 1;}}}
 
 	
-	
-	
-	
+		
 	
 /*************************************************************************************************************/
 ISR(PCINT1_vect){ 									//Interogates vertical switch presses
