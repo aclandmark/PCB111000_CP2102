@@ -3,11 +3,11 @@
 #include <avr/wdt.h>
 
 
+
 char User_response;
 char reset_status;
 
 #define newline String_to_PC_Basic("\r\n")
-
 
 
 
@@ -19,7 +19,6 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 == eeprom_read_byte((uint8_t*)0x3FE))) {OSCCAL = eeprom_read_byte((uint8_t*)0x3FE);}
 
 //If the internal clock has been calibrated, a calibration byte will be found in EEPROM locations 0x3FF/E
-
 
 
 
@@ -45,7 +44,6 @@ failsafe;
 
 
 //The reset control switch is connected to PC5  
-
 
 
 
@@ -130,12 +128,7 @@ if(reset_status == 6)\
 
 
 
-
-
-
-
-
-
+/************************************************************************************************************************************/
 #define User_prompt \
 while(1){\
 do{String_to_PC_Basic("r    ");}   while((isCharavailable_Basic(40) == 0));\
@@ -144,15 +137,7 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC_Basic("\
 
 
 
-
-
-
-
-
-
 /************************************************************************************************************************************/
-
-
 #include "Resources_Basic_clock/Chip2chip_comms/One_wire_header.h"
 #include "Resources_Basic_clock/clock_timer_header.h"
 #include "Resources_Basic_clock/PC_comms/Basic_Rx_Tx_and_Timer.c"
