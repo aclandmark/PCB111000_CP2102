@@ -4,7 +4,6 @@
 #include <avr/wdt.h>
 
 
-
 char reset_status;
 
 #define newline String_to_PC_Basic("\r\n")
@@ -28,7 +27,6 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 
 
 
-
 /************************************************************************************************************************************/
 #define setup_328_HW_Basic_IO \
 \
@@ -49,9 +47,7 @@ determine_reset_source;\
 Two_50_mS_WDT_with_interrupt;\
 failsafe;
 
-
 //The reset control switch is connected to PC5  
-
 
 
 
@@ -76,7 +72,6 @@ WDTCSR = (1<< WDE) | (1 << WDIE)  |  (1 << WDP2);
 
 
 
-
 /************************************************************************************************************************************/
 #define initialise_IO \
 MCUCR &= (~(1 << PUD));\
@@ -89,6 +84,8 @@ PORTD = 0xFF;
 
 //All ports are initialised to weak pull up (WPU)
 
+
+
 /************************************************************************************************************************************/
 #define reset_ctl_reg                         0x3FC
 #define Signal_WDTout_with_interrupt          eeprom_write_byte((uint8_t*)reset_ctl_reg, ~0x20)
@@ -97,6 +94,7 @@ PORTD = 0xFF;
 
 #define clear_display             One_wire_Tx_char = 'c';  UART_Tx_1_wire();
 #define switch_2_up               (PIND & 0x20)
+
 
 
 /************************************************************************************************************************************/
@@ -134,14 +132,11 @@ if(reset_status == 6)\
 
 
 
-
-
 #define User_prompt \
 while(1){\
 do{String_to_PC_Basic("r    ");}   while((isCharavailable_Basic(40) == 0));\
 User_response = Char_from_PC_Basic();\
 if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC_Basic("\r\n");
-
 
 
 
@@ -161,8 +156,6 @@ if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC_Basic("\
 #define switch_1_down             (PIND & 0x04)^0x04
 #define switch_2_down             (PIND & 0x20)^0x20
 #define switch_3_down             (PIND & 0x80)^0x80
-
-
 
 
 
