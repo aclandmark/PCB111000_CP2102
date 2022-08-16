@@ -20,7 +20,6 @@ if ((eeprom_read_byte((uint8_t*)0x3FF) > 0x0F)\
 
 
 
-
 /************************************************************************************************************************************/
 #define setup_328_HW_Basic_IO \
 \
@@ -42,9 +41,7 @@ Two_50_mS_WDT_with_interrupt;\
 failsafe;
 
 
-
 //The reset control switch is connected to PC5  
-
 
 
 
@@ -69,7 +66,6 @@ WDTCSR = (1<< WDE) | (1 << WDIE)  |  (1 << WDP2);
 
 
 
-
 /************************************************************************************************************************************/
 #define initialise_IO \
 MCUCR &= (~(1 << PUD));\
@@ -81,6 +77,7 @@ PORTC = 0xFF;\
 PORTD = 0xFF;
 
 //All ports are initialised to weak pull up (WPU)
+
 
 
 /************************************************************************************************************************************/
@@ -129,14 +126,11 @@ if(reset_status == 6)\
 
 
 
-
 #define User_prompt \
 while(1){\
 do{String_to_PC_Basic("r    ");}   while((isCharavailable_Basic(40) == 0));\
 User_response = Char_from_PC_Basic();\
 if((User_response == 'r')||(User_response == 'R')) break;} String_to_PC_Basic("\r\n");
-
-
 
 
 
