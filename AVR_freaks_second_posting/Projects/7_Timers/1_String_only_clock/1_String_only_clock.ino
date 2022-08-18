@@ -48,14 +48,14 @@ void Inc_time(void){
                           else {SecsH = '0';  if ((MinsL) < '9') MinsL++; 
                                       else {MinsL = '0'; if (MinsH < '5') MinsH++; else {MinsH = '0';
 
- switch (HoursH){ case '0': if ((HoursL & 0x7F) < '9')HoursL++; else {HoursL='0' | 0x80; HoursH++;} break;
- case '1': if((HoursL) < '1')HoursL++; else {HoursL='0'; HoursH='0';} break;}
- 
- }  //  update msecs, seconds units and tens, minutes units and tens and hours
- }  //  update msecs, seconds units and tens and minutes units and tens
- }  //  update msecs, seconds units and tens and minutes units
- }  //  update msecs and seconds units and tens
- }  //  update msecs and seconds units
+ switch (HoursH){ case '0': case '1': if ((HoursL & 0x7F) < '9')HoursL++; else {HoursL='0'; HoursH++;} break;
+ case '2': if((HoursL) < '3')HoursL++; else {HoursL='0'; HoursH='0';} break;}
+
+ }  //  update deci_Secs, seconds units and tens, minutes units and tens and hours
+ }  //  update deci_Secs, seconds units and tens and minutes units and tens
+ }  //  update deci_Secs, seconds units and tens and minutes units
+ }  //  update deci_Secs and seconds units and tens
+ }  //  update deci_Secs and seconds units
 }
 
 /****************************************************************************************************************/
@@ -63,7 +63,7 @@ void set_time(void){
 
 for(int m = 0; m <= 7; m++)digits[m] = 0;
 String_to_PC_Basic("Enter start time Hours, Minutes and Seconds\
-\r\n(12 hour clock with no spaces). Terminate with cr\r\n");
+\r\n(24 hour clock with no spaces). Terminate with cr\r\n");
 
 while(isCharavailable_Basic(50) == 0){String_to_PC_Basic("T?  ");}
 
