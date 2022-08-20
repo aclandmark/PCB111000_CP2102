@@ -3,5 +3,5 @@
 5C_Scientific_numbers		6970 bytes	21%
 5E_e_power_series (full)	8334		25%
 5E_e_power_series (short)	7370		22%
-
+5E short - reset control	7048		21%
 8B_Pulse_train_generator	7338		22%
