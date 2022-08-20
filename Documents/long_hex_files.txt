@@ -40,3 +40,7 @@ Text size is 0x6000 - 0x276C = 14,484 in decimal
 :00000001FF
 
 Next page starts on 0x2100
+
+
+NOTE: Full commmentary will not go on an Atmega 168	
+Either shorten in or reload it when necessary.
