@@ -109,11 +109,16 @@ In the first example time is simply recoded as a string, and in the second a cou
 ***Reset options
 The HW includes a timer k/a the watch dog timer (WDT).  This counts from zero to a user defined value after which it issues a reset pulse.   Provided that it is reset frequently enough there need be no reset.  
 
-Here two modes of using the WDT are implemented.	A SW_reset which is planned and is a convenient way of restarting the program.	The WDT is started and allowed to time out. This can be preceded by a write to EEPROM	Interrupt mode in which program control jumps to an ISR before timing out.  The ISR can also include a write to EEPROM.	This is suitable for unplanned resets, due to a system crash for example.	
+Arduino offers three modes for the WDT.	It can be initiated as in the macro "setup_watchdog" (see the project header file).	If it is allowed to time out the project will be reset.		It can be initiated with an interrupt (see for example "One_25ms_WDT_with_interrupt").	The ISR (interrupt service routine) might write to EEPROM before issuing a reset.	If the ISR is missing program control willl jump to location 0x0000, the start of the program.	This is important for us because a reset takes program control to the boot loader not the start of the user project (0x0000).
 
-At each reset the code reads the EEPROM to determine the source of the reset which can be:	POR/exit programming mode.	SW_reset	System crash.	It can then respond appropriately to these conditions.	See projects 4_1, 4_2, 5e and 8A.
+Note the macro "SW_reset": This is a convenient way to implement a planned reset.	Macro "One_25ms_WDT_with_interrupt" is used to recover from an unplanned reset or system crash.	The micro includes an MCU status register (MCUSR).	This records the source of the reset	POR (power on reset)	WDT	External reset (not used here)	low supply voltage (not used here). The bootloader reads this to determine whether the reset is due to the WDT or POR	It uses the EEPROM to retermine whether to jump to the user program or continue with the bootloader.
 
-In example 8A*
+Example 8A explores the basic operation of the reset function provided by PCB111000_PC2102	
+
+Example 8B sums cosine waves to generate a pulse function.  This is an example of the micro working flat out but still appearing to go really slowly.  The various reset fuctions are used to control its operation.8
+
+***That's it:
+
 
 
 
