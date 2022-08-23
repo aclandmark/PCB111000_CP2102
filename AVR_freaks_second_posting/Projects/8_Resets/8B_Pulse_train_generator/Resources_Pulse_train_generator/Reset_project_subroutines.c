@@ -58,7 +58,7 @@ TCCR1B = Counter_speed;}
 /*******************************************************************************************************************/
 int PCI_triggers_data_from_PC(char * num_as_string)
 {char strln;
-strln = Serial.readBytesUntil('\r',num_as_string, 20);
+strln = Serial.readBytesUntil('\r',num_as_string, 12);
 num_as_string[strln] = 0;
 return atoi(num_as_string);}
 
