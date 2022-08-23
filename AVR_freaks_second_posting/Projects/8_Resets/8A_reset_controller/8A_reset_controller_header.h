@@ -61,6 +61,7 @@ determine_reset_source;\
 One_25ms_WDT_with_interrupt;
 
 
+
 /************************************************************************************************************************************/
 #define wdr()  __asm__ __volatile__("wdr")
 
@@ -117,7 +118,6 @@ if((User_response == 'R') || (User_response == 'r'))break;} Serial.write("\r\n")
 
 
 
-
 /************************************************************************************************************************************/
 #define determine_reset_source \
 switch (eeprom_read_byte((uint8_t*)reset_ctl_reg))\
@@ -170,7 +170,6 @@ if(reset_status == 6)\
 #define switch_3_down             (PIND & 0x80)^0x80
 
 #define newline                   Serial.write("\r\n");
-
 
 
 
