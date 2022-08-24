@@ -28,7 +28,7 @@ for(int p = 0; p <10; p++)newline; break;
 case 5:Serial.write("\r\n\r\nNumerical result too large for a 32 bit number.\r\n");     //WDTout with interrupt
 case 2:                                                                                   //SW_reset
 case 3: //enable_PCI_on_sw1;                                                                //Post prtD
- eeprom_write_byte((uint8_t*)(0x0),'1');                                                  //1 to 9 gives mark space ratio
+ eeprom_write_byte((uint8_t*)(0x0),1);                                                  //1 to 9 gives mark space ratio
  eeprom_write_byte((uint8_t*)(0x1),45);                                                   //Waveform period < 65536
  eeprom_write_byte((uint8_t*)(0x2),0); 
  eeprom_write_byte((uint8_t*)(0x3),30);                                                   //Number of harmonics
@@ -43,8 +43,7 @@ float_to_EEPROM(Num_1, 0x5);
 while(1){if((switch_2_down) || (switch_3_down))break; else wdr();}
 enable_PCI_on_sw1;break;}                                                                 //Press switch 2 or 3 to start
 
-
-duty_cycle = (float)(eeprom_read_byte((uint8_t*)(0x0))- '0')/10.0 * 1.5;
+duty_cycle = (float)(eeprom_read_byte((uint8_t*)(0x0)))/10.0 * 1.5;
 num_time_slots = (eeprom_read_byte((uint8_t*)(0x2)) << 8) +
 eeprom_read_byte((uint8_t*)(0x1));
 num_harmonics = (eeprom_read_byte((uint8_t*)(0x4)) << 8) +
@@ -87,20 +86,8 @@ ISR(PCINT2_vect){
   if (switch_1_up)return;
   sei();
   disable_PCI_on_sw1;
- 
-if((switch_2_up) && (switch_3_up)){
-  if(Serial.available()){eeprom_write_byte
-  ((uint8_t*)(0x0),Serial.read());}}                                    //Set duty cycle
-  
- if((switch_2_down) && (switch_3_up))
- {data = PCI_triggers_data_from_PC(digits);                             //Set period
- eeprom_write_byte((uint8_t*)(0x1),data);
- eeprom_write_byte((uint8_t*)(0x2), (data >> 8));}
 
-if((switch_3_down) && (switch_2_up))
-{ data = PCI_triggers_data_from_PC(digits);
- eeprom_write_byte((uint8_t*)(0x3),data);                                //Set number of harmonics
- eeprom_write_byte((uint8_t*)(0x4), (data >> 8));}
+
 
 if((switch_2_down) && (switch_3_down)){                                 //Do some arithmetic
 Num_1 = float_from_EEPROM(0x5);
@@ -113,7 +100,24 @@ float_to_EEPROM (Num_2, 0x5);
 Timer_T1_sub_with_interrupt(T1_delay_250ms);
 return;}
 
-Signal_flagged_WDTout;                                                   //Return after requesting new waveform
+
+data = PCI_triggers_data_from_PC(digits);
+if(!(data)){Timer_T1_sub_with_interrupt(T1_delay_250ms);return;} 
+
+if((switch_2_up) && (switch_3_up)){                               //Set duty cycle
+if(data > 9)data = data%10 + 1;
+eeprom_write_byte((uint8_t*)(0x0),data);}
+    
+ if((switch_2_down) && (switch_3_up))                             //Set period
+ {eeprom_write_byte((uint8_t*)(0x1),data);
+ eeprom_write_byte((uint8_t*)(0x2), (data >> 8));}
+
+if((switch_3_down) && (switch_2_up))                               //Set number of harmonics
+{ eeprom_write_byte((uint8_t*)(0x3),data); 
+ eeprom_write_byte((uint8_t*)(0x4), (data >> 8));}
+
+
+Signal_flagged_WDTout;                                            //Return after requesting new waveform
 setup_watchdog; SW_reset;}
   
 
