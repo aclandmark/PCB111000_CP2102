@@ -91,11 +91,12 @@ As a final example the display is used to display positive and negative 8 bit nu
 
 ***Page 8   Using the Arduino PC comms library:		Arduino provide a suite of programs that pass data to and from a PC. These will probably be the sensible choice for use with the Arduino compiler.	Integer and floating point numbers are supported.	Easy extension to include scientific numbers is implemented in these examples.
 
-Two additional examples are included:	The first provides an estimate for pie.  The area of a circle is computed by placing it over a fine grid of squares and counting them.	
+Three additional examples are included:	The first explores prime numbers. The theory for these was developed by the ancient Greeks. Their method for obtaining them is still probably the best for us use here. 
 
-The second uses a power series to compute log/antilog functions so that any positive scientific number can be raised to an arbitrary power.   If the result is either too large or small the program times out.  An interrupt is generated and the resulting ISR, writes to the EEPROM, before issuing a SW_reset.	When the program resets it reads the EEPROM and issues the appropriate user prompt.
+The second provides an estimate for pie.  The area of a circle is computed by placing it over a fine grid of squares and counting them.	
 
-It should be noted that although the Arduino library is excellent, it is not the standard C library for transferring scientific numbers over the USART interface.  Arduino excels at what I believe it was intended to do:  To provide a straight forward and friendly interface for introducing AVR micro-controllers programmed using C.  For more complex applications I suggest the effort involved in getting going with Studio 7 will probably be found worth while.*
+The third uses a power series to compute log/antilog functions so that any positive scientific number can be raised to an arbitrary power.   If the result is either too large or small the program times out.  An interrupt is generated and the resulting ISR, writes to the EEPROM, before issuing a SW_reset.	When the program resets it reads the EEPROM and issues the appropriate user prompt.*
+
 
 ***Page 9   The 8 digit display and IO:		Obviously Arduino does not provide library functions to drive the display, so it is necessary to revert to DIY programming.	The purpose of the first 2 programs is to demonstrate how numbers are constructed from the display segments.	Program 3 defines each digit in terms of a string as has previously been done with messages.	The user enters a digit at the PC.	The appropriate string is selected.	Segments defined by the string are are illuminated.
 
@@ -117,7 +118,12 @@ Example 8A explores the basic operation of the reset function provided by PCB111
 
 Example 8B sums cosine waves to generate a pulse function.  This is an example of the micro working flat out with an 8MHz clock.  No wonder many appliations require a much faster clock.  The various reset fuctions are used to control its operation.*
 
-***Page 12   That's it for PCB11000_CP2102:	Much ground still to cover, many new things to explore, but hopefully enough ground has been covered to wet the appetite for more detailed and systematic study.*
+***Page 12   That's it for PCB11000_CP2102:	Much ground still to cover, many new things to explore, but hopefully enough ground has been covered to wet the appetite for more detailed and systematic study.
+
+Click on Arduino Help/Reference to see that we have barely scratched the surface of what Arduino has to offer.	There is of course also the Atmel Studio free developent system.  I would certainly not want to be withour either.	
+
+Of course the great strength of the UNO is that it comes with a boootloader.	However why not experiment with UNO_AVR_Programmer also posted on AVR freaks.	Even download free PCB design SW and make your own board!*
+
 
 ***Page 13   Not used.*
 
