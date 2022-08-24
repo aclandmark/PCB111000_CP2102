@@ -116,13 +116,13 @@ The micro includes an MCU status register (MCUSR).	This records the source of th
 
 Example 8A explores the basic operation of the reset function provided by PCB111000_PC2102	
 
-Example 8B sums cosine waves to generate a pulse function.  This is an example of the micro working flat out with an 8MHz clock.  No wonder many appliations require a much faster clock.  The various reset fuctions are used to control its operation.*
+Example 8B sums cosine waves to generate a pulse function.  This is an example of the micro working flat out with an 8MHz clock.  No wonder many applications require a much faster clock.  The various reset functions are used to control its operation.*
 
 ***Page 12   That's it for PCB11000_CP2102:	Much ground still to cover, many new things to explore, but hopefully enough ground has been covered to wet the appetite for more detailed and systematic study.
 
-Click on Arduino Help/Reference to see that we have barely scratched the surface of what Arduino has to offer.	There is of course also the Atmel Studio free developent system.  I would certainly not want to be withour either.	
+Click on Arduino Help/Reference to see that we have barely scratched the surface of what Arduino has to offer.	There is of course also the Atmel Studio free development system.  I would certainly not want to be withour either.	
 
-Of course the great strength of the UNO is that it comes with a boootloader.	However why not experiment with UNO_AVR_Programmer also posted on AVR freaks.	Even download free PCB design SW and make your own board!*
+Of course the great strength of the UNO is that it comes with a bootloader.	However why not experiment with UNO_AVR_Programmer also posted on AVR freaks.	Even download free PCB design SW and make your own board!*
 
 
 ***Page 13   Not used.*
