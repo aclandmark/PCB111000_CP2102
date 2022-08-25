@@ -1,5 +1,10 @@
 
-
+/*
+Program synthesises a pulse waveform on the PC screen and also does some floating point arithmetic.
+Floating point results of zero or infinity cause the program to crash and trigger a WDTout with interrupt
+Switch presses are used to start the waveform adjust its parameters and trigger the FP arithmetic.
+A SW_reset is triggered after 25 uninterrupted waveform cycles.
+ */
 
 
 #include "Pulse_train_generator_header.h"
@@ -14,8 +19,8 @@ int print_spaces;
 float amplitude;
 float duty_cycle;
 
-int num_time_slots;            //50 45
-int num_harmonics;             //60 30
+int num_time_slots;            //45
+int num_harmonics;             //30
 
 setup_328_HW_Arduino_IO;
 
@@ -27,7 +32,7 @@ for(int p = 0; p <10; p++)newline; break;
 
 case 5:Serial.write("\r\n\r\nNumerical result too large for a 32 bit number.\r\n");         //WDTout with interrupt
 case 2:                                                                                     //SW_reset
-case 3: //enable_PCI_on_sw1;                                                                //Post prtD
+case 3:                                                                                     //Post prtD
  eeprom_write_byte((uint8_t*)(0x0),1);                                                      //1 to 9 gives mark space ratio
  eeprom_write_byte((uint8_t*)(0x1),45);                                                     //Waveform period < 65536
  eeprom_write_byte((uint8_t*)(0x2),0); 
@@ -56,11 +61,12 @@ newline;
 
 {int counter = 0;                                               
 while(counter < 25)                                                           //Exit after 25 cycles without interrupt
-{for(int m = 1; m; m++)                                                       //Exit when m is zero
+{for(int m = 1; m; m++)                                                       //Calculate amplitude for every time slot (m). Exit when m is zero
 
 {amplitude = sin(duty_cycle ) *
-(cos(pi * (float)m/(float)num_time_slots));
-for(int p = 3; p < num_harmonics; p+=2) 
+(cos(pi * (float)m/(float)num_time_slots));                                   //Calculation for the fundamental
+
+for(int p = 3; p < num_harmonics; p+=2)                                       //Add in odd harmonics
 
 {amplitude += sin(duty_cycle * (float)p) * cos(pi*(float)p
 * (float)m/(float)num_time_slots)/(float) p; 
@@ -136,3 +142,27 @@ ISR (WDT_vect){
 
 
 /*******************************************************************************************************************/
+
+
+
+/*
+ {int counter = 0;                                               
+while(counter < 25)                                                           //Exit after 25 cycles without interrupt
+{for(int m = 1; m; m++)                                                       //Calculate amplitude for every time slot (m). Exit when m is zero
+
+{amplitude = sin(duty_cycle ) *
+(cos(pi * (float)m/(float)num_time_slots));
+
+for(int p = 3; p < num_harmonics; p+=2) 
+
+{amplitude += sin(duty_cycle * (float)p) * cos(pi*(float)p
+* (float)m/(float)num_time_slots)/(float) p; 
+wdr();}
+
+print_spaces = 50 + (int)(100.0 * amplitude);
+for (int n = 0; n < print_spaces; n++){Serial.write(' ');}
+Serial.write('|');_delay_ms(20);
+newline;wdr();
+
+if(m == num_time_slots/2) m = -num_time_slots/2;} counter += 1;}}
+*/
