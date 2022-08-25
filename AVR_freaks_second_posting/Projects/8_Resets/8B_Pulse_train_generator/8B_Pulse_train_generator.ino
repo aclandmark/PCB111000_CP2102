@@ -22,16 +22,16 @@ setup_328_HW_Arduino_IO;
 set_up_PCI;
 
 switch (reset_status)
-{case 4: Timer_T1_sub_with_interrupt(T1_delay_250ms);                                   //Flagged WDTout
+{case 4: Timer_T1_sub_with_interrupt(T1_delay_250ms);                                       //Flagged WDTout
 for(int p = 0; p <10; p++)newline; break;
 
-case 5:Serial.write("\r\n\r\nNumerical result too large for a 32 bit number.\r\n");     //WDTout with interrupt
-case 2:                                                                                   //SW_reset
+case 5:Serial.write("\r\n\r\nNumerical result too large for a 32 bit number.\r\n");         //WDTout with interrupt
+case 2:                                                                                     //SW_reset
 case 3: //enable_PCI_on_sw1;                                                                //Post prtD
- eeprom_write_byte((uint8_t*)(0x0),1);                                                  //1 to 9 gives mark space ratio
- eeprom_write_byte((uint8_t*)(0x1),45);                                                   //Waveform period < 65536
+ eeprom_write_byte((uint8_t*)(0x0),1);                                                      //1 to 9 gives mark space ratio
+ eeprom_write_byte((uint8_t*)(0x1),45);                                                     //Waveform period < 65536
  eeprom_write_byte((uint8_t*)(0x2),0); 
- eeprom_write_byte((uint8_t*)(0x3),30);                                                   //Number of harmonics
+ eeprom_write_byte((uint8_t*)(0x3),30);                                                     //Number of harmonics
  eeprom_write_byte((uint8_t*)(0x4),0);  
  
 Serial.write("\r\nEnter scientific number \
