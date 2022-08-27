@@ -39,7 +39,9 @@ setup_328_HW_Arduino_IO;
 set_up_PCI;
 
 switch (reset_status)                                                    //Check each time a reset occurs
-{case 4: Timer_T1_sub_with_interrupt(T1_delay_250ms);                    //Flagged WDTout
+{case 1: User_prompt_Arduino;
+SW_reset;break;
+case 4: Timer_T1_sub_with_interrupt(T1_delay_250ms);                    //Flagged WDTout. Restart with new waveform
 for(int p = 0; p <10; p++)newline; break;
 
 case 5:Serial.write
