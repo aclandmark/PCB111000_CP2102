@@ -102,7 +102,7 @@ PORTD = 0xFF;
 /************************************************************************************************************************************/
 #define User_prompt_Arduino \
 {while(1){\
-do{Serial.write("R?    ");}   while((isCharavailable_with_WDT(35) == 0));\
+do{Serial.write("R?    ");}   while((isCharavailable_A(35) == 0));\
 User_response = Serial.read();\
 if((User_response == 'R') || (User_response == 'r'))break;} Serial.write("\r\n");}
 
