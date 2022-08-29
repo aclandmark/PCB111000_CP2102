@@ -2,7 +2,7 @@
 
 /*
  Press sw3 to initialise the stop watch
- Press sw2 to start and stop timer
+ Press sw2 to pause it
  Press sw1 to restart it
  
  Uses special version of One_wire_transactions.c
@@ -86,7 +86,7 @@ centi_sec_counter += 1;
   
 /****************************************************************************************************************/
 void centi_Seconds_to_display(long num){          //Pauses display
-One_wire_Tx_char = 'N';                           //Command 'C' indicates the a long number will be sent
+One_wire_Tx_char = 'N';                           //Command 'N' indicates the a long number will be sent
 UART_Tx_1_wire();
 for(int m = 0; m <= 3; m++){wdr();
 One_wire_Tx_char = num >> (8 * (3 - m));        //Split the number into 4 chars
