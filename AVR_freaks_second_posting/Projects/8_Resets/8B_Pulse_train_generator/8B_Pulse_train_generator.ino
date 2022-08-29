@@ -25,7 +25,7 @@ driving it.  I usually start by adjusting the duty cycle.
 #include "Pulse_train_generator_header.h"
 
 float Num_1, Num_2;
-char digits[12];
+char digits[8];
 
 int main (void){
 
