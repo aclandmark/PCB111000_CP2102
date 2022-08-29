@@ -1,10 +1,10 @@
 
 
 /*
+ Press sw3 to initialise the stop watch
  Press sw2 to start and stop timer
  Press sw1 to restart it
- Press sw3 to change intensity
-
+ 
  Uses special version of One_wire_transactions.c
  */
 
