@@ -1,7 +1,7 @@
 
 /*
 Program synthesizes a pulse waveform on the PC screen and also does some floating point arithmetic.
-Floating point results of zero or infinity cause the program to crash and trigger a WDTout with interrupt
+Floating point results of zero or infinity cause the program to crash and trigger a WDTout with interrupt.
 Switch presses are used to start the waveform adjust its parameters and trigger the FP arithmetic.
 A SW_reset is triggered after 25 uninterrupted waveform cycles.
 
