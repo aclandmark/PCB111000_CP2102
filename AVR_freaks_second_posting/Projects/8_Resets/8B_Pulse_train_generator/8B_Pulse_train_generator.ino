@@ -125,7 +125,7 @@ ISR(PCINT2_vect){
 if((switch_2_down) && (switch_3_down)){                                 //Do some arithmetic
 Num_1 = float_from_EEPROM(0x5);
 Num_2 = pow(Num_1, 1.2);
-if(Num_2 == Num_1)while(1);
+if(Num_2 == Num_1)while(1);                                             //Zero or infinity: Force timeout
 
 float_num_to_display_WDT(Num_2);
 float_to_EEPROM (Num_2, 0x5);
