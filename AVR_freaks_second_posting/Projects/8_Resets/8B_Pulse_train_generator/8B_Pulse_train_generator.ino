@@ -11,21 +11,13 @@ Use switch presses in place of the return key press
 
 
 See https://en.wikipedia.org/wiki/Pulse_wave for details of the pulse train
- 
- Note: Generally speaking this does work but bugs will probably be evident
- depending on the precise way in which the switches are pressed.
-
-That's often the trouble: A project that appears to work fine for one user
-completely fails for another simply because they have different ways of 
-driving it.  I usually start by adjusting the duty cycle.
- 
- */
+*/
 
 
 #include "Pulse_train_generator_header.h"
 
 float Num_1, Num_2;
-char digits[8];
+char digits[12];
 
 int main (void){
 
