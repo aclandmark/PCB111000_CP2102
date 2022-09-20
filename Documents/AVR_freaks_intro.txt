@@ -1,0 +1,26 @@
+
+
+AVR freaks intro:
+
+This posting is a development of PCB_111000_UNO.  Functions originally supplied by the UNO are obtained as follows:
+
+USB connectivity:	A CP2102 module with USB connector soldered directly to the PCB
+Bootloader IC:	An Atmega328 loaded with a hex/text bootloader is also soldered to the PCB
+
+Another development is use of an ATtiny1606 to drive the display. The I2C bus used to connect the two ICs is replaced by a one wire firmware UART link.
+
+A UNO loaded with a modified version of the project “UNO_as_an_AVR_programmer” is used to calibrate the Atmega328 and upload the bootloader.
+Similarly a modified version of “UNO_as_an_UPDI_programmer” is used to program the ATtiny1606.
+
+The only really new code is project “cal_one_wire_comms” used to align the one wire UART clocks.
+
+
+The posting contains:
+	The pdf file "Introducing_PCB111000_CP2102"
+	Eagle pcb schematic and board files and parts list
+	System code and hex files.
+	A selection of user projects 
+	A project commentary
+
+All user projects can easily be modified to work with PCB_111000_UNO or indeed the original PCB_111000 by replacing the one wire link with an I2C link.
+
