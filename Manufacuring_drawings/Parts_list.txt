@@ -1,44 +1,43 @@
 
 
 Display modules
-
-CA56-12SYKWA	RS 872-1954		Floating point version				OK 10 more ordered  RS
-CA56-21SYKWA	RS 872-1954		Clock version not available
-CC versions not available 08/09/2021
+CA56-12SYKWA	RS 872-1954		Floating point version
 
 
 MOD1	From eBay	
-1/2/5PCS CP2102 6Pin Serial Converter STC NEW MICRO USB to UART...			OK
-Item ID: 185020913574
+CP2102 MICRO USB to UART TTL Module 6Pin Serial Converter
 
 
-IC1	ATtiny1606 (SOIC)	Farnell 3018694						10 ORDERED Farnell
-IC2	Atmega 328 (DIP)	Farnell 1972087						OK
-28pin IC socket			RS 674-2498
-
-Q1	BSS138	SOT23		RS 671-0324  of 2N7002 (farnell)			OK
-
-LED 1	Common cathode RS228-5764							OK
-Surface mount dual led	RS 174-9789  £6.60 for 10					10 ORDERED RS
-
-Watch Crystal	RE 90-3044 or 90-3046							OK	
-RS 547-6985 or 478-9268	or 171-0553	 Farnell 2449410
-Surface mount watch crystal RS 171-0335							Not available to ORDER
+IC1	ATtiny1606 (SOIC)
+IC2	Atmega 328 (DIP)
 
 
-SW1 Surface Mount	RE 51-0709	NO push button (SM)				10 ORDERED RE
+Q1	BSS138, 2N7002 (SOT23 devices) or similar
 
-SW3,4,5	Through hole	RE51-0711	NO push button (with pins)			30 ORDERED RE	
 
+LED 1	Common cathode RS228-5764 or
+Surface mount dual led	RS 174-9789
+
+
+Watch Crystal	
+RS  171-0553
+or surface mount RS 171-0335	(not tested)
+
+
+Switches from https://www.rapidonline.com/
+SW1 		51-0709		Normally Open push button (SM)
+SW3,4,5		51-0711		Normally Open push button (with pins)
+
+	
 R1, R20-26	220R	1206
-R19, R27-8	220R	1206								OK
+R19, R27-8	220R	1206	
 
-R15, 16		560R	1206								OK
+R15, 16		560R	1206
 
-R2, R3, R8	10K	1206								OK
+R2, R3, R8	10K	1206
 
-C1, C3, C5 	4.7uF	1206								50 ORDERED Farnell
+C1, C3, C5 	4.7uF	1206
 
-C2, C4, C6 	100nF	1206								OK
+C2, C4, C6 	100nF	1206
 
-C15-17		10nF	1206								OK
+C15-17		10nF	1206
