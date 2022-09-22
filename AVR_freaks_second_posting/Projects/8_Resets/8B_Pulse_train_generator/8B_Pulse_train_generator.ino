@@ -60,6 +60,8 @@ Serial.write("\r\nEnter scientific number \
 Num_1 = Float_KBD_to_display(digits); 
 float_to_EEPROM(Num_1, 0x5);
 
+Serial.write("Press SW2 or 3 to start\r\n");
+
 while(1)
 {if((switch_2_down) || (switch_3_down))break; else wdr();}              //Press switch 2 or 3 to start
 enable_PCI_on_sw1;break;}                                               
