@@ -1,0 +1,4 @@
+
+Proj 3C
+PRN generator in 3C reaction time tester uses EEPROM locations 0x1FF and 0X1FE
+Shift PORT_1 is also dodjy.  See replacement project in UNO_V2 but check carefully on eeprom locations.
