@@ -5,9 +5,9 @@ It consists of a USB bridge to communicate with a PC, an 8 digit display and two
 
 There are three PCB111000 projects pcbs:
 
-PCB111000_New The initial version in which the miniOS has been rewritten to make it more readable. An Atmega328 hosts the miniOS, this includes a programmer for the user device, an Atmega 168. An FTDI chip FT230X acts as the uSAB bridge.
+PCB-111000_V2 The initial version in which the miniOS has been rewritten to make it more readable. An Atmega328 hosts the miniOS, this includes a programmer for the user device, an Atmega 168. An FTDI chip FT230X acts as the uSAB bridge.
 
-PCB111000_UNO A cut down version in which the a UNO provides the PC comms and an Atmega 328 to hosts the user projects.
+PCB111000_UNO_V2 A cut down version in which the a UNO provides the PC comms and an Atmega 328 to hosts the user projects.
 
 PCB111000_CP2102 This uses a CP2102 module for comms with a PC, an ATtiny1606 to drive the display and user projects run on an Atmega328 which is programmed using a bootloader. 
 
