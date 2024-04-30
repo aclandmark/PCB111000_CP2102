@@ -44,9 +44,9 @@ PCB111000_CP2102 is assembled using the following steps:
 	At any stage the UPDI programmer can be rienstated to upgrade the miniOS.
 
 
-SW used to configure PCB_111000_CP2102
-UNO_AVR_Programmer :	see AVR freaks projects 9 Sept 2020 Slighytly modified 
-UNO_UPDI_Programmer: 	Originally writen for the UNO but also runs with an 8MHz clock
+SW used to configure PCB_111000_CP2102  
+UNO_AVR_Programmer :	see AVR freaks projects 9 Sept 2020 Slighytly modified  
+UNO_UPDI_Programmer: 	Originally writen for the UNO but also runs with an 8MHz clock  
 			and can be used here 
 
 
